@@ -3,76 +3,138 @@
 
 <head>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="main.css">
-    <link href="css/navbar.css" rel="stylesheet">
-    </head>
-
-    <script
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/navbar2.css" rel="stylesheet">
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+        <script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
+    
 <script type="text/javascript">(function(a){a.fn.inc=function(b,c,d,e){return this.length&&b?this.each(function(){e=a(this);a.ajax({url:b,success:function(f,g,h){e.html(a.isFunction(c)?c(f,b):f);a.isFunction(d)&&d(b,g,h)}})}):this};a(function(){a('[class*="inc:"]').each(function(){var b=/inc:(\S+)/.exec(this.className||"");b&&a(this).inc(unescape(b[1]))})})})(jQuery);</script>
-
-
+    
+    </head>
 
 <body>
     
-        <nav class="navbar navbar-default navbar-inverse" role="navigation">
-        <div class="container">
-
-            <p class="inc:navigation.html">
-
-        </div>
-                </nav>
     
-        <div class="jumbotron">
-        <div class="container">
-            <h1>Martin John Hadley</h1>
-            <p><h3 style="color:#fff">You know, for tag lines.*</h3></p> <!-- *I always groan at ElasticSearche's tagline-->
-        </div>
+<!--
+    <div id="navigation">
+nav div tag is here
+</div>
+    
+        <script type="text/javascript">
+$(document).ready(function(){
+$('#navigation').load('navigation.html');
+});
+</script>
+-->
+    <nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/OxfordIDN_htmlwidgets">htmlwidgets Tutorial</a>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <img src="css/images/profile-pic.jpeg" class="img-responsive" style="max-width=10%">
-            </div>
-            <div class="col-md-9">
-                <p>I'm a technology and data science evangelist, having worked in both industry and academia to promote the use of interactive technologies for education and the sharing of knowledge.</p>
-                <p>
-                    Since August 2015 I've worked at the University of Oxford as an Academic Research Technology Specialist with a special interest in data visualisation and analysis using scripting languages.
-                </p>
-                <p>My background is in STEM and scientific computation, pulling from a diverse range of interdisciplinary physical sciences with an enthusiasm and proven capability to engage with complex projects and deliver results.</p>
-                <h3>About this site</h3>
-                <p>
-                    This site contains information about my academic research, research support projects and side projects. It's also an opportunity to learn about web techologies, web-hosted visualisations and responsive design; it's built from scratch using Stackexchange, server side includes and glue.
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="learn-more2">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h3>Study</h3>
-                    <p>Studied for an MPhys, specialising in biophyics, at University of Leeds from 2006 to 2010.</p>
-                    <img src="css/images/UniOfLeedsCrest.gif" class="center-block" width="100px">
-                </div>
-                <div class="col-md-4">
-                    <h3>Research</h3>
-                    <p>Researched the biomineralisation of iron oxide MNPs at University of Birmingham and Leeds from 2010 to 2012.</p>
-                    <img src="css/images/UniOfBirminghamCrest.gif" class="center-block" width="100px">
-                </div>
-                <div class="col-md-4">
-                    <h3>Work</h3>
-                    <p>Currently working at Oxford University in Academic IT Research Support, previously worked at Wolfram as a Technical Consultant.</p>
-                    <img src="css/images/work-logos.gif" class="center-block" width="250px">
-                </div>
-            </div>
-        </div>
-    </div>
-    <footer class="footer">
-                   <p class="inc:footer.html">
-    </footer>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Comparisons <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/OxfordIDN_htmlwidgets/library-comparisons">Library Comparison</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/visualisation-comparisons">Visualisation Selection Advice</a></li>
+          </ul>
+        </li>
+        
+                <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Charts<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/OxfordIDN_htmlwidgets/charts">Charts Overview</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/OxfordIDN_htmlwidgets/charts/BarCharts">BarCharts</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/charts/StackedBarCharts">Stacked BarCharts</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/charts/StackedAreaCharts">Stacked Area Charts</a></li>
+          </ul>
+        </li>
+        
+        
+        <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Geoviz (Maps)<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/OxfordIDN_htmlwidgets/geovis">Geoviz Overview</a></li>
+            
+            <!--- Using https://php.quicoto.com/bootstrap-3-second-level-menu-nav/ !-->
+            <li class="dropdown-submenu">
+			        <a tabindex="-1" href="#">Geoviz Data<span class="caret"></span></a>
+			        <ul class="dropdown-menu">
+			          <li><a tabindex="-1" href="#">Projections and technical details</a></li>			                  
+			          <li><a href="#">Geographic Datastructures</a></li>
+			          <li><a href="#">Country Borders</a></li>
+			        </ul>
+			    </li>	
+			    
+			    <li role="separator" class="divider"></li>
+            
+            
+            <li><a href="/OxfordIDN_htmlwidgets/geovis/Scattergeo">Points on a map</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/geovis/Geolines">Geolines (great circles)</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/geovis/Choropleth_Points">Choropleth (shaded regions) from points</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/geovis/Choropleth_Polygons">Choropleth (shaded regions) from polygon</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/geovis/GeoNetworks">Networks overlaid on maps</a></li>
+          </ul>
+        </li>
+        
+        <li><a href="/OxfordIDN_htmlwidgets/datatable">Tables</a></li>
+        
+        <!--<li><a href="/OxfordIDN_htmlwidgets/gauges">Gauges</a></li>-->
+        
+        <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Networks<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/OxfordIDN_htmlwidgets/networks">Networks Overview</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/OxfordIDN_htmlwidgets/networks/small_and_large_networks">Large and Small Networks</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/networks/hierarchical_networks">Hierarchical Networks</a></li>
+          </ul>
+        </li>
+        
+        <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">TimeSeries/Timelines<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/OxfordIDN_htmlwidgets/timeseries">TimeSeries Overview</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/OxfordIDN_htmlwidgets/timeseries/timelines">Interactive Gantt Charts</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/timeseries/timeseries">Interactive Time Series</a></li>
+          </ul>
+        </li>
+        
+        
+        
+        
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="http://idn.it.ox.ac.uk">Oxford IDN</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
+       
+
+    
+    
+    
     </body>
 </html>

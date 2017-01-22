@@ -1,38 +1,99 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/OxfordIDN_htmlwidgets">htmlwidgets Tutorial</a>
+    </div>
 
-<div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="button-label" style="color:#fff">Menu</span>
-        <div class="button-bars">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </div>
-    </button>
-
-    <a class="navbar-brand" href=http://users.ox.ac.uk/~ouit0409/index.shtml>Martin John Hadley</a>
-</div>
-<div id="navbar" class="navbar-collapse collapse">
-    <ul class="nav navbar-nav">
-        <li><a href="http://users.ox.ac.uk/~ouit0409/publications.shtml">Publications</a></li>
-        <li><a href="http://users.ox.ac.uk/~ouit0409/presentations-and-meetings.shtml">Presentations and Meetings</a></li>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li><a href="http://users.ox.ac.uk/~ouit0409/RDMRoadmap.shtml">Research Data Management Roadmap</a></li>
-                <li><a href="http://users.ox.ac.uk/~ouit0409/LiveDataProject.shtml">Live Data</a></li>
-                <li role="separator" class="divider"></li>
-            </ul>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Comparisons <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/OxfordIDN_htmlwidgets/library-comparisons">Library Comparison</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/visualisation-comparisons">Visualisation Selection Advice</a></li>
+          </ul>
         </li>
+        
+                <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Charts<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/OxfordIDN_htmlwidgets/charts">Charts Overview</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/OxfordIDN_htmlwidgets/charts/BarCharts">BarCharts</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/charts/StackedBarCharts">Stacked BarCharts</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/charts/StackedAreaCharts">Stacked Area Charts</a></li>
+          </ul>
+        </li>
+        
+        
         <li class="dropdown">
-            <a href="./visualisations/visualisations.shtml" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Visualisations<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li><a href="http://users.ox.ac.uk/~ouit0409/visualisations/basicD3.shtml">D3.js</a></li>
-            </ul>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Geoviz (Maps)<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/OxfordIDN_htmlwidgets/geovis">Geoviz Overview</a></li>
+            
+            <!--- Using https://php.quicoto.com/bootstrap-3-second-level-menu-nav/ !-->
+            <li class="dropdown-submenu">
+			        <a tabindex="-1" href="#">Geoviz Data<span class="caret"></span></a>
+			        <ul class="dropdown-menu">
+			          <li><a tabindex="-1" href="#">Projections and technical details</a></li>			                  
+			          <li><a href="#">Geographic Datastructures</a></li>
+			          <li><a href="#">Country Borders</a></li>
+			        </ul>
+			    </li>	
+			    
+			    <li role="separator" class="divider"></li>
+            
+            
+            <li><a href="/OxfordIDN_htmlwidgets/geovis/Scattergeo">Points on a map</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/geovis/Geolines">Geolines (great circles)</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/geovis/Choropleth_Points">Choropleth (shaded regions) from points</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/geovis/Choropleth_Polygons">Choropleth (shaded regions) from polygon</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/geovis/GeoNetworks">Networks overlaid on maps</a></li>
+          </ul>
         </li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="./links.shtml">Links</a></li>
-    </ul>
+        
+        <li><a href="/OxfordIDN_htmlwidgets/datatable">Tables</a></li>
+        
+        <!--<li><a href="/OxfordIDN_htmlwidgets/gauges">Gauges</a></li>-->
+        
+        <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Networks<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/OxfordIDN_htmlwidgets/networks">Networks Overview</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/OxfordIDN_htmlwidgets/networks/small_and_large_networks">Large and Small Networks</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/networks/hierarchical_networks">Hierarchical Networks</a></li>
+          </ul>
+        </li>
+        
+        <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">TimeSeries/Timelines<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/OxfordIDN_htmlwidgets/timeseries">TimeSeries Overview</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/OxfordIDN_htmlwidgets/timeseries/timelines">Interactive Gantt Charts</a></li>
+            <li><a href="/OxfordIDN_htmlwidgets/timeseries/timeseries">Interactive Time Series</a></li>
+          </ul>
+        </li>
+        
+        
+        
+        
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="http://idn.it.ox.ac.uk">Oxford IDN</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
-    </ul>
-</div>
+
