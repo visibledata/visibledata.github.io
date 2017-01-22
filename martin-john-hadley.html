@@ -1,38 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<head>
+    <title>Fixed Top Navbar Example for Bootstrap</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="main.css">
-    <link href="css/navbar.css" rel="stylesheet">
-    </head>
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
-    <script
+    <!-- Custom styles for this template -->
+    <link href="css/navbar-fixed-top.css" rel="stylesheet">
+      
+       <!-- Custom styles for this template -->
+    <link href="css/footer.css" rel="stylesheet">
+
+      
+      <!--http://johannburkard.de/blog/programming/javascript/inc-a-super-tiny-client-side-include-javascript-jquery-plugin.html-->
+      <script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
+    
 <script type="text/javascript">(function(a){a.fn.inc=function(b,c,d,e){return this.length&&b?this.each(function(){e=a(this);a.ajax({url:b,success:function(f,g,h){e.html(a.isFunction(c)?c(f,b):f);a.isFunction(d)&&d(b,g,h)}})}):this};a(function(){a('[class*="inc:"]').each(function(){var b=/inc:(\S+)/.exec(this.className||"");b&&a(this).inc(unescape(b[1]))})})})(jQuery);</script>
+  </head>
+
+  <body>
+
+      <p class="inc:/navbar.html">navbarText</p>
+      
+    <div class="container">
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Martin John Hadley</h1>
+        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+        <p>To see the difference between static and fixed top navbars, just scroll.</p>
+        <p>
+          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
+        </p>
+          
+          
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean consectetur elit non diam posuere imperdiet quis id ante. Nullam facilisis metus est, vel consectetur purus suscipit eu. Maecenas porta vulputate arcu vel cursus. Proin viverra diam in metus sagittis venenatis eget vitae mauris. Vestibulum vitae ante sit amet ipsum vestibulum commodo non quis augue. Ut eget felis a purus posuere egestas. Praesent mollis eros quis nunc volutpat euismod.
+
+Mauris metus elit, eleifend sed felis vel, efficitur feugiat augue. Aenean mollis odio at blandit pretium. Mauris et ligula ut nibh scelerisque elementum. Sed semper maximus sollicitudin. Nam quis condimentum ex. Mauris gravida lorem id orci vulputate, sit amet convallis magna convallis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Sed sed risus id mauris gravida iaculis eu ut ipsum. Donec rutrum diam eget nisi feugiat, sit amet vehicula massa rutrum. In non orci interdum, posuere massa at, blandit purus. Aenean mollis sagittis rutrum. Maecenas vitae finibus elit.
+
+Aenean sit amet cursus ipsum. Nam tincidunt sapien ut lorem scelerisque sagittis. Praesent ullamcorper ullamcorper tristique. Aliquam finibus rutrum justo, vel aliquet eros scelerisque quis. Cras sed sem consequat, vulputate lectus non, interdum dui. Suspendisse suscipit finibus quam eget tempor. Morbi et sollicitudin ex, cursus ornare est. Quisque at elementum tellus. Aliquam sed feugiat nunc. Cras at mauris volutpat, venenatis arcu quis, sollicitudin diam.
 
 
+          
+      </div>
 
-<body>
-    
-        <nav class="navbar navbar-default navbar-inverse" role="navigation">
-        <div class="container">
+    </div> <!-- /container -->
+      
+      <p class="inc:/footer.html">navbarText</p>
 
-            <p class="inc:navigation.html">
 
-        </div>
-                </nav>
-    
-    <div class="containter">
-    
-    <h1>Martin</h1>
-    </div>
-       
-    <footer class="footer">
-                   <p class="inc:footer.html">
-    </footer>
-    </body>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
 </html>
