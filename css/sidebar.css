@@ -5,7 +5,9 @@ nav.sidebar, .main{
       transition: margin 200ms ease-out;
   }
 
-@media (min-width: 765px) {
+
+
+@media (min-width: 200px) {
 
     .main{
       position: absolute;
@@ -81,7 +83,8 @@ nav.sidebar, .main{
     }
   }
    
-  @media (min-width: 1330px) {
+/*This makes the whole menu show above a certain size */
+/*  @media (min-width: 1530px) {
 
     .main{
       width: calc(100% - 200px);
@@ -96,9 +99,9 @@ nav.sidebar, .main{
     nav.sidebar .forAnimate{
       opacity: 1;
     }
-  }
+  }*/
 
-  nav.sidebar .navbar-nav .open .dropdown-menu>li>a:hover, nav.sidebar .navbar-nav .open .dropdown-menu>li>a:focus {
+  /*nav.sidebar .navbar-nav .open .dropdown-menu>li>a:hover, nav.sidebar .navbar-nav .open .dropdown-menu>li>a:focus {
     color: #CCC;
     background-color: transparent;
   }
@@ -108,6 +111,6 @@ nav.sidebar, .main{
   }
   section{
     padding-left: 15px;
-  }
+  }*/
   
  
