@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <link href="css/navbar.css" rel="stylesheet">
+
+
+    <!--- datatable scripts --->
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
+    <!--- Datatable css --->
+    <link href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/1.0.7/css/responsive.bootstrap.min.css" rel="stylesheet">
+
+
+
+    <!--- Initialise data table --->
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+
+
+</head>
+
+
+
+<body>
+    <nav class="navbar navbar-default navbar-inverse" role="navigation">
+        <div class="container">
+            <!--#include file="navbar.shtml"-->
+
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Presentations and Meetings</h1>
+        <p>This page contains details of selected presentations and training courses that I have delivered, in addition to meetings and panels that I have been invited to attend. Where possible, presentation/training materials are provided.</p>
+        <p>If you're at University of Oxford and interested in training in R or Mathematica for your department, doctoral training centre then please <a href="mailto:mzartin.hazdley@it.zox.ac.uk" onmouseover="this.href=this.href.replace(/z/g,'');">contact me.</a></p>
+    </div>
+    <div>
+        <div class="container">
+            <!---<script>
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+            </script>-->
+
+            <table id="example" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Audience</th>
+                        <th>Date</th>
+                        <th>Link/Download</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                    
+                    <tr>
+                        <td>Visualizing Prosopographical Data based on Correspondences</td>
+                        <td>Presentation</td>
+                        <td>Workshop on Biographical Linked Data and Prosopography</td>
+                        <td>2015/04/02</td>
+                        <td style="text-align:center;"><a href="http://seco.cs.aalto.fi/events/2016/2016-01-22-oxford/">Workshop Program</a>
+                        </td>
+                        <td>Workshop for the Reassembling the Republic of Letters EU COST Action project, where I spoke about using interactive data visualisations for exploring and testing a research data model.</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematica for Quantitative Finance</td>
+                        <td>Training</td>
+                        <td>Certificate in Quantitative Finance</td>
+                        <td>2015/04/02</td>
+                        <td style="text-align:center;">
+
+                        </td>
+                        <td>Biannual training in Mathematica delivered since 2012 for the Certificate in Quantitive Finance, certified by Fitch Learning.</td>
+                    </tr>
+                    <tr>
+                        <td>Why develop ideas with Wolfram Technologies</td>
+                        <td>Presentation</td>
+                        <td>London Fintech Meetup</td>
+                        <td>2014/10/06</td>
+                        <td style="text-align:center;">
+                            <a href="https://storify.com/Techmeetups/fintech">Techmeetup Storify</a>
+                        </td>
+                        <td>Tech demo of Mathematica to the London Startup community hosted by Bloomberg</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematica training for the Royal Statistical Society</td>
+                        <td>Training</td>
+                        <td>Royal Statistical Society Members</td>
+                        <td>2013/07/19</td>
+                        <td style="text-align:center;">
+                            <a href="http://www.wolfram.com/events/mathematica-royal-statistical-society-2013/">Wolfram Event Listing</a>
+                        </td>
+                        <td>Bespoke training course on statistical analysis with Matheamtica, delivered to members of the Royal Statistical Society</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematica training for the Institute of Physics</td>
+                        <td>Training</td>
+                        <td>Institute of Physics Members</td>
+                        <td>2013/04/09</td>
+                        <td style="text-align:center;">
+                            <a href="http://www.wolfram.com/events/institute-of-physics-london-2013/">Wolfram Event Listing</a>
+                        </td>
+                        <td>Bespoke training course on Matheamtica, delivered to members of the Institute of Physics</td>
+                    </tr>
+                    <tr>
+                        <td>Analysing and Visualising Graph with Mathematica</td>
+                                <td>Workshop</td>
+                                <td>MARAMI 2013 Conference</td>
+                                <td>2013/10/16</td>
+                                <td style="text-align:center;">
+                                    <a href="http://lipn.univ-paris13.fr/marami2013/MARAMI13/Ateliers.html">MARAMI Conference Page</a>
+                                </td>
+                                <td>Invited workshop in analysing large networks using Mathematica.</td>
+                    </tr>
+                    <tr>
+                        <td>Acicular Nanocrystals Formed Through
+Coprecipitation of Iron Salts in the Presence of Bovine Serum
+Albumin</td>
+                                <td>Conference Presentation</td>
+                                <td>ICFNA 2011</td>
+                                <td>2011/07/29</td>
+                                <td style="text-align:center;">
+                                    <a href="http://lipn.univ-paris13.fr/marami2013/MARAMI13/Ateliers.html">MARAMI Conference Page</a>
+                                </td>
+                                <td>Invited workshop in analysing large networks using Mathematica.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <script>
+                $('table').dataTable({
+                    // display everything
+                    "aaSorting": [[3, "desc"]], // http://stackoverflow.com/a/7878267/1659890
+                    "columns": [
+                        {
+                            "width": "500px"
+                        },
+    null,
+    null,
+null,
+        null,
+                        {
+                            "width": "400px"
+                        }
+  ],
+                    "bLengthChange": false,
+                    "info": false
+                });
+            </script>
+        </div>
+    </div>
+    <footer class="footer">
+                    <!--#include file="footer.shtml"-->
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
+</html>

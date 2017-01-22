@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../main.css">
+    <link href="../css/navbar.css" rel="stylesheet">
+
+    <!--- datatable scripts --->
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
+    <!--- Datatable css --->
+    <link href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/1.0.7/css/responsive.bootstrap.min.css" rel="stylesheet">
+
+
+
+    <!--- Initialise data table --->
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+    
+    <!--- Google Analytics --->
+    <script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-62551361-3', 'auto');
+    ga('send', 'pageview');
+</script>
+    <!--- End Google Analytics --->
+    
+        <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+//      function drawChart() {
+//
+//        // Create the data table.
+//        var data = new google.visualization.DataTable();
+//        data.addColumn('string', 'Topping');
+//        data.addColumn('number', 'Slices');
+//        data.addRows([
+//          ['Mushrooms', 3],
+//          ['Onions', 1],
+//          ['Olives', 1],
+//          ['Zucchini', 1],
+//          ['Pepperoni', 2]
+//        ]);
+//
+//        // Set chart options
+//        var options = {'title':'How Much Pizza I Ate Last Night',
+//                       'width':400,
+//                       'height':300};
+//
+//        // Instantiate and draw our chart, passing in some options.
+//        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+//        chart.draw(data, options);
+//      }
+        function drawSheetName() {
+      var queryString = encodeURIComponent('SELECT A, H, O, Q, R, U LIMIT 5 OFFSET 8');
+
+      var query = new google.visualization.Query(
+          'https://docs.google.com/spreadsheets/d/1XWJLkAwch5GXAt_7zOFDcg8Wm8Xv29_8PWuuW15qmAE/gviz/tq?sheet=Sheet1&headers=1&tq=' + queryString);
+      query.send(handleSampleDataQueryResponse);
+    }
+
+    function handleSampleDataQueryResponse(response) {
+      if (response.isError()) {
+        alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+        return;
+      }
+
+      var data = response.getDataTable();
+      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+      chart.draw(data, { height: 400 });
+    }
+    </script>
+
+</head>
+
+
+
+<body>
+    <nav class="navbar navbar-default navbar-inverse" role="navigation">
+        <div class="container">
+            <!--#include file="navbar.shtml"-->
+
+
+
+        </div>
+    </nav>
+    
+    <div>
+    <div class="container">
+        Goo
+        </div>
+    </div>
+
+    <!--Div that will hold the pie chart-->
+    <div id="chart_div"></div>
+
+    <footer class="footer">
+        <!--#include file="footer.shtml"-->
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <link href="css/navbar.css" rel="stylesheet">
+
+
+    <!--- datatable scripts --->
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
+    <!--- Datatable css --->
+    <link href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/1.0.7/css/responsive.bootstrap.min.css" rel="stylesheet">
+
+
+
+    <!--- Initialise data table --->
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+    
+
+
+</head>
+
+
+
+<body>
+    <nav class="navbar navbar-default navbar-inverse" role="navigation">
+        <div class="container">
+            <!--#include file="navbar.shtml"-->
+
+
+
+        </div>
+    </nav>
+    <div class="container">
+<h1>Visualisations</h1>
+        <p>A large part of my current work at University of Oxford is dedicated to data visualisations, as part of the <a href=LiveDataProject.shtml>Live Data Project</a>. I'm also generally very interested in the use interactive visualisations as a powerful tool for encouraging open data and open access.</p>
+        <p>This site provides a useful testing ground for javascript (and other) visualisation technologies where no free-hosting solution exists or is practical. There are therefore a large number of "practice" visualisations on this site, ideally useful visualisations will be functionalised/packaged and provided as distinct repos on my Github account.</p>
+        <p>The following list is <em>not</em> dynamically generated but provides an idea on what I've recently been working on:</p>
+        <ul>
+        <li>D3 Network</li>
+        </ul>
+       
+    </div>
+    <footer class="footer">
+        <!--#include file="footer.shtml"-->
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
+</html>

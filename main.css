@@ -1,0 +1,125 @@
+/* ---- Sticky footer ---- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #5a5a5a;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#foottable tr td:empty {
+    width: 10px;
+}
+
+/* Table word wrap */
+
+
+
+/* Everything else */
+
+.vertical-center {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    float: inherit;
+}
+
+.nav a {
+    color: #5a5a5a;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 14px 10px;
+    text-transform: uppercase;
+}
+
+.nav li {
+    display: inline;
+}
+
+.jumbotron {
+    background-image: url('css/images/acicular-mnps1.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 200px;
+    min-width: 480px;
+    /* Set up proportionate scaling */
+    width: 100%;
+    height: auto;
+}
+
+.jumbotron .container {
+    position: relative;
+    top: 10px;
+}
+
+.jumbotron h1 {
+    color: #fff;
+    font-size: 48px;
+    font-family: 'Shift', sans-serif;
+    font-weight: bold;
+}
+
+.jumbotron p {
+    font-size: 20px;
+    color: #fff;
+}
+
+.learn-more2 {
+    background-color: #f7f7f7;
+    margin-top: 10px;
+    padding-top: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+.learn-more2 h3 {
+    font-family: 'Shift', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.learn-more2 a {
+    color: #00b0ff;
+}
+
+.learn-more {
+    background-color: #f7f7f7;
+}
+
+.learn-more h3 {
+    font-family: 'Shift', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.learn-more a {
+    color: #00b0ff;
+}
+
+.neighborhood-guides {
+    background-color: #efefef;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.neighborhood-guides h2 {
+    color: #393c3d;
+    font-size: 24px;
+}
+
+.neighborhood-guides p {
+    font-size: 15px;
+    margin-bottom: 13px;
+}

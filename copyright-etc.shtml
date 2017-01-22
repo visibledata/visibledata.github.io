@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <link href="css/navbar.css" rel="stylesheet">
+
+
+    <!--- datatable scripts --->
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
+    <!--- Datatable css --->
+    <link href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/1.0.7/css/responsive.bootstrap.min.css" rel="stylesheet">
+
+
+
+    <!--- Initialise data table --->
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+
+
+</head>
+
+
+
+<body>
+    <nav class="navbar navbar-default navbar-inverse" role="navigation">
+        <div class="container">
+            <!--#include file="navbar.shtml"-->
+
+        </div>
+    </nav>
+    <div>
+        <div class="container">
+            <h1>Copyright, Licensing and Image Usage</h1>
+            <p>Where possible, copyright and licensing terms are included inline however notes on the usage of all content (including server side code) are provided below.</p>
+        </div>
+    </div>
+    <div>
+        <div class="container">
+            <h1>Bootstrap</h1>
+            <p>Bootstrap is a ubiquitous collection of tools for styling web pages, distributed under the MIT License. CSS and Javascript files from <a href="www.getbootstrap.com">www.getbootstraph.com</a> include all required license details.</p>
+        </div>
+    </div>
+    <div>
+        <div class="container">
+            <h1>Glyphs</h1>
+            <p>Glyphicons Halflings have been made freely available for Bootstrap, per <a href="http://getbootstrap.com/components/">http://getbootstrap.com/components/</a>. The full collection is available here: <a href="http://glyphicons.com/">http://glyphicons.com/</a>.</p>
+        </div>
+    </div>
+    <footer class="footer">
+                    <!--#include file="footer.shtml"-->
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
+</html>

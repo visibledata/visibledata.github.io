@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <link href="css/navbar.css" rel="stylesheet">
+
+
+    <!--- datatable scripts --->
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
+    <!--- Datatable css --->
+    <link href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/1.0.7/css/responsive.bootstrap.min.css" rel="stylesheet">
+
+
+
+    <!--- Initialise data table --->
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+    
+    <!--- Google Analytics --->
+    <script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-62551361-3', 'auto');
+    ga('send', 'pageview');
+</script>
+    <!--- End Google Analytics --->
+
+</head>
+
+
+
+<body>
+    <nav class="navbar navbar-default navbar-inverse" role="navigation">
+        <div class="container">
+            <!--#include file="navbar.shtml"-->
+
+
+
+        </div>
+    </nav>
+    <div class="container">
+<h1>Links and Badges</h1>
+        <p>This website is a collection of both my current and past work, primarily focused on my software development and data analysis activities. But I also tweet and occassionally opine on a variety of subjects. Links to my social networks, code and data repositories may be found below.</p>
+        <div>
+        <div class="container">
+            <h2>Software Development</h2>
+            <p>Most of my code is hosted on Github, I quite like the badge provided by these guys <a href="http://githubbadge.appspot.com/">http://githubbadge.appspot.com/</a></p>
+            <div style="width:100%;text-align:center"><iframe src="http://githubbadge.appspot.com/martinjhnhadley?s=1" style="border: 0;height: 142px;width: 200px;overflow: hidden;" frameBorder="0"></iframe></div>
+            </div>
+            <div class="container">
+            <h2>Academic Publications</h2>
+                My publications are detailed <a href="publications.shtml">here</a>, but can also be found against my ORCID account.
+                                <div style="width:100%;text-align:center">
+                    <iframe src="https://orcid.org/static/html/widget.html?orcid=0000-0002-3039-6849&t=b28e3c&locale=en" frameborder="0" height="310" width="210px" vspace="0" hspace="0" scrolling="no" allowtransparency="true">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <!--#include file="footer.shtml"-->
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
+</html>
