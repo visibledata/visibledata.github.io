@@ -1,5 +1,9 @@
-# rroxford.github.io
+# Visible Data Ltd.
 
-Reproducible Research Oxford is a project based at the University of
-Oxford. We are working to foster a culture of research reproducibility
-at Oxford.
+Visible Data is an independent consultancy, providing the following services and support:
+
+- Reproducible Research
+- Data Science Training
+- Data Visualisation Consultancy
+
+This is a Beautiful Jeykll Github Page website that can be found at [visibledata.co.uk](visibledata.co.uk)
