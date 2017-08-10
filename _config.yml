@@ -4,7 +4,7 @@
 # baseurl is the website's URL without the hostname
 
 # If you are building a simple GitHub user page (http://username.github.io) then use these settings:
-url: "http://rroxford.github.io"
+url: "http://visibledata.co.uk"
 baseurl: ""
 paginate_path: "/blog/page:num/"
 
@@ -15,10 +15,10 @@ paginate_path: "/blog/page:num/"
 # Of course don't forget to change the username and projectname to YOUR username and project
 
 # Name of website
-title: Reproducible Research Oxford
+title: Visible Data Ltd.
 
 # Short description of your site
-description: Working to promote a culture of research reproducibility at the University of Oxford
+description: Reproducible Research, Data Science Training & Data Visualisation Consultancy
 
 # --- Navigation bar options --- #
 
@@ -42,11 +42,11 @@ navbar-links:
 # Change all these values or delete the ones you don't want.
 # Important: you must keep the "name" parameter, everything else you can remove
 author:
-  name: Reproducible Research Oxford
-  email: "ReproducibleResearchOxford@gmail.com"
+  name: Visible Data Ltd.
+  email: "contact@visibledata.co.uk"
   # facebook: yourname  # eg. daattali
-  github: RROxford    # eg. daattali
-  twitter: RR_Oxford   # eg. daattali
+  github: visibledata    # eg. daattali
+  twitter: martinjhnhadley   # eg. daattali
   # reddit: yourname    # eg. daattali
   # google-plus: +yourname   # eg. +DeanAttali or 109424658772469020925
   # linkedin: yourname  # eg. daattali
@@ -85,7 +85,7 @@ share-links-active:
 
 # How to display the link to the website in the footer
 # Remove this if you don't want a link in the footer
-url-pretty: "https://rroxford.github.io/"  # eg. "deanattali.com/beautiful-jekyll"
+url-pretty: "https://visibledata.co.uk"  # eg. "deanattali.com/beautiful-jekyll"
 
 # --- Misc --- #
 # Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
