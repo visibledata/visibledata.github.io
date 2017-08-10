@@ -19,9 +19,9 @@ Our consultants are highly experienced in working independently or integrating i
 
 <div class="col-sm-4" style="text-align:center">
 
-<img src="../img/profile-pic_Marion-Maguire.jpg"
+<a href="../marion-maguire"><img src="../img/profile-pic_Marion-Maguire.jpg"
     style="border-radius: 50%; width: 150px; height: 150px;
-    margin-bottom: 25px;"/>
+    margin-bottom: 25px;"/></a>
     
     <br>Marion Maguire
     <br><span style="text-decoration:strong">Data Analysis Specialist</span>
@@ -31,9 +31,9 @@ Our consultants are highly experienced in working independently or integrating i
     
     <div class="col-sm-4" style="text-align:center">
 
-<img src="../img/profile-pic_Felicity-Inkpen.jpg"
+<a href="../felicity-inkpen"><img src="../img/profile-pic_Felicity-Inkpen.jpg"
     style="border-radius: 50%; width: 150px; height: 150px;
-    margin-bottom: 25px;"/>
+    margin-bottom: 25px;"/></a>
     
     <br>Felicity Inkpen
     <br><span style="text-decoration:strong">Reproducability Specialist</span>
