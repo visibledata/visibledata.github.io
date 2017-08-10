@@ -24,7 +24,7 @@ description: Reproducible Research, Data Science Training & Data Visualisation C
 
 # List of links in the navigation bar
 navbar-links:
-  About: "about"
+  Our Team: "our-team"
   News: "blog"
   Events: "events"
   Contact: "contact"
