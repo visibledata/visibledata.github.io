@@ -6,6 +6,8 @@ title: Our Team
 Our consultants are highly experienced in working independently or integrating into existing teams to deliver projects and succesful internal training programmes.
 
 
+
+<div class="row">
 <div class="col-sm-4" style="text-align:center">
 
 <a href="../martin-john-hadley"><img src="../img/profile-pic_martin-john-hadley.jpg"
@@ -40,5 +42,6 @@ Our consultants are highly experienced in working independently or integrating i
     
     </div>
     
+    </div>
 
 
