@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Events
+title: Training Courses & Events
 ---
 
 Here you can find information about our events, past and future. For
