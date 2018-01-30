@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects (_index.md) but content? on Universal</title>
+    <link>/projects-folder/</link>
+    <description>Recent content in Projects (_index.md) but content? on Universal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright (c) 2016 - 2018, Visible Data Ltd; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 01 Aug 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/projects-folder/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>other-project</title>
+      <link>/projects-folder/other-project/</link>
+      <pubDate>Tue, 01 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/projects-folder/other-project/</guid>
+      <description> Hello Worls </description>
+    </item>
+    
+    <item>
+      <title>statesRcontiguous</title>
+      <link>/projects-folder/statesrcontiguous/</link>
+      <pubDate>Tue, 01 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/projects-folder/statesrcontiguous/</guid>
+      <description>statesRcontiguous A useful package for demonstrating choropleth please and more</description>
+    </item>
+    
+    <item>
+      <title>Projects (projects.md)</title>
+      <link>/projects-folder/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/projects-folder/projects/</guid>
+      <description>I&amp;rsquo;m content/projects/projects.md I have some content here foo
+description = &amp;ldquo;Frequently asked questions&amp;rdquo; keywords = [&amp;ldquo;FAQ&amp;rdquo;,&amp;ldquo;How do I&amp;rdquo;,&amp;ldquo;questions&amp;rdquo;,&amp;ldquo;what if&amp;rdquo;]</description>
+    </item>
+    
+  </channel>
+</rss>
