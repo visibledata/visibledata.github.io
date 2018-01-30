@@ -1,37 +1,71 @@
 ---
-title: "Hello R Markdown"
-author: "Frida Gomam"
-date: 2015-07-23T21:13:14-05:00
-categories: ["R"]
-tags: ["R Markdown", "plot", "regression"]
+title: Visible Setup
+author: Martin John Hadley
+date: '2018-01-30'
+slug: visible-setup
+categories:
+  - meta
+tags:
+  - meta
+draft: no
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 
-# R Markdown
+After a long time coming, I've finally got round to picking a workable solution for creating my data blog "Visible Data". This is a short overview of how I picked my tools and my intentions for the website.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+I had three core requirements:
 
-You can embed an R code chunk like this:
+- I could write the blog in RMarkdown
+- I could easily include `htmlwidgets` in blogposts (and elsewhere)
+- I could use Bootstrap grids wherever I fancied (I'm obsessed with responsive grids)
 
-```{r cars}
-summary(cars)
-fit <- lm(dist ~ speed, data = cars)
-fit
-```
+## RMarkdown
 
-# Including Plots
+Previously I made use of Dean Attali's awesome [Beautiful Jekyll](https://deanattali.com/beautiful-jekyll/) theme for creating a static website website hosted on GitHub Pages. I'd thoroughly recommend this for creating a very quick website where you **don't** need RMarkdown because GitHub's Jekyll builder doesn't support it at all. 
 
-You can also embed plots. See Figure \@ref(fig:pie) for example:
+There are a few websites I contribute to that still use Beautiful Jekyll, including the excellent [Reproducible Research Oxford Project](rroxford.github.io) which runs [Software Carpentry](https://software-carpentry.org/) training courses to encourage reproducible research methodologies.
 
-```{r pie, fig.cap='A fancy pie chart.', tidy=FALSE}
-par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c('Sky', 'Sunny side of pyramid', 'Shady side of pyramid'),
-  col = c('#0292D8', '#F7EA39', '#C4B632'),
-  init.angle = -50, border = NA
-)
-```
+The simplest solution for creating a blog which allows us to write content in RMarkdown is the excellent `blogdown` package, which is thoroughly introduced in Yihui Xie et al's freely available book [blogdown: Creating Websites with R Markdown](https://bookdown.org/yihui/blogdown/).
+
+## htmlwidgets
+
+I love `htmlwidgets` and think they're criminally under 
+
+<div class="row">
+
+<div class="col-md-6">
+
+</div>
+
+<div class="col-md-6">
+
+<center>
+<img src='/img/blog-images/2018-01-30_tweets-about-htmlwidgets-from-hadleywickham.png' style='max-width:400px'/>
+</center>
+
+</div>
+
+</div>
+
+https://twitter.com/search?q=htmlwidget
+
+<!--html_preserve-->
+            <a class="twitter-timeline"  href="https://twitter.com/search?q=htmlwidget&from=hadleywickham" data-widget-id="958318819889569792">Tweets about htmlwidget</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<!--/html_preserve-->
+
+
+
+## Replicate this site {.replicate-this-blog}
+
+This website uses the wonderful [Hugo Universal Theme](https://github.com/devcows/hugo-universal-theme) and was built using the following steps (a slightly tailored version of the workflow in Yihui's book, [**do read the book**](https://bookdown.org/yihui/blogdown/))
+
+1. Create a new RStudio Project (if you're not using RStudio projects, [you really should be](https://www.lynda.com/R-tutorials/Why-should-you-use-projects-RStudio/586672/648981-4.html))
+1. Initialise a git repo with `usethis::usethis::use_git()`
+1. Run `blogdown::new_site(theme = 'devcows/hugo-universal-theme')`
+1. In the `config.toml` file make the following changes:
+    + Item 3a
+    + Item 3b
