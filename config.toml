@@ -6,8 +6,6 @@ languageCode = "en-us"
 defaultContentLanguage = "en"
 # Enable comments by entering your Disqus shortname
 disqusShortname = "martinjhnhadley"
-# Enable Google Analytics by entering your tracking code
-googleAnalytics = ""
 relativeurls = true
 
 # Define the number of posts per page
@@ -82,9 +80,6 @@ paginate = 10
     author = "DevCows"
     defaultKeywords = ["devows", "hugo", "go"]
     defaultDescription = "Site template made by devcows using hugo"
-
-    # Google Maps API key (if not set will default to not passing a key.)
-    googleMapsApiKey = "AIzaSyCFhtWLJcE30xOAjcbSFi-0fnoVmQZPb1Y"
 
     # Style options: default (light-blue), blue, green, marsala, pink, red, turquoise, violet
     style = "default"
