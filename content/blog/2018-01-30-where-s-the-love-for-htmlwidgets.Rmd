@@ -1,0 +1,14 @@
+---
+title: Where’s the love for htmlwidgets?
+author: Martin John Hadley
+date: '2018-01-30'
+slug: where-s-the-love-for-htmlwidgets
+categories:
+  - dataviz
+tags:
+  - R
+  - htmlwidgets
+draft: no
+---
+
+htmlwidgets are amazing and i need a change
