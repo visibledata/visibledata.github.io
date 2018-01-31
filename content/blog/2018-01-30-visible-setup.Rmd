@@ -8,6 +8,8 @@ categories:
 tags:
   - meta
 draft: no
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -16,11 +18,17 @@ knitr::opts_chunk$set(collapse = TRUE)
 
 After a long time coming, I've finally got round to picking a workable solution for creating my data blog "Visible Data". This is a short overview of how I picked my tools and my intentions for the website.
 
-I had three core requirements:
+I had three core requirements which are covered in detail below, and reproducible steps are [provided at the bottom](#replicate-this-blog)
 
 - I could write the blog in RMarkdown
 - I could easily include `htmlwidgets` in blogposts (and elsewhere)
 - I could use Bootstrap grids wherever I fancied (I'm obsessed with responsive grids)
+
+I'm going to use this blog for the following:
+
+- Document me learning more R and datascience subjects
+- Exploring interesting datasets
+- Covering topics in reproducabiity and open science
 
 ## RMarkdown
 
@@ -32,34 +40,71 @@ The simplest solution for creating a blog which allows us to write content in RM
 
 ## htmlwidgets
 
-I love `htmlwidgets` and think they're criminally under 
-
 <div class="row">
 
 <div class="col-md-6">
 
+If you've never heard of them, `htmlwidgets` are an amazing part of the work that RStudio have undertaken to make R a beautiful tool for doing data science and communicating things about your data.
+
+`htmlwidgets` is a tool for R developers that allows them to easily build R wrappers for JavaScript libraries, which means useRs can build interactive visualisations like the interactive choropleth embedded here using `leaflet`.
+
+Fantastically, `htmlwidgets` are supported natively by `blogdown`.
+
 </div>
 
 <div class="col-md-6">
+<center>
+```{r, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library("tidyverse")
+library("leaflet")
+library("sf")
+library("gapminder")
+
+geojson_worldmap <- st_read("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json",
+                            quiet = TRUE)
+geojson_worldmap <- invisible(geojson_worldmap %>%
+  left_join(gapminder %>%
+               filter(year == max(year)) , by = c("name" = "country")) %>%
+  filter(name != "Antarctica"))
+palette_pop <- colorNumeric("YlOrBr" , geojson_worldmap$pop, na.color = "#c0c1c4")
+geojson_worldmap %>%
+  leaflet(width = "350px",
+          height = "200px") %>%
+  addPolygons(fillColor = ~palette_pop(pop),
+              fillOpacity = 0.8,
+              color = "#000",
+              weight = 1,
+              label = ~name,
+              popup = ~paste(name, "had a population of", formatC(pop, big.mark = ","), "in", max(gapminder$year), "<br>", "According to <a href='http://Gapminder.org' target='_blank'>Gapminder.org</a>"))
+```
+</center>
+</div>
+
+</div>
+<br>
+However, there's not actually that much love for `htmlwidgets` or promotion of them!. For example, if you search through <a href='https://www.twitter.com/hadleywickham'>@hadleywickham</a>'s tweets from January 2018 to the dawn of Twitter, `htmlwidgets` were only mentioned **three** times! I've blogged about [where's the love for htmlwidgets](http://www.visibledata.co.uk/blog/2018/01/30/2018-01-30-where-s-the-love-for-htmlwidgets/) and produced a **5h+ training course** on [building interactive dataviz with htlmlwidgets for Lynda.com](https://www.lynda.com/R-tutorials/R-Interactive-Visualizations-htmlwidgets/586671-2.html)
 
 <center>
 <img src='/img/blog-images/2018-01-30_tweets-about-htmlwidgets-from-hadleywickham.png' style='max-width:400px'/>
 </center>
 
-</div>
+## Bootstrap grids
 
-</div>
+Boostrap is a framework for building responsive websites - these are websites that *reflow* content as the browser window changes. Bootstrap is very popular and used all over the web, it's also [how `shiny` apps are laid out](https://shiny.rstudio.com/articles/css.html).
 
-https://twitter.com/search?q=htmlwidget
+The Hugo theme I used for this `blogdown` website uses Bootstrap which means (for instance) the navigation menu gets collapsed in narrow browser windows. But I can also use elements of Bootstrap wherever I want in blogposts/pages of the site by writing `HTML` in my `.Rmd` files, for instance in the section about htmlwidgets above you'd have seen the choropleth either to the right or below of the first three paragraphs dependent on your browser window size. 
 
-<!--html_preserve-->
-            <a class="twitter-timeline"  href="https://twitter.com/search?q=htmlwidget&from=hadleywickham" data-widget-id="958318819889569792">Tweets about htmlwidget</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-<!--/html_preserve-->
+The thing about `RMarkdown` is that it **really** wants content to be rendered according to the rules of `RMarkdown`, which can be a problem with lots of nested HTML. Thankfully, there's a little know feature introduced in [`RMarkdown` v2](http://rmarkdown.rstudio.com/authoring_migrating_from_v1.html) that allows us to turn off markdown processing[^1]:
 
+<pre>
+    &lt;!--html_preserve--&gt;
+        &lt;strong&gt;This will render as HTML not preformatted text&lt;/strong&gt;
+    &lt;!--/html_preserve--&gt;
+</pre>
 
+I get carried away with laying things out though, but it's really fun playing with CSS!
 
-## Replicate this site {.replicate-this-blog}
+## Replicate this site {#replicate-this-blog}
 
 This website uses the wonderful [Hugo Universal Theme](https://github.com/devcows/hugo-universal-theme) and was built using the following steps (a slightly tailored version of the workflow in Yihui's book, [**do read the book**](https://bookdown.org/yihui/blogdown/))
 
@@ -67,5 +112,19 @@ This website uses the wonderful [Hugo Universal Theme](https://github.com/devcow
 1. Initialise a git repo with `usethis::usethis::use_git()`
 1. Run `blogdown::new_site(theme = 'devcows/hugo-universal-theme')`
 1. In the `config.toml` file make the following changes:
-    + Item 3a
-    + Item 3b
+    + `baseurl = "/"`
+    + `relativeurls = true`
+    + Comment out the Google Maps API token
+    + Change the navigation tree as you see fit, you can duplicate mine [here](https://github.com/visibledata/visibledata.github.io/blob/master/config.toml) 
+1. Add `public/` to your `.gitignore` file
+1. Push your changes to GitHub (there's lots of advice on alternatives in [blogdown book](https://bookdown.org/yihui/blogdown/deployment.html))
+1. Sign up for a Netlify account and link your GitHub repo to Netlify, with these settings on this page [https://app.netlify.com/sites/visibledata/settings/deploys](https://app.netlify.com/sites/visibledata/settings/deploys:
+    + `Build commad: hugo`
+    + `Publish directory: public`
+    + The blogdown book says to use version 0.2 but don't! Instead go to the Hugo news page [https://gohugo.io/news/](https://gohugo.io/news/) and find the most recent version number and add `HUGO_VERSION: X.X` to the "Build environment variables" section
+1. Your site should now build :)
+    
+    
+    
+    
+[^1]: To turn off RMarkdown processing **here** we have to steal a trick from Yihui Xie that's used here: https://raw.githubusercontent.com/rstudio/rmarkdown/gh-pages/authoring_migrating_from_v1.Rmd
