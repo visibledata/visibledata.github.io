@@ -1,5 +1,5 @@
 baseurl = "/"
-title = "Universal"
+title = "Visible Data"
 theme = "hugo-universal-theme"
 languageCode = "en-us"
 # Site language. Available translations in the theme's `/i18n` directory.
