@@ -10,6 +10,7 @@ tags:
 draft: no
 editor_options: 
   chunk_output_type: console
+banner: "blog/2018-01-30_visible-setup_header-image.png"
 ---
 
 ```{r setup, include=FALSE}
