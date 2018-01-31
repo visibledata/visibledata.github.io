@@ -98,7 +98,7 @@ paginate = 10
     # - you're done. Happy mailing!
     #
     # Enable the contact form by entering your Formspree.io email
-    email = "your@email.com"
+    email = "contact@visibledata.co.uk"
 
     about_us = "<p>Visible Data is a consultancy and technical training company focusing on data science, data visualisation and reproducability based in Oxford, UK.</p>"
     copyright = "Copyright (c) 2016 - 2018, Visible Data Ltd; all rights reserved."
