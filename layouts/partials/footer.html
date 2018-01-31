@@ -1,5 +1,7 @@
 <footer id="footer">
     <div class="container">
+      
+      {{ partial "foot_custom.html" . }}
 
         {{ if isset .Site.Params "about_us" }}
         <div class="col-md-4 col-sm-6">
