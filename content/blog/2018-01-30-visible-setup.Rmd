@@ -76,7 +76,6 @@ geojson_worldmap %>%
               color = "#000",
               weight = 1,
               label = ~name,
-              popup = ~paste(name, "had a population of", formatC(pop, big.mark = ","), "in", max(gapminder$year), "<br>", "According to <a href='http://Gapminder.org' target='_blank'>Gapminder.org</a>"))
               popup = ~paste(name, "had a population of", formatC(pop, big.mark = ","), "in", max(gapminder$year), "<br>", "According to <a href='http://Gapminder.org' target='_blank'>Gapminder.org</a>")) %>%
   addLegend(title = "Hello World",
             colors = NULL,
