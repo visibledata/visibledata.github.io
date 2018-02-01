@@ -130,7 +130,7 @@ This website uses the wonderful [Hugo Universal Theme](https://github.com/devcow
 1. Create a [Disqus](www.disqus.com) account and then find the quite well buried link ["to install Disqus on my site"](https://disqus.com/admin/create/)
 1. Choose a name for the site which will become your "Disqus Shortname" which we need to add to our `config.toml` file:
     + disqusShortname = "your-short-name"
-1. Navigate to `layouts/partials/footer.html` and modify the top 6 lines so they read as follows, which will only insert the Disqus comments section to blogposts!
+1. Navigate to `layouts/partials/footer.html` and modify the top 6 lines so they read as below, the `isPage` check removes the comments from the homepage! In the future I will likely modify this so comments only appear on blogposts, which will make these instructions out of date!
 <pre>
 &lt;footer id="footer"&gt;
     &lt;div class="container"&gt;
