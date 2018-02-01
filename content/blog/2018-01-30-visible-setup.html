@@ -98,7 +98,38 @@ banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png
 <li><code>Publish directory: public</code></li>
 <li>The blogdown book says to use version 0.2 but don’t! Instead go to the Hugo news page <a href="https://gohugo.io/news/" class="uri">https://gohugo.io/news/</a> and find the most recent version number and add <code>HUGO_VERSION: X.X</code> to the “Build environment variables” section</li>
 </ul></li>
-<li>Your site should now build :)</li>
+<li>Your site should now build :) But we still need to enable Disqus comments!</li>
+<li>Create a <a href="www.disqus.com">Disqus</a> account and then find the quite well buried link <a href="https://disqus.com/admin/create/">“to install Disqus on my site”</a></li>
+<li>Choose a name for the site which will become your “Disqus Shortname” which we need to add to our <code>config.toml</code> file:
+<ul>
+<li>disqusShortname = “your-short-name”</li>
+</ul></li>
+<li>Navigate to <code>layouts/partials/footer.html</code> and modify the top 6 lines so they read as follows, which will only insert the Disqus comments section to blogposts!
+<pre>
+&lt;footer id="footer"&gt;
+&lt;div class="container"&gt;
+
+  {{ if .IsPage }}
+  {{ partial "foot_custom.html" . }}
+{{ end }}
+</pre></li>
+<li>Create a new file at <code>layouts/partials/foot_custom.html</code> and enter the following code:</li>
+</ol>
+<pre>
+&lt;div id="disqus_thread"&gt;&lt;/div&gt;
+  &lt;script&gt;
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://visibledata-co-uk.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+&lt;/script&gt;
+  &lt;noscript&gt;Please enable JavaScript to view the &lt;a href="https://disqus.com/?ref_noscript"&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;
+</pre>
+<ol style="list-style-type: decimal">
+<li>Before pushing your website, ensure to run <code>blogdown::build_site()</code> to properly plugin Disqus!</li>
+<li>Now your blog should work :)</li>
 </ol>
 </div>
 <div class="footnotes">
