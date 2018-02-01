@@ -9,6 +9,8 @@ disqusShortname = "visibledata-co-uk"
 relativeurls = true
 enableEmoji = true
 
+GoogleAnalytics = "UA-62551361-5"
+
 # Define the number of posts per page
 paginate = 10
 
