@@ -104,7 +104,7 @@ banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png
 <ul>
 <li>disqusShortname = “your-short-name”</li>
 </ul></li>
-<li>Navigate to <code>layouts/partials/footer.html</code> and modify the top 6 lines so they read as follows, which will only insert the Disqus comments section to blogposts!
+<li>Navigate to <code>layouts/partials/footer.html</code> and modify the top 6 lines so they read as below, the <code>isPage</code> check removes the comments from the homepage! In the future I will likely modify this so comments only appear on blogposts, which will make these instructions out of date!
 <pre>
 &lt;footer id="footer"&gt;
 &lt;div class="container"&gt;
