@@ -126,9 +126,35 @@ This website uses the wonderful [Hugo Universal Theme](https://github.com/devcow
     + `Build commad: hugo`
     + `Publish directory: public`
     + The blogdown book says to use version 0.2 but don't! Instead go to the Hugo news page [https://gohugo.io/news/](https://gohugo.io/news/) and find the most recent version number and add `HUGO_VERSION: X.X` to the "Build environment variables" section
-1. Your site should now build :)
-    
-    
-    
+1. Your site should now build :) But we still need to enable Disqus comments!
+1. Create a [Disqus](www.disqus.com) account and then find the quite well buried link ["to install Disqus on my site"](https://disqus.com/admin/create/)
+1. Choose a name for the site which will become your "Disqus Shortname" which we need to add to our `config.toml` file:
+    + disqusShortname = "your-short-name"
+1. Navigate to `layouts/partials/footer.html` and modify the top 6 lines so they read as follows, which will only insert the Disqus comments section to blogposts!
+<pre>
+&lt;footer id="footer"&gt;
+    &lt;div class="container"&gt;
+      
+      {{ if .IsPage }}
+  {{ partial "foot_custom.html" . }}
+{{ end }}
+</pre>
+1. Create a new file at `layouts/partials/foot_custom.html` and enter the following code:
+
+<pre>
+&lt;div id="disqus_thread"&gt;&lt;/div&gt;
+  &lt;script&gt;
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://visibledata-co-uk.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+&lt;/script&gt;
+  &lt;noscript&gt;Please enable JavaScript to view the &lt;a href="https://disqus.com/?ref_noscript"&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;
+</pre>
+1. Before pushing your website, ensure to run `blogdown::build_site()` to properly plugin Disqus!
+1. Now your blog should work :)
+
     
 [^1]: To turn off RMarkdown processing **here** we have to steal a trick from Yihui Xie that's used here: https://raw.githubusercontent.com/rstudio/rmarkdown/gh-pages/authoring_migrating_from_v1.Rmd
