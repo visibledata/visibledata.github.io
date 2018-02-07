@@ -232,4 +232,4 @@ I will finish off with a little bit of self-promotion. I have a **5 hour+** over
 
 ## Reproducing this blogpost
 
-This blogpost can be found as an .Rmd file with all necessary code to replicate the analysis [here](https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-01-30-visible-setup.Rmd).
+This blogpost can be found as an .Rmd file with all necessary code to replicate the analysis [here](https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-07_where-s-the-love-for-htmlwidgets.Rmd).
