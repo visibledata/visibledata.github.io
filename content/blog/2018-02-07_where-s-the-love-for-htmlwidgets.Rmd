@@ -11,7 +11,7 @@ tags:
 draft: no
 editor_options: 
   chunk_output_type: console
-banner: "img/blog-images/header-images/2018-02-where-s-the-love-for-htmlwidgets_header-image.png"
+banner: "img/blog-images/header-images/2018-02-07_where-s-the-love-for-htmlwidgets_header-image.png"
 ---
 
 ```{r setup, include=FALSE}
