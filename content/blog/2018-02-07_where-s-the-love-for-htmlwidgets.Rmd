@@ -192,7 +192,7 @@ writeLines(".dygraph-title {color: navy;font-weight: bold;}
 .dygraph {background: #ebebeb !important;}", dygraph_css_file)
 close(dygraph_css_file)
  
-cran_downloads %>%
+cran_downloads_28ma <- cran_downloads %>%
   filter(package != "htmlwidgets") %>%
   group_by(package) %>%
   mutate(mean.count = rollmean(
@@ -201,7 +201,10 @@ cran_downloads %>%
   )) %>%
   ungroup() %>%
   replace_na(list(mean.count = 0)) %>%
-  select(-count) %>%
+  select(-count)
+
+cran_downloads_28ma %>%
+  mutate(package = fct_relevel(package, median_daily_downloads$package)) %>%
   spread(package, mean.count) %>%
   # filter(date > ymd("2017-08-01")) %>%
   timetk::tk_xts(date_var = date) %>%
