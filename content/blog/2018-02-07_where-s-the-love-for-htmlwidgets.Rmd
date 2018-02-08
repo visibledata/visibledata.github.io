@@ -87,7 +87,7 @@ frameWidget(lf_gapminder_pop)
 
 So why do I assume you haven't heard of them? 
 
-Well, they're hardly ever spoken about or searched for! Hadley Wickham is a huge promoter of the benefits of visualisation in data science[^1] but has only ever mentioned `htmlwidgets` on Twitter explicitly 3 times prior to February 2018. And just compare the Google Search Trends for `tidyverse` and `htmlwidgets`, there's desperately little love for `htmlwidgets`.
+Well, they're hardly ever spoken about or searched for! Hadley Wickham is a huge promoter of the benefits of visualisation in data science[^2] but has only ever mentioned `htmlwidgets` on Twitter explicitly 3 times prior to February 2018. And just compare the Google Search Trends for `tidyverse` and `htmlwidgets`, there's desperately little love for `htmlwidgets`.
 
 <div class="row">
 
@@ -241,8 +241,9 @@ I will finish off with a little bit of self-promotion. I have a **5 hour+** over
 
 <iframe width='100%' height='315' src='https://www.lynda.com/player/embed/650000?fs=3&w=560&h=315&ps=paused&utm_medium=referral&utm_source=embed+video&utm_campaign=ldc-website&utm_content=vid-650000' mozallowfullscreen='true' webkitallowfullscreen='true' allowfullscreen='true' frameborder='0'></iframe><div style="margin-bottom:10px"><strong><a href="https://www.lynda.com/R-tutorials/R-Interactive-Visualizations-htmlwidgets/586671-2.html" title="Learn how to rapidly create rich, interactive data visualizations with R and htmlwidgets—packages that connect R to popular JavaScript libraries like Plotly, Leaflet, and DT.">R: Interactive Visualizations with htmlwidgets</a></strong> by <a href="https://www.lynda.com/author/4174500">Martin Hadley</a></div>
 
-[^1]: [Citation needed](https://xkcd.com/285/).
 [^1]: Thanks to Joe Chung for highlighting [@ramnath_vaidya](https://twitter.com/ramnath_vaidya) and [@timelyportfolio](https://twitter.com/timelyportfolio)'s contributions on Twitter [link](https://twitter.com/jcheng/status/961696843452203009).
+
+[^2]: [Citation needed](https://xkcd.com/285/).
 
 ## Reproducing this blogpost
 
