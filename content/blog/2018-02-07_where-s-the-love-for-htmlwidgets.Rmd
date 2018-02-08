@@ -164,10 +164,14 @@ median_daily_downloads <- cran_downloads %>%
   filter(package != "htmlwidgets") %>%
   group_by(package) %>%
   summarise(median.downloads = median(count)) %>%
-  arrange(desc(median.downloads)) %>%
-  datatable(options = list(dom = "t", pageLength = 13),
-            colnames = c("htmlwidget library", "Median daily downloads (excluding zero download days)"))
-frameWidget(median_daily_downloads)
+  arrange(desc(median.downloads))
+
+dt_median_daily_downloads <- median_daily_downloads %>%
+  datatable(
+    options = list(dom = "t", pageLength = 13),
+    colnames = c("htmlwidget library", "Median daily downloads (excluding zero download days)")
+  )
+frameWidget(dt_median_daily_downloads)
 ```
 
 The top 6 libraries all have an median of more than 100 daily downloads, is that impressive? Well, I don't have any feel for that unfortunately. The `cranlogs` tells us about top 100 downloaded packages, but these download figures are going to suffer from a highly negatively skewed distribution. It would be fun to investigate this distribution and come back to this question in the future. All I want to show here is that the `htmlwidgets` libraries are really popular, but that there's little exposure for the `htmlwidgets` branding.
