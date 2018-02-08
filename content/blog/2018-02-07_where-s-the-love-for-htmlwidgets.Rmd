@@ -176,7 +176,7 @@ frameWidget(dt_median_daily_downloads)
 
 <br>
 
-The top 6 libraries all have an median of more than 100 daily downloads, is that impressive? Well, I don't have any feel for that unfortunately. The `cranlogs` tells us about top 100 downloaded packages, but these download figures are going to suffer from a highly negatively skewed distribution. It would be fun to investigate this distribution and come back to this question in the future. All I want to show here is that the `htmlwidgets` libraries are really popular, but that there's little exposure for the `htmlwidgets` branding.
+The top 6 libraries all have an median of more than 100 daily downloads, is that impressive? Well, I don't have any feel for that unfortunately. The `cranlogs` tells us about top 100 downloaded packages, but these download figures are going to suffer from a highly positively skewed distribution. It would be fun to investigate this distribution and come back to this question in the future. All I want to show here is that the `htmlwidgets` libraries are really popular, but that there's little exposure for the `htmlwidgets` branding.
 
 I can demonstrate the growing popularity of the libraries with a timeseries chart using `dygraphs`, I've chosen to perform a simple 28-day moving average on the data as there is a lot of inter-day noise:
 
