@@ -27,7 +27,7 @@ library("emo")
 
 <div class="col-md-6">
 
-If you've never heard of them, `htmlwidgets` are an amazing part of the work that RStudio have undertaken to make R a beautiful tool for doing data science and communicating things about your data. You **probably haven't** heard about `htmlwidgets`, so let's cover what it is first:
+If you've never heard of them, `htmlwidgets` are an amazing part of the work that RStudio (plus [Ramnath Vaidyanathan](https://github.com/ramnathv) and [Kent Russell](https://github.com/timelyportfolio))[^1] have undertaken to make R a beautiful tool for doing data science and communicating things about your data. You **probably haven't** heard about `htmlwidgets`, so let's cover what it is first:
 
 `htmlwidgets` is a tool for R developers that allows them to easily build R wrappers for JavaScript libraries, which means useRs can build interactive visualisations! Here are two of my favourite htmlwidget libraries:
 
@@ -242,6 +242,7 @@ I will finish off with a little bit of self-promotion. I have a **5 hour+** over
 <iframe width='100%' height='315' src='https://www.lynda.com/player/embed/650000?fs=3&w=560&h=315&ps=paused&utm_medium=referral&utm_source=embed+video&utm_campaign=ldc-website&utm_content=vid-650000' mozallowfullscreen='true' webkitallowfullscreen='true' allowfullscreen='true' frameborder='0'></iframe><div style="margin-bottom:10px"><strong><a href="https://www.lynda.com/R-tutorials/R-Interactive-Visualizations-htmlwidgets/586671-2.html" title="Learn how to rapidly create rich, interactive data visualizations with R and htmlwidgets—packages that connect R to popular JavaScript libraries like Plotly, Leaflet, and DT.">R: Interactive Visualizations with htmlwidgets</a></strong> by <a href="https://www.lynda.com/author/4174500">Martin Hadley</a></div>
 
 [^1]: [Citation needed](https://xkcd.com/285/).
+[^1]: Thanks to Joe Chung for highlighting [@ramnath_vaidya](https://twitter.com/ramnath_vaidya) and [@timelyportfolio](https://twitter.com/timelyportfolio)'s contributions on Twitter [link](https://twitter.com/jcheng/status/961696843452203009).
 
 ## Reproducing this blogpost
 
