@@ -5,7 +5,7 @@ description = "About"
 
 Visible Data is a consultancy and technical training company focusing on data science, data visualisation and reproducability based in Oxford, UK. It's also a blog where our team share stories about their work and datasets that interest them. If you'd like to get in touch the best way to do that is emailing <a href='mailto:contact@visibledata.co.uk'>contact@visibledata.co.uk</a>.
 
-A note on the name, **Visible Data** is all about making data more accessible and reproducibly available to bridge what is often called the "data gap". Data visualisation is only a small part of that, but it's the shiniest part.
+A note on the name, **Visible Data** is all about making data more accessible and reproducibly available to bridge what is often called the "data gap". Data visualisation is only a small part of that, but it's the shiniest part. This site makes use of [reproducability ratings](/reproducability-ratings) at the top of all the blogposts to help readers identify and find the author, data and code behind the posts.
 
 # Martin John Hadley
 
