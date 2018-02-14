@@ -9,6 +9,7 @@ tags:
   - R
   - htmlwidgets
 draft: no
+description: "If you've never heard of them, `htmlwidgets` are an amazing part of the work that RStudio (plus ramnathv and timelyportfolio) have undertaken to make R a beautiful tool for doing data science and communicating things about your data. Using leaflet, plotly, highcharter and more it's possible to create rich interactive charts, maps and other visualisations directly from R without having to learn JavaScript"
 editor_options: 
   chunk_output_type: console
 banner: "img/blog-images/header-images/2018-02-07_where-s-the-love-for-htmlwidgets_header-image.png"
