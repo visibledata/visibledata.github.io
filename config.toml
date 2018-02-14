@@ -114,7 +114,7 @@ paginate = 10
 
 [Permalinks]
     blog = "/blog/:year/:month/:day/:filename/"
-
+    
 # Enable or disable top bar with social icons
 [params.topbar]
     enable = false
@@ -170,3 +170,4 @@ paginate = 10
     # For more informtion take a look at the README.
     title = "Our Clients"
     subtitle = ""
+    
