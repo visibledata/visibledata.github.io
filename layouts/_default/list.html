@@ -55,7 +55,16 @@
                                             <a href="{{ .Permalink }}"><i class="fa fa-calendar-o"></i> {{ .Date.Format .Site.Params.date_format }}</a>
                                         </p>
                                     </div>
-                                    <p class="intro">{{ .Summary }}</p>
+                                    <!--<p class="intro">{{ .Summary }}</p>-->
+                                    <!--- https://yihui.name/en/2017/08/hugo-post-summary/ --->
+                                    <p class="intro">
+    {{ with .Description }}
+      {{ $.Scratch.Set "summary" (markdownify .) }}
+    {{ else }}
+      {{ $.Scratch.Set "summary" ((delimit (findRE "(<p.*?>(.|\n)*?</p>\\s*)+" .Content) "[&hellip;] ") | plainify | truncate (default 200 .Site.Params.summary_length) (default " &hellip;" .Site.Params.text.truncated ) | replaceRE "&amp;" "&" | safeHTML) }}
+    {{ end }}
+    {{ $.Scratch.Get "summary" }}
+</p>
                                     <p class="read-more"><a href="{{ .Permalink }}" class="btn btn-template-main">{{ i18n "continueReading" }}</a>
                                     </p>
                                 </div>
