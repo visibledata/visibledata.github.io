@@ -1,0 +1,280 @@
+---
+title: Reproducible Blogposts
+author: Martin John Hadley
+date: '2018-02-14'
+slug: reproducible-blogposts
+categories:
+  - meta
+tags:
+  - meta
+draft: no
+description: "In this blogpost I introduce a rating system for the reproducability of blogposts, taking authorship, data and code all into account. All blogposts include a star rating at both the top and bottom of the post with a link to (at least) the .Rmd file responsible for generating the page."
+editor_options: 
+  chunk_output_type: console
+banner: "img/blog-images/header-images/2018-02-14_reproducible-blogposts.png"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+<!--html_preserve-->
+<hr style="margin-top: -10px;margin-bottom: 5px;">
+<div class="row">
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+                <br>
+                Martin John Hadley
+                <br>
+                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+                <br>
+                R packages: <a href='https://cran.r-project.org/web/packages/WDI/' target='_blank'>WDI</a>
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-14_reproducible-blogposts.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
+        </center>
+    </div>
+</div>
+
+<hr style="margin-top: 5px;margin-bottom: 5px;">
+
+<!--/html_preserve-->
+
+Writing blogposts that meet all four of these requirements is hard:
+
+- The post is interesting and has something unique to it
+- The post is easy to understand and both analyses and data visualisations follow sensible best practices
+- The code is fully reproducible with all datasets available programmatically to folks replicating the code
+- The author doesn't give up writing because one of these can't easily be met
+
+In an ideal world, datasets are provided with DOI and/or else easily accessible via an API. If we're really lucky there'll be a lovely R package that wraps up the API for us; as is the case for the excellent `WDI` package that makes the World Bank data available to us. Here's a nice example of how we can reproducibly obtain and tabulate data using `WDI` and `DT`:
+
+```{r uneval-internet-users, eval=FALSE, include=TRUE}
+library("WDI")
+library("tidyverse")
+library("DT")
+
+WDI(country=c("DE","NZ"), indicator="IT.NET.USER.ZS", start=2000, end=2001) %>%
+  mutate(IT.NET.USER.ZS = IT.NET.USER.ZS / 100) %>%
+  datatable(colnames = c("Country Short Code",
+                         "Country",
+                         "Individuals using the Internet (% of population)",
+                         "Year"),
+            options = list(dom = "t"),
+            height = '100px') %>%
+  formatPercentage(columns = 'IT.NET.USER.ZS')
+```
+
+```{r hidden-internet-users, echo=FALSE}
+## This code chunk will not appear in the published blogpost
+## The widgetframe library is used to ensure htmlwidgets play nice in the website.
+library("WDI")
+library("tidyverse")
+library("DT")
+library("widgetframe")
+
+dt_internet_users <- WDI(country=c("DE","NZ"), indicator="IT.NET.USER.ZS", start=2000, end=2001) %>%
+  mutate(IT.NET.USER.ZS = IT.NET.USER.ZS / 100) %>%
+  datatable(colnames = c("Country short code",
+                         "Country",
+                         "% of pop using the internet",
+                         "Year"),
+            options = list(dom = "t"),
+            height = "100%") %>%
+  formatPercentage(columns = 'IT.NET.USER.ZS')
+frameWidget(dt_internet_users, height = "100%")
+```
+
+<br>
+
+Often times, unfortunately we can't access data programmatically. [Kaggle datasets](https://www.kaggle.com/datasets) are a frustrating example of this, there are some really exciting and vibrant datasets published there:
+
+- [R Questions on StackOverflow](https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-14_reproducible-blogposts.Rmd): Full text of all StackOverflow Q&As in the R tag up to September 2017
+- [Synchronised Brain Dataset](https://www.kaggle.com/berkeley-biosense/synchronized-brainwave-dataset): EEGs from 15 participants subject to the same visual stimuli
+- [Audio Cats and Dogs](https://www.kaggle.com/mmoreaux/audio-cats-and-dogs): +250 WAV files categorised as either recordings of dogs or cats
+
+But there is no API for the service, and no direct download link for the data files. This is frustrating as if I write a post using one of these datasets, in order to follow along a reader would have to; manually sign up to Kaggle, download the files, put them in the correct place... and that's just faff. I've also run enough training courses to know this goes wrong very easily, and understandably so.
+
+What can I do about this? Well, I'm going to do two things:
+
+1. Use Gists
+1. Rate the reproducibility of my blogposts
+
+## Use Gists and `reprex`
+
+Twitter has been tremendously useful in my learning of #rstats, and folks in the community are incredibly friendly and helpful. So when I was starting up this blog I asked on Twitter for advice on how to make posts reproducible:
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> bloggers, I&#39;ve a question!<br>if you use GitHub pages for your blog &amp; plan for each post / <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">#dataviz</a> to be a reproducible self-contained .RProj do you have a separate repo for each post? Feels like overkill :/</p>&mdash; Martin John Hadley (@martinjhnhadley) <a href="https://twitter.com/martinjhnhadley/status/948578794935345152?ref_src=twsrc%5Etfw">January 3, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+A few folks suggested that I use Gists, which is a great service provided by Github for hosting collections of files and code. 
+
+I've already used Gists before for asking longer form questions on Twitter. It's definitely a good stop gap for reproducibility where data files aren't programmatically available and the license allows me to rehost the data (with citation). So in the future, if I use Kaggle datasets (for example) I will rehost the data on Gist along with the code for analysing the data and a link to the original blogpost.
+
+Lastly, whenever I do host code on Gist I'll use the excellent `reprex` library which helps guarantee reproducible code samples. `reprex` is developed by the awesome [\@jennybryan](https://twitter.com/JennyBryan).
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">reprex preps <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> examples for github or stackoverflow and it’s even better now! Pls test.<a href="https://t.co/kQ0BfRNiRz">https://t.co/kQ0BfRNiRz</a> <a href="http://t.co/z8zCTlaskA">pic.twitter.com/z8zCTlaskA</a></p>&mdash; Jenny Bryan (@JennyBryan) <a href="https://twitter.com/JennyBryan/status/643521408656637952?ref_src=twsrc%5Etfw">September 14, 2015</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+# Reproducability Ratings {#reproducability-ratings}
+
+I wanted to introduce a way to rate my blogposts in terms of their reproducability, with the following considerations:
+
+- Is the author citable?
+- Is the data citable?
+- Is the code citable (and replicable)?
+
+I deciced the best way to do that was to design an insert for the top and bottom of all my posts that looks like this:
+
+<!--html_preserve-->
+<div class="row">
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;'>Citable Author<i class="fa fa-question-circle "></i></a>
+                <br>
+                Martin John Hadley
+                <br>
+                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
+                <br>
+                Philippa Matthews
+                <br>
+                (<a href="https://orcid.org/0000-0002-4036-4269" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="DOI icon">orcid.org/0000-0002-4036-4269</a>)
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;'>Citable Data<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="http://doi.org/10.1038/srep00196" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="/img/doi_16x16.png" style="width:1em;margin-right:.2em;" alt="GitHub icon">doi:10.1038/srep00196</a>
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;'>Citable Code<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-14_reproducible-blogposts.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
+        </center>
+    </div>
+</div>
+
+<!--/html_preserve-->
+
+It's been designed so that it supports multiple post authors, multiple datasets and a link to the .Rmd that generated the blogpost you're reading. The <a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;'>Citable X<i class="fa fa-question-circle "></i></a> parts of the insert have a hover text encouraging folks to click on them, which links to a dedicated page [explaining the rating system](/reproducability-ratings) which I'll keep updated over time.
+
+At the time of writing this blogpost the rating system works as follows:
+
+<!--html_preserve-->
+
+<div class="row">
+
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-o fa-2x text-center" style="color:Tomato"></span>
+            <p>
+            <h4>Not reproducible!</h3>
+            Complete lack of unique identifier or programmatic access to resource.
+        </center>
+    </div>
+
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
+            <p>
+            <h4>Should be reproducible!</h3>
+            A potentially volatile link to the resource has been provided, this includes resources like Gists where commercial interests may make them unavailable in the future. This category includes data accessible via API or CRAN-hosted R packages.
+        </center>
+    </div>
+    
+        <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p>
+            <h4>Reliably reproducible.</h3>
+            A DOI or other permanent identifier has been given to the resource, future access is highly likely.
+        </center>
+    </div>
+</div>
+
+<!--/html_preserve-->
+
+<br>
+
+For the time being I'm going to be manually adding these components to my posts, but I have a [placeholder repository](https://github.com/visibledata/blogrducible) where I'll package together tools I regularly use for the blog into. If you do take a look at the .Rmd files including these ratings, you'll notice I use the following trick from RMarkdown to allow for neatly indented HTML that remains unprocessed by `knitr`:
+
+<pre>
+    &lt;!--html_preserve--&gt;
+        &lt;strong&gt;This will render as HTML not preformatted text&lt;/strong&gt;
+    &lt;!--/html_preserve--&gt;
+</pre>
+
+Unfortunately, manually inserting raw HTML into the top of each blogpost made the post summaries on the blog page next to useless. Thankfully, Yihui has a blogpost on [modifying hugo post summaries](https://yihui.name/en/2017/08/hugo-post-summary/) that was fairly easy to implement. To be explicit, I introduced the following code:
+
+<pre>
+&lt;p class="intro"&gt;
+{{ with .Description }}
+{{ $.Scratch.Set "summary" (markdownify .) }}
+{{ else }}
+{{ $.Scratch.Set "summary" ((delimit (findRE "(&lt;p.*?&gt;(.|\n)*?&lt;/p&gt;\\s*)+" .Content) "[&hellip;] ") | plainify | truncate (default 200 .Site.Params.summary_length) (default " &hellip;" .Site.Params.text.truncated ) | replaceRE "&amp;" "&" | safeHTML) }}
+{{ end }}
+{{ $.Scratch.Get "summary" }}
+&lt;/p&gt;
+</pre>
+
+... into these two locations, in place of `<p class="intro">{{ .Summary }}</p>`
+
+```{r, eval=FALSE}
+# layouts/_default/single.html
+# layouts/partial/recent_posts.html
+```
+
+This actually was a blessing in disguise, as I had wanted more flexibility over my post summaries. Now I can not only write completely custom click-bait summaries, I can also include emojis `r emo::ji("rabbit")` and raw HTML by adding this to the YAML of a post:
+
+        description: >
+          <ul>
+          <li>Bunny! 🐰</li>
+          <li>Cat! 🐱</li>
+          </ul>
+
+
+
+<!--html_preserve-->
+<hr>
+<div class="row" style='margin-bottom:-40px;'>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+                <br>
+                Martin John Hadley
+                <br>
+                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+                <br>
+                R packages: <a href='https://cran.r-project.org/web/packages/WDI/' target='_blank'>WDI</a>
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-14_reproducible-blogposts.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
+        </center>
+    </div>
+</div>
+
+<!--/html_preserve-->
+
+
+
+
+
