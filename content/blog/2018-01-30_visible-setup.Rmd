@@ -10,6 +10,8 @@ tags:
 draft: no
 editor_options: 
   chunk_output_type: console
+description: >
+  After a long time coming, I've finally got round to picking a workable solution for creating my data blog "Visible Data". This is a short overview of how I picked my tools and my intentions for the website.
 banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png"
 ---
 
