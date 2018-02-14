@@ -123,7 +123,7 @@ geojson_worldmap %>%
 However, there's not actually that much love for `htmlwidgets` or promotion of them!. For example, if you search through <a href='https://www.twitter.com/hadleywickham'>@hadleywickham</a>'s tweets from January 2018 to the dawn of Twitter, `htmlwidgets` were only mentioned **three** times! I've blogged about [where's the love for htmlwidgets](http://www.visibledata.co.uk/blog/2018/01/30/2018-01-30-where-s-the-love-for-htmlwidgets/) and produced a **5h+ training course** on [building interactive dataviz with htlmlwidgets for Lynda.com](https://www.lynda.com/R-tutorials/R-Interactive-Visualizations-htmlwidgets/586671-2.html)
 
 <center>
-<img src='/img/blog-images/2018-01-30_tweets-about-htmlwidgets-from-hadleywickham.png' style='max-width:400px'/>
+<img src='/img/blog-images/2018-01-30_tweets-about-htmlwidgets-from-hadleywickham.png' style='max-width:400px' alt='screenshot of tweets from Hadley Wickham including the phrase htmlwidgets'/>
 </center>
 
 ## Bootstrap grids
