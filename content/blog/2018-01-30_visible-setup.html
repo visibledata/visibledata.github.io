@@ -10,6 +10,8 @@ tags:
 draft: no
 editor_options: 
   chunk_output_type: console
+description: >
+  After a long time coming, I've finally got round to picking a workable solution for creating my data blog "Visible Data". This is a short overview of how I picked my tools and my intentions for the website.
 banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png"
 ---
 
@@ -23,6 +25,37 @@ banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png
 <script src="/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js"></script>
 <script src="/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js"></script>
 <script src="/rmarkdown-libs/leaflet-binding/leaflet.js"></script>
+
+
+
+<hr style="margin-top: -10px;margin-bottom: 5px;">
+<div class="row">
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+                <br>
+                Martin John Hadley
+                <br>
+                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+                <br>
+                No data used.
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-01-30_visible-setup.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
+        </center>
+    </div>
+</div>
+
+<hr style="margin-top: 5px;margin-bottom: 5px;">
 
 
 <p>After a long time coming, I’ve finally got round to picking a workable solution for creating my data blog “Visible Data”. This is a short overview of how I picked my tools and my intentions for the website.</p>
@@ -61,7 +94,7 @@ banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png
 </div>
 <p><br> However, there’s not actually that much love for <code>htmlwidgets</code> or promotion of them!. For example, if you search through <a href='https://www.twitter.com/hadleywickham'><span class="citation">@hadleywickham</span></a>’s tweets from January 2018 to the dawn of Twitter, <code>htmlwidgets</code> were only mentioned <strong>three</strong> times! I’ve blogged about <a href="http://www.visibledata.co.uk/blog/2018/01/30/2018-01-30-where-s-the-love-for-htmlwidgets/">where’s the love for htmlwidgets</a> and produced a <strong>5h+ training course</strong> on <a href="https://www.lynda.com/R-tutorials/R-Interactive-Visualizations-htmlwidgets/586671-2.html">building interactive dataviz with htlmlwidgets for Lynda.com</a></p>
 <center>
-<img src='/img/blog-images/2018-01-30_tweets-about-htmlwidgets-from-hadleywickham.png' style='max-width:400px'/>
+<img src='/img/blog-images/2018-01-30_tweets-about-htmlwidgets-from-hadleywickham.png' style='max-width:400px' alt='screenshot of tweets from Hadley Wickham including the phrase htmlwidgets'/>
 </center>
 </div>
 <div id="bootstrap-grids" class="section level2">
@@ -131,6 +164,35 @@ banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png
 <li>Before pushing your website, ensure to run <code>blogdown::build_site()</code> to properly plugin Disqus!</li>
 <li>Now your blog should work :)</li>
 </ol>
+
+<hr>
+<div class="row" style='margin-bottom:-40px;'>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+                <br>
+                Martin John Hadley
+                <br>
+                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+                <br>
+                No data used.
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-01-30_visible-setup.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
+        </center>
+    </div>
+</div>
+
+
 </div>
 <div class="footnotes">
 <hr />

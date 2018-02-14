@@ -8,3 +8,7 @@
 .box-simple {
   min-height: 230px;
 }
+
+body {
+  font-size: 16px;
+}
