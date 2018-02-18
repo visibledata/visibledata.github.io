@@ -164,7 +164,7 @@ recipes_df %>%
   theme_ridges() +
   xlab("Number of ingredients") +
   ggtitle("Comparison of ingredients per recipe by cuisine",
-          subtitle = "Data from doi.org/10.1038/srep00196")
+          subtitle = "Data from doi:10.1038/srep00196")
 ```
 
 In future whenever I want to work with this data I'll import it through the following script:
