@@ -1,5 +1,5 @@
 ---
-title: Reproducible Blogposts
+title: Reproducible blogposts
 author: Martin John Hadley
 date: '2018-02-14'
 slug: reproducible-blogposts
