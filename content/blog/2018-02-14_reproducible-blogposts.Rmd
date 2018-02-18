@@ -1,5 +1,5 @@
 ---
-title: Reproducible blogposts
+title: Reproducible Blogposts
 author: Martin John Hadley
 date: '2018-02-14'
 slug: reproducible-blogposts
@@ -49,6 +49,8 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 <hr style="margin-top: 5px;margin-bottom: 5px;">
 
 <!--/html_preserve-->
+
+New line
 
 Writing blogposts that meet all four of these requirements is hard:
 
