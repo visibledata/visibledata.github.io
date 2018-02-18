@@ -23,38 +23,6 @@ knitr::opts_chunk$set(
 library("emo")
 ```
 
-<!--html_preserve-->
-<hr style="margin-top: -10px;margin-bottom: 5px;">
-<div class="row">
-    <div class="col-sm-4">
-        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/blog/2018/02/07/2018-xx-xx_reproducible-blogposts/#reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
-                <br>
-                Martin John Hadley
-                <br>
-                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon" target='_blank'>orcid.org/0000-0002-3039-6849</a>)
-        </center>
-    </div>
-    <div class="col-sm-4">
-        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/blog/2018/02/07/2018-xx-xx_reproducible-blogposts/#reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
-                <br>
-                R packages: <a href='https://cran.r-project.org/web/packages/cranlogs/' target='_blank'>cranlogs</a> and <a href='https://cran.r-project.org/web/packages/versions/' target='_blank'>versions</a>
-        </center>
-    </div>
-    <div class="col-sm-4">
-        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/blog/2018/02/07/2018-xx-xx_reproducible-blogposts/#reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
-                <br>
-                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-07_where-s-the-love-for-htmlwidgets.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;" target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon">.Rmd on GitHub</a>
-        </center>
-    </div>
-</div>
-
-<hr style="margin-top: 5px;margin-bottom: 5px;">
-
-<!--/html_preserve-->
-
 
 <div class="row">
 
@@ -278,32 +246,6 @@ I will finish off with a little bit of self-promotion. I have a **5 hour+** over
 
 [^2]: [Citation needed](https://xkcd.com/285/).
 
-<!--html_preserve-->
-<hr>
-<div class="row" style='margin-bottom:-40px;'>
-    <div class="col-sm-4">
-        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/blog/2018/02/07/2018-xx-xx_reproducible-blogposts/#reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
-                <br>
-                Martin John Hadley
-                <br>
-                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
-        </center>
-    </div>
-    <div class="col-sm-4">
-        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/blog/2018/02/07/2018-xx-xx_reproducible-blogposts/#reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
-                <br>
-                R packages: <a href='https://cran.r-project.org/web/packages/cranlogs/' target='_blank'>cranlogs</a> and <a href='https://cran.r-project.org/web/packages/versions/' target='_blank'>versions</a>
-        </center>
-    </div>
-    <div class="col-sm-4">
-        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/blog/2018/02/07/2018-xx-xx_reproducible-blogposts/#reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
-                <br>
-                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-07_where-s-the-love-for-htmlwidgets.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon">.Rmd on GitHub</a>
-        </center>
-    </div>
-</div>
+## Reproducing this blogpost
 
-<!--/html_preserve-->
+This blogpost can be found as an .Rmd file with all necessary code to replicate the analysis [here](https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-07_where-s-the-love-for-htmlwidgets.Rmd).
