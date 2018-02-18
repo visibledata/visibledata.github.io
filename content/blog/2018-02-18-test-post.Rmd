@@ -1,0 +1,13 @@
+---
+title: Test Post
+author: Martin Tester
+date: '2018-02-18'
+slug: test-post
+categories:
+  - test
+tags:
+  - test
+draft: yes
+---
+
+Well hello
