@@ -50,8 +50,6 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 <!--/html_preserve-->
 
-New line
-
 Writing blogposts that meet all four of these requirements is hard:
 
 - The post is interesting and has something unique to it

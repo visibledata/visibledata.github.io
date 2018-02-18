@@ -7,7 +7,7 @@ categories:
   - dataviz
 tags:
   - R
-draft: yes
+draft: no
 editor_options: 
   chunk_output_type: console
 banner: "img/blog-images/header-images/2018-02-18_recipes-for-learning.png"
