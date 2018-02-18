@@ -7,7 +7,7 @@ categories:
   - dataviz
 tags:
   - R
-draft: yes
+draft: no
 banner: "img/blog-images/header-images/2018-02-18_recipes-for-learning.png"
 description: >
   In this blogpost I introduce one of my favourite datasets, a treasure trove of 57,000+ recipes scraped from recipe websites for a fascinating research paper <a href='http://doi.org/10.1038/srep00196'>(DOI: 10.1038/srep00196)</a>  comparing how different cuisines choose ingredients. I first used this dataset in May 2015 to learn how to use R and continue to use it to test my understanding of new techniques and analysis. 
