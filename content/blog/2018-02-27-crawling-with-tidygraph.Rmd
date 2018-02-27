@@ -11,7 +11,7 @@ draft: no
 description: "In this blogpost I use crawling the internal links between pages in the University of Oxford's Research Data website as an excuse for finally getting to grips with tidygraph and ggraph"
 editor_options: 
   chunk_output_type: console
-banner: "img/blog-images/header-images/2018-02-14_reproducible-blogposts.png"
+banner: "img/blog-images/header-images/2018-02-27_crawling-with-tidygraph.png"
 ---
 
 ```{r setup, include=FALSE}
