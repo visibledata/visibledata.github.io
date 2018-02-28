@@ -1,0 +1,314 @@
+---
+title: Great circles with sf and leaflet
+author: Martin John Hadley
+date: '2018-02-28'
+slug: great-circles-with-sf-and-leaflet
+categories:
+  - R
+tags:
+  - R
+  - dataviz
+draft: no
+description: "Great circles are the shortest journeys between two points on a map, which can be easily computed and manipulated through the use of the excellent sf library, and visualised interactively with leaflet."
+editor_options: 
+  chunk_output_type: console
+banner: "img/blog-images/header-images/2018-02-28_great-circles-with-sf.png"
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/blazy/blazy.min.js"></script>
+<script src="/rmarkdown-libs/pymjs/pym.v1.js"></script>
+<script src="/rmarkdown-libs/widgetframe-binding/widgetframe.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet/leaflet.js"></script>
+<link href="/rmarkdown-libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<link href="/rmarkdown-libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet-label/leaflet.label.js"></script>
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js"></script>
+<script src="/rmarkdown-libs/leaflet-binding/leaflet.js"></script>
+
+
+
+<hr style="margin-top: -10px;margin-bottom: 5px;">
+<div class="row">
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+                <br>
+                Martin John Hadley
+                <br>
+                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+                <br>
+                No real data used.
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-28_great-circles-with-sf.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
+        </center>
+    </div>
+</div>
+
+<hr style="margin-top: 5px;margin-bottom: 5px;">
+
+
+<div class="row">
+<div class="col-sm-6">
+<p>Surprisingly often I’m asked to help folks build maps which visualise the journeys between geographic locations, in the bad old days of early 2017 I would have used the <code>geospheres</code> package and <code>sp</code>.</p>
+<p>That’s because the shortest distance between two points on a map is a <strong>great circle</strong>, and <code>geospheres</code> is capable of computing sucgh things. Note that it’s these great circles that you see on flight information screens, their exact curvature depends on the projection of the map.</p>
+</div>
+<div class="col-sm-6">
+<center>
+<img src='/img/blog-images/header-images/2018-02-28_great-circles-with-sf.png' style='max-width:350px'/>
+</center>
+</div>
+</div>
+<p><br> However, I’m now an <code>sf</code> convert and try to do everything within that package. Unfortunately, I almost always forget how to compute great circles between locations - so when I was asked to do it again this week I thought I’d formalise (and functionalise!) the process I go through.</p>
+<p>Let’s start with an example dataset of journeys I took during my 3 years working at Wolfram Research:</p>
+<pre class="r"><code>library(&quot;tidyverse&quot;)
+library(&quot;sf&quot;)
+raw_journey_data &lt;- tribble(
+  ~start.long, ~start.lat, ~end.long, ~end.lat, ~name,
+  -0.118092,    51.509865, -119.698189, 34.420830, &quot;London to Santa Barbara&quot;,
+  31.496773,    30.026300, 24.753574, 59.436962, &quot;New Cairo to Tallinn&quot;,
+  126.633333, 45.75,    46.738586, 24.774265, &quot;Harbin to Riyadh&quot;
+)
+raw_journey_data</code></pre>
+<div id="htmlwidget-1" style="width:100%;height:100%;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"url":"/blog/2018-02-28_great-circles-with-sf-and-leaflet_files/figure-html//widgets/widget_unnamed-chunk-1.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
+<p>We need to follow these steps:</p>
+<ol style="list-style-type: decimal">
+<li>Create an object called <code>journey_data_linestrings</code> with class <code>&quot;sf&quot; &quot;data.frame&quot;</code> containing LINESTRINGs from the start to end locations.</li>
+<li>Combine this new object with our <code>raw_journey_data</code> to augment it ready for visualisation.</li>
+</ol>
+<div id="creating-journey_data_linestrings" class="section level2">
+<h2>Creating journey_data_linestrings</h2>
+<p>Let’s use <code>dplyr</code> to extract out the <code>start_locs</code> and <code>end_locs</code>, noting that the <code>sf</code> library is fussy:</p>
+<ul>
+<li><code>sf</code> wants longitude and latitude columns to be called <code>long</code> and <code>lat</code>, respectively.</li>
+<li><code>sf</code> <em>often</em> cares about column order, we should ensure columns are ordered <code>long</code> then <code>lat</code>.</li>
+</ul>
+<pre class="r"><code>start_locs &lt;- raw_journey_data %&gt;%
+  select(contains(&quot;start&quot;)) %&gt;%
+  rename(long = start.long,
+         lat = start.lat) %&gt;%
+  mutate(journey.id = row_number())
+end_locs &lt;- raw_journey_data %&gt;%
+  select(contains(&quot;end&quot;)) %&gt;%
+  rename(long = end.long,
+         lat = end.lat) %&gt;%
+  mutate(journey.id = row_number())</code></pre>
+<p>The <code>st_as_sf</code> allows us to convert a <code>data.frame</code> (or really <code>tibble</code> in this case) to an <code>sf</code> object, but note the complete lack of projection (proj4string) and EPSG as we’ll need to account for that later:</p>
+<pre class="r"><code>journey_data_linestrings &lt;- start_locs %&gt;%
+  bind_rows(end_locs) %&gt;%
+  st_as_sf(coords = c(&quot;long&quot;,&quot;lat&quot;))
+journey_data_linestrings</code></pre>
+<pre><code>## Simple feature collection with 6 features and 1 field
+## geometry type:  POINT
+## dimension:      XY
+## bbox:           xmin: -119.6982 ymin: 24.77426 xmax: 126.6333 ymax: 59.43696
+## epsg (SRID):    NA
+## proj4string:    NA
+## # A tibble: 6 x 2
+##   journey.id geometry                
+##        &lt;int&gt; &lt;simple_feature&gt;        
+## 1          1 c(-0.118092, 51.509865) 
+## 2          2 c(31.496773, 30.0263)   
+## 3          3 c(126.633333, 45.75)    
+## 4          1 c(-119.698189, 34.42083)
+## 5          2 c(24.753574, 59.436962) 
+## 6          3 c(46.738586, 24.774265)</code></pre>
+<p>Let’s ensure to group and then arange the data by <code>journey.id</code> in preparation for combining the journey steps together:</p>
+<pre class="r"><code>journey_data_linestrings &lt;- journey_data_linestrings %&gt;%
+  group_by(journey.id) %&gt;%
+  arrange(journey.id)
+journey_data_linestrings</code></pre>
+<pre><code>## Simple feature collection with 6 features and 1 field
+## geometry type:  POINT
+## dimension:      XY
+## bbox:           xmin: -119.6982 ymin: 24.77426 xmax: 126.6333 ymax: 59.43696
+## epsg (SRID):    NA
+## proj4string:    NA
+## # A tibble: 6 x 2
+## # Groups:   journey.id [3]
+##   journey.id geometry                
+##        &lt;int&gt; &lt;simple_feature&gt;        
+## 1          1 c(-0.118092, 51.509865) 
+## 2          1 c(-119.698189, 34.42083)
+## 3          2 c(31.496773, 30.0263)   
+## 4          2 c(24.753574, 59.436962) 
+## 5          3 c(126.633333, 45.75)    
+## 6          3 c(46.738586, 24.774265)</code></pre>
+<p>The <code>sf</code> library has a special method for <code>dplyr::summarise</code> that constructs a geometry from the latlong coordinates from the <code>group</code> column we defined above:</p>
+<pre class="r"><code>journey_data_linestrings &lt;- journey_data_linestrings %&gt;%
+  summarise()
+journey_data_linestrings</code></pre>
+<pre><code>## Simple feature collection with 3 features and 1 field
+## geometry type:  MULTIPOINT
+## dimension:      XY
+## bbox:           xmin: -119.6982 ymin: 24.77426 xmax: 126.6333 ymax: 59.43696
+## epsg (SRID):    NA
+## proj4string:    NA
+## # A tibble: 3 x 2
+##   journey.id geometry                                      
+##        &lt;int&gt; &lt;simple_feature&gt;                              
+## 1          1 c(-119.698189, -0.118092, 34.42083, 51.509865)
+## 2          2 c(24.753574, 31.496773, 59.436962, 30.0263)   
+## 3          3 c(46.738586, 126.633333, 24.774265, 45.75)</code></pre>
+<p>Now the final thing to do is <code>st_cast</code> these geometries as LINESTRINGs and add the WGS 84 coordinate reference system via <code>st_crs(4326)</code></p>
+<pre class="r"><code>journey_data_linestrings &lt;- journey_data_linestrings %&gt;%
+  sf::st_cast(&quot;LINESTRING&quot;)
+journey_data_linestrings &lt;- st_set_crs(journey_data_linestrings, st_crs(4326))
+journey_data_linestrings</code></pre>
+<pre><code>## Simple feature collection with 3 features and 1 field
+## geometry type:  LINESTRING
+## dimension:      XY
+## bbox:           xmin: -119.6982 ymin: 24.77426 xmax: 126.6333 ymax: 59.43696
+## epsg (SRID):    4326
+## proj4string:    +proj=longlat +datum=WGS84 +no_defs
+##   journey.id                       geometry
+## 1          1 LINESTRING (-119.698189 34....
+## 2          2 LINESTRING (24.753574 59.43...
+## 3          3 LINESTRING (46.738586 24.77...</code></pre>
+</div>
+<div id="combining-together" class="section level2">
+<h2>Combining together</h2>
+<p>Combining these together is achieved by assigning the <code>st_geometry</code> component of <code>journey_data</code> the value of <code>st_geometry(journey_data_linestrings)</code>:</p>
+<pre class="r"><code>journey_data &lt;- raw_journey_data
+st_geometry(journey_data) &lt;- st_geometry(journey_data_linestrings)</code></pre>
+<p>The magic sauce for calculating great circles is provided by <code>st_segmentize</code> and we can visualise the lines with <code>leaflet</code> with just three lines of code:</p>
+<pre class="r"><code>library(&quot;leaflet&quot;)
+journey_data %&gt;%
+  st_segmentize(units::set_units(100, km)) %&gt;%
+  leaflet() %&gt;%
+  addTiles() %&gt;%
+  addPolylines()</code></pre>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addPolylines","args":[[[[{"lng":[-119.698189,-119.09894229333,-118.488711801169,-117.867033141263,-117.23342390273,-116.587382952447,-115.928389746885,-115.255903655943,-114.569363306638,-113.868185955957,-113.151766903851,-112.419478959282,-111.670671974379,-110.904672464215,-110.120783332469,-109.318283726312,-108.496429047256,-107.654451148495,-106.791558753373,-105.90693813408,-104.999754094477,-104.069151306002,-103.114256050879,-102.134178432198,-101.128015115727,-100.094852673337,-99.0337716024107,-97.9438510991999,-96.8241746664009,-95.6738366356893,-94.4919496839721,-93.2776534169864,-92.0301240847593,-90.7485854794836,-89.4323210466152,-88.0806872135545,-86.6931279062935,-85.2691901822345,-83.8085408566607,-82.3109839411527,-80.7764786453096,-79.2051576199415,-77.5973450428966,-75.9535740713756,-74.2746031116103,-72.5614302938109,-70.8153054938766,-69.0377392205199,-67.2305076941118,-65.3956534878116,-63.5354811868212,-61.6525476497505,-59.749646625578,-57.8297876850909,-55.8961696574627,-53.9521490074701,-52.0012038305891,-50.0468943642005,-48.0928210960274,-46.1425816806097,-44.1997279399916,-42.2677242201602,-40.3499083005216,-38.4494559163195,-36.5693497650886,-34.7123536435145,-32.880992117938,-31.0775358877376,-29.3039927718246,-27.5621040473312,-25.853345705266,-24.178934065378,-22.5398351127325,-20.9367768793383,-19.3702641908767,-17.840595124917,-16.3478785759772,-14.8920523874271,-13.4729015840775,-12.0900763168112,-10.7431092072859,-9.43143185323662,-8.15439032088529,-6.91125950907214,-5.7012563193225,-4.52355160713613,-3.37728092273742,-2.26155407504209,-1.17546357153127,-0.118092],"lat":[34.42083,35.1609841811314,35.8981335506638,36.6321379740911,37.3628505215061,38.090117065427,38.8137758559986,39.5336570726436,40.2495823512997,40.9613642864565,41.668805907324,42.371700127613,43.0698291686032,43.7629639554217,44.4508634867636,45.1332741786671,45.8099291834209,46.4805476852418,47.1448341750373,47.8024777073641,48.4531511436412,49.0965103867804,49.7321936136789,50.3598205135005,50.9789915413585,51.5892871989284,52.1902673556595,52.7814706266313,53.3624138257002,53.9325915153804,54.491475677872,55.0385155347192,55.5731375456741,56.094745620347,56.6027215789771,57.0964259009944,57.5751988017104,58.0383616782231,58.4852189651358,58.9150604386355,59.3271640035187,59.7207989915412,60.0952299907222,60.4497212137177,60.7835413990125,61.0959692215163,61.3862991694977,61.6538478231642,61.8979604474443,62.1180177887247,62.3134429438052,62.4837081506661,62.6283413364111,62.7469322494718,62.8391380021483,62.9046878567301,62.943387104144,62.9551199080671,62.9398510187353,62.8976262977022,62.8285720353998,62.7328930850876,62.610869877038,62.4628544131925,62.2892653729382,62.0905824835961,61.8673403238026,61.6201217340275,61.3495510064459,61.0562870172457,60.7410164495479,60.40444723599,60.0473023282739,59.6703138781157,59.2742178913695,58.8597493956914,58.4276381427604,57.9786048492616,57.5133579668467,57.0325909601423,56.5369800634765,56.0271824810978,55.5038349919686,54.9675529183898,54.4189294174047,53.858535054817,53.2869176234257,52.7046021694843,52.1120911941854,51.509865]}]],[[{"lng":[24.753574,25.0974474438328,25.4248687268359,25.7371133886371,26.0353314669107,26.3205624534321,26.5937481862565,26.855743999127,27.1073283940456,27.3492114580737,27.5820422088022,27.8064150229147,28.0228752775855,28.2319243140738,28.4340238159988,28.6295996807529,28.819045450809,29.0027253618929,29.1809770567771,29.354114006538,29.5224276752812,29.6861894593972,29.8456524282126,30.0010528893293,30.1526117988947,30.3005360344353,30.4450195456477,30.5862443966155,30.7243817112597,30.8595925323986,30.9920286035487,31.1218330815247,31.2491411869552,31.3740807990202,31.496773],"lat":[59.436962,58.5796392155685,57.7214422111839,56.8624395547992,56.0026929680268,55.1422581564221,54.2811855227926,53.4195207821799,52.5573054938634,51.6945775230747,50.8313714429613,49.9677188855756,49.1036488492374,48.2391879684354,47.3743607514642,46.5091897901902,45.6436959456717,44.777898512805,43.9118153667009,43.0454630931083,42.1788571048733,41.3120117461446,40.4449403858029,39.5776555013906,38.7101687546525,37.8424910596493,36.9746326442852,36.1066031059827,35.2384114621474,34.3700661959859,33.5015752981722,32.6329463047998,31.7641863320039,30.8953021075939,30.0263]}]],[[{"lng":[46.738586,47.4791857364793,48.2269246156421,48.9820123984002,49.7446599061814,50.5150788214916,51.2934814624495,52.0800805295227,52.8750888226442,53.6787189268456,54.4911828645197,55.3126917124046,56.1434551813924,56.9836811572856,57.8335752006742,58.6933400041825,59.5631748054449,60.4432747543083,61.3338302329506,62.2350261278237,63.1470410526158,64.0700465217521,65.0042060743451,65.9496743489539,66.9065961100286,67.8751052274971,68.8553236116051,69.8473601058446,70.8513093415935,71.8672505589566,72.8952463992125,73.9353416752564,74.9875621274517,76.0519131733637,77.1283786609328,78.2169196357245,79.317473133961,80.4299510140564,81.5542388403295,82.6901948334153,83.8376489026132,84.9964017759551,86.1662242441298,87.3468565345063,88.5380078313505,89.7393559578749,90.9505472349927,92.1711965305363,93.4008875112374,94.6391731079544,95.8855762024696,97.1395905416919,98.400681882321,99.6682893659841,100.941827121624,102.220686088538,103.504236050022,104.791827864168,106.082795875011,107.376460484122,108.672130859846,109.969107758906,111.266686432984,112.564159591312,113.860820389229,115.155965412182,116.44889762472,117.738929254695,119.025384584137,120.307602619984,121.584939620079,122.856771452481,124.122495769069,125.381533977633,126.633333],"lat":[24.774265,25.3560731118607,25.9341409091194,26.5083330438838,27.0785108429034,27.644532219965,28.2062515907033,28.7635197903597,29.3161839950742,29.8640876473528,30.4070703864089,30.9449679841445,31.4776122875942,32.0048311687272,32.5264484825667,33.0422840346559,33.5521535589699,34.0558687074406,34.553237052329,35.0440621027464,35.5281433366849,36.0052762499759,36.4752524236429,36.9378596111581,37.3928818471396,37.8400995790471,38.2792898234322,38.710226348288,39.1326798830055,39.546418357384,39.951207171065,40.3468094946385,40.7329866035371,41.1094982456503,41.4761030433867,41.8325589306607,42.1786236250005,42.5140551346485,42.8386123001698,43.1520553696873,43.4541466064367,43.7446509268748,44.0233365670951,44.2899757748024,44.5443455235882,44.786228245733,45.0154125792573,45.2316941244536,45.4348762046752,45.6247706257404,45.8011984279519,45.963990624436,46.1129889192915,46.2480463989138,46.3690281898291,46.4758120764572,46.5682890724064,46.6463639392072,46.709955646808,46.7589977706758,46.7934388209711,46.8132424999818,46.8183878847936,46.8088695330362,46.7846975104424,46.7458973398939,46.6925098725597,46.6245910826617,46.5422117882914,46.4454573015437,46.3344270120044,46.2092339083211,46.0700040431774,45.9168759474871,45.75]}]]],null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":false,"fillColor":"#03F","fillOpacity":0.2,"dashArray":null,"smoothFactor":1,"noClip":false},null,null,null,null,null]}],"limits":{"lat":[24.774265,62.9551199080671],"lng":[-119.698189,126.633333]}},"evals":[],"jsHooks":[]}</script>
+<p><br> A quick note to say, <code>leaflet</code> is an awesome <code>htmlwidget</code> for building interactive maps. If you’ve never heard of <code>htmlwidgets</code> before, check out my blogpost; <a href="http://www.visibledata.co.uk/blog/2018/02/07/2018-02-07_where-s-the-love-for-htmlwidgets/">where’s the love for htmlwidgets?</a></p>
+<p>Also! There’s no <strong>good</strong> solution for turning these lines into arrows to denote the start and end points, instead I recommend placing circle markers:</p>
+<pre class="r"><code>journey_data %&gt;%
+  st_segmentize(units::set_units(100, km)) %&gt;%
+  leaflet() %&gt;%
+  addTiles() %&gt;%
+  addPolylines() %&gt;%
+  addCircleMarkers(data = raw_journey_data %&gt;%
+    select(contains(&quot;start&quot;)) %&gt;%
+    setNames(c(&quot;long&quot;, &quot;lat&quot;)),
+    color = &quot;green&quot;,
+    opacity = 1,
+    radius = 2) %&gt;%
+  addCircleMarkers(data = raw_journey_data %&gt;%
+    select(contains(&quot;end&quot;)) %&gt;%
+    setNames(c(&quot;long&quot;, &quot;lat&quot;)),
+    color = &quot;red&quot;,
+    opacity = 1,
+    radius = 2) %&gt;%
+  addLegend(colors = c(&quot;green&quot;,
+                       &quot;red&quot;),
+            labels = c(&quot;Journey start&quot;,
+                       &quot;Journey end&quot;))</code></pre>
+<div id="htmlwidget-3" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addPolylines","args":[[[[{"lng":[-119.698189,-119.09894229333,-118.488711801169,-117.867033141263,-117.23342390273,-116.587382952447,-115.928389746885,-115.255903655943,-114.569363306638,-113.868185955957,-113.151766903851,-112.419478959282,-111.670671974379,-110.904672464215,-110.120783332469,-109.318283726312,-108.496429047256,-107.654451148495,-106.791558753373,-105.90693813408,-104.999754094477,-104.069151306002,-103.114256050879,-102.134178432198,-101.128015115727,-100.094852673337,-99.0337716024107,-97.9438510991999,-96.8241746664009,-95.6738366356893,-94.4919496839721,-93.2776534169864,-92.0301240847593,-90.7485854794836,-89.4323210466152,-88.0806872135545,-86.6931279062935,-85.2691901822345,-83.8085408566607,-82.3109839411527,-80.7764786453096,-79.2051576199415,-77.5973450428966,-75.9535740713756,-74.2746031116103,-72.5614302938109,-70.8153054938766,-69.0377392205199,-67.2305076941118,-65.3956534878116,-63.5354811868212,-61.6525476497505,-59.749646625578,-57.8297876850909,-55.8961696574627,-53.9521490074701,-52.0012038305891,-50.0468943642005,-48.0928210960274,-46.1425816806097,-44.1997279399916,-42.2677242201602,-40.3499083005216,-38.4494559163195,-36.5693497650886,-34.7123536435145,-32.880992117938,-31.0775358877376,-29.3039927718246,-27.5621040473312,-25.853345705266,-24.178934065378,-22.5398351127325,-20.9367768793383,-19.3702641908767,-17.840595124917,-16.3478785759772,-14.8920523874271,-13.4729015840775,-12.0900763168112,-10.7431092072859,-9.43143185323662,-8.15439032088529,-6.91125950907214,-5.7012563193225,-4.52355160713613,-3.37728092273742,-2.26155407504209,-1.17546357153127,-0.118092],"lat":[34.42083,35.1609841811314,35.8981335506638,36.6321379740911,37.3628505215061,38.090117065427,38.8137758559986,39.5336570726436,40.2495823512997,40.9613642864565,41.668805907324,42.371700127613,43.0698291686032,43.7629639554217,44.4508634867636,45.1332741786671,45.8099291834209,46.4805476852418,47.1448341750373,47.8024777073641,48.4531511436412,49.0965103867804,49.7321936136789,50.3598205135005,50.9789915413585,51.5892871989284,52.1902673556595,52.7814706266313,53.3624138257002,53.9325915153804,54.491475677872,55.0385155347192,55.5731375456741,56.094745620347,56.6027215789771,57.0964259009944,57.5751988017104,58.0383616782231,58.4852189651358,58.9150604386355,59.3271640035187,59.7207989915412,60.0952299907222,60.4497212137177,60.7835413990125,61.0959692215163,61.3862991694977,61.6538478231642,61.8979604474443,62.1180177887247,62.3134429438052,62.4837081506661,62.6283413364111,62.7469322494718,62.8391380021483,62.9046878567301,62.943387104144,62.9551199080671,62.9398510187353,62.8976262977022,62.8285720353998,62.7328930850876,62.610869877038,62.4628544131925,62.2892653729382,62.0905824835961,61.8673403238026,61.6201217340275,61.3495510064459,61.0562870172457,60.7410164495479,60.40444723599,60.0473023282739,59.6703138781157,59.2742178913695,58.8597493956914,58.4276381427604,57.9786048492616,57.5133579668467,57.0325909601423,56.5369800634765,56.0271824810978,55.5038349919686,54.9675529183898,54.4189294174047,53.858535054817,53.2869176234257,52.7046021694843,52.1120911941854,51.509865]}]],[[{"lng":[24.753574,25.0974474438328,25.4248687268359,25.7371133886371,26.0353314669107,26.3205624534321,26.5937481862565,26.855743999127,27.1073283940456,27.3492114580737,27.5820422088022,27.8064150229147,28.0228752775855,28.2319243140738,28.4340238159988,28.6295996807529,28.819045450809,29.0027253618929,29.1809770567771,29.354114006538,29.5224276752812,29.6861894593972,29.8456524282126,30.0010528893293,30.1526117988947,30.3005360344353,30.4450195456477,30.5862443966155,30.7243817112597,30.8595925323986,30.9920286035487,31.1218330815247,31.2491411869552,31.3740807990202,31.496773],"lat":[59.436962,58.5796392155685,57.7214422111839,56.8624395547992,56.0026929680268,55.1422581564221,54.2811855227926,53.4195207821799,52.5573054938634,51.6945775230747,50.8313714429613,49.9677188855756,49.1036488492374,48.2391879684354,47.3743607514642,46.5091897901902,45.6436959456717,44.777898512805,43.9118153667009,43.0454630931083,42.1788571048733,41.3120117461446,40.4449403858029,39.5776555013906,38.7101687546525,37.8424910596493,36.9746326442852,36.1066031059827,35.2384114621474,34.3700661959859,33.5015752981722,32.6329463047998,31.7641863320039,30.8953021075939,30.0263]}]],[[{"lng":[46.738586,47.4791857364793,48.2269246156421,48.9820123984002,49.7446599061814,50.5150788214916,51.2934814624495,52.0800805295227,52.8750888226442,53.6787189268456,54.4911828645197,55.3126917124046,56.1434551813924,56.9836811572856,57.8335752006742,58.6933400041825,59.5631748054449,60.4432747543083,61.3338302329506,62.2350261278237,63.1470410526158,64.0700465217521,65.0042060743451,65.9496743489539,66.9065961100286,67.8751052274971,68.8553236116051,69.8473601058446,70.8513093415935,71.8672505589566,72.8952463992125,73.9353416752564,74.9875621274517,76.0519131733637,77.1283786609328,78.2169196357245,79.317473133961,80.4299510140564,81.5542388403295,82.6901948334153,83.8376489026132,84.9964017759551,86.1662242441298,87.3468565345063,88.5380078313505,89.7393559578749,90.9505472349927,92.1711965305363,93.4008875112374,94.6391731079544,95.8855762024696,97.1395905416919,98.400681882321,99.6682893659841,100.941827121624,102.220686088538,103.504236050022,104.791827864168,106.082795875011,107.376460484122,108.672130859846,109.969107758906,111.266686432984,112.564159591312,113.860820389229,115.155965412182,116.44889762472,117.738929254695,119.025384584137,120.307602619984,121.584939620079,122.856771452481,124.122495769069,125.381533977633,126.633333],"lat":[24.774265,25.3560731118607,25.9341409091194,26.5083330438838,27.0785108429034,27.644532219965,28.2062515907033,28.7635197903597,29.3161839950742,29.8640876473528,30.4070703864089,30.9449679841445,31.4776122875942,32.0048311687272,32.5264484825667,33.0422840346559,33.5521535589699,34.0558687074406,34.553237052329,35.0440621027464,35.5281433366849,36.0052762499759,36.4752524236429,36.9378596111581,37.3928818471396,37.8400995790471,38.2792898234322,38.710226348288,39.1326798830055,39.546418357384,39.951207171065,40.3468094946385,40.7329866035371,41.1094982456503,41.4761030433867,41.8325589306607,42.1786236250005,42.5140551346485,42.8386123001698,43.1520553696873,43.4541466064367,43.7446509268748,44.0233365670951,44.2899757748024,44.5443455235882,44.786228245733,45.0154125792573,45.2316941244536,45.4348762046752,45.6247706257404,45.8011984279519,45.963990624436,46.1129889192915,46.2480463989138,46.3690281898291,46.4758120764572,46.5682890724064,46.6463639392072,46.709955646808,46.7589977706758,46.7934388209711,46.8132424999818,46.8183878847936,46.8088695330362,46.7846975104424,46.7458973398939,46.6925098725597,46.6245910826617,46.5422117882914,46.4454573015437,46.3344270120044,46.2092339083211,46.0700040431774,45.9168759474871,45.75]}]]],null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":false,"fillColor":"#03F","fillOpacity":0.2,"dashArray":null,"smoothFactor":1,"noClip":false},null,null,null,null,null]},{"method":"addCircleMarkers","args":[[51.509865,30.0263,45.75],[-0.118092,31.496773,126.633333],2,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":true,"color":"green","weight":5,"opacity":1,"fill":true,"fillColor":"green","fillOpacity":0.2,"dashArray":null},null,null,null,null,null,null,null]},{"method":"addCircleMarkers","args":[[34.42083,59.436962,24.774265],[-119.698189,24.753574,46.738586],2,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":true,"color":"red","weight":5,"opacity":1,"fill":true,"fillColor":"red","fillOpacity":0.2,"dashArray":null},null,null,null,null,null,null,null]},{"method":"addLegend","args":[{"colors":["green","red"],"labels":["Journey start","Journey end"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"unknown","title":null,"extra":null,"layerId":null,"className":"info legend"}]}],"limits":{"lat":[24.774265,62.9551199080671],"lng":[-119.698189,126.633333]}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="functionalising-journeys-to-sf" class="section level2">
+<h2>Functionalising journeys to sf</h2>
+<p>The function below uses <a href="http://dplyr.tidyverse.org/articles/programming.html">tidyeval</a> to allow us to convert any <code>data.frame</code> containing pairs of start and end coordinates into an <code>sf</code> object we can use easily with other tools. <strong>Please do note that this is probably not the most efficient method of doing this, I’d very much appreciate any improvements</strong>.</p>
+<pre class="r"><code>journeys_to_sf &lt;- function(journeys_data,
+                           start_long,
+                           start_lat,
+                           end_long,
+                           end_lat) {
+  
+  quo_start_long &lt;- enquo(start_long)
+  quo_start_lat &lt;- enquo(start_lat)
+  quo_end_long &lt;- enquo(end_long)
+  quo_end_lat &lt;- enquo(end_lat)
+  
+  start_locs &lt;- journeys_data %&gt;%
+    select(!!quo_start_long,
+           !!quo_start_lat) %&gt;%
+    setNames(c(&quot;long&quot;, &quot;lat&quot;)) %&gt;%
+    mutate(journey_id = row_number())
+  
+  end_locs &lt;- journeys_data %&gt;%
+    select(!!quo_end_long,
+           !!quo_end_lat) %&gt;%
+    setNames(c(&quot;long&quot;, &quot;lat&quot;)) %&gt;%
+    mutate(journey_id = row_number())
+  
+  journey_data_linestrings &lt;- start_locs %&gt;%
+    bind_rows(end_locs) %&gt;%
+    st_as_sf(coords = c(&quot;long&quot;,&quot;lat&quot;)) %&gt;%
+    group_by(journey_id) %&gt;%
+    arrange(journey_id) %&gt;%
+    summarise() %&gt;%
+    st_cast(&quot;LINESTRING&quot;)
+  
+  journey_data_linestrings &lt;- st_set_crs(journey_data_linestrings, st_crs(4326))
+  
+  journey_data &lt;- raw_journey_data
+  st_geometry(journey_data) &lt;- st_geometry(journey_data_linestrings)
+  
+  journey_data
+  
+}</code></pre>
+<p>Here’s how to use the function:</p>
+<pre class="r"><code>raw_journey_data %&gt;%
+  journeys_to_sf(start.long,
+                 start.lat,
+                 end.long,
+                 end.lat)</code></pre>
+<pre><code>## Simple feature collection with 3 features and 5 fields
+## geometry type:  LINESTRING
+## dimension:      XY
+## bbox:           xmin: -119.6982 ymin: 24.77426 xmax: 126.6333 ymax: 59.43696
+## epsg (SRID):    4326
+## proj4string:    +proj=longlat +datum=WGS84 +no_defs
+##   start.long start.lat   end.long  end.lat                    name
+## 1  -0.118092  51.50986 -119.69819 34.42083 London to Santa Barbara
+## 2  31.496773  30.02630   24.75357 59.43696    New Cairo to Tallinn
+## 3 126.633333  45.75000   46.73859 24.77426        Harbin to Riyadh
+##                         geometry
+## 1 LINESTRING (-119.698189 34....
+## 2 LINESTRING (24.753574 59.43...
+## 3 LINESTRING (46.738586 24.77...</code></pre>
+
+<hr>
+<div class="row">
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+                <br>
+                Martin John Hadley
+                <br>
+                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+                <br>
+                No real data used.
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-28_great-circles-with-sf.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
+        </center>
+    </div>
+</div>
+
+
+</div>
