@@ -17,7 +17,7 @@ A note on the name, **Visible Data** is all about making data more accessible an
 
 <p>You can find all my published works on my ORCID account (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/orcid_16x16.png" style="width:1em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)</p>
 
-<p>You can find my open source projects and contributions on my GitHub profile <a href="github.com/martinjhnhadley" target="github.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub logo">github.com/martinjhnhadley</a>.
+<p>You can find my open source projects and contributions on my GitHub profile <a href="https://github.com/martinjhnhadley" target="github.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub logo">github.com/martinjhnhadley</a>.
 
 <p>As with most R folks, I find Twitter an excellent place to learn more about #rstats and feel part of the community. I also tweet about reproducability, LGBTQ+, and sex positivity <a href="https://twitter.com/martinjhnhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @martinjhnhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.</p>
 
