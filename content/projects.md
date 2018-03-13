@@ -27,7 +27,7 @@ These are projects that the folks at Visible Data are currently working on, both
                             <i class="fa fa-map-o"></i>
                         </div>
                         <h3><a href='https://github.com/martinjhnhadley/statesRcontiguous' target='_blank'>statesRcontiguous</a></h3>
-                        <p>statesRcontiguous is an #rstats package published to CRAN that makes available shapefiles for the United States of America from combining multiple datasets from the <a href='' target='_blank'>US Census</a> into a single 'sf dataframe' object. Usefully, the shapefile has a logical column 'contiguous.united.states' for easily filtering. This was the first package Martin John Hadley published to CRAN.</p>
+                        <p>statesRcontiguous is an #rstats package published to CRAN that makes available shapefiles for the United States of America from combining multiple datasets from the <a href='https://www.census.gov/geo/maps-data' target='_blank'>US Census</a> into a single 'sf dataframe' object. Usefully, the shapefile has a logical column 'contiguous.united.states' for easily filtering. This was the first package Martin John Hadley published to CRAN.</p>
                     </div>
                 </div>
                 
