@@ -83,7 +83,7 @@ paginate = 10
     author = "Martin John Hadley"
     defaultKeywords = ["devows", "hugo", "go"]
     defaultDescription = "Site template made by devcows using hugo"
-    custom_css = ["css/reproducability.css", "css/readability-modifications.css"]
+    custom_css = ["css/reproducibility.css", "css/readability-modifications.css"]
     summary_length = 200
 
     # Style options: default (light-blue), blue, green, marsala, pink, red, turquoise, violet
@@ -104,7 +104,7 @@ paginate = 10
     # Enable the contact form by entering your Formspree.io email
     email = "contact@visibledata.co.uk"
 
-    about_us = "<p>Visible Data is a consultancy and technical training company focusing on data science, data visualisation and reproducability based in Oxford, UK.</p>"
+    about_us = "<p>Visible Data is a consultancy and technical training company focusing on data science, data visualisation and reproducibility based in Oxford, UK.</p>"
     copyright = "Copyright (c) 2016 - 2018, Visible Data Ltd; all rights reserved."
 
     # Format dates with Go's time formatting
@@ -139,7 +139,7 @@ paginate = 10
 [params.recent_posts]
     enable = true
     title = "Visible Data Blog"
-    subtitle = "Aspiringly weekly blog covering interesting datasets, analyses and ideas on reproducability, data science and data visualisation. Visible Data is a consultancy and technical training company based in Oxford, <a href='about'>read more about us here.</a>"
+    subtitle = "Aspiringly weekly blog covering interesting datasets, analyses and ideas on reproducibility, data science and data visualisation. Visible Data is a consultancy and technical training company based in Oxford, <a href='about'>read more about us here.</a>"
 
 [params.features]
     enable = true

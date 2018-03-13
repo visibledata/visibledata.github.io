@@ -3,9 +3,9 @@ title = "About"
 description = "About"
 +++
 
-Visible Data is a consultancy and technical training company focusing on data science, data visualisation and reproducability based in Oxford, UK. It's also a blog where our team share stories about their work and datasets that interest them. If you'd like to get in touch the best way to do that is emailing <a href='mailto:contact@visibledata.co.uk'>contact@visibledata.co.uk</a>.
+Visible Data is a consultancy and technical training company focusing on data science, data visualisation and reproducibility based in Oxford, UK. It's also a blog where our team share stories about their work and datasets that interest them. If you'd like to get in touch the best way to do that is emailing <a href='mailto:contact@visibledata.co.uk'>contact@visibledata.co.uk</a>.
 
-A note on the name, **Visible Data** is all about making data more accessible and reproducibly available to bridge what is often called the "data gap". Data visualisation is only a small part of that, but it's the shiniest part. This site makes use of [reproducability ratings](/reproducability-ratings) at the top of all the blogposts to help readers identify and find the author, data and code behind the posts.
+A note on the name, **Visible Data** is all about making data more accessible and reproducibly available to bridge what is often called the "data gap". Data visualisation is only a small part of that, but it's the shiniest part. This site makes use of [reproducibility ratings](/reproducibility-ratings) at the top of all the blogposts to help readers identify and find the author, data and code behind the posts.
 
 # Martin John Hadley
 
@@ -19,11 +19,11 @@ A note on the name, **Visible Data** is all about making data more accessible an
 
 <p>You can find my open source projects and contributions on my GitHub profile <a href="https://github.com/martinjhnhadley" target="github.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub logo">github.com/martinjhnhadley</a>.
 
-<p>As with most R folks, I find Twitter an excellent place to learn more about #rstats and feel part of the community. I also tweet about reproducability, LGBTQ+, and sex positivity <a href="https://twitter.com/martinjhnhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @martinjhnhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.</p>
+<p>As with most R folks, I find Twitter an excellent place to learn more about #rstats and feel part of the community. I also tweet about reproducibility, LGBTQ+, and sex positivity <a href="https://twitter.com/martinjhnhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @martinjhnhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.</p>
 
 <p>I founded Visible Data in 2016 as a way to better organise his working relationship with Lynda.com and LinkedIn Learning, but branched out into offering courses through the Royal Statistical Society and eventually into data science consultancy in late 2017. Starting in 2018, I decided to properly commit to starting a Visible Data blog and I'm looking to bring additional folks into the consultancy to increase the range of services and training that we can provide.</p>
 
-<p>Please do contact me about developing technical training courses for your analysis teams or consultancy opportunites at <a href='mailto:martinjohnhadley@gmail.com'>martinjohnhadley@gmail.com</a>
+<p>Please do contact me about developing technical training courses for your analysis teams or consultancy opportunities at <a href='mailto:martinjohnhadley@gmail.com'>martinjohnhadley@gmail.com</a>
 
 </div>
 
