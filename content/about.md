@@ -13,17 +13,18 @@ A note on the name, **Visible Data** is all about making data more accessible an
 
 <div class="col-sm-8">
 
-<p>I'm a reproducible research evangelist and data science consultant with over 6 years of experience working in both industry and academia. My tools of choice at present are R and Shiny, read more about my experience on my LinkedIn profile or <a href="/team/cvs/2018-01-30_CV_Martin-John-Hadley.docx" target="_blank">download a copy of my CV</a>.</p>
+<p>I'm a reproducible research evangelist and data science consultant working with both industry and academia since 2012 in a wide range of consultancy, training and advisory roles. I founded Visible Data in 2016 to branch out into independent consultancy projects. Please do check out my <a href='../martin-john-hadley'>full profile</a>.
 
-<p>You can find all my published works on my ORCID account (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/orcid_16x16.png" style="width:1em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)</p>
+<p>My published works and research datasets are thoroughly documented on my ORCID profile: <a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/orcid_16x16.png" style="width:1em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a></p>
 
-<p>You can find my open source projects and contributions on my GitHub profile <a href="https://github.com/martinjhnhadley" target="github.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub logo">github.com/martinjhnhadley</a>.
+<p>My GitHub profile contains all of my Open Source contributions and public codebases: <a href="https://github.com/martinjhnhadley" target="github.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub logo">github.com/martinjhnhadley</a>.
 
-<p>As with most R folks, I find Twitter an excellent place to learn more about #rstats and feel part of the community. I also tweet about reproducibility, LGBTQ+, and sex positivity <a href="https://twitter.com/martinjhnhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @martinjhnhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.</p>
+<p>I tweet about reproducability, #rstats, LGBTQ+ and sex positivity at:  <a href="https://twitter.com/martinjhnhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @martinjhnhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.</p>
 
-<p>I founded Visible Data in 2016 as a way to better organise his working relationship with Lynda.com and LinkedIn Learning, but branched out into offering courses through the Royal Statistical Society and eventually into data science consultancy in late 2017. Starting in 2018, I decided to properly commit to starting a Visible Data blog and I'm looking to bring additional folks into the consultancy to increase the range of services and training that we can provide.</p>
 
 <p>Please do contact me about developing technical training courses for your analysis teams or consultancy opportunities at <a href='mailto:martinjohnhadley@gmail.com'>martinjohnhadley@gmail.com</a>
+
+<a href='../martin-john-hadley'>Full Profile</a>
 
 </div>
 
