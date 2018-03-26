@@ -1,0 +1,53 @@
+---
+title: Reproducible Workflow Charter
+author: Martin John Hadley
+date: '2018-03-15'
+slug: reproducible-workflow-charter
+categories:
+  - reproducibility
+tags: []
+draft: yes
+---
+
+
+
+
+It's extremely important to me to keep things reproducible and woke, here are some promises I commit to:
+
+- Only using public datasets for which a DOI is available. Proprietary munging behind a paywall is acceptable
+
+- Never use gender as a binary variable example (https://twitter.com/polesasunder/status/971622753261572096).
+
+- Spell check
+
+- styler
+
+- lintr
+
+- Refuse to work outside of a file synchronisation system
+
+# Appearance
+
+- Responsive iframes!!! https://www.cultureofinsight.com/blog/2018/03/15/2018-03-15-responsive-iframes-for-shiny-apps/
+
+# Work practices
+
+- Never print if you can.
+
+# Nitpicking
+
+- Never provide vectors if function support NSE 
+
+```{r}
+# highchart(type="stock") %>%
+#   hc_add_series(data = ibc[1:170,], type="area", hcaes(x = month[1:170], y=deaths[1:170]), name="Total Deaths")
+```
+
+- Always use library not require (https://yihui.name/en/2014/07/library-vs-require/)
+
+- Always use "" in library calls to encourage folks not to forget them in install.packages
+
+- Always use `library("tidyverse")` to ensure packages are loaded in correct order
+
+- Always use `library()` at the top of a script file, 
+
