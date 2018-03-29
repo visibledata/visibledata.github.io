@@ -23,7 +23,7 @@ As of March 2018, **Visible Data Ltd** is a single-person consultancy. It's just
 At Visible Data **we** do...
 </blockquote>
 
-This phrasing has significant commercial benefits, it makes the consultancy seem more legitimate but it also feels weird when I write about an opinion/view of the consultancy which (at present) is exclusively mine. I felt enough discomfort about this to run a Twitter poll, which I was delighted to have a ~7% engagement rate with (20 votes from 293 impressions):
+This phrasing has significant commercial benefits, it makes the consultancy seem more legitimate but it also feels weird when I write about an opinion/view of the consultancy which (at present) is exclusively mine. I felt enough discomfort about this to run a Twitter poll, I was delighted that the poll had quite high engagement rate of ~7% (20 votes from 293 impressions):
 
 <center>
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">I run a <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">#dataviz</a> consultancy that&#39;s currently just me, thought might bring other folks on board in the future... if in blogs etc I write <br><br>&quot;At Visible Data *we* do X&quot; <br><br>how does that sound?</p>&mdash; Martin John Hadley (@martinjhnhadley) <a href="https://twitter.com/martinjhnhadley/status/976835348318875648?ref_src=twsrc%5Etfw">March 22, 2018</a></blockquote>
