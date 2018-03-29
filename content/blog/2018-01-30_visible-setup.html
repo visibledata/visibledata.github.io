@@ -92,7 +92,8 @@ banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png
 </center>
 </div>
 </div>
-<p><br> However, there’s not actually that much love for <code>htmlwidgets</code> or promotion of them!. For example, if you search through <a href='https://www.twitter.com/hadleywickham'><span class="citation">@hadleywickham</span></a>’s tweets from January 2018 to the dawn of Twitter, <code>htmlwidgets</code> were only mentioned <strong>three</strong> times! I’ve blogged about <a href="http://www.visibledata.co.uk/blog/2018/01/30/2018-01-30-where-s-the-love-for-htmlwidgets/">where’s the love for htmlwidgets</a> and produced a <strong>5h+ training course</strong> on <a href="https://www.lynda.com/R-tutorials/R-Interactive-Visualizations-htmlwidgets/586671-2.html">building interactive dataviz with htlmlwidgets for Lynda.com</a></p>
+<p><br>
+However, there’s not actually that much love for <code>htmlwidgets</code> or promotion of them!. For example, if you search through <a href='https://www.twitter.com/hadleywickham'><span class="citation">@hadleywickham</span></a>’s tweets from January 2018 to the dawn of Twitter, <code>htmlwidgets</code> were only mentioned <strong>three</strong> times! I’ve blogged about <a href="http://www.visibledata.co.uk/blog/2018/01/30/2018-01-30-where-s-the-love-for-htmlwidgets/">where’s the love for htmlwidgets</a> and produced a <strong>5h+ training course</strong> on <a href="https://www.lynda.com/R-tutorials/R-Interactive-Visualizations-htmlwidgets/586671-2.html">building interactive dataviz with htlmlwidgets for Lynda.com</a></p>
 <center>
 <img src='/img/blog-images/2018-01-30_tweets-about-htmlwidgets-from-hadleywickham.png' style='max-width:400px' alt='screenshot of tweets from Hadley Wickham including the phrase htmlwidgets'/>
 </center>
@@ -101,7 +102,7 @@ banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png
 <h2>Bootstrap grids</h2>
 <p>Boostrap is a framework for building responsive websites - these are websites that <em>reflow</em> content as the browser window changes. Bootstrap is very popular and used all over the web, it’s also <a href="https://shiny.rstudio.com/articles/css.html">how <code>shiny</code> apps are laid out</a>.</p>
 <p>The Hugo theme I used for this <code>blogdown</code> website uses Bootstrap which means (for instance) the navigation menu gets collapsed in narrow browser windows. But I can also use elements of Bootstrap wherever I want in blogposts/pages of the site by writing <code>HTML</code> in my <code>.Rmd</code> files, for instance in the section about htmlwidgets above you’d have seen the choropleth either to the right or below of the first three paragraphs dependent on your browser window size.</p>
-<p>The thing about <code>RMarkdown</code> is that it <strong>really</strong> wants content to be rendered according to the rules of <code>RMarkdown</code>, which can be a problem with lots of nested HTML. Thankfully, there’s a little know feature introduced in <a href="http://rmarkdown.rstudio.com/authoring_migrating_from_v1.html"><code>RMarkdown</code> v2</a> that allows us to turn off markdown processing<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>:</p>
+<p>The thing about <code>RMarkdown</code> is that it <strong>really</strong> wants content to be rendered according to the rules of <code>RMarkdown</code>, which can be a problem with lots of nested HTML. Thankfully, there’s a little know feature introduced in <a href="http://rmarkdown.rstudio.com/authoring_migrating_from_v1.html"><code>RMarkdown</code> v2</a> that allows us to turn off markdown processing<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>:</p>
 <pre>
     &lt;!--html_preserve--&gt;
         &lt;strong&gt;This will render as HTML not preformatted text&lt;/strong&gt;
@@ -140,9 +141,9 @@ banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png
 <li>Navigate to <code>layouts/partials/footer.html</code> and modify the top 6 lines so they read as below, the <code>isPage</code> check removes the comments from the homepage! In the future I will likely modify this so comments only appear on blogposts, which will make these instructions out of date!
 <pre>
 &lt;footer id="footer"&gt;
-&lt;div class="container"&gt;
+ &lt;div class="container"&gt;
 
-  {{ if .IsPage }}
+   {{ if .IsPage }}
   {{ partial "foot_custom.html" . }}
 {{ end }}
 </pre></li>
@@ -197,6 +198,6 @@ banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>To turn off RMarkdown processing <strong>here</strong> we have to steal a trick from Yihui Xie that’s used here: <a href="https://raw.githubusercontent.com/rstudio/rmarkdown/gh-pages/authoring_migrating_from_v1.Rmd" class="uri">https://raw.githubusercontent.com/rstudio/rmarkdown/gh-pages/authoring_migrating_from_v1.Rmd</a><a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>To turn off RMarkdown processing <strong>here</strong> we have to steal a trick from Yihui Xie that’s used here: <a href="https://raw.githubusercontent.com/rstudio/rmarkdown/gh-pages/authoring_migrating_from_v1.Rmd" class="uri">https://raw.githubusercontent.com/rstudio/rmarkdown/gh-pages/authoring_migrating_from_v1.Rmd</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
