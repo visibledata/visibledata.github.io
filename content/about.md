@@ -26,6 +26,8 @@ Visible Data is a consultancy and technical training company focusing on data sc
 
 <a href='../martin-john-hadley'>Full Profile</a>
 
+<button type="button" class="btn btn-primary">Primary</button>
+
 </div>
 
 <div class="col-sm-4">
