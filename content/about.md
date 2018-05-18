@@ -22,7 +22,7 @@ Visible Data is a consultancy and technical training company focusing on data sc
 <p>I tweet about reproducability, #rstats, LGBTQ+ and sex positivity at:  <a href="https://twitter.com/martinjhnhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @martinjhnhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.</p>
 
 
-<p>Please do contact me about developing technical training courses for your analysis teams or consultancy opportunities at <a href='mailto:martinjohnhadley@gmail.com'>martinjohnhadley@gmail.com</a>
+<p>Please do contact me about developing technical training courses for your analysis teams or consultancy opportunities at <a href='mailto:martin@visibledata.co.uk'>martin@visibledata.co.uk</a>
 
 <a href='../martin-john-hadley'>Full Profile</a>
 
