@@ -9,7 +9,7 @@ tags: []
 draft: yes
 ---
 
-
+Visible Data is all 
 
 
 It's extremely important to me to keep things reproducible and woke, here are some promises I commit to:
