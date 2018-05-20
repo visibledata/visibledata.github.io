@@ -18,7 +18,7 @@ Visible Data run a variety of courses across the UK, Europe and online that you 
 
 <br>
 
-<div class="alert alert-info" role="alert">
+<!--<div class="alert alert-info" role="alert">
   <h4 class="alert-heading">Interactive Visualisation with R for Social Scientists</h4>
   <p>This is a rich online course focused on how Social Scientisits can use R to reproducibly create interactive visualisations using R, htmlwidgets and Shiny. The course includes access to the course leader Martin John Hadley.</p>
   <p>This course starts on Monday 19th March 2018 and runs for 4 weeks. Get 25% of the course fee with this link!</p>
@@ -26,6 +26,7 @@ Visible Data run a variety of courses across the UK, Europe and online that you 
   
   <center><a href='https://goo.gl/XhsK82'><img src='../img/sage-social-sci-viz-course.png' width='250px'/></a></center>
 </div>
+-->
 
 </div>
 
