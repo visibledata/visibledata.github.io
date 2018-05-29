@@ -30,15 +30,15 @@ Recently, Visible Data started using a fairly profesh looking signature in our e
 
 Why document an email signature? Well, there are some interesting features of a signature:
 
-- Share Google Calendar free/busy availability via FreeBusy [[Read more...](/freebusy)]
+- Share Google Calendar free/busy availability via FreeBusy [[Read more...](#freebusy)]
 
-- Provide tools for booking meetings across multiple time zones [[Read more...](/time-zone-ninja)]
+- Provide tools for booking meetings across multiple time zones [[Read more...](#time-zone-ninja)]
 
-- Design signatures that readers interact with through data-driven design [[Read more...](/data-driven-design)]
+- Design signatures that readers interact with through data-driven design [[Read more...](#data-driven-design)]
 
-- Selecting appropriate contact details and social media links [[Read more...](/social-contacts)]
+- Selecting appropriate contact details and social media links [[Read more...](#social-contacts)]
 
-- Programmatically update signatures (**wishlist item**) [[Read more...](/reproducibility)]
+- Programmatically update signatures (**wishlist item**) [[Read more...](#reproducibility)]
 
 ## Sharing availability with FreeBusy {#freebusy}
 
