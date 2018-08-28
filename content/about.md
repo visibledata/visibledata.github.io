@@ -19,7 +19,7 @@ Visible Data is a consultancy and technical training company focusing on data sc
 
 <p>My GitHub profile contains all of my Open Source contributions and public codebases: <a href="https://github.com/martinjhnhadley" target="github.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub logo">github.com/martinjhnhadley</a>.
 
-<p>I tweet about reproducability, #rstats, LGBTQ+ and sex positivity at:  <a href="https://twitter.com/martinjhnhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @martinjhnhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.</p>
+<p>I tweet about reproducibility, #rstats, LGBTQ+ and sex positivity at:  <a href="https://twitter.com/martinjhnhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @martinjhnhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.</p>
 
 
 <p>Please do contact me about developing technical training courses for your analysis teams or consultancy opportunities at <a href='mailto:martin@visibledata.co.uk'>martin@visibledata.co.uk</a>

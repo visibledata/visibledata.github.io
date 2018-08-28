@@ -30,7 +30,7 @@ Data visualisation consultancy
 <div class="col-md-4">
 
 <center>
-Reproducability advice
+reproducibility advice
 </center>
 
 </div>

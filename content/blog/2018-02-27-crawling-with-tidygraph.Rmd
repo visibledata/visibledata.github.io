@@ -23,7 +23,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 <div class="row">
     <div class="col-sm-4">
         <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
                 <br>
                 Martin John Hadley
                 <br>
@@ -32,14 +32,14 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
     </div>
     <div class="col-sm-4">
         <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
                 <br>
                 R packages: <a href='https://cran.r-project.org/web/packages/WDI/' target='_blank'>WDI</a>
         </center>
     </div>
     <div class="col-sm-4">
         <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
                 <br>
                 <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-14_reproducible-blogposts.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
         </center>
@@ -86,7 +86,7 @@ The `Rcrawler` function creates two objects in your global workspace:
 - `NetwIndex`: A list of all the web pages (URLs) from the website
 - `NetwEdges`: The internal links between these pages
 
-It's much easier to work with these objects if we augment the NetwIndex object with the ids used in the NetwEdges object, and I'll export the data into a Gist for reproducability and so I don't have to recrawl the site each time I generate this post!
+It's much easier to work with these objects if we augment the NetwIndex object with the ids used in the NetwEdges object, and I'll export the data into a Gist for reproducibility and so I don't have to recrawl the site each time I generate this post!
 
 ```{r export-to-gist, eval = FALSE}
 library("tidyverse")
@@ -273,7 +273,7 @@ This was a really fun way to learn how to use `tidygraph` and `ggraph`, which I'
 <div class="row">
     <div class="col-sm-4">
         <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
                 <br>
                 Martin John Hadley
                 <br>
@@ -282,14 +282,14 @@ This was a really fun way to learn how to use `tidygraph` and `ggraph`, which I'
     </div>
     <div class="col-sm-4">
         <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
                 <br>
                 R packages: <a href='https://cran.r-project.org/web/packages/WDI/' target='_blank'>WDI</a>
         </center>
     </div>
     <div class="col-sm-4">
         <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
-            <p><a href='/reproducability-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
                 <br>
                 <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-02-14_reproducible-blogposts.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
         </center>

@@ -1,6 +1,6 @@
 ---
 title: "Martin John Hadley"
-description: "An overview of the reproducability ratings given at the top of each blogpost"
+description: "An overview of the reproducibility ratings given at the top of each blogpost"
 ---
 
 # Martin John Hadley
