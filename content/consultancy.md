@@ -44,14 +44,19 @@ We're proud to have worked with a wide range of clients on a variety of projects
 <div class="row">
 <center>
 <p>
-<img src="../img/clients/figshare_logo.png" alt="" width="18%" height="18%" />&nbsp; &nbsp;&nbsp;
-<img src="../img/clients/linkedin-logo.png" alt="" width="18%" height="18%" />&nbsp;&nbsp;
-<img src="../img/clients/lynda_logo.png" alt="" width="18%" height="18%" />&nbsp; &nbsp;&nbsp;
-<img src="../img/clients/university-of-oxford.png" alt="" width="12%" height="12%" />
-<br><br>
-<img src="../img/clients/perspectum-diagnostics-logo.png" alt="" width="18%" height="18%"/>&nbsp; &nbsp;&nbsp;&nbsp;
-<img src="../img/clients/rss-logo.jpg" alt="" width="18%" height="18%"/>&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="../img/clients/sage-publishing-logo.jpg" alt="" width="18%" height="18%"/>&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="../img/clients/jbi-training_logo.jpg" alt="" width="18%" height="18%" />&nbsp; &nbsp;&nbsp;
+<img src="../img/clients/lynda_logo.png" alt="" width="12%" height="12%" />&nbsp; &nbsp;&nbsp;
+<img src="../img/clients/rss-logo.jpg" alt="" width="18%" height="18%" />&nbsp; &nbsp;&nbsp;
+<img src="../img/clients/sage-publishing-logo.jpg" alt="" width="18%" height="18%" />&nbsp;&nbsp;
+<br>
+<img src="../img/clients/ericsson_logo.png" alt="" width="9%" height="9%" />&nbsp; &nbsp;&nbsp;
+<img src="../img/clients/perspectum-diagnostics-logo.png" alt="" width="12%" height="12%" /> &nbsp; &nbsp;&nbsp;
+<img src="../img/clients/future-games-of-london_logo.png" alt="" width="18%" height="18%" />&nbsp; &nbsp;&nbsp;
+<img src="../img/clients/ttc-group_logo.jpg" alt="" width="18%" height="18%" />&nbsp; &nbsp;&nbsp;
+<br>
+<img src="../img/clients/figshare_logo.png" alt="" width="18%" height="18%"/>&nbsp; &nbsp;&nbsp;&nbsp;
+<img src="../img/clients/linkedin-logo.png" alt="" width="18%" height="18%"/>&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="../img/clients/university-of-oxford.png" alt="" width="9%" height="9%"/>&nbsp;&nbsp;&nbsp;&nbsp;
 </p>
 <center>
       </div>
