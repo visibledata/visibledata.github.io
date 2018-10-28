@@ -1,0 +1,97 @@
+---
+title: "Accessibility at Visible Data"
+description: "Training"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Accessibility for all is a core belief for Visible Data, and something we are constantly trying to improve. We acknowledge that adaptations will be needed for individual's specific needs. We therefore value both your requests and feedback to help us improve via email contact@visibledata.co.uk.
+
+We have split our accessibility information into the following areas:
+
+- Visible Data events hosted at Redbrick House, Bristol
+- Visible Data training courses
+- Visible Data website (and blog)
+
+## Visible Data events at Redbrick House, Bristol
+
+The Redbrick House building has step-free access at the rear entrance, through the car park that is accessed from Backfields (BS2 8QJ).
+
+Training events are hosted in a dedicated room on the ground floor which is fully accessible for those who require a level access route.
+
+Consultancy meetings are hosted either in the same room as the training events or else a room on the second floor which is currently only accessible via steps. When booking a room we will ask you if level access is required and make the appropriate booking.
+
+### Lifts
+
+Currently, no lift access is provided.
+
+### Accessible toilets
+
+There is only one accessible toilet. It is located on the ground floor and accessible to those that require a level access route.
+
+### Standard toilets
+
+There are 3 standard toilets in the building, they are unisex. Toilets are in the stairwell on floors 1, 2 and 3.
+
+### Hearing support system
+
+There are no hearing loops provided in the building.
+
+### Inaccessible Areas
+
+The following areas are not accessible to those who require level access:
+
+- All 3 standard toilets
+- Meeting rooms "David Bowie" and "Zara Hadid". Visible Data will consult with you before booking these rooms.
+
+## Visible Data training courses
+
+Training courses provided by Visible Data utilise a number of different technologies and are a mix of lecture, live coding and group work exercises. The following notes may not apply to all training courses, we will provide an accessiblity statement for all booked training courses.
+
+### Lecture slides
+
+Visible Data utilises a number of different presentation tools:
+
+- PowerPoint
+- RMarkdown
+- Jupyter Notebooks
+
+Where the markup technology allows, alt-text will be provided for all static images.
+
+#### RMarkdown
+
+Jonathan Godfrey has published a set of recommendations for immproving the accessibility of content created with RMarkdown, https://r-resources.massey.ac.nz/rmarkdown/. Visible Data comits to following these recommendations.
+
+Note that RMarkdown documents may have `htmlwidgets` embedded in them. The availability of alt-text in these is dependent on support from the developer/
+
+Please do contact us regardinging lecture slide content that is not yet accessible for you and we will endeavour to provide adaptations for your needs.
+
+### Live coding/code samples
+
+Visible Data exclusively uses the RStudio IDE for R coding. Unfortunately, it is widely accepted that RStudio is not compatible with the most widely used screen reader tools.
+
+We will provide explicit confirmation that courses make use of technology that fails to support screen readers on both booking pages and booking confirmation emails.
+
+If you have concerns or questions regarding live coding then please do contact us and we can work together to make adaptations for your needs.
+
+## Visible Data website (and blog)
+
+At present, our website remains inaccessible to a large number of individuals. We use Nomensa's [Accessibility Statement Generator](https://www.accessibilitystatementgenerator.com/) for rating our web content. Our aim is for the website to satisfy the conditions for an 'A' accessiblity grade.  
+
+Here at the current issues which prevent us from receiving an 'A' grading:
+
+- Alt-text is not provided for all non-text content
+- Not all web pages are provided a title
+- We have not tested support for keyboard shortcuts
+
+
+
+
+
+
+
+
+
+
