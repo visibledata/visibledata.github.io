@@ -15,6 +15,8 @@ We have split our accessibility information into the following areas:
 - Visible Data training courses
 - Visible Data website (and blog)
 
+<hr>
+
 ## Visible Data events at Redbrick House, Bristol
 
 The Redbrick House building has step-free access at the rear entrance, through the car park that is accessed from Backfields (BS2 8QJ).
@@ -46,6 +48,8 @@ The following areas are not accessible to those who require level access:
 - All 3 standard toilets
 - Meeting rooms "David Bowie" and "Zara Hadid". Visible Data will consult with you before booking these rooms.
 
+<hr>
+
 ## Visible Data training courses
 
 Training courses provided by Visible Data utilise a number of different technologies and are a mix of lecture, live coding and group work exercises. The following notes may not apply to all training courses, we will provide an accessiblity statement for all booked training courses.
@@ -75,6 +79,8 @@ Visible Data exclusively uses the RStudio IDE for R coding. Unfortunately, it is
 We will provide explicit confirmation that courses make use of technology that fails to support screen readers on both booking pages and booking confirmation emails.
 
 If you have concerns or questions regarding live coding then please do contact us and we can work together to make adaptations for your needs.
+
+<hr>
 
 ## Visible Data website (and blog)
 
