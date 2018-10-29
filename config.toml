@@ -47,10 +47,16 @@ paginate = 10
     weight = 5
 
 [[menu.main]]
+    name = "Accessibility"
+    identifier = "accessibility"
+    url  = "/accessibility/"
+    weight = 6
+
+[[menu.main]]
     name = "About"
     identifier = "about"
     url  = "/about/"
-    weight = 6
+    weight = 7
 
 # Top bar social links menu
 
