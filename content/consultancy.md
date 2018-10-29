@@ -4,7 +4,7 @@ description = "Consultancy"
 keywords = ["Consultancy"]
 +++
 
-Visible Data provides consultancy services in data science, visualisation and advising on reproducible research and collaborative development practices. We're primarily based in Oxford and would be pleased to discuss potential new projects, please do email us at <a href='mailto:contact@visibledata.co.uk'>contact@visibledata.co.uk</a>
+Visible Data provides consultancy services in data science, visualisation and advising on reproducible research and collaborative development practices. We're primarily based in Oxford and would be pleased to discuss potential new projects, please do email us: contact@visibledata.co.uk
 
 <!--
 <div class="row" style='background-color:#f5f5f5'>
