@@ -86,7 +86,7 @@ If you have concerns or questions regarding live coding then please do contact u
 
 At present, our website remains inaccessible to a large number of individuals. We use Nomensa's [Accessibility Statement Generator](https://www.accessibilitystatementgenerator.com/) for rating our web content. Our aim is for the website to satisfy the conditions for an 'A' accessiblity grade.  
 
-Here at the current issues which prevent us from receiving an 'A' grading:
+Here are the current issues which prevent us from receiving an 'A' grade:
 
 - Alt-text is not provided for all non-text content
 - Not all web pages are provided a title
