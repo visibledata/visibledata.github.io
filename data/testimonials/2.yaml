@@ -1,4 +1,17 @@
-text: "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections."
-name: "John McIntyre"
-position: "CEO, TransTech"
-avatar: "img/testimonials/person-2.jpg"
+text: "
+<h3>Private training for your team</h3>
+
+<p>We're experienced in designing specialised training courses focused on what's important to your team.
+</p>
+  <center>
+  <a href='../training_public_redbrick-house' class='btn btn-success' role='button'>Public courses in Bristol</a>
+  </center>
+  <br/>
+  <center>
+  <a href='../training_public_jbi' class='btn btn-success' role='button'>Public courses in London</a>
+  </center>
+
+
+"
+name: "Public training courses"
+avatar: "img/testimonials/person-1.jpg"

@@ -1,4 +1,17 @@
-text: "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections."
-name: "John McIntyre"
-position: "CEO, TransTech"
+text: "
+<h3>Public training courses</h3>
+
+<p>Visible data has over 6 years experience in designing and delivering hands-on public training courses. We focus on designing training examples that are as realistic as possible and cover as broad a knowledge domain as possible.
+</p>
+  <center>
+  <a href='../training_public_redbrick-house' class='btn btn-success' role='button'>Public courses in Bristol</a>
+  </center>
+<br/>  
+  <center>
+  <a href='../training_public_jbi' class='btn btn-success' role='button'>Public courses in London</a>
+  </center>
+
+
+"
+name: "Public training courses"
 avatar: "img/testimonials/person-1.jpg"
