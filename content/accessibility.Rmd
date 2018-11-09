@@ -52,7 +52,7 @@ The following areas are not accessible to those who require level access:
 
 ## Visible Data training courses
 
-Training courses provided by Visible Data utilise a number of different technologies and are a mix of lecture, live coding and group work exercises. The following notes may not apply to all training courses, we will provide an accessiblity statement for all booked training courses.
+Training courses provided by Visible Data utilise a number of different technologies and are a mix of lecture, live coding and group work exercises. The following notes may not apply to all training courses, we will provide an accessibility statement for all booked training courses.
 
 ### Lecture slides
 
@@ -66,11 +66,11 @@ Where the markup technology allows, alt-text will be provided for all static ima
 
 #### RMarkdown
 
-Jonathan Godfrey has published a set of recommendations for immproving the accessibility of content created with RMarkdown, https://r-resources.massey.ac.nz/rmarkdown/. Visible Data comits to following these recommendations.
+Jonathan Godfrey has published a set of recommendations for improving the accessibility of content created with RMarkdown, https://r-resources.massey.ac.nz/rmarkdown/. Visible Data commits to following these recommendations.
 
 Note that RMarkdown documents may have `htmlwidgets` embedded in them. The availability of alt-text in these is dependent on support from the developer/
 
-Please do contact us regardinging lecture slide content that is not yet accessible for you and we will endeavour to provide adaptations for your needs.
+Please do contact us regarding lecture slide content that is not yet accessible for you and we will endeavour to provide adaptations for your needs.
 
 ### Live coding/code samples
 
@@ -84,7 +84,7 @@ If you have concerns or questions regarding live coding then please do contact u
 
 ## Visible Data website (and blog)
 
-At present, our website remains inaccessible to a large number of individuals. We use Nomensa's [Accessibility Statement Generator](https://www.accessibilitystatementgenerator.com/) for rating our web content. Our aim is for the website to satisfy the conditions for an 'A' accessiblity grade.  
+At present, our website remains inaccessible to a large number of individuals. We use Nomensa's [Accessibility Statement Generator](https://www.accessibilitystatementgenerator.com/) for rating our web content. Our aim is for the website to satisfy the conditions for an 'A' accessibility grade.  
 
 Here are the current issues which prevent us from receiving an 'A' grade:
 
