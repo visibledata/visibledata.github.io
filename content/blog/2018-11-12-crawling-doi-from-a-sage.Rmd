@@ -1,0 +1,591 @@
+---
+title: Crawling DOI from a SAGE
+author: Martin John Hadley
+date: '2018-11-12'
+slug: crawling-doi-from-a-sage
+categories:
+  - R
+tags:
+  - R
+  - web scraping
+  - list columns
+  - parallel programming
+editor_options: 
+  chunk_output_type: console
+banner: "img/blog-images/2018-11-12_futured-dois.png"
+---
+
+<!--html_preserve-->
+<hr style="margin-top: -10px;margin-bottom: 5px;">
+<div class="row">
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+                <br>
+                Martin John Hadley
+                <br>
+                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+                <br>
+                Scrapes a delicate URL scheme from SAGE Publishing
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-11-12_crawling-doi-from-a-sage.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
+        </center>
+    </div>
+</div>
+
+<hr style="margin-top: 5px;margin-bottom: 5px;">
+
+<!--/html_preserve-->
+
+Recently a friend told me they were doing a systematic review of the Hand Therap Journal published by SAGE. They wanted a way to scrape the journal for all publications, without going mad in the process. Seemed like a good excuse to get them motivated to learn R and for me to practice web scraping with the `rvest` package. 
+
+We'll go through the following steps:
+
+1. Generate URLs for all issues of the journal
+1. Inspect the source code for the page for the DOI
+1. Scrape all the pages
+1. Scrape all the pages using parallel processing via the `future` package
+
+Let's load all the packaes we're going to use up front:
+
+```{r message=FALSE, warning=FALSE}
+library("tidyverse")
+library("rvest")
+library("glue")
+library("httr")
+library("future")
+```
+
+### URLs for each journal issue
+
+Let's simplify things and only consider issues of the journal up to the date this blogpost was written (2018-11-12). I can't guarantee that the journal won't completely change their URL scheme tomorrow, but until they do change things all issues have the following URL structure:
+
+    https://journals.sagepub.com/toc/hthb/{volume}/{issue}
+    
+There have always been 4 issues a year, and the most recent volume is 23. Let's setup a `tibble()` with this data:
+
+```{r}
+issue_urls <- tibble(volume = 1:23, issue_1 = 1, issue_2 = 2, issue_3 = 3, issue_4 = 4)
+```
+
+I'll now use `gather()` to convert this into a long and tidy dataset that iterates through all issues:
+
+```{r}
+issue_urls <- issue_urls %>%
+  gather(issue.colname, issue, issue_1:issue_4) %>%
+  select(-issue.colname) %>%
+  arrange(volume)
+```
+
+Now we can construct our URLs using `glue()`
+
+```{r}
+issue_urls <- issue_urls %>%
+  mutate(issue_url = glue("https://journals.sagepub.com/toc/hthb/{volume}/{issue}"))
+head(issue_urls)
+```
+
+### Inspect the source code for the DOI
+
+Inspecting the source code reveals that the title of each article in the issue has the attribute `data-item-name`, with the value `click-article-title`.
+
+<img src='/img/blog-images/2018-11-12_click-article-title.png' style='width:100%;'/>
+
+Let's use the most recent issue as a toy example:
+
+```{r, eval=FALSE}
+"https://journals.sagepub.com/toc/hthb/23/4" %>%
+  read_html() %>%
+  html_nodes("[data-item-name=click-article-title]") %>%
+  html_attrs() %>%
+  .[[1]]
+```
+
+```{r,echo=FALSE}
+c(`data-item-name` = "click-article-title", class = "ref nowrap", 
+href = "/doi/full/10.1177/1758998318784316")
+```
+
+
+The DOI for the article is *almost* the `href` value, there's some fluff we'll get rid of later. But we know enough we can create a function for extracting the `href` value 
+
+```{r}
+get_article_dois_from_issue <- function(issue_url) {
+  
+  issue_page <- tryCatch(issue_url %>%
+    read_html(),
+  error = function(c) NA
+  )
+
+  if (is.na(issue_page)) {
+    return(NA)
+  }
+
+  issue_url %>%
+    read_html() %>%
+    html_nodes("[data-item-name=click-article-title]") %>%
+    html_attr("href")
+}
+```
+
+```{r, eval = FALSE}
+"https://journals.sagepub.com/toc/hthb/23/4" %>%
+  get_article_dois_from_issue()
+```
+
+```{r, echo=FALSE}
+list("/doi/full/10.1177/1758998318784316", "/doi/full/10.1177/1758998318796010", 
+    "/doi/full/10.1177/1758998318798668", "/doi/full/10.1177/1758998318809574")
+```
+
+
+### Scrape all the pages
+
+The wonderful `purrr` package allows us to insert these (almost) DOIs into the rows of our `tibble()` as follows:
+
+```{r, eval = FALSE}
+example_dois <- issue_urls %>%
+  slice(52:54) %>%
+  mutate(doi = map(issue_url, function(x)get_article_dois_from_issue(x)))
+```
+
+```{r, echo = FALSE}
+example_dois <- structure(list(volume = c(13L, 13L, 13L, 14L, 14L, 14L, 14L, 
+14L, 14L, 14L, 14L, 14L, 14L, 14L), issue = c(4, 4, 4, 1, 1, 
+1, 1, 1, 2, 2, 2, 2, 2, 2), issue_url = structure(c("https://journals.sagepub.com/toc/hthb/13/4", 
+"https://journals.sagepub.com/toc/hthb/13/4", "https://journals.sagepub.com/toc/hthb/13/4", 
+"https://journals.sagepub.com/toc/hthb/14/1", "https://journals.sagepub.com/toc/hthb/14/1", 
+"https://journals.sagepub.com/toc/hthb/14/1", "https://journals.sagepub.com/toc/hthb/14/1", 
+"https://journals.sagepub.com/toc/hthb/14/1", "https://journals.sagepub.com/toc/hthb/14/2", 
+"https://journals.sagepub.com/toc/hthb/14/2", "https://journals.sagepub.com/toc/hthb/14/2", 
+"https://journals.sagepub.com/toc/hthb/14/2", "https://journals.sagepub.com/toc/hthb/14/2", 
+"https://journals.sagepub.com/toc/hthb/14/2"), class = c("glue", 
+"character")), doi = c("/doi/pdf/10.1177/175899830801300401", 
+"/doi/pdf/10.1177/175899830801300402", "/doi/pdf/10.1177/175899830801300403", 
+"/doi/full/10.1258/ht.2009.009006", "/doi/full/10.1258/ht.2009.009001", 
+"/doi/full/10.1258/ht.2009.009002", "/doi/full/10.1258/ht.2009.009003", 
+"/doi/full/10.1258/ht.2009.009004", "/doi/full/10.1258/ht.2009.009015", 
+"/doi/full/10.1258/ht.2009.009010", "/doi/full/10.1258/ht.2009.009007", 
+"/doi/full/10.1258/ht.2009.009008", "/doi/full/10.1258/ht.2009.009012", 
+"/doi/full/10.1258/ht.2009.009013")), class = c("tbl_df", "tbl", 
+"data.frame"), row.names = c(NA, -14L))
+example_dois %>%
+  nest(doi)
+```
+
+The `unnest()` function from `tidyr` allows us to unpack these list columns
+
+```{r}
+example_dois %>%
+  unnest(doi)
+```
+
+All DOI begin with `10.`[^1] which we can use to tidy up these *almost* DOI into real DOI:
+
+```{r}
+example_dois %>%
+  unnest(doi) %>%
+  mutate(doi = str_replace(doi, ".*/10.", "http://doi.org/10."))
+```
+
+It's painfully slow going through all 92 issues in this fashion, thankfully it's fairly easy to run this in parallel with the `future` package.
+
+### Scrape all the pages with future
+
+To begin our work with the `future` package we must tell it our plan to use multicore evaluation as follows:
+
+```{r, eval=FALSE}
+plan(multiprocess)
+```
+
+We use `future()` to tell the `future` package to run according to the plan we just set:
+
+```{r, eval=FALSE}
+start_scrape <- Sys.time()
+scraped_dois <- issue_urls %>%
+  mutate(dois = map(issue_url, ~future(get_article_dois_from_issue(.x))))
+end_scrape <- Sys.time()
+```
+
+This whole process hasn't taken much time (at the time of writing):
+
+```{r, eval = FALSE}
+end_scrape - start_scrape
+```
+
+
+```{r, echo = FALSE}
+start_scrape <- structure(1542041487.17354, class = c("POSIXct", "POSIXt"))
+end_scrape <- structure(1542041592.48185, class = c("POSIXct", "POSIXt"))
+end_scrape - start_scrape
+```
+
+But our dataset isn't ready to work with yet, our list column is full of `MulticoreFuture` things:
+
+```{r, eval=FALSE}
+scraped_dois
+```
+<img src='/img/blog-images/2018-11-12_futured-dois.png'/>  
+
+We use the `value()` function to extract the value of our future calculations and `unnest()` as previously:
+
+```{r,echo=FALSE}
+scraped_dois <- structure(list(volume = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L, 3L, 
+3L, 3L, 3L, 4L, 4L, 4L, 4L, 5L, 5L, 5L, 5L, 6L, 6L, 6L, 6L, 7L, 
+7L, 7L, 7L, 8L, 8L, 8L, 8L, 9L, 9L, 9L, 9L, 10L, 10L, 10L, 10L, 
+11L, 11L, 11L, 11L, 12L, 12L, 12L, 12L, 13L, 13L, 13L, 13L, 14L, 
+14L, 14L, 14L, 15L, 15L, 15L, 15L, 16L, 16L, 16L, 16L, 17L, 17L, 
+17L, 17L, 18L, 18L, 18L, 18L, 19L, 19L, 19L, 19L, 20L, 20L, 20L, 
+20L, 21L, 21L, 21L, 21L, 22L, 22L, 22L, 22L, 23L, 23L, 23L, 23L
+), issue = c(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 
+1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 
+2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 
+3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 
+4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4), issue_url = structure(c("https://journals.sagepub.com/toc/hthb/1/1", 
+"https://journals.sagepub.com/toc/hthb/1/2", "https://journals.sagepub.com/toc/hthb/1/3", 
+"https://journals.sagepub.com/toc/hthb/1/4", "https://journals.sagepub.com/toc/hthb/2/1", 
+"https://journals.sagepub.com/toc/hthb/2/2", "https://journals.sagepub.com/toc/hthb/2/3", 
+"https://journals.sagepub.com/toc/hthb/2/4", "https://journals.sagepub.com/toc/hthb/3/1", 
+"https://journals.sagepub.com/toc/hthb/3/2", "https://journals.sagepub.com/toc/hthb/3/3", 
+"https://journals.sagepub.com/toc/hthb/3/4", "https://journals.sagepub.com/toc/hthb/4/1", 
+"https://journals.sagepub.com/toc/hthb/4/2", "https://journals.sagepub.com/toc/hthb/4/3", 
+"https://journals.sagepub.com/toc/hthb/4/4", "https://journals.sagepub.com/toc/hthb/5/1", 
+"https://journals.sagepub.com/toc/hthb/5/2", "https://journals.sagepub.com/toc/hthb/5/3", 
+"https://journals.sagepub.com/toc/hthb/5/4", "https://journals.sagepub.com/toc/hthb/6/1", 
+"https://journals.sagepub.com/toc/hthb/6/2", "https://journals.sagepub.com/toc/hthb/6/3", 
+"https://journals.sagepub.com/toc/hthb/6/4", "https://journals.sagepub.com/toc/hthb/7/1", 
+"https://journals.sagepub.com/toc/hthb/7/2", "https://journals.sagepub.com/toc/hthb/7/3", 
+"https://journals.sagepub.com/toc/hthb/7/4", "https://journals.sagepub.com/toc/hthb/8/1", 
+"https://journals.sagepub.com/toc/hthb/8/2", "https://journals.sagepub.com/toc/hthb/8/3", 
+"https://journals.sagepub.com/toc/hthb/8/4", "https://journals.sagepub.com/toc/hthb/9/1", 
+"https://journals.sagepub.com/toc/hthb/9/2", "https://journals.sagepub.com/toc/hthb/9/3", 
+"https://journals.sagepub.com/toc/hthb/9/4", "https://journals.sagepub.com/toc/hthb/10/1", 
+"https://journals.sagepub.com/toc/hthb/10/2", "https://journals.sagepub.com/toc/hthb/10/3", 
+"https://journals.sagepub.com/toc/hthb/10/4", "https://journals.sagepub.com/toc/hthb/11/1", 
+"https://journals.sagepub.com/toc/hthb/11/2", "https://journals.sagepub.com/toc/hthb/11/3", 
+"https://journals.sagepub.com/toc/hthb/11/4", "https://journals.sagepub.com/toc/hthb/12/1", 
+"https://journals.sagepub.com/toc/hthb/12/2", "https://journals.sagepub.com/toc/hthb/12/3", 
+"https://journals.sagepub.com/toc/hthb/12/4", "https://journals.sagepub.com/toc/hthb/13/1", 
+"https://journals.sagepub.com/toc/hthb/13/2", "https://journals.sagepub.com/toc/hthb/13/3", 
+"https://journals.sagepub.com/toc/hthb/13/4", "https://journals.sagepub.com/toc/hthb/14/1", 
+"https://journals.sagepub.com/toc/hthb/14/2", "https://journals.sagepub.com/toc/hthb/14/3", 
+"https://journals.sagepub.com/toc/hthb/14/4", "https://journals.sagepub.com/toc/hthb/15/1", 
+"https://journals.sagepub.com/toc/hthb/15/2", "https://journals.sagepub.com/toc/hthb/15/3", 
+"https://journals.sagepub.com/toc/hthb/15/4", "https://journals.sagepub.com/toc/hthb/16/1", 
+"https://journals.sagepub.com/toc/hthb/16/2", "https://journals.sagepub.com/toc/hthb/16/3", 
+"https://journals.sagepub.com/toc/hthb/16/4", "https://journals.sagepub.com/toc/hthb/17/1", 
+"https://journals.sagepub.com/toc/hthb/17/2", "https://journals.sagepub.com/toc/hthb/17/3", 
+"https://journals.sagepub.com/toc/hthb/17/4", "https://journals.sagepub.com/toc/hthb/18/1", 
+"https://journals.sagepub.com/toc/hthb/18/2", "https://journals.sagepub.com/toc/hthb/18/3", 
+"https://journals.sagepub.com/toc/hthb/18/4", "https://journals.sagepub.com/toc/hthb/19/1", 
+"https://journals.sagepub.com/toc/hthb/19/2", "https://journals.sagepub.com/toc/hthb/19/3", 
+"https://journals.sagepub.com/toc/hthb/19/4", "https://journals.sagepub.com/toc/hthb/20/1", 
+"https://journals.sagepub.com/toc/hthb/20/2", "https://journals.sagepub.com/toc/hthb/20/3", 
+"https://journals.sagepub.com/toc/hthb/20/4", "https://journals.sagepub.com/toc/hthb/21/1", 
+"https://journals.sagepub.com/toc/hthb/21/2", "https://journals.sagepub.com/toc/hthb/21/3", 
+"https://journals.sagepub.com/toc/hthb/21/4", "https://journals.sagepub.com/toc/hthb/22/1", 
+"https://journals.sagepub.com/toc/hthb/22/2", "https://journals.sagepub.com/toc/hthb/22/3", 
+"https://journals.sagepub.com/toc/hthb/22/4", "https://journals.sagepub.com/toc/hthb/23/1", 
+"https://journals.sagepub.com/toc/hthb/23/2", "https://journals.sagepub.com/toc/hthb/23/3", 
+"https://journals.sagepub.com/toc/hthb/23/4"), class = c("glue", 
+"character")), dois = list(c("/doi/pdf/10.1177/175899839600100401", 
+"/doi/pdf/10.1177/175899839600100402", "/doi/pdf/10.1177/175899839600100403", 
+"/doi/pdf/10.1177/175899839600100404", "/doi/pdf/10.1177/175899839600100405", 
+"/doi/pdf/10.1177/175899839600100406", "/doi/pdf/10.1177/175899839600100407", 
+"/doi/pdf/10.1177/175899839600100408", "/doi/pdf/10.1177/175899839600100409", 
+"/doi/pdf/10.1177/175899839600100410"), NA, NA, NA, NA, NA, NA, 
+    NA, c("/doi/pdf/10.1177/175899839800300101", "/doi/pdf/10.1177/175899839800300103", 
+    "/doi/pdf/10.1177/175899839800300102", "/doi/pdf/10.1177/175899839800300104", 
+    "/doi/pdf/10.1177/175899839800300105", "/doi/pdf/10.1177/175899839800300106", 
+    "/doi/pdf/10.1177/175899839800300107", "/doi/pdf/10.1177/175899839800300108", 
+    "/doi/pdf/10.1177/175899839800300109", "/doi/pdf/10.1177/175899839800300110", 
+    "/doi/pdf/10.1177/175899839800300111", "/doi/pdf/10.1177/175899839800300112", 
+    "/doi/pdf/10.1177/175899839800300113", "/doi/pdf/10.1177/175899839800300114", 
+    "/doi/pdf/10.1177/175899839800300116", "/doi/pdf/10.1177/175899839800300115", 
+    "/doi/pdf/10.1177/175899839800300117"), c("/doi/pdf/10.1177/175899839800300201", 
+    "/doi/pdf/10.1177/175899839800300203", "/doi/pdf/10.1177/175899839800300202", 
+    "/doi/pdf/10.1177/175899839800300204", "/doi/pdf/10.1177/175899839800300205", 
+    "/doi/pdf/10.1177/175899839800300206", "/doi/pdf/10.1177/175899839800300207", 
+    "/doi/pdf/10.1177/175899839800300208", "/doi/pdf/10.1177/175899839800300209", 
+    "/doi/pdf/10.1177/175899839800300210", "/doi/pdf/10.1177/175899839800300212", 
+    "/doi/pdf/10.1177/175899839800300211", "/doi/pdf/10.1177/175899839800300213"
+    ), c("/doi/pdf/10.1177/175899839800300301", "/doi/pdf/10.1177/175899839800300302", 
+    "/doi/pdf/10.1177/175899839800300303", "/doi/pdf/10.1177/175899839800300304", 
+    "/doi/pdf/10.1177/175899839800300305", "/doi/pdf/10.1177/175899839800300306", 
+    "/doi/pdf/10.1177/175899839800300307", "/doi/pdf/10.1177/175899839800300308", 
+    "/doi/pdf/10.1177/175899839800300309", "/doi/pdf/10.1177/175899839800300310", 
+    "/doi/pdf/10.1177/175899839800300311", "/doi/pdf/10.1177/175899839800300312", 
+    "/doi/pdf/10.1177/175899839800300313", "/doi/pdf/10.1177/175899839800300314", 
+    "/doi/pdf/10.1177/175899839800300315", "/doi/pdf/10.1177/175899839800300316", 
+    "/doi/pdf/10.1177/175899839800300317"), c("/doi/pdf/10.1177/175899839800300401", 
+    "/doi/pdf/10.1177/175899839800300402", "/doi/pdf/10.1177/175899839800300403", 
+    "/doi/pdf/10.1177/175899839800300404", "/doi/pdf/10.1177/175899839800300405", 
+    "/doi/pdf/10.1177/175899839800300406", "/doi/pdf/10.1177/175899839800300407", 
+    "/doi/pdf/10.1177/175899839800300408", "/doi/pdf/10.1177/175899839800300409", 
+    "/doi/pdf/10.1177/175899839800300410", "/doi/pdf/10.1177/175899839800300411", 
+    "/doi/pdf/10.1177/175899839800300412", "/doi/pdf/10.1177/175899839800300413", 
+    "/doi/pdf/10.1177/175899839800300414", "/doi/pdf/10.1177/175899839800300415", 
+    "/doi/pdf/10.1177/175899839800300416"), c("/doi/pdf/10.1177/175899839900400101", 
+    "/doi/pdf/10.1177/175899839900400102", "/doi/pdf/10.1177/175899839900400103", 
+    "/doi/pdf/10.1177/175899839900400104", "/doi/pdf/10.1177/175899839900400105", 
+    "/doi/pdf/10.1177/175899839900400106", "/doi/pdf/10.1177/175899839900400107", 
+    "/doi/pdf/10.1177/175899839900400108", "/doi/pdf/10.1177/175899839900400109", 
+    "/doi/pdf/10.1177/175899839900400110"), c("/doi/pdf/10.1177/175899839900400201", 
+    "/doi/pdf/10.1177/175899839900400202", "/doi/pdf/10.1177/175899839900400203", 
+    "/doi/pdf/10.1177/175899839900400204", "/doi/pdf/10.1177/175899839900400205", 
+    "/doi/pdf/10.1177/175899839900400206", "/doi/pdf/10.1177/175899839900400207", 
+    "/doi/pdf/10.1177/175899839900400208", "/doi/pdf/10.1177/175899839900400209", 
+    "/doi/pdf/10.1177/175899839900400210", "/doi/pdf/10.1177/175899839900400211"
+    ), c("/doi/pdf/10.1177/175899839900400301", "/doi/pdf/10.1177/175899839900400302", 
+    "/doi/pdf/10.1177/175899839900400303", "/doi/pdf/10.1177/175899839900400304", 
+    "/doi/pdf/10.1177/175899839900400305", "/doi/pdf/10.1177/175899839900400306", 
+    "/doi/pdf/10.1177/175899839900400307", "/doi/pdf/10.1177/175899839900400308", 
+    "/doi/pdf/10.1177/175899839900400309", "/doi/pdf/10.1177/175899839900400310", 
+    "/doi/pdf/10.1177/175899839900400311", "/doi/pdf/10.1177/175899839900400312"
+    ), c("/doi/pdf/10.1177/175899839900400401", "/doi/pdf/10.1177/175899839900400402", 
+    "/doi/pdf/10.1177/175899839900400403", "/doi/pdf/10.1177/175899839900400404", 
+    "/doi/pdf/10.1177/175899839900400405", "/doi/pdf/10.1177/175899839900400406", 
+    "/doi/pdf/10.1177/175899839900400408", "/doi/pdf/10.1177/175899839900400407", 
+    "/doi/pdf/10.1177/175899839900400409", "/doi/pdf/10.1177/175899839900400410", 
+    "/doi/pdf/10.1177/175899839900400411", "/doi/pdf/10.1177/175899839900400412"
+    ), c("/doi/pdf/10.1177/175899830000500101", "/doi/pdf/10.1177/175899830000500102", 
+    "/doi/pdf/10.1177/175899830000500103", "/doi/pdf/10.1177/175899830000500104", 
+    "/doi/pdf/10.1177/175899830000500105", "/doi/pdf/10.1177/175899830000500106", 
+    "/doi/pdf/10.1177/175899830000500107", "/doi/pdf/10.1177/175899830000500108", 
+    "/doi/pdf/10.1177/175899830000500109"), c("/doi/pdf/10.1177/175899830000500201", 
+    "/doi/pdf/10.1177/175899830000500202", "/doi/pdf/10.1177/175899830000500203", 
+    "/doi/pdf/10.1177/175899830000500204", "/doi/pdf/10.1177/175899830000500205", 
+    "/doi/pdf/10.1177/175899830000500206", "/doi/pdf/10.1177/175899830000500207", 
+    "/doi/pdf/10.1177/175899830000500208"), c("/doi/pdf/10.1177/175899830000500301", 
+    "/doi/pdf/10.1177/175899830000500302", "/doi/pdf/10.1177/175899830000500303", 
+    "/doi/pdf/10.1177/175899830000500304", "/doi/pdf/10.1177/175899830000500305", 
+    "/doi/pdf/10.1177/175899830000500306", "/doi/pdf/10.1177/175899830000500307", 
+    "/doi/pdf/10.1177/175899830000500308", "/doi/pdf/10.1177/175899830000500309"
+    ), c("/doi/pdf/10.1177/175899830000500401", "/doi/pdf/10.1177/175899830000500402", 
+    "/doi/pdf/10.1177/175899830000500403", "/doi/pdf/10.1177/175899830000500404", 
+    "/doi/pdf/10.1177/175899830000500405", "/doi/pdf/10.1177/175899830000500406", 
+    "/doi/pdf/10.1177/175899830000500407", "/doi/pdf/10.1177/175899830000500408"
+    ), c("/doi/pdf/10.1234/0123456701234567891", "/doi/pdf/10.1234/012345670123456789", 
+    "/doi/pdf/10.1234/0123456701234567893", "/doi/pdf/10.1234/0123456701234567894"
+    ), c("/doi/pdf/10.1177/175899830100600201", "/doi/pdf/10.1177/175899830100600202", 
+    "/doi/pdf/10.1177/175899830100600203", "/doi/pdf/10.1177/175899830100600204"
+    ), c("/doi/pdf/10.1177/175899830100600301", "/doi/pdf/10.1177/175899830100600302", 
+    "/doi/pdf/10.1177/175899830100600303", "/doi/pdf/10.1177/175899830100600304", 
+    "/doi/pdf/10.1177/175899830100600305"), c("/doi/pdf/10.1177/175899830100600401", 
+    "/doi/pdf/10.1177/175899830100600402", "/doi/pdf/10.1177/175899830100600403"
+    ), c("/doi/pdf/10.1177/175899830200700101", "/doi/pdf/10.1177/175899830200700102", 
+    "/doi/pdf/10.1177/175899830200700103", "/doi/pdf/10.1177/175899830200700104", 
+    "/doi/pdf/10.1177/175899830200700105"), c("/doi/pdf/10.1177/175899830200700201", 
+    "/doi/pdf/10.1177/175899830200700202", "/doi/pdf/10.1177/175899830200700203"
+    ), c("/doi/pdf/10.1177/175899830200700302", "/doi/pdf/10.1177/175899830200700303", 
+    "/doi/pdf/10.1177/175899830200700304", "/doi/pdf/10.1177/175899830200700301"
+    ), c("/doi/pdf/10.1177/175899830200700401", "/doi/pdf/10.1177/175899830200700402", 
+    "/doi/pdf/10.1177/175899830200700403", "/doi/pdf/10.1177/175899830200700404"
+    ), c("/doi/pdf/10.1177/175899830300800101", "/doi/pdf/10.1177/175899830300800102", 
+    "/doi/pdf/10.1177/175899830300800103", "/doi/pdf/10.1177/175899830300800104", 
+    "/doi/pdf/10.1177/175899830300800105"), c("/doi/pdf/10.1177/175899830300800201", 
+    "/doi/pdf/10.1177/175899830300800202", "/doi/pdf/10.1177/175899830300800203", 
+    "/doi/pdf/10.1177/175899830300800204", "/doi/pdf/10.1177/175899830300800207", 
+    "/doi/pdf/10.1177/175899830300800205", "/doi/pdf/10.1177/175899830300800206"
+    ), c("/doi/pdf/10.1177/175899830300800303", "/doi/pdf/10.1177/175899830300800304", 
+    "/doi/pdf/10.1177/175899830300800301", "/doi/pdf/10.1177/175899830300800302"
+    ), c("/doi/pdf/10.1177/175899830300800401", "/doi/pdf/10.1177/175899830300800402"
+    ), c("/doi/pdf/10.1177/175899830400900104", "/doi/pdf/10.1177/175899830400900101", 
+    "/doi/pdf/10.1177/175899830400900102", "/doi/pdf/10.1177/175899830400900103"
+    ), c("/doi/pdf/10.1177/175899830400900201", "/doi/pdf/10.1177/175899830400900202", 
+    "/doi/pdf/10.1177/175899830400900203", "/doi/pdf/10.1177/175899830400900204"
+    ), c("/doi/pdf/10.1177/175899830400900301", "/doi/pdf/10.1177/175899830400900302", 
+    "/doi/pdf/10.1177/175899830400900303", "/doi/pdf/10.1177/175899830400900304"
+    ), c("/doi/pdf/10.1177/175899830400900401", "/doi/pdf/10.1177/175899830400900402", 
+    "/doi/pdf/10.1177/175899830400900403"), c("/doi/pdf/10.1177/175899830501000101", 
+    "/doi/pdf/10.1177/175899830501000102", "/doi/pdf/10.1177/175899830501000103", 
+    "/doi/pdf/10.1177/175899830501000104"), c("/doi/pdf/10.1177/175899830501000201", 
+    "/doi/pdf/10.1177/175899830501000202", "/doi/pdf/10.1177/175899830501000203"
+    ), NA, NA, c("/doi/pdf/10.1177/175899830601100101", "/doi/pdf/10.1177/175899830601100102", 
+    "/doi/pdf/10.1177/175899830601100103"), c("/doi/pdf/10.1177/175899830601100201", 
+    "/doi/pdf/10.1177/175899830601100202", "/doi/pdf/10.1177/175899830601100203"
+    ), c("/doi/pdf/10.1177/175899830601100301", "/doi/pdf/10.1177/175899830601100302"
+    ), c("/doi/pdf/10.1177/175899830601100401", "/doi/pdf/10.1177/175899830601100402", 
+    "/doi/pdf/10.1177/175899830601100403"), c("/doi/pdf/10.1177/175899830701200101", 
+    "/doi/pdf/10.1177/175899830701200102", "/doi/pdf/10.1177/175899830701200103"
+    ), c("/doi/pdf/10.1177/175899830701200201", "/doi/pdf/10.1177/175899830701200202", 
+    "/doi/pdf/10.1177/175899830701200203"), c("/doi/pdf/10.1177/175899830701200301", 
+    "/doi/pdf/10.1177/175899830701200302", "/doi/pdf/10.1177/175899830701200303", 
+    "/doi/pdf/10.1177/175899830701200304"), c("/doi/pdf/10.1177/175899830701200401", 
+    "/doi/pdf/10.1177/175899830701200402", "/doi/pdf/10.1177/175899830701200403"
+    ), c("/doi/pdf/10.1177/175899830801300101", "/doi/pdf/10.1177/175899830801300102", 
+    "/doi/pdf/10.1177/175899830801300103"), c("/doi/pdf/10.1177/175899830801300201", 
+    "/doi/pdf/10.1177/175899830801300202", "/doi/pdf/10.1177/175899830801300203"
+    ), c("/doi/pdf/10.1177/175899830801300301", "/doi/pdf/10.1177/175899830801300302", 
+    "/doi/pdf/10.1177/175899830801300303"), c("/doi/pdf/10.1177/175899830801300401", 
+    "/doi/pdf/10.1177/175899830801300402", "/doi/pdf/10.1177/175899830801300403"
+    ), c("/doi/full/10.1258/ht.2009.009006", "/doi/full/10.1258/ht.2009.009001", 
+    "/doi/full/10.1258/ht.2009.009002", "/doi/full/10.1258/ht.2009.009003", 
+    "/doi/full/10.1258/ht.2009.009004"), c("/doi/full/10.1258/ht.2009.009015", 
+    "/doi/full/10.1258/ht.2009.009010", "/doi/full/10.1258/ht.2009.009007", 
+    "/doi/full/10.1258/ht.2009.009008", "/doi/full/10.1258/ht.2009.009012", 
+    "/doi/full/10.1258/ht.2009.009013"), c("/doi/full/10.1258/ht.2009.009022", 
+    "/doi/full/10.1258/ht.2009.009017", "/doi/full/10.1258/ht.2009.009019", 
+    "/doi/full/10.1258/ht.2009.009018", "/doi/full/10.1258/ht.2009.009011", 
+    "/doi/full/10.1258/ht.2009.009e001"), c("/doi/full/10.1258/ht.2009.009027", 
+    "/doi/full/10.1258/ht.2009.009023", "/doi/full/10.1258/ht.2009.009016", 
+    "/doi/full/10.1258/ht.2009.009024", "/doi/full/10.1258/ht.2009.009009", 
+    "/doi/full/10.1258/ht.2009.009021", "/doi/full/10.1258/ht.2009.009028", 
+    "/doi/full/10.1258/ht.2009.009029"), c("/doi/full/10.1258/ht.2010.010005", 
+    "/doi/full/10.1258/ht.2009.009025", "/doi/full/10.1258/ht.2009.010002", 
+    "/doi/full/10.1258/ht.2009.010001", "/doi/full/10.1258/ht.2010.010003"
+    ), c("/doi/full/10.1258/ht.2010.010012", "/doi/full/10.1258/ht.2010.010006", 
+    "/doi/full/10.1258/ht.2010.010009", "/doi/full/10.1258/ht.2010.010010", 
+    "/doi/full/10.1258/ht.2010.010008"), c("/doi/full/10.1258/ht.2010.010020", 
+    "/doi/full/10.1258/ht.2010.010013", "/doi/full/10.1258/ht.2010.010014", 
+    "/doi/full/10.1258/ht.2010.010017", "/doi/full/10.1258/ht.2010.010007"
+    ), c("/doi/full/10.1258/ht.2010.010025", "/doi/full/10.1258/ht.2010.010021", 
+    "/doi/full/10.1258/ht.2010.010018", "/doi/full/10.1258/ht.2010.010016", 
+    "/doi/full/10.1258/ht.2010.010015"), c("/doi/full/10.1258/ht.2011.011002", 
+    "/doi/full/10.1258/ht.2010.010022", "/doi/full/10.1258/ht.2010.010023", 
+    "/doi/full/10.1258/ht.2010.010026"), c("/doi/full/10.1258/ht.2011.011008", 
+    "/doi/full/10.1258/ht.2011.011005", "/doi/full/10.1258/ht.2011.011003", 
+    "/doi/full/10.1258/ht.2011.011004", "/doi/full/10.1258/ht.2010.010027", 
+    "/doi/full/10.1258/ht.2011.011006"), c("/doi/full/10.1258/ht.2011.011015", 
+    "/doi/full/10.1258/ht.2011.011013", "/doi/full/10.1258/ht.2011.011011", 
+    "/doi/full/10.1258/ht.2011.011010", "/doi/full/10.1258/ht.2011.011007"
+    ), c("/doi/full/10.1258/ht.2011.011022", "/doi/full/10.1258/ht.2011.011021", 
+    "/doi/full/10.1258/ht.2011.011012", "/doi/full/10.1258/ht.2011.011016", 
+    "/doi/full/10.1258/ht.2011.011018", "/doi/full/10.1258/ht.2011.011019"
+    ), c("/doi/full/10.1258/ht.2012.012002", "/doi/full/10.1258/ht.2011.011017", 
+    "/doi/full/10.1258/ht.2011.011023", "/doi/full/10.1258/ht.2011.011024", 
+    "/doi/full/10.1258/ht.2012.011026"), c("/doi/full/10.1258/ht.2012.012007", 
+    "/doi/full/10.1258/ht.2012.012004", "/doi/full/10.1258/ht.2012.012005", 
+    "/doi/full/10.1258/ht.2012.012003", "/doi/full/10.1258/ht.2011.011025"
+    ), c("/doi/full/10.1258/ht.2012.012012", "/doi/full/10.1258/ht.2012.012008", 
+    "/doi/full/10.1258/ht.2012.012010", "/doi/full/10.1258/ht.2012.012009", 
+    "/doi/full/10.1258/ht.2012.012011"), c("/doi/full/10.1177/1758998312473418", 
+    "/doi/full/10.1258/ht.2012.012016", "/doi/full/10.1177/1758998312471253", 
+    "/doi/full/10.1258/ht.2012.012015", "/doi/full/10.1258/ht.2012.012014"
+    ), c("/doi/full/10.1177/1758998313481318", "/doi/full/10.1177/1758998312474787", 
+    "/doi/full/10.1177/1758998313479874", "/doi/full/10.1177/1758998313484672", 
+    "/doi/full/10.1177/1758998313477796", "/doi/full/10.1177/1758998313481719"
+    ), c("/doi/full/10.1177/1758998313496928", "/doi/full/10.1177/1758998313488476", 
+    "/doi/full/10.1177/1758998313490856", "/doi/full/10.1177/1758998313495151", 
+    "/doi/full/10.1177/1758998313495636"), c("/doi/full/10.1177/1758998313503616", 
+    "/doi/full/10.1177/1758998313496400", "/doi/full/10.1177/1758998313496979", 
+    "/doi/full/10.1177/1758998313500017", "/doi/full/10.1177/1758998313500482", 
+    "/doi/full/10.1177/1758998313497698"), c("/doi/full/10.1177/1758998313512074", 
+    "/doi/full/10.1177/1758998313508175", "/doi/full/10.1177/1758998313509234", 
+    "/doi/full/10.1177/1758998313512280"), c("/doi/full/10.1177/1758998314522587", 
+    "/doi/full/10.1177/1758998313515191", "/doi/full/10.1177/1758998314522435", 
+    "/doi/full/10.1177/1758998313514560"), c("/doi/full/10.1177/1758998314534158", 
+    "/doi/full/10.1177/1758998314527069", "/doi/full/10.1177/1758998314531111", 
+    "/doi/full/10.1177/1758998314533306"), c("/doi/full/10.1177/1758998314548163", 
+    "/doi/full/10.1177/1758998314538004", "/doi/full/10.1177/1758998314538241", 
+    "/doi/full/10.1177/1758998314542052"), c("/doi/full/10.1177/1758998314564921", 
+    "/doi/full/10.1177/1758998314564797", "/doi/full/10.1177/1758998314544802", 
+    "/doi/full/10.1177/1758998314563722"), c("/doi/full/10.1177/1758998315577926", 
+    "/doi/full/10.1177/1758998315570681", "/doi/full/10.1177/1758998315574352", 
+    "/doi/full/10.1177/1758998315574431", "/doi/full/10.1177/1758998315577928"
+    ), c("/doi/full/10.1177/1758998315589277", "/doi/full/10.1177/1758998315584835", 
+    "/doi/full/10.1177/1758998315580274", "/doi/full/10.1177/1758998315580823", 
+    "/doi/full/10.1177/1758998315581002"), c("/doi/full/10.1177/1758998315602381", 
+    "/doi/full/10.1177/1758998315586276", "/doi/full/10.1177/1758998315589653", 
+    "/doi/full/10.1177/1758998315597013", "/doi/full/10.1177/1758998315600979"
+    ), c("/doi/full/10.1177/1758998315595824", "/doi/full/10.1177/1758998315599792", 
+    "/doi/full/10.1177/1758998315601146", "/doi/full/10.1177/1758998315611793"
+    ), c("/doi/full/10.1177/1758998315623461", "/doi/full/10.1177/1758998315614037", 
+    "/doi/full/10.1177/1758998315617784", "/doi/full/10.1177/1758998315599796", 
+    "/doi/full/10.1177/1758998315625880"), c("/doi/full/10.1177/1758998316640108", 
+    "/doi/full/10.1177/1758998315616399", "/doi/full/10.1177/1758998316629906", 
+    "/doi/full/10.1177/1758998316639617", "/doi/full/10.1177/1758998316638678"
+    ), c("/doi/full/10.1177/1758998316657933", "/doi/full/10.1177/1758998316644275", 
+    "/doi/full/10.1177/1758998316649102", "/doi/full/10.1177/1758998316651456", 
+    "/doi/full/10.1177/1758998316656019"), c("/doi/full/10.1177/1758998316666481", 
+    "/doi/full/10.1177/1758998316659676", "/doi/full/10.1177/1758998316656660", 
+    "/doi/full/10.1177/1758998316656659", "/doi/full/10.1177/1758998316679598"
+    ), c("/doi/full/10.1177/1758998317690673", "/doi/full/10.1177/1758998316657844", 
+    "/doi/full/10.1177/1758998316664822", "/doi/full/10.1177/1758998316665058", 
+    "/doi/full/10.1177/1758998316679387"), c("/doi/full/10.1177/1758998317712918", 
+    "/doi/full/10.1177/1758998317705306", "/doi/full/10.1177/1758998316678588", 
+    "/doi/full/10.1177/1758998317691792", "/doi/full/10.1177/1758998316679386", 
+    "/doi/full/10.1177/1758998317694474"), c("/doi/full/10.1177/1758998317729794", 
+    "/doi/full/10.1177/1758998316685469", "/doi/full/10.1177/1758998317709300", 
+    "/doi/full/10.1177/1758998317690754", "/doi/full/10.1177/1758998317698099"
+    ), c("/doi/full/10.1177/1758998317719095", "/doi/full/10.1177/1758998317720951", 
+    "/doi/full/10.1177/1758998317724405", "/doi/full/10.1177/1758998317741812"
+    ), c("/doi/full/10.1177/1758998317729713", "/doi/full/10.1177/1758998317731437", 
+    "/doi/full/10.1177/1758998317731436", "/doi/full/10.1177/1758998317748800", 
+    "/doi/full/10.1177/1758998318761290"), c("/doi/full/10.1177/1758998317746699", 
+    "/doi/full/10.1177/1758998318764219", "/doi/full/10.1177/1758998317751238", 
+    "/doi/full/10.1177/1758998317752966"), c("/doi/full/10.1177/1758998318774815", 
+    "/doi/full/10.1177/1758998318764182", "/doi/full/10.1177/1758998318770227", 
+    "/doi/full/10.1177/1758998318769335"), c("/doi/full/10.1177/1758998318784316", 
+    "/doi/full/10.1177/1758998318796010", "/doi/full/10.1177/1758998318798668", 
+    "/doi/full/10.1177/1758998318809574"))), class = c("tbl_df", 
+"tbl", "data.frame"), row.names = c(NA, -92L))
+```
+
+```{r, eval=FALSE}
+scraped_dois %>%
+  mutate(dois = map(dois, ~value(.x))) %>%
+  unnest(dois) %>%
+  filter(!is.na(dois)) %>%
+  rename(doi = dois) %>%
+  mutate(doi = str_replace(doi, ".*/10.", "http://doi.org/10.")) %>%
+  select(-issue_url)
+```
+
+```{r, echo=FALSE}
+scraped_dois %>%
+  unnest(dois) %>%
+  filter(!is.na(dois)) %>%
+  rename(doi = dois) %>%
+  mutate(doi = str_replace(doi, ".*/10.", "http://doi.org/10.")) %>%
+  select(-issue_url)
+```
+
+This was the final output my friend needed, all 459 DOI-issued articles from the journal. It was really easy to put all of this together and finally get a chance to use the `future` package properly. If I was asked how to make this more rigorous I'd recommend the following:
+
+- Programmatically discover the most recent volume and issue
+- Don't assume a max of 4 issues per volume, allow the code to iterate through a volume.
+
+[^1]: See the DOI Handbook [DOI: 10.1000/182](http://doi.org/10.1000/182).
+
+<!--html_preserve-->
+<hr style="margin-top: -10px;margin-bottom: 5px;">
+<div class="row">
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+                <br>
+                Martin John Hadley
+                <br>
+                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+                <br>
+                Scrapes a delicate URL scheme from SAGE Publishing
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-star-half fa-2x text-center" style="color:Tomato"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-11-12_crawling-doi-from-a-sage.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
+        </center>
+    </div>
+</div>
+
+<hr style="margin-top: 5px;margin-bottom: 5px;">
+
+<!--/html_preserve-->
