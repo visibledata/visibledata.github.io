@@ -14,23 +14,20 @@ The rating system is as follows:
 <!--html_preserve-->
 
 <div class="row">
-
     <div class="col-sm-4">
-        <center> <span class="fa fa-star-o fa-2x text-center" style="color:Tomato"></span>
+        <center> <span class="far fa-star fa-2x text-center" style="color:Tomato"></span>
             <p>
             <h4>Not reproducible!</h3>
             Complete lack of unique identifier or programmatic access to resource.
         </center>
     </div>
-
     <div class="col-sm-4">
-        <center> <span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"></span>
+        <center> <span class="fa fa-star-half fa-2x text-center" style="color:Tomato"></span>
             <p>
             <h4>Should be reproducible!</h3>
             A potentially volatile link to the resource has been provided, this includes resources like Gists where commercial interests may make them unavailable in the future. This category includes data accessible via API or CRAN-hosted R packages.
         </center>
     </div>
-    
         <div class="col-sm-4">
         <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
             <p>
@@ -69,7 +66,7 @@ This code is to be inserted at the top of each post, note the use of a `<hr>` ta
             &lt;/center&gt;
         &lt;/div&gt;
         &lt;div class="col-sm-4"&gt;
-            &lt;center&gt; &lt;span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"&gt;&lt;/span&gt;
+            &lt;center&gt; &lt;span class="far fa-star-half fa-2x text-center" style="color:Tomato"&gt;&lt;/span&gt;
                 &lt;p&gt;&lt;a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'&gt;Citable Code&lt;i class="fa fa-question-circle "&gt;&lt;/i&gt;&lt;/a&gt;
                     &lt;br&gt;
                     &lt;a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/blogpost-title.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'&gt;&lt;img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon"&gt;.Rmd on GitHub&lt;/a&gt;
@@ -98,14 +95,14 @@ This is the code to be inserted at the end of a post:
             &lt;/center&gt;
         &lt;/div&gt;
         &lt;div class="col-sm-4"&gt;
-            &lt;center&gt; &lt;span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"&gt;&lt;/span&gt;
+            &lt;center&gt; &lt;span class="far fa-star-half fa-2x text-center" style="color:Tomato"&gt;&lt;/span&gt;
                 &lt;p&gt;&lt;a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'&gt;Citable Data&lt;i class="fa fa-question-circle "&gt;&lt;/i&gt;&lt;/a&gt;
                     &lt;br&gt;
                     R packages: &lt;a href='https://cran.r-project.org/web/packages/WDI/' target='_blank'&gt;WDI&lt;/a&gt;
             &lt;/center&gt;
         &lt;/div&gt;
         &lt;div class="col-sm-4"&gt;
-            &lt;center&gt; &lt;span class="fa fa-star-half-o fa-2x text-center" style="color:Tomato"&gt;&lt;/span&gt;
+            &lt;center&gt; &lt;span class="far fa-star-half fa-2x text-center" style="color:Tomato"&gt;&lt;/span&gt;
                 &lt;p&gt;&lt;a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'&gt;Citable Code&lt;i class="fa fa-question-circle "&gt;&lt;/i&gt;&lt;/a&gt;
                     &lt;br&gt;
                     &lt;a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/blogpost-title.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'&gt;&lt;img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon"&gt;.Rmd on GitHub&lt;/a&gt;
