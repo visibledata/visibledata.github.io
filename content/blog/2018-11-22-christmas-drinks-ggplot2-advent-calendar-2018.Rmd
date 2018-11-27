@@ -1,0 +1,616 @@
+---
+title: Christmas Drinks ggplot2 Advent Calendar 2018
+author: Martin John Hadley
+date: '2018-11-30'
+slug: christmas-drinks-ggplot2-advent-calendar-2018
+categories:
+  - dataviz
+tags:
+  - R
+  - fun
+editor_options: 
+  chunk_output_type: console
+banner: "img/blog-images/header-images/2018-11-30_gg_christmass_advent_doors.png"
+---
+
+```{r internal-load-libraries, message=FALSE, warning=FALSE, include=FALSE, eval=TRUE}
+library("tidyverse")
+library("grid")
+library("patchwork")
+library("rfigshare")
+library("ggpubr")
+library("magick")
+library("DT")
+library("here")
+```
+
+
+This Christmas it suddently hit me. There are probably enough festive coffees at Starbucks etc that you could use them to populate a very tasty advent calendar.
+
+In the interests of helping everyone explore the range of Christmassy drinks on offer, I'll be updating my deposit [24 days of Christmass drinks](https://doi.org/10.6084/m9.figshare.7376228) on Figshare every year from now on. This blogpost takes you through how you can create your own advent calendar using `ggplot2`.
+
+<!-- <img src='/img/blog-images/2018_advent-calendar/gg_christmass_advent_doors.png' onmouseover="this.src='/img/blog-images/2018_advent-calendar/gg_logoed_and_cardboarded_treats.png';" onmouseout="this.src='/img/blog-images/2018_advent-calendar/gg_christmass_advent_doors.png';" /> -->
+
+<img src='/img/blog-images/2018_advent-calendar/gg_animated_door_openings_small.gif' width='600px'/>
+
+## Christmassy drinks of 2018
+
+Before we can collate our advent of Christmassy drinks, we need to make some decisions:
+
+- What counts as a Christmassy drink?
+  - Any drink that I can buy all the way through 1st December through to 24th December (so no Pumpkin spice lattes).
+
+- Which cafes should be included?
+  - It's my first year doing this. I'm going to choose places that are easy for me to get to!
+
+- Do hot chocolates count?
+  - I really wish they didn't. But I could only find 15 festive coffee-based drinks.
+
+After searching through a few menus, here are my selections for the Christmassy drinks of 2018:
+
+```{r internal-show-drinks, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+christmassy_drinks_2018 <- read_csv(here("static", "data", "24-days-of-christmassy-drinks.csv"))
+
+dt_christmassy_drinks <- christmassy_drinks_2018 %>%
+  filter(year == 2018) %>%
+  select(-year) %>%
+  datatable(colnames = c("Drink",
+                         "Retailer",
+                         "Type"),
+            options = list(pageLength = 6,
+                           dom = "Bfrtip",
+                           language = list("sSearch" = "Filter:")))
+  
+widgetframe::frameWidget(dt_christmassy_drinks, height = "100%")
+```
+
+## Make your own `ggplot2` advent
+
+If you want to follow along, these are the steps you need to follow:
+
+1. Create a new RStudio project
+
+2. Create a data directory by running `dir.create("data")`
+
+3. Download version 3 of the Figshare deposit [DOI:10.6084/m9.figshare.7376228.v3](https://doi.org/10.6084/m9.figshare.7376228.v3) by running this code
+
+```{r blog-download-data, eval = FALSE}
+download.file("https://ndownloader.figshare.com/articles/7376228/versions/3",
+              "data/christmassy-drinks-2018.zip")
+unzip("data/christmassy-drinks-2018.zip",
+      exdir = "data")
+unlink("data/hristmassy-drinks-2018.zip")
+
+```
+
+4. Create a new script `christmassy-drinks-advent.R` and at the top load all the packages we'll need:
+
+```{r blog-load-libraries, eval=FALSE}
+library("tidyverse")
+library("grid")
+library("rfigshare")
+library("ggpubr")
+library("magick")
+library("here")
+```
+
+5. Run the rest of the code in this blogpost `r emo::ji("thumb")`
+
+## ggplot2 advent calendar doors
+
+In my opinion, there are only really two true advent calendar layouts:
+
+```{r blog-landscape-or-portrait, echo=FALSE, fig.height=2.5, fig.width=5}
+set.seed(1)
+portrait_door_centers <- tibble(
+  x = rep(seq(1, 10, 3), 6),
+  y = rep(seq(1, 16, 3), times = 1, each = 4),
+  door_number = sample(1:24))
+set.seed(1)
+landscape_door_centers <- tibble(
+  y = rep(seq(1, 10, 3), 6),
+  x = rep(seq(1, 16, 3), times = 1, each = 4),
+  door_number = sample(1:24))
+
+gg_advent_portrait <- portrait_door_centers %>%
+  ggplot(aes(x, y)) +
+  geom_tile(color = "black",
+            size = 0.6,
+            linetype = "dotted",
+            fill = "lightgrey",
+            alpha = 0.1) +
+  geom_label(aes(label = door_number)) +
+  coord_fixed() +
+  theme_void() +
+  NULL
+
+gg_advent_landscape <- landscape_door_centers %>%
+  ggplot(aes(x, y)) +
+  # background_image(img_christmas_coffee) +
+  geom_tile(color = "black",
+            size = 0.6,
+            linetype = "dotted",
+            fill = "lightgrey",
+            alpha = 0.1) +
+  geom_label(aes(label = door_number)) +
+  coord_fixed() +
+  theme_void() +
+  NULL
+
+gg_advent_landscape + gg_advent_portrait
+```
+
+We can easily compute the centers of all the doors in these advent calendar layouts with `tibble()` and `seq()`:
+
+```{r blog-door-centers}
+portrait_door_centers <- tibble(
+  x = rep(seq(1, 10, 3), 6),
+  y = rep(seq(1, 16, 3), times = 1, each = 4))
+
+landscape_door_centers <- tibble(
+  y = rep(seq(1, 10, 3), 6),
+  x = rep(seq(1, 16, 3), times = 1, each = 4))
+```
+
+This blogpost will be slightly shorter if we continue with a landscape advent calendar, so let's do that. 
+
+Which `geom_*()` is most suitable for our advent calendar? Well, `geom_tile()` requires only the centre of our doors. The theme `theme_void()` throws away the unnecessary axes labels etc, leaving us with our idealised advent calendar:
+
+```{r blog-advent-template, fig.height=2.5, fig.width=5}
+gg_advent_landscape <- landscape_door_centers %>%
+  ggplot(aes(x, y)) +
+  geom_tile(color = "black",
+            size = 0.6,
+            linetype = "dotted",
+            fill = "white",
+            alpha = 0.1) +
+  theme_void() +
+  coord_fixed()
+gg_advent_landscape
+```
+
+How about the door labels? Let's augment the data with door numbers via `mutate()` and then add `geom_label()` to display the door number:
+
+```{r blog-randomise-door-numbers, fig.height=2.5, fig.width=5}
+set.seed(1)
+landscape_door_centers <- landscape_door_centers %>%
+  mutate(door_number = sample(1:24))
+gg_advent_landscape <- landscape_door_centers %>%
+  ggplot(aes(x, y)) +
+  geom_tile(color = "black",
+            size = 0.6,
+            linetype = "dotted",
+            fill = "white",
+            alpha = 0.1) +
+  geom_label(aes(label = door_number)) +
+  theme_void() +
+  coord_fixed()
+gg_advent_landscape
+```
+
+## ggplot2 advent calendar treats
+
+Now we've created the doors, we need to create the Christmassy drink treats! Let's import the drinks data and re-order them via the `door_number` column:
+
+```{r internal-import-drinks, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+set.seed(1)
+christmassy_drinks_2018 <- read_csv(here("static", "data", "24-days-of-christmassy-drinks.csv")) %>%
+  filter(year == 2018) %>%
+  slice(landscape_door_centers$door_number) %>%
+  mutate(door_number = 1:24)
+
+landscape_door_treats <- christmassy_drinks_2018 %>%
+  left_join(landscape_door_centers)
+```
+
+```{r blog-import-drinks, message=FALSE, warning=FALSE, eval = FALSE}
+set.seed(1)
+christmassy_drinks_2018 <- read_csv("data/24-days-of-christmassy-drinks.csv") %>%
+  filter(year == 2018) %>%
+  slice(landscape_door_centers$door_number) %>%
+  mutate(door_number = 1:24)
+
+landscape_door_treats <- christmassy_drinks_2018 %>%
+  left_join(landscape_door_centers)
+```
+
+The festive drinks have very long names ("Salted caramel brownie hot chocolate"), so let's insert line breaks every 10 characters to prettify our labels:
+
+```{r blog-labeled-treats}
+landscape_door_treats <- landscape_door_treats %>%
+  mutate(drink.name = gsub("(.{10,}?)\\s", "\\1\n", drink.name))
+
+gg_landscape_door_treats <- landscape_door_treats %>%
+  ggplot(aes(x, y)) +
+  geom_tile(color = "black",
+            size = 0.6,
+            linetype = "dotted",
+            fill = "lightgrey",
+            alpha = 0.1) +
+  geom_label(aes(label = drink.name),
+             nudge_y = 0.5, # give room for logo
+             size = 4) +
+  theme_void() +
+  coord_fixed()
+```
+
+<img src='/img/blog-images/2018_advent-calendar/gg_landscape_door_treat_labels.png' style='width:600px'/>
+
+It would look great if we could add the retailers' logos to the squares. Let's first import these images from the `data` folder:
+
+```{r internal-import-logos, echo = FALSE, eval = TRUE}
+starbucks_logo <- image_read(here("static", "img", "blog-images", "2018_advent-calendar", "starbucks_logo.png")) %>%
+  rasterGrob(interpolate = T)
+
+costa_logo <- image_read(here("static", "img", "blog-images", "2018_advent-calendar", "costa_logo.png")) %>%
+  rasterGrob(interpolate = T)
+
+cafe_nero_logo <- image_read(here("static", "img", "blog-images", "2018_advent-calendar", "cafe-nero_logo.jpg")) %>%
+  rasterGrob(interpolate = T)
+
+greggs_logo <- image_read(here("static", "img", "blog-images", "2018_advent-calendar", "greggs_logo.png")) %>%
+  rasterGrob(interpolate = T)
+
+pret_logo <- image_read(here("static", "img", "blog-images", "2018_advent-calendar", "pret_logo.jpg")) %>%
+  rasterGrob(interpolate = T)
+
+mc_cafe_logo <- image_read(here("static", "img", "blog-images", "2018_advent-calendar", "mc-café_logo.png")) %>%
+  rasterGrob(interpolate = T)
+```
+
+```{r blog-import-logos, eval = FALSE}
+starbucks_logo <- image_read("data/starbucks_logo.png") %>%
+  rasterGrob(interpolate = T)
+
+costa_logo <- image_read("data/costa_logo.png") %>%
+  rasterGrob(interpolate = T)
+
+cafe_nero_logo <- image_read("data/cafe-nero_logo.jpg") %>%
+  rasterGrob(interpolate = T)
+
+greggs_logo <- image_read("data/greggs_logo.png") %>%
+  rasterGrob(interpolate = T)
+
+pret_logo <- image_read("data/pret_logo.jpg") %>%
+  rasterGrob(interpolate = T)
+
+mc_cafe_logo <- image_read("data/mc-café_logo.png") %>%
+  rasterGrob(interpolate = T)
+```
+
+Use `annotation_custom` is the best tool for inserting images into a `ggplot2` object. After a lot of jiggery pokery, these are fairly good options for nudging the logo into an appropriate position in the door:
+
+```{r blog-add-a-single-logo, eval = FALSE}
+door_center <- list(x = 1, y = 1)
+
+nudge_logo_ymin <- -1.25
+nudge_logo_ymax <- -0.25
+nudge_logo_xmin <- -0.5
+nudge_logo_xmax <- 0.5
+
+gg_one_logo <- gg_landscape_door_treats +
+  annotation_custom(starbucks_logo, 
+                    ymin = door_center$y + nudge_logo_ymax, 
+                    ymax = door_center$y + nudge_logo_ymin, 
+                    xmin = door_center$x + nudge_logo_xmin, 
+                    xmax = door_center$x + nudge_logo_xmax)
+```
+
+<img src='/img/blog-images/2018_advent-calendar/gg_one_logo.png' style='width:600px'/>
+
+
+We need to add logos for all the doors. This could be achieved by writing a `for` (or any other) kind of loop. But it's my preference to use the `purrr` package for a functional approach to this problem. 
+
+`pwalk` allows us to iterate a function over every row of `landscape_door_treats`, which in this case adds a `annotation_custom` layer to `gg_logoed_treats`. We use the `<<-` [^1] assignment operator so that the global version of `gg_logoed_treatsis` is updated. `pwalk` is the same as `pmap` but doesn't generate output; side-effects are the only repurcussions of `pwalk`.
+
+```{r blog-add-logos-to-doors, eval = FALSE}
+gg_logoed_treats <- gg_landscape_door_treats
+
+landscape_door_treats %>%
+  pwalk(function(x, y, retailer, ...){
+    
+    logo <- switch (retailer,
+      "Starbucks" = starbucks_logo,
+      "Costa" = costa_logo,
+      "Café Nero" = cafe_nero_logo,
+      "Greggs" = greggs_logo,
+      "McCafé" = mc_cafe_logo,
+      "Pret" = pret_logo
+    )
+    gg_logoed_treats <<- gg_logoed_treats +
+      annotation_custom(logo, ymin = y - 1.25, ymax = y - 0.25, xmin = x - 0.5, xmax = x + 0.5)
+    
+  })
+
+```
+
+<img src='/img/blog-images/2018_advent-calendar/gg_logoed_treats.png' style='width:600px'/>
+
+## Background images
+
+We should really add background images to the two parts of our advent calendar; a Christmassy image for the doors and a cardboard background for the insides of the doors.
+
+The `ggpubr` package provides `background_image()` to add an image into the `panel` of a `ggplot2`, but it will be placed on top of everything added before it. So, let's reorder our `ggplot2` layers for the doors with this [*beautiful* license-free image from pixelbay](https://pixabay.com/en/santa-christmas-coffee-mugs-3016939/): 
+
+```{r internal-advent-calendar-front, echo = FALSE}
+christmassy_background <- image_read(here("static", "img", "blog-images", "2018_advent-calendar", "santa-3016939_640.jpg"))
+
+gg_advent_landscape <- landscape_door_centers %>%
+  ggplot(aes(x, y)) +
+  background_image(christmassy_background) +
+  geom_tile(color = "black",
+            size = 0.6,
+            linetype = "dotted",
+            fill = "white",
+            alpha = 0.1) +
+  geom_label(aes(label = door_number)) +
+  theme_void() +
+  coord_fixed()
+```
+
+```{r blog-advent-calendar-front, eval = FALSE}
+christmassy_background <- image_read(here("static", "img", "blog-images", "2018_advent-calendar", "santa-3016939_640.jpg"))
+
+gg_advent_landscape <- landscape_door_centers %>%
+  ggplot(aes(x, y)) +
+  background_image(christmassy_background) +
+  geom_tile(color = "black",
+            size = 0.6,
+            linetype = "dotted",
+            fill = "white",
+            alpha = 0.1) +
+  geom_label(aes(label = door_number)) +
+  theme_void() +
+  coord_fixed()
+gg_advent_landscape
+```
+
+<img src='/img/blog-images/2018_advent-calendar/gg_christmass_advent_doors.png' width='600px'/>
+
+I think it's a lot of fun to add a cardboard effect to the treats, so I found this [license-free image from flickr](https://www.flickr.com/photos/27668445@N03/3191148261) which I really enjoy:
+
+```{r blog-advent-calendar-treats, eval = TRUE, echo = TRUE}
+cardboard_background <- image_read(here("static", "img", "blog-images", "2018_advent-calendar", "cardboard-effect.jpg"))
+
+gg_landscape_door_treats <- landscape_door_treats %>%
+  ggplot(aes(x, y)) +
+  background_image(cardboard_background) +
+  geom_tile(color = "black",
+            size = 0.6,
+            linetype = "dotted",
+            fill = "lightgrey",
+            alpha = 0.1) +
+  geom_label(aes(label = drink.name),
+             nudge_y = 0.5, # give room for logo
+             size = 4) +
+  theme_void() +
+  coord_fixed()
+```
+
+```{r internal-generate-logoed-doors, echo = FALSE}
+gg_logoed_treats <- gg_landscape_door_treats
+
+landscape_door_treats %>%
+  pwalk(function(x, y, retailer, ...){
+    
+    logo <- switch (retailer,
+      "Starbucks" = starbucks_logo,
+      "Costa" = costa_logo,
+      "Café Nero" = cafe_nero_logo,
+      "Greggs" = greggs_logo,
+      "McCafé" = mc_cafe_logo,
+      "Pret" = pret_logo
+    )
+    gg_logoed_treats <<- gg_logoed_treats +
+      annotation_custom(logo, ymin = y - 1.25, ymax = y - 0.25, xmin = x - 0.5, xmax = x + 0.5)
+    
+  }
+  
+  )
+```
+
+<img src='/img/blog-images/2018_advent-calendar/gg_logoed_and_cardboarded_treats.png' width='600px'/>
+
+## Iteratively opening the advent calendar
+
+The two images we've created so far are only really that useful if we're going to print them out and stick together. And even then, it's a waste of ink printing out a cardboard effect! 
+
+Let's create a function for opening the advent doors:
+
+```{r blog-open-advent-doors-function, eval = FALSE}
+open_advent_doors <- function(gg_advent,
+                              advent_treats,
+                              open_doors) {
+  gg_local <- gg_advent
+
+  advent_treats %>%
+    filter(door_number %in% open_doors) %>%
+    pwalk(function(x, y, retailer, drink.name, ...) {
+      logo <- switch(retailer,
+        "Starbucks" = starbucks_logo,
+        "Costa" = costa_logo,
+        "Café Nero" = cafe_nero_logo,
+        "Greggs" = greggs_logo,
+        "McCafé" = mc_cafe_logo,
+        "Pret" = pret_logo
+      )
+      gg_local <<- gg_local +
+        annotation_custom(
+          cardboard_background %>%
+            image_crop("-200x400") %>%
+            grid::rasterGrob(interpolate = T),
+          ymin = y - 1.5,
+          ymax = y + 1.5,
+          xmin = x - 2,
+          xmax = x + 2
+        ) +
+        annotation_custom(
+          logo,
+          ymin = y - 1.25,
+          ymax = y - 0.25,
+          xmin = x - 0.5,
+          xmax = x + 0.5
+        ) +
+        geom_label(
+          data = tibble(x, y, drink.name),
+          aes(
+            label = drink.name,
+            x = x,
+            y = y
+          ),
+          nudge_y = 0.5,
+          # give room for logo
+          size = 5
+        )
+    })
+
+  gg_local
+}
+```
+
+Here's how our calendar looks after opening 10 doors:
+
+```{r internal-open-10-doors, eval = FALSE}
+open_multiple_doors(gg_advent_landscape,
+                    landscape_door_treats,
+                    1:10)
+```
+
+<img src='/img/blog-images/2018_advent-calendar/gg_opened_10_doors.png' width='600px'/>
+
+Unfortunately, I don't know how to use the **incredible** [gganimate package](https://github.com/thomasp85/gganimate) to animate between door openings. Until I learn how, I'm going to create a .gif by exporting each step of the advent being opened and stitch them together with the `magick` package.
+
+```{r blog-export-advent-gif, eval = FALSE}
+tibble(remaining_days = 1:24) %>%
+  rowwise() %>%
+  mutate(doors = list(1:remaining_days)) %>%
+  pwalk(function(doors, ...) {
+    opened_door <- open_advent_doors(
+      gg_advent_landscape,
+      landscape_door_treats,
+      doors
+    )
+
+    img_path <- here(
+        "data",
+        paste0(
+          "gg_iterative_opened_door_",
+          formatC(
+            length(doors),
+            width = 2,
+            format = "d",
+            flag = "0"
+          ),
+          ".png"
+        )
+      )
+    
+    ggsave(
+      img_path,
+      opened_door
+    )
+    
+    image_read(img_path) %>%
+      image_trim() %>%
+      image_resize("1400x") %>%
+      image_write(img_path)
+    
+  })
+
+door_open_images <- list.files(paste0(
+        "static",
+        "img",
+        "blog-images",
+        "2018_advent-calendar"), "gg_iterative_opened_door", full.names = TRUE)
+
+
+door_open_images %>%
+  tibble(img = .) %>%
+  map(function(img){image_read(img)}) %>%
+  image_join() %>%
+  image_animate(fps = 0.5) %>%
+  image_write(here(
+        "static",
+        "img",
+        "blog-images",
+        "2018_advent-calendar", "gg_animated_door_openings.gif"))
+```
+
+
+```{r internal-export-advent-gif, eval = FALSE, echo = FALSE}
+tibble(remaining_days = 1:24) %>%
+  rowwise() %>%
+  mutate(doors = list(1:remaining_days)) %>%
+  pwalk(function(doors, ...) {
+    opened_door <- open_advent_doors(
+      gg_advent_landscape,
+      landscape_door_treats,
+      doors
+    )
+
+    img_path <- here(
+        "static",
+        "img",
+        "blog-images",
+        "2018_advent-calendar",
+        paste0(
+          "gg_iterative_opened_door_",
+          formatC(
+            length(doors),
+            width = 2,
+            format = "d",
+            flag = "0"
+          ),
+          ".png"
+        )
+      )
+    
+    ggsave(
+      img_path,
+      opened_door
+    )
+    
+    image_read(img_path) %>%
+      image_trim() %>%
+      image_resize("1400x") %>%
+      image_write(img_path)
+    
+  })
+
+door_open_images <- list.files(here(
+        "static",
+        "img",
+        "blog-images",
+        "2018_advent-calendar"), "gg_iterative_opened_door", full.names = TRUE)
+
+
+door_open_images %>%
+  tibble(img = .) %>%
+  map(function(img){image_read(img)}) %>%
+  image_join() %>%
+  image_animate(fps = 0.5) %>%
+  image_write(here(
+        "static",
+        "img",
+        "blog-images",
+        "2018_advent-calendar", "gg_animated_door_openings.gif"))
+```
+
+```{r internal-remove-gif-frames, eval = FALSE, echo = FALSE}
+unlink(door_open_images)
+```
+
+<img src='/img/blog-images/2018_advent-calendar/gg_animated_door_openings_small.gif' width='600px'/>
+
+[^1]: See Hadley Wickham's [StackOverflow answer for more details](https://stackoverflow.com/a/2630222/1659890)
+
+
+
+
+
+
+
+
+
+
+
