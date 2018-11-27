@@ -41,7 +41,7 @@ banner: "img/blog-images/header-images/2018-11-30_gg_christmass_advent_doors.png
 </ul>
 <p>After searching through a few menus, here are my selections for the Christmassy drinks of 2018:</p>
 <div id="htmlwidget-1" style="width:100%;height:100%;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1">{"x":{"url":"/blog/2018-11-22-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html//widgets/widget_internal-show-drinks.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"url":"/blog/2018-11-26-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html//widgets/widget_internal-show-drinks.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="make-your-own-ggplot2-advent" class="section level2">
 <h2>Make your own <code>ggplot2</code> advent</h2>
@@ -72,7 +72,7 @@ library(&quot;here&quot;)</code></pre>
 <div id="ggplot2-advent-calendar-doors" class="section level2">
 <h2>ggplot2 advent calendar doors</h2>
 <p>In my opinion, there are only really two true advent calendar layouts:</p>
-<p><img src="/blog/2018-11-22-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-landscape-or-portrait-1.png" width="480" /></p>
+<p><img src="/blog/2018-11-26-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-landscape-or-portrait-1.png" width="480" /></p>
 <p>We can easily compute the centers of all the doors in these advent calendar layouts with <code>tibble()</code> and <code>seq()</code>:</p>
 <pre class="r"><code>portrait_door_centers &lt;- tibble(
   x = rep(seq(1, 10, 3), 6),
@@ -93,7 +93,7 @@ landscape_door_centers &lt;- tibble(
   theme_void() +
   coord_fixed()
 gg_advent_landscape</code></pre>
-<p><img src="/blog/2018-11-22-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-advent-template-1.png" width="480" /></p>
+<p><img src="/blog/2018-11-26-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-advent-template-1.png" width="480" /></p>
 <p>How about the door labels? Let’s augment the data with door numbers via <code>mutate()</code> and then add <code>geom_label()</code> to display the door number:</p>
 <pre class="r"><code>set.seed(1)
 landscape_door_centers &lt;- landscape_door_centers %&gt;%
@@ -109,7 +109,7 @@ gg_advent_landscape &lt;- landscape_door_centers %&gt;%
   theme_void() +
   coord_fixed()
 gg_advent_landscape</code></pre>
-<p><img src="/blog/2018-11-22-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-randomise-door-numbers-1.png" width="480" /></p>
+<p><img src="/blog/2018-11-26-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-randomise-door-numbers-1.png" width="480" /></p>
 </div>
 <div id="ggplot2-advent-calendar-treats" class="section level2">
 <h2>ggplot2 advent calendar treats</h2>
