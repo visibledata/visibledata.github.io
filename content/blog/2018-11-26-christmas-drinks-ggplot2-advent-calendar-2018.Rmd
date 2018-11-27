@@ -10,7 +10,7 @@ tags:
   - fun
 editor_options: 
   chunk_output_type: console
-banner: "img/blog-images/header-images/2018-11-30_gg_christmass_advent_doors.png"
+banner: "img/blog-images/header-images/2018-11-26_gg-christmass-advent-doors.png"
 ---
 
 ```{r internal-load-libraries, message=FALSE, warning=FALSE, include=FALSE, eval=TRUE}
