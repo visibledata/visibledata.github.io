@@ -57,7 +57,7 @@ library("DT")
 library("here")
 ```
 
-
+<br>
 This Christmas it suddently hit me. There are probably enough festive coffees at Starbucks etc that you could use them to populate a very tasty advent calendar.
 
 In the interests of helping everyone explore the range of Christmassy drinks on offer, I'll be updating my deposit [24 days of Christmass drinks](https://doi.org/10.6084/m9.figshare.7376228) on Figshare every year from now on. This blogpost takes you through how you can create the advent calendar below using `ggplot2`, I'm planning on creating an extension to make this easier in future [^1].
