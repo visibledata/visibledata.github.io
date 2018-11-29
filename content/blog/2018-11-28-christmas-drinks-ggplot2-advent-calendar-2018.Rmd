@@ -127,7 +127,25 @@ unlink("data/christmassy-drinks-2018.zip")
 
 ```
 
-5. Run the rest of the code in this blogpost `r emo::ji("thumb")`
+5. Can we tidy up things a bit? There are images in the data folder, which isn't very good practice.
+
+```{r blog-move-images, eval = FALSE}
+dir.create("images")
+retailer_logos <- list.files("data", "*.png|.jpg", full.names = TRUE)
+file.copy(retailer_logos, "images")
+file.remove(retailer_logos)
+```
+
+6. If you follow along exactly with this blogpost, you'll have 200+ lines of code in one script file! Make your life easier by splitting your script in sections as follows ([read more here](https://support.rstudio.com/hc/en-us/articles/200484568-Code-Folding-and-Sections)). Please note there's lots of duplication when following along, it doesn't really take 200+ lines of code to make this!
+
+```{r code-section-example, eval = FALSE}
+# ---- download data ----
+download.file("...") 
+# ---- advent doors ----
+ggplot("...")
+# ---- advent treats ---- 
+ggplot("...")
+```
 
 ## ggplot2 advent calendar doors
 
