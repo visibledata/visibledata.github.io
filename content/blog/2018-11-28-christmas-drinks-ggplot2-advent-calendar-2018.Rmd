@@ -305,22 +305,22 @@ mc_cafe_logo <- image_read(here("static", "img", "blog-images", "2018_advent-cal
 ```
 
 ```{r blog-import-logos, eval = FALSE}
-starbucks_logo <- image_read("data/starbucks_logo.png") %>%
+starbucks_logo <- image_read(here("images", "starbucks_logo_2018.png")) %>%
   rasterGrob(interpolate = T)
 
-costa_logo <- image_read("data/costa_logo.png") %>%
+costa_logo <- image_read(here("images", "costa_logo_2018.png")) %>%
   rasterGrob(interpolate = T)
 
-cafe_nero_logo <- image_read("data/cafe-nero_logo.jpg") %>%
+cafe_nero_logo <- image_read(here("images", "cafe-nero_logo_2018.jpg")) %>%
   rasterGrob(interpolate = T)
 
-greggs_logo <- image_read("data/greggs_logo.png") %>%
+greggs_logo <- image_read(here("images", "greggs_logo_2018.png")) %>%
   rasterGrob(interpolate = T)
 
-pret_logo <- image_read("data/pret_logo.jpg") %>%
+pret_logo <- image_read(here("images", "pret_logo_2018.jpg")) %>%
   rasterGrob(interpolate = T)
 
-mc_cafe_logo <- image_read("data/mc-café_logo.png") %>%
+mc_cafe_logo <- image_read(here("images", "mc-café_logo_2018.png")) %>%
   rasterGrob(interpolate = T)
 ```
 
