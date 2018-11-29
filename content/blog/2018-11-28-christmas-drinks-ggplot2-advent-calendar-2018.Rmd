@@ -532,7 +532,7 @@ open_advent_doors <- function(gg_advent,
 Here's how our calendar looks after opening 10 doors:
 
 ```{r internal-open-10-doors, eval = FALSE}
-open_multiple_doors(gg_advent_landscape,
+open_advent_doors(gg_advent_landscape,
                     landscape_door_treats,
                     1:10)
 ```
