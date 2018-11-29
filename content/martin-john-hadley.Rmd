@@ -1,6 +1,6 @@
 ---
 title: "Martin John Hadley"
-description: "An overview of the reproducibility ratings given at the top of each blogpost"
+description: "Martin's profile"
 editor_options: 
   chunk_output_type: console
 ---
@@ -17,9 +17,11 @@ editor_options:
 
 <p>You can find my open source projects and contributions on my GitHub profile <a href="https://github.com/martinjhnhadley" target="github.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub logo">github.com/martinjhnhadley</a>.
 
-<p>As with most R folks, I find Twitter an excellent place to learn more about #rstats and feel part of the community. I also tweet about reproducibility, LGBTQ+, and sex positivity <a href="https://twitter.com/martinjhnhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @martinjhnhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.</p>
+<p>As with most R folks, I find Twitter an excellent place to learn more about #rstats and feel part of the community. I also tweet about reproducibility, LGBTQ+, and sex positivity </p>
 
 <p>Please do contact me about developing technical training courses for your analysis teams or consultancy opportunities at martin@visibledata.co.uk
+
+<a href="https://twitter.com/martinjhnhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @martinjhnhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.
 
 </div>
 
@@ -56,7 +58,7 @@ blockquote p {
 
 ## Code Contributions
 
-The table below contains selected code and documentation contributions to both open source projects.
+The table below contains selected code and documentation contributions to open source projects.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library("tidyverse")
@@ -85,19 +87,21 @@ contribution_icons <- tribble(
 dt_code_contributions <- code_contributions %>%
   left_join(contribution_icons) %>%
   mutate(icon = glue("<center><a href={github_pr}>{icon}</a></center>")) %>%
-  select(github_repo, r_package_name, icon) %>%
+  select(github_repo, icon, r_package_name, contribution_description) %>%
   replace_na(list(r_package_name = "<i>N/A</i>")) %>%
   arrange(github_repo) %>%
-  datatable(colnames = c("Github Repo",
-                         "R package?",
-                         "Contribution Category"),
+  datatable(colnames = c(
+    "Github Repo",
+    "Contribution Category",
+    "R package?",
+    "Description"),
             escape = FALSE,
             rownames = FALSE,
-            options = list(pageLength = 6,
-                           dom = "Bfrtip",
+            options = list(pageLength = 100,
+                           dom = "Bfrti",
                            language = list("sSearch" = "Filter:")))
   
-widgetframe::frameWidget(dt_code_contributions, height = "100%")
+widgetframe::frameWidget(dt_code_contributions, height = "110%")
 
 ```
 
