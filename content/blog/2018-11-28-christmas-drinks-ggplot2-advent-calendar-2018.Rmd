@@ -375,7 +375,7 @@ landscape_door_treats %>%
 
 We should really add background images to the two parts of our advent calendar; a Christmassy image for the doors and a cardboard background for the insides of the doors.
 
-If we want a background image applied to the `panel()` component of a `ggplot2` chart we need the `ggpubr` package. The `background_image()` must be called immediately after `ggplot(aes(x, y))` so as to avoid our geoms being hidden behind the background. I found [*beautiful* license-free image from pixelbay](https://pixabay.com/en/santa-christmas-coffee-mugs-3016939/) which I think looks great for our advent calendar.
+If we want a background image applied to the `panel()` component of a `ggplot2` chart we need the `ggpubr` package. The `background_image()` must be called immediately after `ggplot(aes(x, y))` so as to avoid our geoms being hidden behind the background. I found [*beautiful* license-free image from pixelbay](https://pixabay.com/en/santa-christmas-coffee-mugs-3016939/) which I think looks great for our advent calendar. Let's add this file to the images directory and then create our now more festive advent calendar doors:
 
 ```{r internal-advent-calendar-front, echo = FALSE}
 christmassy_background <- image_read(here("static", "img", "blog-images", "2018_advent-calendar", "santa-3016939_640.jpg"))
