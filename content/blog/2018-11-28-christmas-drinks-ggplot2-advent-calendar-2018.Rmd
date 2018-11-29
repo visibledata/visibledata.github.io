@@ -416,10 +416,22 @@ gg_advent_landscape
 
 <img src='/img/blog-images/2018_advent-calendar/gg_christmass_advent_doors.png' width='600px'/>
 
-I think it's a lot of fun to add a cardboard effect to the treats, so I found this [license-free image from flickr](https://www.flickr.com/photos/27668445@N03/3191148261) which I really enjoy:
+I think it's a lot of fun to add a cardboard effect to the treats, so I found this [license-free image from flickr](https://www.flickr.com/photos/27668445@N03/3191148261) which I really enjoy. Let's add it to our images folder and then add it to our advent calendar treats chart:
 
-```{r blog-advent-calendar-treats, eval = TRUE, echo = TRUE}
+```{r internal-cardboard-download, echo = FALSE}
+download.file("https://farm4.staticflickr.com/3134/3191148261_e3c1f3887b_o_d.jpg",
+              here("static", "img", "blog-images", "2018_advent-calendar", "cardboard-effect.jpg"))
+
 cardboard_background <- image_read(here("static", "img", "blog-images", "2018_advent-calendar", "cardboard-effect.jpg"))
+```
+
+
+```{r blog-advent-calendar-treats, eval = FALSE, echo = TRUE}
+
+download.file("https://farm4.staticflickr.com/3134/3191148261_e3c1f3887b_o_d.jpg",
+              here("images", "cardboard-effect.jpg"))
+
+cardboard_background <- image_read(here("images", "cardboard-effect.jpg"))
 
 gg_landscape_door_treats <- landscape_door_treats %>%
   ggplot(aes(x, y)) +
@@ -433,6 +445,7 @@ gg_landscape_door_treats <- landscape_door_treats %>%
              size = 4) +
   theme_void() +
   coord_fixed()
+gg_landscape_door_treats
 ```
 
 ```{r internal-generate-logoed-doors, echo = FALSE}
