@@ -11,6 +11,7 @@ tags:
 editor_options: 
   chunk_output_type: console
 banner: "img/blog-images/header-images/2018-11-28_gg-christmass-advent-doors.png"
+description: "There are just about 24 Christmassy hot drinks available in the big UK cafes. I've made an advent calendae of them in ggplot2, read this post to find out how to do the same."
 ---
 
 <!--html_preserve-->

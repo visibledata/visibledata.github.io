@@ -1,0 +1,2 @@
+﻿contribution.description,creation.date,merge.date,contribution.type,package.owner,github.repo,github.pr
+Simple spelling correction install_packages -> install.packages,,,Spelling correction,thomasp85,https://github.com/thomasp85/ggraph,https://github.com/thomasp85/ggraph/pull/114
