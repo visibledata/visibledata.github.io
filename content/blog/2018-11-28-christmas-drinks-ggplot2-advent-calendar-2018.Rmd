@@ -118,11 +118,12 @@ library("here") # see https://github.com/jennybc/here_here#readme
 4. Download version 3 of the Figshare deposit [DOI:10.6084/m9.figshare.7376228.v3](https://doi.org/10.6084/m9.figshare.7376228.v3) by adding this code to your script:
 
 ```{r blog-download-data, eval = FALSE}
+dir.create("data")
 download.file("https://ndownloader.figshare.com/articles/7376228/versions/3",
               "data/christmassy-drinks-2018.zip")
 unzip("data/christmassy-drinks-2018.zip",
       exdir = "data")
-unlink("data/hristmassy-drinks-2018.zip")
+unlink("data/christmassy-drinks-2018.zip")
 
 ```
 
