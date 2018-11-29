@@ -1,7 +1,7 @@
 ---
 title: Christmas Drinks ggplot2 Advent Calendar 2018
 author: Martin John Hadley
-date: '2018-11-26'
+date: '2018-11-28'
 slug: christmas-drinks-ggplot2-advent-calendar-2018
 categories:
   - dataviz
@@ -10,7 +10,7 @@ tags:
   - fun
 editor_options: 
   chunk_output_type: console
-banner: "img/blog-images/header-images/2018-11-26_gg-christmass-advent-doors.png"
+banner: "img/blog-images/header-images/2018-11-28_gg-christmass-advent-doors.png"
 ---
 
 <script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
@@ -18,8 +18,39 @@ banner: "img/blog-images/header-images/2018-11-26_gg-christmass-advent-doors.png
 <script src="/rmarkdown-libs/widgetframe-binding/widgetframe.js"></script>
 
 
+
+<hr style="margin-top: -10px;margin-bottom: 5px;">
+<div class="row">
+    <div class="col-sm-4">
+        <center> <span class="fa fa-gift fa-2x text-center" style="color:#007853"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+                <br>
+                Martin John Hadley
+                <br>
+                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-gift fa-2x text-center" style="color:#007853"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+            <br>
+                <a href="http://doi.org/10.6084/m9.figshare.7376228" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="/img/doi_16x16.png" style="width:1em;margin-right:.2em;" alt="DOI icon">doi:10.6084/m9.figshare.7376228</a>
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-box fa-2x text-center" style="color:grey"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
+        </center>
+    </div>
+</div>
+
+<hr style="margin-top: 5px;margin-bottom: 5px;">
+
+
 <p>This Christmas it suddently hit me. There are probably enough festive coffees at Starbucks etc that you could use them to populate a very tasty advent calendar.</p>
-<p>In the interests of helping everyone explore the range of Christmassy drinks on offer, I’ll be updating my deposit <a href="https://doi.org/10.6084/m9.figshare.7376228">24 days of Christmass drinks</a> on Figshare every year from now on. This blogpost takes you through how you can create your own advent calendar using <code>ggplot2</code>.</p>
+<p>In the interests of helping everyone explore the range of Christmassy drinks on offer, I’ll be updating my deposit <a href="https://doi.org/10.6084/m9.figshare.7376228">24 days of Christmass drinks</a> on Figshare every year from now on. This blogpost takes you through how you can create the advent calendar below using <code>ggplot2</code>, I’m planning on creating an extension to make this easier in future <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 <!-- <img src='/img/blog-images/2018_advent-calendar/gg_christmass_advent_doors.png' onmouseover="this.src='/img/blog-images/2018_advent-calendar/gg_logoed_and_cardboarded_treats.png';" onmouseout="this.src='/img/blog-images/2018_advent-calendar/gg_christmass_advent_doors.png';" /> -->
 <p><img src='/img/blog-images/2018_advent-calendar/gg_animated_door_openings_small.gif' width='600px'/></p>
 <div id="christmassy-drinks-of-2018" class="section level2">
@@ -28,7 +59,7 @@ banner: "img/blog-images/header-images/2018-11-26_gg-christmass-advent-doors.png
 <ul>
 <li>What counts as a Christmassy drink?
 <ul>
-<li>Any drink that I can buy all the way through 1st December through to 24th December (so no Pumpkin spice lattes).</li>
+<li>Any drink that I can buy all the way through 1st December through to 24th December (so no Pumpkin Spice lattes, sadly).</li>
 </ul></li>
 <li>Which cafes should be included?
 <ul>
@@ -36,35 +67,34 @@ banner: "img/blog-images/header-images/2018-11-26_gg-christmass-advent-doors.png
 </ul></li>
 <li>Do hot chocolates count?
 <ul>
-<li>I really wish they didn’t. But I could only find 15 festive coffee-based drinks.</li>
+<li>I really wish they didn’t. But I could only find 15 festive coffee-based drinks within easy reach of me.</li>
 </ul></li>
 </ul>
 <p>After searching through a few menus, here are my selections for the Christmassy drinks of 2018:</p>
 <div id="htmlwidget-1" style="width:100%;height:100%;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1">{"x":{"url":"/blog/2018-11-26-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html//widgets/widget_internal-show-drinks.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"url":"/blog/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html//widgets/widget_internal-show-drinks.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="make-your-own-ggplot2-advent" class="section level2">
 <h2>Make your own <code>ggplot2</code> advent</h2>
-<p>If you want to follow along, these are the steps you need to follow:</p>
+<p>If you want to follow along, please follow these steps first:</p>
 <ol style="list-style-type: decimal">
 <li><p>Create a new RStudio project</p></li>
 <li><p>Create a data directory by running <code>dir.create(&quot;data&quot;)</code></p></li>
-<li><p>Download version 3 of the Figshare deposit <a href="https://doi.org/10.6084/m9.figshare.7376228.v3">DOI:10.6084/m9.figshare.7376228.v3</a> by running this code</p></li>
+<li><p>Create a new script <code>christmassy-drinks-advent.R</code>, at the top of the script load all the packages we’ll need:</p></li>
+</ol>
+<pre class="r"><code>library(&quot;tidyverse&quot;) # data manipulation
+library(&quot;grid&quot;) # rasterise images for ggplot2
+library(&quot;ggpubr&quot;) # set background image for ggplot2 panel
+library(&quot;magick&quot;) # manipulate images and export a .gif
+library(&quot;here&quot;) # see https://github.com/jennybc/here_here#readme</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Download version 3 of the Figshare deposit <a href="https://doi.org/10.6084/m9.figshare.7376228.v3">DOI:10.6084/m9.figshare.7376228.v3</a> by adding this code to your script:</li>
 </ol>
 <pre class="r"><code>download.file(&quot;https://ndownloader.figshare.com/articles/7376228/versions/3&quot;,
               &quot;data/christmassy-drinks-2018.zip&quot;)
 unzip(&quot;data/christmassy-drinks-2018.zip&quot;,
       exdir = &quot;data&quot;)
 unlink(&quot;data/hristmassy-drinks-2018.zip&quot;)</code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li>Create a new script <code>christmassy-drinks-advent.R</code> and at the top load all the packages we’ll need:</li>
-</ol>
-<pre class="r"><code>library(&quot;tidyverse&quot;)
-library(&quot;grid&quot;)
-library(&quot;rfigshare&quot;)
-library(&quot;ggpubr&quot;)
-library(&quot;magick&quot;)
-library(&quot;here&quot;)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Run the rest of the code in this blogpost 👍</li>
 </ol>
@@ -72,7 +102,7 @@ library(&quot;here&quot;)</code></pre>
 <div id="ggplot2-advent-calendar-doors" class="section level2">
 <h2>ggplot2 advent calendar doors</h2>
 <p>In my opinion, there are only really two true advent calendar layouts:</p>
-<p><img src="/blog/2018-11-26-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-landscape-or-portrait-1.png" width="480" /></p>
+<p><img src="/blog/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-landscape-or-portrait-1.png" width="480" /></p>
 <p>We can easily compute the centers of all the doors in these advent calendar layouts with <code>tibble()</code> and <code>seq()</code>:</p>
 <pre class="r"><code>portrait_door_centers &lt;- tibble(
   x = rep(seq(1, 10, 3), 6),
@@ -88,12 +118,11 @@ landscape_door_centers &lt;- tibble(
   geom_tile(color = &quot;black&quot;,
             size = 0.6,
             linetype = &quot;dotted&quot;,
-            fill = &quot;white&quot;,
-            alpha = 0.1) +
+            alpha=0) +
   theme_void() +
   coord_fixed()
 gg_advent_landscape</code></pre>
-<p><img src="/blog/2018-11-26-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-advent-template-1.png" width="480" /></p>
+<p><img src="/blog/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-advent-template-1.png" width="480" /></p>
 <p>How about the door labels? Let’s augment the data with door numbers via <code>mutate()</code> and then add <code>geom_label()</code> to display the door number:</p>
 <pre class="r"><code>set.seed(1)
 landscape_door_centers &lt;- landscape_door_centers %&gt;%
@@ -103,17 +132,16 @@ gg_advent_landscape &lt;- landscape_door_centers %&gt;%
   geom_tile(color = &quot;black&quot;,
             size = 0.6,
             linetype = &quot;dotted&quot;,
-            fill = &quot;white&quot;,
-            alpha = 0.1) +
+            alpha = 0) +
   geom_label(aes(label = door_number)) +
   theme_void() +
   coord_fixed()
 gg_advent_landscape</code></pre>
-<p><img src="/blog/2018-11-26-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-randomise-door-numbers-1.png" width="480" /></p>
+<p><img src="/blog/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018_files/figure-html/blog-randomise-door-numbers-1.png" width="480" /></p>
 </div>
 <div id="ggplot2-advent-calendar-treats" class="section level2">
 <h2>ggplot2 advent calendar treats</h2>
-<p>Now we’ve created the doors, we need to create the Christmassy drink treats! Let’s import the drinks data and re-order them via the <code>door_number</code> column:</p>
+<p>Now we’ve created the doors we need to create the Christmassy drink treats! Let’s import the drinks data and re-order them via the <code>door_number</code> column:</p>
 <pre class="r"><code>set.seed(1)
 christmassy_drinks_2018 &lt;- read_csv(&quot;data/24-days-of-christmassy-drinks.csv&quot;) %&gt;%
   filter(year == 2018) %&gt;%
@@ -122,7 +150,7 @@ christmassy_drinks_2018 &lt;- read_csv(&quot;data/24-days-of-christmassy-drinks.
 
 landscape_door_treats &lt;- christmassy_drinks_2018 %&gt;%
   left_join(landscape_door_centers)</code></pre>
-<p>The festive drinks have very long names (“Salted caramel brownie hot chocolate”), so let’s insert line breaks every 10 characters to prettify our labels:</p>
+<p>The festive drinks have very long names (e.g. “Salted caramel brownie hot chocolate”), so let’s insert line breaks every 10 characters to prettify our labels:</p>
 <pre class="r"><code>landscape_door_treats &lt;- landscape_door_treats %&gt;%
   mutate(drink.name = gsub(&quot;(.{10,}?)\\s&quot;, &quot;\\1\n&quot;, drink.name))
 
@@ -131,8 +159,7 @@ gg_landscape_door_treats &lt;- landscape_door_treats %&gt;%
   geom_tile(color = &quot;black&quot;,
             size = 0.6,
             linetype = &quot;dotted&quot;,
-            fill = &quot;lightgrey&quot;,
-            alpha = 0.1) +
+            alpha = 0) +
   geom_label(aes(label = drink.name),
              nudge_y = 0.5, # give room for logo
              size = 4) +
@@ -157,7 +184,7 @@ pret_logo &lt;- image_read(&quot;data/pret_logo.jpg&quot;) %&gt;%
 
 mc_cafe_logo &lt;- image_read(&quot;data/mc-café_logo.png&quot;) %&gt;%
   rasterGrob(interpolate = T)</code></pre>
-<p>Use <code>annotation_custom</code> is the best tool for inserting images into a <code>ggplot2</code> object. After a lot of jiggery pokery, these are fairly good options for nudging the logo into an appropriate position in the door:</p>
+<p>Inserting images into <code>ggplot2</code> charts is most easily achieved using <code>annotation_custom</code>. After a lot of jiggery pokery, these are fairly good options for nudging the logo into an appropriate position in the door:</p>
 <pre class="r"><code>door_center &lt;- list(x = 1, y = 1)
 
 nudge_logo_ymin &lt;- -1.25
@@ -172,8 +199,8 @@ gg_one_logo &lt;- gg_landscape_door_treats +
                     xmin = door_center$x + nudge_logo_xmin, 
                     xmax = door_center$x + nudge_logo_xmax)</code></pre>
 <p><img src='/img/blog-images/2018_advent-calendar/gg_one_logo.png' style='width:600px'/></p>
-<p>We need to add logos for all the doors. This could be achieved by writing a <code>for</code> (or any other) kind of loop. But it’s my preference to use the <code>purrr</code> package for a functional approach to this problem.</p>
-<p><code>pwalk</code> allows us to iterate a function over every row of <code>landscape_door_treats</code>, which in this case adds a <code>annotation_custom</code> layer to <code>gg_logoed_treats</code>. We use the <code>&lt;&lt;-</code> <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> assignment operator so that the global version of <code>gg_logoed_treatsis</code> is updated. <code>pwalk</code> is the same as <code>pmap</code> but doesn’t generate output; side-effects are the only repurcussions of <code>pwalk</code>.</p>
+<p>Because <code>annotation_custom</code> only allows us to add one image at a time we need to iteratively add logos for each and every door. I’m a <code>purrr</code> advocate for this kind of task, but if you don’t like this functional approach to things you could use a <code>for</code> loop instead.</p>
+<p><code>pwalk</code> allows us to iterate a function over every row of <code>landscape_door_treats</code>, which in this case adds a <code>annotation_custom</code> layer to <code>gg_logoed_treats</code>. We use the <code>&lt;&lt;-</code> <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> assignment operator so that the global version of <code>gg_logoed_treatsis</code> is updated. <code>pwalk</code> is the same as <code>pmap</code> but doesn’t generate output; side-effects are the only repurcussions of <code>pwalk</code>.</p>
 <pre class="r"><code>gg_logoed_treats &lt;- gg_landscape_door_treats
 
 landscape_door_treats %&gt;%
@@ -196,7 +223,7 @@ landscape_door_treats %&gt;%
 <div id="background-images" class="section level2">
 <h2>Background images</h2>
 <p>We should really add background images to the two parts of our advent calendar; a Christmassy image for the doors and a cardboard background for the insides of the doors.</p>
-<p>The <code>ggpubr</code> package provides <code>background_image()</code> to add an image into the <code>panel</code> of a <code>ggplot2</code>, but it will be placed on top of everything added before it. So, let’s reorder our <code>ggplot2</code> layers for the doors with this <a href="https://pixabay.com/en/santa-christmas-coffee-mugs-3016939/"><em>beautiful</em> license-free image from pixelbay</a>:</p>
+<p>If we want a background image applied to the <code>panel()</code> component of a <code>ggplot2</code> chart we need the <code>ggpubr</code> package. The <code>background_image()</code> must be called immediately after <code>ggplot(aes(x, y))</code> so as to avoid our geoms being hidden behind the background. I found <a href="https://pixabay.com/en/santa-christmas-coffee-mugs-3016939/"><em>beautiful</em> license-free image from pixelbay</a> which I think looks great for our advent calendar.</p>
 <pre class="r"><code>christmassy_background &lt;- image_read(here(&quot;static&quot;, &quot;img&quot;, &quot;blog-images&quot;, &quot;2018_advent-calendar&quot;, &quot;santa-3016939_640.jpg&quot;))
 
 gg_advent_landscape &lt;- landscape_door_centers %&gt;%
@@ -205,8 +232,7 @@ gg_advent_landscape &lt;- landscape_door_centers %&gt;%
   geom_tile(color = &quot;black&quot;,
             size = 0.6,
             linetype = &quot;dotted&quot;,
-            fill = &quot;white&quot;,
-            alpha = 0.1) +
+            alpha = 0) +
   geom_label(aes(label = door_number)) +
   theme_void() +
   coord_fixed()
@@ -221,8 +247,7 @@ gg_landscape_door_treats &lt;- landscape_door_treats %&gt;%
   geom_tile(color = &quot;black&quot;,
             size = 0.6,
             linetype = &quot;dotted&quot;,
-            fill = &quot;lightgrey&quot;,
-            alpha = 0.1) +
+            alpha = 0) +
   geom_label(aes(label = drink.name),
              nudge_y = 0.5, # give room for logo
              size = 4) +
@@ -254,7 +279,7 @@ gg_landscape_door_treats &lt;- landscape_door_treats %&gt;%
         annotation_custom(
           cardboard_background %&gt;%
             image_crop(&quot;-200x400&quot;) %&gt;%
-            grid::rasterGrob(interpolate = T),
+            rasterGrob(interpolate = T),
           ymin = y - 1.5,
           ymax = y + 1.5,
           xmin = x - 2,
@@ -342,10 +367,44 @@ door_open_images %&gt;%
         &quot;blog-images&quot;,
         &quot;2018_advent-calendar&quot;, &quot;gg_animated_door_openings.gif&quot;))</code></pre>
 <p><img src='/img/blog-images/2018_advent-calendar/gg_animated_door_openings_small.gif' width='600px'/></p>
+
+<br>
+<br>
+<hr style="margin-top: -10px;margin-bottom: 5px;">
+<div class="row">
+    <div class="col-sm-4">
+        <center> <span class="fa fa-gift fa-2x text-center" style="color:#007853"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
+                <br>
+                Martin John Hadley
+                <br>
+                (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-gift fa-2x text-center" style="color:#007853"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Data<i class="fa fa-question-circle "></i></a>
+            <br>
+                <a href="http://doi.org/10.6084/m9.figshare.7376228" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="/img/doi_16x16.png" style="width:1em;margin-right:.2em;" alt="DOI icon">doi:10.6084/m9.figshare.7376228</a>
+        </center>
+    </div>
+    <div class="col-sm-4">
+        <center> <span class="fa fa-box fa-2x text-center" style="color:grey"></span>
+            <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Code<i class="fa fa-question-circle "></i></a>
+                <br>
+                <a href="https://github.com/visibledata/visibledata.github.io/blob/master/content/blog/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018.Rmd" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub icon">.Rmd on GitHub</a>
+        </center>
+    </div>
+</div>
+
+<hr style="margin-top: 5px;margin-bottom: 5px;">
+
+
 </div>
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>See Hadley Wickham’s <a href="https://stackoverflow.com/a/2630222/1659890">StackOverflow answer for more details</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>Please get in touch (<a href="mailto:martin@visibledata.co.uk">martin@visibledata.co.uk</a>) if you fancy working on this together, it’s very new territory for me.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>See Hadley Wickham’s <a href="https://stackoverflow.com/a/2630222/1659890">StackOverflow answer for more details</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
