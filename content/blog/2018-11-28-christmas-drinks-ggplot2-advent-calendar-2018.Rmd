@@ -578,11 +578,7 @@ tibble(remaining_days = 1:24) %>%
     
   })
 
-door_open_images <- list.files(paste0(
-        "static",
-        "img",
-        "blog-images",
-        "2018_advent-calendar"), "gg_iterative_opened_door", full.names = TRUE)
+door_open_images <- list.files("images", "gg_iterative_opened_door", full.names = TRUE)
 
 
 door_open_images %>%
@@ -591,10 +587,7 @@ door_open_images %>%
   image_join() %>%
   image_animate(fps = 0.5) %>%
   image_write(here(
-        "static",
-        "img",
-        "blog-images",
-        "2018_advent-calendar", "gg_animated_door_openings.gif"))
+        "images", "gg_animated_door_openings.gif"))
 ```
 
 
