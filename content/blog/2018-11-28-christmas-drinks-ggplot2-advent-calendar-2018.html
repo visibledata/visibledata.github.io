@@ -49,7 +49,8 @@ banner: "img/blog-images/header-images/2018-11-28_gg-christmass-advent-doors.png
 <hr style="margin-top: 5px;margin-bottom: 5px;">
 
 
-<p>This Christmas it suddently hit me. There are probably enough festive coffees at Starbucks etc that you could use them to populate a very tasty advent calendar.</p>
+<p><br>
+This Christmas it suddently hit me. There are probably enough festive coffees at Starbucks etc that you could use them to populate a very tasty advent calendar.</p>
 <p>In the interests of helping everyone explore the range of Christmassy drinks on offer, I’ll be updating my deposit <a href="https://doi.org/10.6084/m9.figshare.7376228">24 days of Christmass drinks</a> on Figshare every year from now on. This blogpost takes you through how you can create the advent calendar below using <code>ggplot2</code>, I’m planning on creating an extension to make this easier in future <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 <!-- <img src='/img/blog-images/2018_advent-calendar/gg_christmass_advent_doors.png' onmouseover="this.src='/img/blog-images/2018_advent-calendar/gg_logoed_and_cardboarded_treats.png';" onmouseout="this.src='/img/blog-images/2018_advent-calendar/gg_christmass_advent_doors.png';" /> -->
 <p><img src='/img/blog-images/2018_advent-calendar/gg_animated_door_openings_small.gif' width='600px'/></p>
@@ -90,14 +91,28 @@ library(&quot;here&quot;) # see https://github.com/jennybc/here_here#readme</cod
 <ol start="4" style="list-style-type: decimal">
 <li>Download version 3 of the Figshare deposit <a href="https://doi.org/10.6084/m9.figshare.7376228.v3">DOI:10.6084/m9.figshare.7376228.v3</a> by adding this code to your script:</li>
 </ol>
-<pre class="r"><code>download.file(&quot;https://ndownloader.figshare.com/articles/7376228/versions/3&quot;,
+<pre class="r"><code>dir.create(&quot;data&quot;)
+download.file(&quot;https://ndownloader.figshare.com/articles/7376228/versions/3&quot;,
               &quot;data/christmassy-drinks-2018.zip&quot;)
 unzip(&quot;data/christmassy-drinks-2018.zip&quot;,
       exdir = &quot;data&quot;)
-unlink(&quot;data/hristmassy-drinks-2018.zip&quot;)</code></pre>
+unlink(&quot;data/christmassy-drinks-2018.zip&quot;)</code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li>Run the rest of the code in this blogpost 👍</li>
+<li>Can we tidy up things a bit? There are images in the data folder, which isn’t very good practice.</li>
 </ol>
+<pre class="r"><code>dir.create(&quot;images&quot;)
+retailer_logos &lt;- list.files(&quot;data&quot;, &quot;*.png|.jpg&quot;, full.names = TRUE)
+file.copy(retailer_logos, &quot;images&quot;)
+file.remove(retailer_logos)</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>If you follow along exactly with this blogpost, you’ll have 200+ lines of code in one script file! Make your life easier by splitting your script in sections as follows (<a href="https://support.rstudio.com/hc/en-us/articles/200484568-Code-Folding-and-Sections">read more here</a>). Please note there’s lots of duplication when following along, it doesn’t really take 200+ lines of code to make this!</li>
+</ol>
+<pre class="r"><code># ---- download data ----
+download.file(&quot;...&quot;) 
+# ---- advent doors ----
+ggplot(&quot;...&quot;)
+# ---- advent treats ---- 
+ggplot(&quot;...&quot;)</code></pre>
 </div>
 <div id="ggplot2-advent-calendar-doors" class="section level2">
 <h2>ggplot2 advent calendar doors</h2>
@@ -167,22 +182,22 @@ gg_landscape_door_treats &lt;- landscape_door_treats %&gt;%
   coord_fixed()</code></pre>
 <p><img src='/img/blog-images/2018_advent-calendar/gg_landscape_door_treat_labels.png' style='width:600px'/></p>
 <p>It would look great if we could add the retailers’ logos to the squares. Let’s first import these images from the <code>data</code> folder:</p>
-<pre class="r"><code>starbucks_logo &lt;- image_read(&quot;data/starbucks_logo.png&quot;) %&gt;%
+<pre class="r"><code>starbucks_logo &lt;- image_read(here(&quot;images&quot;, &quot;starbucks_logo_2018.png&quot;)) %&gt;%
   rasterGrob(interpolate = T)
 
-costa_logo &lt;- image_read(&quot;data/costa_logo.png&quot;) %&gt;%
+costa_logo &lt;- image_read(here(&quot;images&quot;, &quot;costa_logo_2018.png&quot;)) %&gt;%
   rasterGrob(interpolate = T)
 
-cafe_nero_logo &lt;- image_read(&quot;data/cafe-nero_logo.jpg&quot;) %&gt;%
+cafe_nero_logo &lt;- image_read(here(&quot;images&quot;, &quot;cafe-nero_logo_2018.jpg&quot;)) %&gt;%
   rasterGrob(interpolate = T)
 
-greggs_logo &lt;- image_read(&quot;data/greggs_logo.png&quot;) %&gt;%
+greggs_logo &lt;- image_read(here(&quot;images&quot;, &quot;greggs_logo_2018.png&quot;)) %&gt;%
   rasterGrob(interpolate = T)
 
-pret_logo &lt;- image_read(&quot;data/pret_logo.jpg&quot;) %&gt;%
+pret_logo &lt;- image_read(here(&quot;images&quot;, &quot;pret_logo_2018.jpg&quot;)) %&gt;%
   rasterGrob(interpolate = T)
 
-mc_cafe_logo &lt;- image_read(&quot;data/mc-café_logo.png&quot;) %&gt;%
+mc_cafe_logo &lt;- image_read(here(&quot;images&quot;, &quot;mc-café_logo_2018.png&quot;)) %&gt;%
   rasterGrob(interpolate = T)</code></pre>
 <p>Inserting images into <code>ggplot2</code> charts is most easily achieved using <code>annotation_custom</code>. After a lot of jiggery pokery, these are fairly good options for nudging the logo into an appropriate position in the door:</p>
 <pre class="r"><code>door_center &lt;- list(x = 1, y = 1)
@@ -223,8 +238,11 @@ landscape_door_treats %&gt;%
 <div id="background-images" class="section level2">
 <h2>Background images</h2>
 <p>We should really add background images to the two parts of our advent calendar; a Christmassy image for the doors and a cardboard background for the insides of the doors.</p>
-<p>If we want a background image applied to the <code>panel()</code> component of a <code>ggplot2</code> chart we need the <code>ggpubr</code> package. The <code>background_image()</code> must be called immediately after <code>ggplot(aes(x, y))</code> so as to avoid our geoms being hidden behind the background. I found <a href="https://pixabay.com/en/santa-christmas-coffee-mugs-3016939/"><em>beautiful</em> license-free image from pixelbay</a> which I think looks great for our advent calendar.</p>
-<pre class="r"><code>christmassy_background &lt;- image_read(here(&quot;static&quot;, &quot;img&quot;, &quot;blog-images&quot;, &quot;2018_advent-calendar&quot;, &quot;santa-3016939_640.jpg&quot;))
+<p>If we want a background image applied to the <code>panel()</code> component of a <code>ggplot2</code> chart we need the <code>ggpubr</code> package. The <code>background_image()</code> must be called immediately after <code>ggplot(aes(x, y))</code> so as to avoid our geoms being hidden behind the background. I found <a href="https://pixabay.com/en/santa-christmas-coffee-mugs-3016939/"><em>beautiful</em> license-free image from pixelbay</a> which I think looks great for our advent calendar. Let’s add this file to the images directory and then create our now more festive advent calendar doors:</p>
+<pre class="r"><code>download.file(&quot;https://cdn.pixabay.com/photo/2017/12/13/14/48/santa-3016939_640.jpg&quot;,
+              here(&quot;images&quot;, &quot;santa-3016939_640.jpg&quot;))
+
+christmassy_background &lt;- image_read(here(&quot;images&quot;, &quot;santa-3016939_640.jpg&quot;))
 
 gg_advent_landscape &lt;- landscape_door_centers %&gt;%
   ggplot(aes(x, y)) +
@@ -238,8 +256,11 @@ gg_advent_landscape &lt;- landscape_door_centers %&gt;%
   coord_fixed()
 gg_advent_landscape</code></pre>
 <p><img src='/img/blog-images/2018_advent-calendar/gg_christmass_advent_doors.png' width='600px'/></p>
-<p>I think it’s a lot of fun to add a cardboard effect to the treats, so I found this <a href="https://www.flickr.com/photos/27668445@N03/3191148261">license-free image from flickr</a> which I really enjoy:</p>
-<pre class="r"><code>cardboard_background &lt;- image_read(here(&quot;static&quot;, &quot;img&quot;, &quot;blog-images&quot;, &quot;2018_advent-calendar&quot;, &quot;cardboard-effect.jpg&quot;))
+<p>I think it’s a lot of fun to add a cardboard effect to the treats, so I found this <a href="https://www.flickr.com/photos/27668445@N03/3191148261">license-free image from flickr</a> which I really enjoy. Let’s add it to our images folder and then add it to our advent calendar treats chart:</p>
+<pre class="r"><code>download.file(&quot;https://farm4.staticflickr.com/3134/3191148261_e3c1f3887b_o_d.jpg&quot;,
+              here(&quot;images&quot;, &quot;cardboard-effect.jpg&quot;))
+
+cardboard_background &lt;- image_read(here(&quot;images&quot;, &quot;cardboard-effect.jpg&quot;))
 
 gg_landscape_door_treats &lt;- landscape_door_treats %&gt;%
   ggplot(aes(x, y)) +
@@ -252,7 +273,8 @@ gg_landscape_door_treats &lt;- landscape_door_treats %&gt;%
              nudge_y = 0.5, # give room for logo
              size = 4) +
   theme_void() +
-  coord_fixed()</code></pre>
+  coord_fixed()
+gg_landscape_door_treats</code></pre>
 <p><img src='/img/blog-images/2018_advent-calendar/gg_logoed_and_cardboarded_treats.png' width='600px'/></p>
 </div>
 <div id="iteratively-opening-the-advent-calendar" class="section level2">
@@ -308,7 +330,7 @@ gg_landscape_door_treats &lt;- landscape_door_treats %&gt;%
   gg_local
 }</code></pre>
 <p>Here’s how our calendar looks after opening 10 doors:</p>
-<pre class="r"><code>open_multiple_doors(gg_advent_landscape,
+<pre class="r"><code>open_advent_doors(gg_advent_landscape,
                     landscape_door_treats,
                     1:10)</code></pre>
 <p><img src='/img/blog-images/2018_advent-calendar/gg_opened_10_doors.png' width='600px'/></p>
@@ -349,11 +371,7 @@ gg_landscape_door_treats &lt;- landscape_door_treats %&gt;%
     
   })
 
-door_open_images &lt;- list.files(paste0(
-        &quot;static&quot;,
-        &quot;img&quot;,
-        &quot;blog-images&quot;,
-        &quot;2018_advent-calendar&quot;), &quot;gg_iterative_opened_door&quot;, full.names = TRUE)
+door_open_images &lt;- list.files(&quot;images&quot;, &quot;gg_iterative_opened_door&quot;, full.names = TRUE)
 
 
 door_open_images %&gt;%
@@ -362,10 +380,7 @@ door_open_images %&gt;%
   image_join() %&gt;%
   image_animate(fps = 0.5) %&gt;%
   image_write(here(
-        &quot;static&quot;,
-        &quot;img&quot;,
-        &quot;blog-images&quot;,
-        &quot;2018_advent-calendar&quot;, &quot;gg_animated_door_openings.gif&quot;))</code></pre>
+        &quot;images&quot;, &quot;gg_animated_door_openings.gif&quot;))</code></pre>
 <p><img src='/img/blog-images/2018_advent-calendar/gg_animated_door_openings_small.gif' width='600px'/></p>
 
 <br>
