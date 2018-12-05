@@ -10,6 +10,7 @@ tags:
   - dataviz
   - fun
   - R
+banner: "img/blog-images/2018-12-05_ggmap-output.png"
 ---
 
 `ggmap` is an awesome package for creating maps with `ggplot2`. If you've seen a nice looking map built with `ggplot2` I can almost guarantee you that it uses `ggmap` to look that good. The `ggmap` package is used to obtain base maps from the APIs of a number of online mapping tools, the one we care about here is the base maps from Google Maps (because they're very good). 
