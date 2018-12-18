@@ -6,6 +6,8 @@ slug: advent-review-2018
 categories: []
 tags: []
 draft: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 Blog items:
@@ -28,7 +30,7 @@ Blog items:
 
 9. Use `stylr` and `lintr`
 
------
+21. Process free-text gender responses with https://github.com/ropenscilabs/gendercoder
 
 10. If you're doing GIS and you haven't started using the `sf` package, switch now!
 
@@ -36,9 +38,18 @@ Blog items:
 
 12. Consider accessibility when writing blogposts a la https://r-resources.massey.ac.nz/rmarkdown/
 
+
+[13 Promotional]: `visNetwork` is incredibly slow at doing layouts! Always use `visIgraphLayout`
+
+-----
+
+
+
+18. `shiny` controls dependend on data need to be made in the server
+
 12. My spread -> gather example
 
-🎄 #ggplot2adventcalendar 🎄
+
 
 ```{r}
 library("tidyverse")
@@ -48,11 +59,12 @@ tarantino %>%
   filter(!is.na(word)) %>%
   count(word, movie) %>%
   spread(movie, n, fill = 0) %>%
-  gather(movie, count, 2:ncol(.))
+  gather(movie, count, 2:ncol(.))%>%
+  arrange(movie, word) %>%
+  head()
 ```
 
 
-[13 Promotional]: `visNetwork` is incredibly slow at doing layouts! Always use `visIgraphLayout`
 
 
 
@@ -62,13 +74,13 @@ tarantino %>%
 
 17. `rfigshare` is slightly frustrating to use, here's the cheat.
 
-18. `shiny` controls dependend on data need to be made in the server
+
 
 19. You're showing your age if you're still using shinyUI() and `shinyServer` 
 
 [20 Promotional]. Leaflet in shiny apps requires z-index manipulation (see my htmlwidgets course)
 
-21. Process free-text gender responses with https://github.com/ropenscilabs/gendercoder
+
 
 22. Bookdown for anything longer than a few paragraphs!
 

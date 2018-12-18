@@ -2,6 +2,7 @@
 title: Christmas Drinks ggplot2 Advent Calendar 2018
 author: Martin John Hadley
 date: '2018-11-28'
+tidy: 'styler'
 slug: christmas-drinks-ggplot2-advent-calendar-2018
 categories:
   - dataviz
@@ -90,8 +91,7 @@ dt_christmassy_drinks <- christmassy_drinks_2018 %>%
   select(-year) %>%
   datatable(colnames = c("Drink",
                          "Retailer",
-                         "Type"),
-            options = list(pageLength = 6,
+                         "Type"),options = list(pageLength = 6,
                            dom = "Bfrtip",
                            language = list("sSearch" = "Filter:")))
   

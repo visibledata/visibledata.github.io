@@ -6,6 +6,8 @@ slug: advent-review-2018
 categories: []
 tags: []
 draft: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -23,22 +25,23 @@ draft: true
 <li><p>Use tidyverse rather than dplyr</p></li>
 <li><p><code>forcats</code> makes life so much easier for reordering ggplot features</p></li>
 <li><p>Use <code>stylr</code> and <code>lintr</code></p></li>
-</ol>
-<hr />
-<ol start="10" style="list-style-type: decimal">
+<li><p>Process free-text gender responses with <a href="https://github.com/ropenscilabs/gendercoder" class="uri">https://github.com/ropenscilabs/gendercoder</a></p></li>
 <li><p>If you’re doing GIS and you haven’t started using the <code>sf</code> package, switch now!</p></li>
 <li><p>Xaringan is the best option for slides, it massively helps improve the look and feel of the work I do</p></li>
 <li><p>Consider accessibility when writing blogposts a la <a href="https://r-resources.massey.ac.nz/rmarkdown/" class="uri">https://r-resources.massey.ac.nz/rmarkdown/</a></p></li>
+</ol>
+<hr />
+<ol start="18" style="list-style-type: decimal">
+<li><p><code>shiny</code> controls dependend on data need to be made in the server</p></li>
 <li><p>My spread -&gt; gather example</p></li>
 </ol>
-<p>🎄 #ggplot2adventcalendar 🎄</p>
 <pre class="r"><code>library(&quot;tidyverse&quot;)</code></pre>
-<pre><code>## ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ── Attaching packages ──────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
 ## ✔ tibble  1.4.2     ✔ dplyr   0.7.8
 ## ✔ tidyr   0.8.2     ✔ stringr 1.3.1
-## ✔ readr   1.2.1     ✔ forcats 0.3.0</code></pre>
-<pre><code>## ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✔ readr   1.3.0     ✔ forcats 0.3.0</code></pre>
+<pre><code>## ── Conflicts ─────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(&quot;fivethirtyeight&quot;)
@@ -47,31 +50,26 @@ tarantino %&gt;%
   filter(!is.na(word)) %&gt;%
   count(word, movie) %&gt;%
   spread(movie, n, fill = 0) %&gt;%
-  gather(movie, count, 2:ncol(.))</code></pre>
-<pre><code>## # A tibble: 420 x 3
-##    word     movie            count
-##    &lt;chr&gt;    &lt;chr&gt;            &lt;dbl&gt;
-##  1 ass      Django Unchained    28
-##  2 asses    Django Unchained     0
-##  3 asshead  Django Unchained     0
-##  4 asshole  Django Unchained     0
-##  5 assholes Django Unchained     0
-##  6 bastard  Django Unchained     1
-##  7 bastards Django Unchained     0
-##  8 bitch    Django Unchained    10
-##  9 bitches  Django Unchained     5
-## 10 bullshit Django Unchained     0
-## # ... with 410 more rows</code></pre>
+  gather(movie, count, 2:ncol(.))%&gt;%
+  arrange(movie, word) %&gt;%
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   word     movie            count
+##   &lt;chr&gt;    &lt;chr&gt;            &lt;dbl&gt;
+## 1 ass      Django Unchained    28
+## 2 asses    Django Unchained     0
+## 3 asshead  Django Unchained     0
+## 4 asshole  Django Unchained     0
+## 5 assholes Django Unchained     0
+## 6 bastard  Django Unchained     1</code></pre>
 <ol start="14" style="list-style-type: decimal">
 <li><p>Use <code>my_data %&gt;% View(title = &quot;just imported&quot;)</code></p></li>
 <li><p><code>usethis</code> massively simplifies project development.</p></li>
 <li><p><code>rfigshare</code> is slightly frustrating to use, here’s the cheat.</p></li>
-<li><p><code>shiny</code> controls dependend on data need to be made in the server</p></li>
 <li><p>You’re showing your age if you’re still using shinyUI() and <code>shinyServer</code></p></li>
 </ol>
 <p>[20 Promotional]. Leaflet in shiny apps requires z-index manipulation (see my htmlwidgets course)</p>
-<ol start="21" style="list-style-type: decimal">
-<li><p>Process free-text gender responses with <a href="https://github.com/ropenscilabs/gendercoder" class="uri">https://github.com/ropenscilabs/gendercoder</a></p></li>
+<ol start="22" style="list-style-type: decimal">
 <li><p>Bookdown for anything longer than a few paragraphs!</p></li>
 <li><p>Include your ORCID number in package DESCRIPTION files</p></li>
 <li><p>Sometimes you need a pick-me up. Try out <a href="https://github.com/rladies/praise" class="uri">https://github.com/rladies/praise</a> (MERRY CHRISTMAS)</p></li>
