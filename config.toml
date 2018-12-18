@@ -1,4 +1,4 @@
-baseurl = "/"
+baseurl = "www.visibledata.co.uk"
 title = "Visible Data"
 theme = "hugo-universal-theme"
 languageCode = "en-us"
