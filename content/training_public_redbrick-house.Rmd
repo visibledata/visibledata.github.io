@@ -8,7 +8,7 @@ keywords: ["Training"]
 
 <div class='col-sm-9'>
 
-Our next training course in Bristol is called **Intro to data science with R & the tidyverse** and takes place on Monday 26th November 2018.
+Our next training course in Bristol is a two day course scheduled for Monday 1st April, and focuses on **interactive data visualisation with R**.
 
 <p>
   <a class="btn btn-success" data-toggle="collapse" href="#redbrick-group-training" role="button" aria-expanded="false" aria-controls="collapseExample" style='width:100%'>
@@ -18,24 +18,69 @@ Our next training course in Bristol is called **Intro to data science with R & t
 <div class="collapse" id="redbrick-group-training">
   <div class="card card-body">
 
-R is a tremendously popular and powerful scripting language used by millions of analysts and data scientists around the world, and the recently developed tidyverse provides incredible tools for quickly wrangling, cleaning, understanding and visualising data.
+### Who is this course for?
 
-However, many folks feel a little lost in the sea of packages and %>% that they see in in other's code and documentation.
+This course is designed for those who want to create interactive data visualisations with R, including; charts, maps, choropleth, networks, graph and sankey diagrams. In this course you will learn how to:
 
-Visible Data specialises in providing training courses that help folks find their feet and gain confidence with a technology. We've been running commercial and academic training courses for over 6 years and know how to get a diverse group of users from okay to confident.
+- Reproducibly read data into R using the tidyverse
+- Wrangle messy data from Excel files into tidy, analysable data with the tidyverse
+- Design interactive dataviz to explore and understand your data
 
-This training course covers the following topics:
+### How much R do I need to know?
 
-- Reproducibly using the tidyverse to import .csv and Excel files into R
-- Programmatically cleaning and wrangling data with dplyr, tidyr and more tidyverse packages
-- Exploratory data analysis using ggplot2
-- Publish publication quality static charts and maps with ggplot2
-- Create rich interactive HTML reports with RMarkdown
-- Design responsive mobile-ready interactive visualisations using the following htmlwidgets packages: leaflet (choropleth), plotly (scatter plots), highcharter (bar charts), visNetwork (network graph)
+This course is designed for both new and existing users of R. All the pre-requisite skills for creating the data visualisations will be taught in the two days. We've split tickets into new and existing users to save you time - no pre-course survey!
+
+Your trainer (Martin John Hadley) has run this course for 3 years to over 500 students. Martin is confident that you won't be left behind if your new and will have plenty to learn if you're unfamiliar with the tidyverse and htmlwidgets.
+
+### BYOD (Bring Your Own Device)
+
+This course is BYOD. You must bring your own machine. This is because we want you to learn how to do things on your machine.
+
+We're always happy when folks have a variety of Operating Systems (Windows, macOS and Linux) as it allows us to demonstrate just how reproducible and portable R code can be. We'll send you download instructions 3 days before the training event.
+
+### Schedule
+This is a two day course (2019/04/01 and 2019/04/02) in the dedicated training room at our offices in Bristol. The course venue is fully accessible for those requiring level access, please see our [accessibiltiy statement](#accessibility) for more information.
+
+- Arrive 09:00 - 09:30 to tea, coffee and a friendly welcome
+- Training starts at 09:30 both days
+- A [free lunch from Pret-a-manger](http://pret-files.azureedge.net/pretamanger-uk/Pret_Delivers/Delivery_Lunch_Menu.pdf) is provided
+- Training finishes at 16:30 both days
+
+### Who is training us?
+Martin John Hadley. Hello! You can find me on Twitter ([\@martinjhnhadley](http://twitter.com/martinjhnhadley)) and on [LinkedIn](https://www.linkedin.com/in/martinjohnhadley/).
+
+I'm an RSE at University of Oxford where I teach R on a number of Masters programmes and at divisional level to PhD researchers, I also founded the [Interactive Data Network](http://idn.it.ox.ac.uk/) which uses Shiny to make research data more open and accessible.
+
+For the past 4 years* I've been delivering in-person commercial training in R, data visualisation and Shiny across the UK. You can also find my on-demand courses on [LinkedIn Learning & Lynda.com](https://www.linkedin.com/learning/instructors/martin-john-hadley?u=2125562).
+
+*prior to this I worked for 3 years as a consultant for Wolfram Research, where I used and taught Mathematica. But these days I've almost completely replaced Mathematica with R in my workflows.
+
+<br>
+<br>
+
   </div>
 </div>
 
-<div style="width:100%; text-align:left;"><iframe src="https://eventbrite.co.uk/tickets-external?eid=52007630222&ref=etckt" frameborder="0" height="500px" width="100%" vspace="0" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" allowtransparency="true"></iframe></div>
+<div id="eventbrite-widget-container-56339694543"></div>
+
+<script src="https://www.eventbrite.co.uk/static/widgets/eb_widgets.js"></script>
+
+<script type="text/javascript">
+    var exampleCallback = function() {
+        console.log('Order complete!');
+    };
+
+    window.EBWidgets.createWidget({
+        // Required
+        widgetType: 'checkout',
+        eventId: '56339694543',
+        iframeContainerId: 'eventbrite-widget-container-56339694543',
+
+        // Optional
+        iframeContainerHeight: 550,  // Widget height in pixels. Defaults to a minimum of 425px if not provided
+        onOrderComplete: exampleCallback  // Method called when an order has successfully completed
+    });
+</script>
 
 </div>
 
@@ -110,7 +155,7 @@ Before the training day we'll agree what you'd like from the <a href='http://pre
 
 ### Getting to Visible Data's offices in Bristol
 
-Our office is a short walk from Bristol City Centre. There is accessible parking and step-free access at the rear of the building (use Post Code BS2 8AQ). For folks looking for non-accessible parking, these are best options:
+Our office is a short walk from Bristol City Centre. There is accessible parking and step-free access at the rear of the building (use Post Code BS2 8AQ). For folks looking for non-accessible parking, these are the best options:
 
 - [NCP Parking @ BS1 3LJ (£25/day)](https://www.ncp.co.uk/find-a-car-park/car-parks/bristol-st-james-barton/)
 - [Cabot Circus Parking @ BS2 9AB](https://m.cabotcircus.com/visitor-info/parking)

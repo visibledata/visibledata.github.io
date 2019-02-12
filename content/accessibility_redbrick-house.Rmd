@@ -1,0 +1,49 @@
+---
+title: "Accessibility at Redbrick House"
+description: "Accessiblity for training courses at Redbrick House."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Ask and question us
+
+Accessibility for all is a core belief for Visible Data, and something we are constantly trying to improve. We acknowledge that adaptations will be needed for individual's specific needs. We therefore value both your requests and feedback to help us improve via email contact@visibledata.co.uk.
+
+## Overall accessibility
+
+The Redbrick House building has step-free access at the rear entrance, through the car park that is accessed from Backfields (BS2 8QJ).
+
+Training events are hosted in a dedicated room on the ground floor which is fully accessible for those who require a level access route.
+
+### Lifts
+
+This training course takes place entirely on the ground floor of the building. There is no lift access in the building.
+
+### Accessible toilets
+
+There is only one accessible toilet. It is located on the ground floor and accessible to those that require a level access route.
+
+### Standard toilets
+
+There are 3 standard toilets in the building, they are unisex. Toilets are in the stairwell on floors 1, 2 and 3.
+
+### Hearing support system
+
+There are no hearing loops provided in the building.
+
+### Inaccessible Areas
+
+The following areas are not accessible to those who require level access:
+
+- All 3 standard toilets.
+
+
+
+
+
+
+
+
+
