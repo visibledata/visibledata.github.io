@@ -11,7 +11,7 @@ tags:
   - dataviz
   - GIS
   - R
-banner: "blog/2019-02-13-oxford-centres_files/gg_century_centres.png"
+banner: "blog/2019-02-18-oxford-centres_files/gg_century_centres.png"
 description: >
   University of Oxford has over 800 years of history to it, but if you want to organise a meeting at the centre of campus... where do you meet?
 editor_options: 
@@ -65,10 +65,10 @@ editor_options:
 </ul>
 <div class="tab-content">
 <div id="including-plots" class="section level2 tab-pane tabbed-pane active" role="tabpanel">
-<p><img src="/blog/2019-02-13-oxford-centres_files/gg_centres_through_time.png" max-width="530px" /></p>
+<p><img src="/blog/2019-02-18-oxford-centres_files/gg_centres_through_time.png" max-width="530px" /></p>
 </div>
 <div id="and-more" class="section level2 tab-pane tabbed-pane" role="tabpanel">
-<p><img src="/blog/2019-02-13-oxford-centres_files/oxford-centres.gif" max-width="530px" /></p>
+<p><img src="/blog/2019-02-18-oxford-centres_files/oxford-centres.gif" max-width="530px" /></p>
 </div>
 </div>
 <p>There are many steps to this process. I’ve decided to experiment with an accordion layout for this post, so it’s not immediately obvious how long the post is!</p>
@@ -491,7 +491,7 @@ gg_century_centres &lt;- gg_century_centres +
   scale_fill_viridis_d() +
   scale_color_viridis_d()
 gg_century_centres</code></pre>
-<p><img src="/blog/2019-02-13-oxford-centres_files/gg_century_centres.png" style="width:100.0%" /></p>
+<p><img src="/blog/2019-02-18-oxford-centres_files/gg_century_centres.png" style="width:100.0%" /></p>
 <p>Now we’ve established the centre of the colleges for each century, let’s compute the cumulative centres as time progresses. For simplicity, let’s throw away all of the data except for the longitude and latitude of the centre of mass in each century. The <code>centre_over_time_period()</code> function returns the centre of mass for all colleges established within the specific time period:</p>
 <pre class="r"><code>centre_over_time_period &lt;- function(shapes, lower, upper){
   # print(&quot;a&quot;)
@@ -549,7 +549,7 @@ centres_through_history &lt;- time_periods %&gt;%
   labs(title = &quot;Centres of University of Oxford through time&quot;) +
   scale_fill_viridis_d()
 gg_centres_through_time</code></pre>
-<p><img src="/blog/2019-02-13-oxford-centres_files/gg_centres_through_time.png" style="width:100.0%" /></p>
+<p><img src="/blog/2019-02-18-oxford-centres_files/gg_centres_through_time.png" style="width:100.0%" /></p>
 <p>I’m slightly late to the <code>gganimate</code> bandwagon, but let’s animate this! The <code>transition_states()</code> function will create a GIF that transitions through the <code>time_period</code> column, and I’ve used <code>shadow_wake()</code> so that the centre of mass can be tracked more easily by the reader.</p>
 <pre class="r"><code>library(&quot;gganimate&quot;)
 anim &lt;- gg_oxford_city +
@@ -562,7 +562,7 @@ anim +
   shadow_wake(wake_length = 0.05) +
   exit_shrink()
 anim_save(here(&quot;oxford-centres.gif&quot;))</code></pre>
-<p><img src="/blog/2019-02-13-oxford-centres_files/oxford-centres.gif" /></p>
+<p><img src="/blog/2019-02-18-oxford-centres_files/oxford-centres.gif" /></p>
 <p>I’d really love to be happy with this GIF, but it’s really not good! The main issue is that <code>ggamp</code> only allows integer zoom levels, so the map is either far too zoomed in or out. It’s also quite slow to experiment with <code>geom_sf</code> at the moment, I’m quite excited for <a href="https://twitter.com/thomasp85/status/1093874268809674752">Thomas Pederson’s promise to speed up <code>geom_sf</code></a>.</p>
 </div>
 </div>

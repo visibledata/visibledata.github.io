@@ -1,1 +1,581 @@
-!function(a){function b(a){var b=[0,0,0,0,0,0],c=0,d=[];for(i=a.length;c<i;c++)null!=a[c].x&&(a[c][0]=a[c].x,a[c][1]=a[c].y),null!=a[c][1]&&(b[0]+=a[c][0],b[1]+=a[c][1],b[2]+=a[c][0]*a[c][0]*a[c][1],b[3]+=a[c][1]*Math.log(a[c][1]),b[4]+=a[c][0]*a[c][1]*Math.log(a[c][1]),b[5]+=a[c][0]*a[c][1]);for(var e=b[1]*b[2]-b[5]*b[5],f=Math.pow(Math.E,(b[2]*b[3]-b[5]*b[4])/e),g=(b[1]*b[4]-b[5]*b[3])/e,h=0,i=a.length;h<i;h++){var j=[a[h][0],f*Math.pow(Math.E,g*a[h][0])];d.push(j)}d.sort(function(a,b){return a[0]>b[0]?1:a[0]<b[0]?-1:0});var k="y = "+Math.round(100*f)/100+"e^("+Math.round(100*g)/100+"x)";return{equation:[f,g],points:d,string:k}}function c(a,b){for(var c=[0,0,0,0,0],d=0,e=[],f=a.length;d<a.length;d++)null!=a[d].x&&(a[d][0]=a[d].x,a[d][1]=a[d].y),null!=a[d][1]?(c[0]+=a[d][0],c[1]+=a[d][1],c[2]+=a[d][0]*a[d][0],c[3]+=a[d][0]*a[d][1],c[4]+=a[d][1]*a[d][1]):f-=1;for(var g=(f*c[3]-c[0]*c[1])/(f*c[2]-c[0]*c[0]),h=c[1]/f-g*c[0]/f,i=0,j=a.length;i<j;i++){var k=a[i][0]*g+h;b&&(k=parseFloat(k.toFixed(b)));var l=[a[i][0],k];e.push(l)}e.sort(function(a,b){return a[0]>b[0]?1:a[0]<b[0]?-1:0});var m="y = "+Math.round(100*g)/100+"x + "+Math.round(100*h)/100;return{equation:[g,h],points:e,string:m}}function d(a){var b=[0,0,0,0],c=0,d=[];for(i=a.length;c<i;c++)null!=a[c].x&&(a[c][0]=a[c].x,a[c][1]=a[c].y),null!=a[c][1]&&(b[0]+=Math.log(a[c][0]),b[1]+=a[c][1]*Math.log(a[c][0]),b[2]+=a[c][1],b[3]+=Math.pow(Math.log(a[c][0]),2));for(var f=(c*b[1]-b[2]*b[0])/(c*b[3]-b[0]*b[0]),g=(b[2]-f*b[0])/c,h=0,i=a.length;h<i;h++){var j=[a[h][0],g+f*Math.log(a[h][0])];d.push(j)}d.sort(function(a,b){return a[0]>b[0]?1:a[0]<b[0]?-1:0});var k="y = "+Math.round(100*g)/100+" + "+Math.round(100*f)/100+" ln(x)";return{equation:[g,f],points:d,string:k}}function f(a,b,c){"undefined"==typeof b&&(b=2);for(var d=[],e=[],f=[],g=0,i=0,j=0,k=b+1;j<k;j++){for(var l=0,m=a.length;l<m;l++)null!=a[l].x&&(a[l][0]=a[l].x,a[l][1]=a[l].y),null!=a[l][1]&&(g+=Math.pow(a[l][0],j)*a[l][1]);d.push(g),g=0;for(var n=[],o=0;o<k;o++){for(var l=0,m=a.length;l<m;l++)a[l][1]&&(i+=Math.pow(a[l][0],j+o));n.push(i),i=0}e.push(n)}e.push(d);for(var p=h(e,k),q=a.length+c,r=a[a.length-1][0]-a[a.length-2][0],j=0,m=q;j<m;j++){var s=0;if("undefined"!=typeof a[j])var t=a[j][0];else var t=a[a.length-1][0]+(j-a.length)*r;for(var u=0;u<p.length;u++)s+=p[u]*Math.pow(t,u);f.push([t,s])}f.sort(function(a,b){return a[0]>b[0]?1:a[0]<b[0]?-1:0});for(var v="y = ",j=p.length-1;j>=0;j--)v+=j>1?Math.round(100*p[j])/100+"x^"+j+" + ":1==j?Math.round(100*p[j])/100+"x + ":Math.round(100*p[j])/100;return{equation:p,points:f,string:v}}function g(a,b){function f(a){var c,b={},d=a.length,e=[];for(c=0;c<d;c+=1)b[a[c]]=a[c];for(c in b)e.push(b[c]);return e}function g(a){var b=1-a*a*a;return b*b*b}var b=b||.25,c=a.map(function(a){return a[0]}),d=f(c);2/d.length>b&&(b=Math.min(2/d.length,1),console.warn("updated bandwith to "+b));var e=a.map(function(a){return a[1]}),h=[],i=0,j=Math.floor(b*c.length)-1;for(var k in c){var l=c[k];k>0&&j<c.length-1&&c[j+1]-c[k]<c[k]-c[i]&&(i++,j++);var m;m=c[k]-c[i]>c[j]-c[k]?i:j;for(var n=Math.abs(1/(c[m]-l)),o=0,p=0,q=0,r=0,s=0,t=i;t<=j;){var w,u=c[t],v=e[t];w=t<k?l-u:u-l;var x=g(w*n),y=u*x;o+=x,p+=y,q+=u*y,r+=v*x,s+=v*y,t++}var D,z=p/o,A=r/o,B=s/o,C=q/o;D=C==z*z?0:(B-z*A)/(C-z*z);var E=A-D*z;h[k]=D*l+E}return{equation:"",points:c.map(function(a,b){return[a,h[b]]}),string:""}}function h(a,b){var c=0,d=0,e=0,f=0,g=0,h=a.length-1,i=new Array(b);for(c=0;c<h;c++){for(f=c,d=c+1;d<h;d++)Math.abs(a[c][d])>Math.abs(a[c][f])&&(f=d);for(e=c;e<h+1;e++)g=a[e][c],a[e][c]=a[e][f],a[e][f]=g;for(d=c+1;d<h;d++)for(e=h;e>=c;e--)a[e][d]-=a[e][c]*a[c][d]/a[c][c]}for(d=h-1;d>=0;d--){for(g=0,e=d+1;e<h;e++)g+=a[e][d]*i[e];i[d]=(a[h][d]-g)/a[d][d]}return i}function j(a,b){var c=SSE=SSYY=mean=0,d=a.length;for(a.sort(function(a,b){return a[0]>b[0]?1:a[0]<b[0]?-1:0}),c=0;c<a.length;c++)null!=a[c][1]?mean+=a[c][1]:d--;for(mean/=d,c=0;c<a.length;c++)null!=a[c][1]&&(SSYY+=Math.pow(a[c][1]-b[c][1],2),SSE+=Math.pow(a[c][1]-mean,2));return 1-SSYY/SSE}function k(a,b){var c=0,d=a.length;for(i=0;i<a.length;i++)null!=a[i][1]?c+=Math.pow(a[i][1]-b[i][1],2):d--;return c=Math.sqrt(c/(d-2))}a.wrap(a.Chart.prototype,"init",function(a){var e=arguments[1].series,h=[],i=0;for(i=0;i<e.length;i++){var l=e[i];if(l.regression&&!l.rendered){l.regressionSettings=l.regressionSettings||{},l.regressionSettings.tooltip=l.regressionSettings.tooltip||{},l.regressionSettings.dashStyle=l.regressionSettings.dashStyle||"solid",l.regressionSettings.decimalPlaces=l.regressionSettings.decimalPlaces||2,l.regressionSettings.useAllSeries=l.regressionSettings.useAllSeries||!1;var n,m=l.regressionSettings.type||"linear",o={data:[],color:l.color,yAxis:l.yAxis,lineWidth:2,marker:{enabled:!1},isRegressionLine:!0,visible:l.regressionSettings.visible,type:l.regressionSettings.linetype||"spline",name:l.regressionSettings.name||"Equation: %eq",id:l.regressionSettings.id,color:l.regressionSettings.color||"",dashStyle:l.regressionSettings.dashStyle||"solid",showInLegend:!l.regressionSettings.hideInLegend,tooltip:{valueSuffix:l.regressionSettings.tooltip.valueSuffix||" "}},p=l.data;if(l.regressionSettings.useAllSeries)for(p=[],di=0;di<e.length;di++){var q=e[di];p=p.concat(q.data)}if("linear"==m)n=c(p,l.regressionSettings.decimalPlaces),o.type="line";else if("exponential"==m)n=b(p);else if("polynomial"==m){var r=l.regressionSettings.order||2,s=l.regressionSettings.extrapolate||0;n=f(p,r,s)}else if("logarithmic"==m)n=d(p);else{if("loess"!=m){console.error("Invalid regression type: ",m);break}var t=l.regressionSettings.loessSmooth||25;n=g(p,t/100)}n.rSquared=j(p,n.points),n.rValue=Math.sqrt(n.rSquared).toFixed(l.regressionSettings.decimalPlaces),n.rSquared=n.rSquared.toFixed(l.regressionSettings.decimalPlaces),n.standardError=k(p,n.points).toFixed(l.regressionSettings.decimalPlaces),o.data=n.points,o.name=o.name.replace("%r2",n.rSquared),o.name=o.name.replace("%r",n.rValue),o.name=o.name.replace("%eq",n.string),o.name=o.name.replace("%se",n.standardError),0==o.visible&&(o.visible=!1),o.regressionOutputs=n,h.push(o),arguments[1].series[i].rendered=!0}}arguments[1].series=e.concat(h),a.apply(this,Array.prototype.slice.call(arguments,1))})}(Highcharts);
+﻿(function (factory) {
+    "use strict";
+
+    if (typeof module === "object" && module.exports) {
+        module.exports = factory;
+    } else {
+        factory(Highcharts);
+    }
+}(function (H) {
+    var processSerie = function (s, method, chart) {
+        if (s.regression && !s.rendered) {
+            s.regressionSettings = s.regressionSettings || {};
+            s.regressionSettings.tooltip = s.regressionSettings.tooltip || {};
+            s.regressionSettings.dashStyle = s.regressionSettings.dashStyle || 'solid';
+            s.regressionSettings.decimalPlaces = s.regressionSettings.decimalPlaces || 2;
+            s.regressionSettings.useAllSeries = s.regressionSettings.useAllSeries || false;
+
+            var regressionType = s.regressionSettings.type || "linear";
+            var regression;
+            var extraSerie = {
+                data: [],
+                color: s.regressionSettings.color || '',
+                yAxis: s.yAxis,
+                lineWidth: s.regressionSettings.lineWidth || 2,
+                marker: {enabled: false},
+                isRegressionLine: true,
+                visible: s.regressionSettings.visible,
+                type: s.regressionSettings.linetype || 'spline',
+                name: s.regressionSettings.name || "Equation: %eq",
+                id: s.regressionSettings.id,
+                dashStyle: s.regressionSettings.dashStyle || 'solid',
+                showInLegend: !s.regressionSettings.hideInLegend,
+                tooltip: {
+                    valueSuffix: s.regressionSettings.tooltip.valueSuffix || ' '
+                }
+            };
+
+            if (typeof s.regressionSettings.index !== 'undefined') {
+                extraSerie.index = s.regressionSettings.index;
+            }
+            if (typeof s.regressionSettings.legendIndex !== 'undefined') {
+                extraSerie.legendIndex = s.regressionSettings.legendIndex;
+            }
+
+            var mergedData = s.data;
+            if (s.regressionSettings.useAllSeries) {
+                mergedData = [];
+                for (di = 0; di < series.length; di++) {
+                    var seriesToMerge = series[di];
+                    mergedData = mergedData.concat(seriesToMerge.data);
+                }
+            }
+
+            if (regressionType == "linear") {
+                regression = _linear(mergedData, s.regressionSettings.decimalPlaces);
+                extraSerie.type = "line";
+            } else if (regressionType == "exponential") {
+                regression = _exponential(mergedData);
+            }
+            else if (regressionType == "polynomial") {
+                var order = s.regressionSettings.order || 2;
+                var extrapolate = s.regressionSettings.extrapolate || 0;
+                regression = _polynomial(mergedData, order, extrapolate);
+            } else if (regressionType == "power") {
+                regression = _power(mergedData);
+            } else if (regressionType == "logarithmic") {
+                regression = _logarithmic(mergedData);
+            } else if (regressionType == "loess") {
+                var loessSmooth = s.regressionSettings.loessSmooth || 25;
+                regression = _loess(mergedData, loessSmooth / 100);
+            } else {
+                console.error("Invalid regression type: ", regressionType);
+                return;
+            }
+
+            regression.rSquared = coefficientOfDetermination(mergedData, regression.points);
+            regression.rValue = Math.sqrt(regression.rSquared).toFixed(s.regressionSettings.decimalPlaces);
+            regression.rSquared = regression.rSquared.toFixed(s.regressionSettings.decimalPlaces);
+            regression.standardError = standardError(mergedData, regression.points).toFixed(s.regressionSettings.decimalPlaces);
+            extraSerie.data = regression.points;
+            extraSerie.name = extraSerie.name.replace("%r2", regression.rSquared);
+            extraSerie.name = extraSerie.name.replace("%r", regression.rValue);
+            extraSerie.name = extraSerie.name.replace("%eq", regression.string);
+            extraSerie.name = extraSerie.name.replace("%se", regression.standardError);
+
+            if (extraSerie.visible === false) {
+                extraSerie.visible = false;
+            }
+            extraSerie.regressionOutputs = regression;
+            return extraSerie;
+
+        }
+    }
+
+    H.wrap(H.Chart.prototype, 'init', function (proceed) {
+        var series = arguments[1].series;
+        var extraSeries = [];
+        var i = 0;
+        for (i = 0; i < series.length; i++) {
+            var s = series[i];
+            if (s.regression) {
+                var extraSerie = processSerie(s, 'init', this);
+                extraSeries.push(extraSerie);
+                arguments[1].series[i].rendered = true;
+            }
+        }
+
+        if (extraSerie) {
+            arguments[1].series = series.concat(extraSeries);
+        }
+
+        proceed.apply(this, Array.prototype.slice.call(arguments, 1));
+
+
+    });
+
+    H.wrap(H.Chart.prototype, 'addSeries', function (proceed) {
+        var s = arguments[1];
+        var extraSerie = processSerie(s, 'addSeries', this);
+        arguments[1].rendered = true;
+        if (extraSerie) {
+            this.addSeries(extraSerie);
+        }
+        return proceed.apply(this, Array.prototype.slice.call(arguments, 1));
+    });
+
+
+    /**
+     * Code extracted from https://github.com/Tom-Alexander/regression-js/
+     */
+    function _exponential(data) {
+        var sum = [0, 0, 0, 0, 0, 0], n = 0, results = [];
+
+        for (len = data.length; n < len; n++) {
+            if (data[n].x != null) {
+                data[n][0] = data[n].x;
+                data[n][1] = data[n].y;
+            }
+            if (data[n][1] != null) {
+                sum[0] += data[n][0]; // X
+                sum[1] += data[n][1]; // Y
+                sum[2] += data[n][0] * data[n][0] * data[n][1]; // XXY
+                sum[3] += data[n][1] * Math.log(data[n][1]); // Y Log Y
+                sum[4] += data[n][0] * data[n][1] * Math.log(data[n][1]); //YY Log Y
+                sum[5] += data[n][0] * data[n][1]; //XY
+            }
+        }
+
+        var denominator = (sum[1] * sum[2] - sum[5] * sum[5]);
+        var A = Math.pow(Math.E, (sum[2] * sum[3] - sum[5] * sum[4]) / denominator);
+        var B = (sum[1] * sum[4] - sum[5] * sum[3]) / denominator;
+
+        for (var i = 0, len = data.length; i < len; i++) {
+            var coordinate = [data[i][0], A * Math.pow(Math.E, B * data[i][0])];
+            results.push(coordinate);
+        }
+
+        results.sort(function (a, b) {
+            if (a[0] > b[0]) {
+                return 1;
+            }
+            if (a[0] < b[0]) {
+                return -1;
+            }
+            return 0;
+        });
+
+        var string = 'y = ' + Math.round(A * 100) / 100 + 'e^(' + Math.round(B * 100) / 100 + 'x)';
+
+        return {equation: [A, B], points: results, string: string};
+    }
+
+
+    /**
+     * Code extracted from https://github.com/Tom-Alexander/regression-js/
+     * Human readable formulas:
+     *
+     *              N * Σ(XY) - Σ(X)
+     * intercept = ---------------------
+     *              N * Σ(X^2) - Σ(X)^2
+     *
+     * correlation = N * Σ(XY) - Σ(X) * Σ (Y) / √ (  N * Σ(X^2) - Σ(X) ) * ( N * Σ(Y^2) - Σ(Y)^2 ) ) )
+     *
+     */
+    function _linear(data, decimalPlaces) {
+        var sum = [0, 0, 0, 0, 0], n = 0, results = [], N = data.length;
+
+        for (; n < data.length; n++) {
+            if (data[n]['x'] != null) {
+                data[n][0] = data[n].x;
+                data[n][1] = data[n].y;
+            }
+            if (data[n][1] != null) {
+                sum[0] += data[n][0]; //Σ(X)
+                sum[1] += data[n][1]; //Σ(Y)
+                sum[2] += data[n][0] * data[n][0]; //Σ(X^2)
+                sum[3] += data[n][0] * data[n][1]; //Σ(XY)
+                sum[4] += data[n][1] * data[n][1]; //Σ(Y^2)
+            } else {
+                N -= 1;
+            }
+        }
+
+        var gradient = (N * sum[3] - sum[0] * sum[1]) / (N * sum[2] - sum[0] * sum[0]);
+        var intercept = (sum[1] / N) - (gradient * sum[0]) / N;
+        // var correlation = (N * sum[3] - sum[0] * sum[1]) / Math.sqrt((N * sum[2] - sum[0] * sum[0]) * (N * sum[4] - sum[1] * sum[1]));
+
+        for (var i = 0, len = data.length; i < len; i++) {
+            var coorY = data[i][0] * gradient + intercept;
+            if (decimalPlaces)
+                coorY = parseFloat(coorY.toFixed(decimalPlaces));
+            var coordinate = [data[i][0], coorY];
+            results.push(coordinate);
+        }
+
+        results.sort(function (a, b) {
+            if (a[0] > b[0]) {
+                return 1;
+            }
+            if (a[0] < b[0]) {
+                return -1;
+            }
+            return 0;
+        });
+
+        var string = 'y = ' + Math.round(gradient * 100) / 100 + 'x + ' + Math.round(intercept * 100) / 100;
+        return {equation: [gradient, intercept], points: results, string: string};
+    }
+
+    /**
+     *  Code extracted from https://github.com/Tom-Alexander/regression-js/
+     */
+    function _logarithmic(data) {
+        var sum = [0, 0, 0, 0], n = 0, results = [], mean = 0;
+
+
+        for (len = data.length; n < len; n++) {
+            if (data[n].x != null) {
+                data[n][0] = data[n].x;
+                data[n][1] = data[n].y;
+            }
+            if (data[n][1] != null) {
+                sum[0] += Math.log(data[n][0]);
+                sum[1] += data[n][1] * Math.log(data[n][0]);
+                sum[2] += data[n][1];
+                sum[3] += Math.pow(Math.log(data[n][0]), 2);
+            }
+        }
+
+        var B = (n * sum[1] - sum[2] * sum[0]) / (n * sum[3] - sum[0] * sum[0]);
+        var A = (sum[2] - B * sum[0]) / n;
+
+        for (var i = 0, len = data.length; i < len; i++) {
+            var coordinate = [data[i][0], A + B * Math.log(data[i][0])];
+            results.push(coordinate);
+        }
+
+        results.sort(function (a, b) {
+            if (a[0] > b[0]) {
+                return 1;
+            }
+            if (a[0] < b[0]) {
+                return -1;
+            }
+            return 0;
+        });
+
+        var string = 'y = ' + Math.round(A * 100) / 100 + ' + ' + Math.round(B * 100) / 100 + ' ln(x)';
+
+        return {equation: [A, B], points: results, string: string};
+    }
+
+    /**
+     * Code extracted from https://github.com/Tom-Alexander/regression-js/
+     */
+    function _power(data) {
+        var sum = [0, 0, 0, 0], n = 0, results = [];
+
+        for (len = data.length; n < len; n++) {
+            if (data[n].x != null) {
+                data[n][0] = data[n].x;
+                data[n][1] = data[n].y;
+            }
+            if (data[n][1] != null) {
+                sum[0] += Math.log(data[n][0]);
+                sum[1] += Math.log(data[n][1]) * Math.log(data[n][0]);
+                sum[2] += Math.log(data[n][1]);
+                sum[3] += Math.pow(Math.log(data[n][0]), 2);
+            }
+        }
+
+        var B = (n * sum[1] - sum[2] * sum[0]) / (n * sum[3] - sum[0] * sum[0]);
+        var A = Math.pow(Math.E, (sum[2] - B * sum[0]) / n);
+
+        for (var i = 0, len = data.length; i < len; i++) {
+            var coordinate = [data[i][0], A * Math.pow(data[i][0], B)];
+            results.push(coordinate);
+        }
+
+        results.sort(function (a, b) {
+            if (a[0] > b[0]) {
+                return 1;
+            }
+            if (a[0] < b[0]) {
+                return -1;
+            }
+            return 0;
+        });
+
+        var string = 'y = ' + Math.round(A * 100) / 100 + 'x^' + Math.round(B * 100) / 100;
+
+        return {equation: [A, B], points: results, string: string};
+    }
+
+    /**
+     * Code extracted from https://github.com/Tom-Alexander/regression-js/
+     */
+    function _polynomial(data, order, extrapolate) {
+        if (typeof order == 'undefined') {
+            order = 2;
+        }
+        var lhs = [], rhs = [], results = [], a = 0, b = 0, i = 0, k = order + 1;
+
+        for (; i < k; i++) {
+            for (var l = 0, len = data.length; l < len; l++) {
+                if (data[l].x != null) {
+                    data[l][0] = data[l].x;
+                    data[l][1] = data[l].y;
+                }
+                if (data[l][1] != null) {
+                    a += Math.pow(data[l][0], i) * data[l][1];
+                }
+            }
+            lhs.push(a);
+            a = 0;
+            var c = [];
+            for (var j = 0; j < k; j++) {
+                for (var l = 0, len = data.length; l < len; l++) {
+                    if (data[l][1]) {
+                        b += Math.pow(data[l][0], i + j);
+                    }
+                }
+                c.push(b);
+                b = 0;
+            }
+            rhs.push(c);
+        }
+        rhs.push(lhs);
+
+        var equation = gaussianElimination(rhs, k);
+
+        var resultLength = data.length + extrapolate;
+        var step = data[data.length - 1][0] - data[data.length - 2][0];
+        for (var i = 0, len = resultLength; i < len; i++) {
+            var answer = 0;
+            var x = 0;
+            if (typeof data[i] !== 'undefined') {
+                x = data[i][0];
+            } else {
+                x = data[data.length - 1][0] + (i - data.length) * step;
+            }
+
+            for (var w = 0; w < equation.length; w++) {
+                answer += equation[w] * Math.pow(x, w);
+            }
+            results.push([x, answer]);
+        }
+
+        results.sort(function (a, b) {
+            if (a[0] > b[0]) {
+                return 1;
+            }
+            if (a[0] < b[0]) {
+                return -1;
+            }
+            return 0;
+        });
+
+        var string = 'y = ';
+
+        for (var i = equation.length - 1; i >= 0; i--) {
+            if (i > 1) string += Math.round(equation[i] * 100) / 100 + 'x^' + i + ' + ';
+            else if (i == 1) string += Math.round(equation[i] * 100) / 100 + 'x' + ' + ';
+            else string += Math.round(equation[i] * 100) / 100;
+        }
+
+        return {equation: equation, points: results, string: string};
+    }
+
+    /**
+     * @author: Ignacio Vazquez
+     * Based on
+     * - http://commons.apache.org/proper/commons-math/download_math.cgi LoesInterpolator.java
+     * - https://gist.github.com/avibryant/1151823
+     */
+    function _loess(data, bandwidth) {
+        bandwidth = bandwidth || 0.25;
+
+        var xval = data.map(function (pair) {
+            return pair[0];
+        });
+        var distinctX = array_unique(xval);
+        if (2 / distinctX.length > bandwidth) {
+            bandwidth = Math.min(2 / distinctX.length, 1);
+            console.warn("updated bandwith to " + bandwidth);
+        }
+
+        var yval = data.map(function (pair) {
+            return pair[1];
+        });
+
+        function array_unique(values) {
+            var o = {}, i, l = values.length, r = [];
+            for (i = 0; i < l; i += 1) o[values[i]] = values[i];
+            for (i in o) r.push(o[i]);
+            return r;
+        }
+
+        function tricube(x) {
+            var tmp = 1 - x * x * x;
+            return tmp * tmp * tmp;
+        }
+
+        var res = [];
+
+        var left = 0;
+        var right = Math.floor(bandwidth * xval.length) - 1;
+
+        for (var i in xval) {
+            var x = xval[i];
+
+            if (i > 0) {
+                if (right < xval.length - 1 &&
+                    xval[right + 1] - xval[i] < xval[i] - xval[left]) {
+                    left++;
+                    right++;
+                }
+            }
+            //console.debug("left: "+left  + " right: " + right );
+            var edge;
+            if (xval[i] - xval[left] > xval[right] - xval[i])
+                edge = left;
+            else
+                edge = right;
+            var denom = Math.abs(1.0 / (xval[edge] - x));
+            var sumWeights = 0;
+            var sumX = 0, sumXSquared = 0, sumY = 0, sumXY = 0;
+
+            var k = left;
+            while (k <= right) {
+                var xk = xval[k];
+                var yk = yval[k];
+                var dist;
+                if (k < i) {
+                    dist = (x - xk);
+                } else {
+                    dist = (xk - x);
+                }
+                var w = tricube(dist * denom);
+                var xkw = xk * w;
+                sumWeights += w;
+                sumX += xkw;
+                sumXSquared += xk * xkw;
+                sumY += yk * w;
+                sumXY += yk * xkw;
+                k++;
+            }
+
+            var meanX = sumX / sumWeights;
+            //console.debug(meanX);
+            var meanY = sumY / sumWeights;
+            var meanXY = sumXY / sumWeights;
+            var meanXSquared = sumXSquared / sumWeights;
+
+            var beta;
+            if (meanXSquared == meanX * meanX)
+                beta = 0;
+            else
+                beta = (meanXY - meanX * meanY) / (meanXSquared - meanX * meanX);
+
+            var alpha = meanY - beta * meanX;
+            res[i] = beta * x + alpha;
+        }
+        //console.debug(res);
+        return {
+            equation: "",
+            points: xval.map(function (x, i) {
+                return [x, res[i]];
+            }),
+            string: ""
+        };
+    }
+
+
+    /**
+     * Code extracted from https://github.com/Tom-Alexander/regression-js/
+     */
+    function gaussianElimination(a, o) {
+        var i = 0, j = 0, k = 0, maxrow = 0, tmp = 0, n = a.length - 1, x = new Array(o);
+        for (i = 0; i < n; i++) {
+            maxrow = i;
+            for (j = i + 1; j < n; j++) {
+                if (Math.abs(a[i][j]) > Math.abs(a[i][maxrow]))
+                    maxrow = j;
+            }
+            for (k = i; k < n + 1; k++) {
+                tmp = a[k][i];
+                a[k][i] = a[k][maxrow];
+                a[k][maxrow] = tmp;
+            }
+            for (j = i + 1; j < n; j++) {
+                for (k = n; k >= i; k--) {
+                    a[k][j] -= a[k][i] * a[i][j] / a[i][i];
+                }
+            }
+        }
+        for (j = n - 1; j >= 0; j--) {
+            tmp = 0;
+            for (k = j + 1; k < n; k++)
+                tmp += a[k][j] * x[k];
+            x[j] = (a[n][j] - tmp) / a[j][j];
+        }
+        return (x);
+    }
+
+    /**
+     * @author Ignacio Vazquez
+     * See http://en.wikipedia.org/wiki/Coefficient_of_determination for theaorical details
+     */
+    function coefficientOfDetermination(data, pred) {
+        // Sort the initial data { pred array (model's predictions) is sorted  }
+        // The initial data must be sorted in the same way in order to calculate the coefficients
+        data.sort(function (a, b) {
+            if (a[0] > b[0]) {
+                return 1;
+            }
+            if (a[0] < b[0]) {
+                return -1;
+            }
+            return 0;
+        });
+
+        // Calc the mean
+        var mean = 0;
+        var N = data.length;
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][1] != null) {
+                mean += data[i][1];
+            } else {
+                N--;
+            }
+        }
+        mean /= N;
+
+        // Calc the coefficent of determination
+        var SSE = 0;
+        var SSYY = 0;
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][1] != null) {
+                SSYY += Math.pow(data[i][1] - pred[i][1], 2);
+                SSE += Math.pow(data[i][1] - mean, 2);
+            }
+        }
+        return 1 - ( SSYY / SSE);
+    }
+
+    function standardError(data, pred) {
+        var SE = 0, N = data.length;
+
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][1] != null) {
+                SE += Math.pow(data[i][1] - pred[i][1], 2);
+            } else {
+                N--;
+            }
+        }
+        SE = Math.sqrt(SE / (N - 2));
+
+        return SE;
+    }
+}));

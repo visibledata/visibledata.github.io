@@ -154,7 +154,7 @@ recipes_df %&gt;%
 ##  8 NorthAmerican    &lt;chr [28]&gt;             28
 ##  9 NorthAmerican    &lt;chr [27]&gt;             27
 ## 10 NorthAmerican    &lt;chr [26]&gt;             26
-## # ... with 56,488 more rows</code></pre>
+## # … with 56,488 more rows</code></pre>
 <p>With our ingredients in a list column it’s now also easy to filter recipes by specific ingredients:</p>
 <pre class="r"><code>recipes_df %&gt;%
   filter(str_detect(ingredients, &quot;garlic&quot;))</code></pre>
@@ -171,7 +171,7 @@ recipes_df %&gt;%
 ##  8 African &lt;chr [12]&gt; 
 ##  9 African &lt;chr [15]&gt; 
 ## 10 African &lt;chr [10]&gt; 
-## # ... with 16,883 more rows</code></pre>
+## # … with 16,883 more rows</code></pre>
 <p>I’m going to come back to using this dataset in the future to explore graph theory and machine learning examples, but for now let’s <a href="https://eagereyes.org/blog/2017/joy-plots">finish like it’s Summer 2017</a> with a ridgeline plot from the excellent <code>ggplot2</code> extension <code>ggridges</code>:</p>
 <pre class="r"><code>library(&quot;ggridges&quot;)
 recipes_df %&gt;%

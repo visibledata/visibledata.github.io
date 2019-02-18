@@ -11,7 +11,7 @@ tags:
   - dataviz
   - GIS
   - R
-banner: "blog/2019-02-13-oxford-centres_files/gg_century_centres.png"
+banner: "blog/2019-02-18-oxford-centres_files/gg_century_centres.png"
 description: >
   University of Oxford has over 800 years of history to it, but if you want to organise a meeting at the centre of campus... where do you meet?
 editor_options: 
@@ -72,12 +72,12 @@ In this blogpost I go through all the steps of scraping and combining data from 
 
 <div class="tab-content"><div id="including-plots" class="section level2 tab-pane tabbed-pane active" role="tabpanel">
 
-![](/blog/2019-02-13-oxford-centres_files/gg_centres_through_time.png){max-width=530px}
+![](/blog/2019-02-18-oxford-centres_files/gg_centres_through_time.png){max-width=530px}
 
 
 </div><div id="and-more" class="section level2 tab-pane tabbed-pane" role="tabpanel">
 
-![](/blog/2019-02-13-oxford-centres_files/oxford-centres.gif){max-width=530px}
+![](/blog/2019-02-18-oxford-centres_files/oxford-centres.gif){max-width=530px}
 
 </div></div>
 
@@ -664,7 +664,7 @@ gg_century_centres <- gg_century_centres +
 gg_century_centres
 ```
 
-![](/blog/2019-02-13-oxford-centres_files/gg_century_centres.png){width=100%}
+![](/blog/2019-02-18-oxford-centres_files/gg_century_centres.png){width=100%}
 
 ```{r, echo=FALSE}
 century_centres <- colleges_by_century %>%
@@ -738,7 +738,7 @@ gg_centres_through_time <- gg_oxford_city +
 gg_centres_through_time
 ```
 
-![](/blog/2019-02-13-oxford-centres_files/gg_centres_through_time.png){width=100%}
+![](/blog/2019-02-18-oxford-centres_files/gg_centres_through_time.png){width=100%}
 
 I'm slightly late to the `gganimate` bandwagon, but let's animate this! The `transition_states()` function will create a GIF that transitions through the `time_period` column, and I've used `shadow_wake()` so that the centre of mass can be tracked more easily by the reader.
 
@@ -756,7 +756,7 @@ anim +
 anim_save(here("oxford-centres.gif"))
 ```
 
-![](/blog/2019-02-13-oxford-centres_files/oxford-centres.gif)
+![](/blog/2019-02-18-oxford-centres_files/oxford-centres.gif)
 
 I'd really love to be happy with this GIF, but it's really not good! The main issue is that `ggamp` only allows integer zoom levels, so the map is either far too zoomed in or out. It's also quite slow to experiment with `geom_sf` at the moment, I'm quite excited for [Thomas Pederson's promise to speed up `geom_sf`](https://twitter.com/thomasp85/status/1093874268809674752).
 
