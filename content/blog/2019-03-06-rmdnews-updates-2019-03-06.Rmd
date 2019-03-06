@@ -1,0 +1,73 @@
+---
+title: '#rmdnews updates 2019-03-06'
+author: Martin John Hadley
+date: '2019-03-06'
+slug: rmdnews-updates-2019-03-06
+categories:
+  - R
+tags:
+  - rmdnews
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r emoji, include=FALSE}
+library("emo")
+```
+
+
+It's hard keeping up to date with the awesome new things that we can do with [#rstats](https://twitter.com/search?q=%23rstats). There are new packages and interesting new use cases of existing `r emo::ji("package")` coming out all of the time. Mara Averick ([\@dataandme](https://twitter.com/dataandme)) is an incredible source of overviews and introductions to awesome stuff, if you don't already follow her then do so immediately.
+
+But how about `r emo::ji("package")` updates? We often upgrade a package in a rush when we're told the `r emo::ji("package")` we want to install requires a new version of X. This means we miss out on potentially useful (or exciting) new features of packages that we already know and love.
+
+So, I suggest as a community we use [#rmdnews](https://twitter.com/search?q=%23rstats) to tag tweets and blogposts that are solely to do with updates to existing packages.
+
+Why this hashtag? Most^[citation] R packages contain a NEWS.md file which is where package developers are encouraged ([but **not** required](http://r-pkgs.had.co.nz/release.html#news)) to document updates and new features in their `r emo::ji("package")`. You find the NEWS.md file in one of two places:
+
+- On CRAN in the DESCRIPTION file, e.g. [https://cran.r-project.org/web/packages/dplyr/index.html](https://cran.r-project.org/web/packages/dplyr/index.html)
+
+- If the package lives on Github, it's extremely likely to have a NEWS.md file in the repo, e.g. https://github.com/tidyverse/dplyr/blob/master/NEWS.md 
+
+# #rmdnews 2019-03-06
+
+To get into the spirit of things, here are the new things I noticed in packages I needed to update to install tidyjson.
+
+## forcats v0.4.0 #rmdnews
+
+I love [`forcats`](https://forcats.tidyverse.org/). It massively simplifies manipulating factors, particularly within a tidyverse workflow.
+
+### New functions
+
+`fct_cross()` is an entirely new function that allows us to combine together multiple factors. It's similar to `purrr::cross` which creates all combinations of list elements. The functionality was [suggested back in July 2018](https://github.com/tidyverse/forcats/issues/136) along with this great example use case:
+
+```{r}
+library("forcats")
+gss_cat %>% 
+  select(year, marital, race, rincome) %>%
+	mutate(
+		marital_race = fct_cross(marital, race, sep = " & ")
+	)
+```
+
+`fct_match` is an entirely new function that allows us to test if specific levels exist inside a factor. This allows us to filter by multiple conditions:
+
+```{r}
+gss_cat %>%
+  filter(fct_match(marital, c("Married", "Divorced")))
+```
+
+This functionality was [suggested back in April 2018](https://github.com/tidyverse/forcats/issues/126) so as to explicitly provide errors if levels do not exist in the factor. Compare the output using `fct_match` and `%in%` below:
+
+```{r}
+gss_cat %>%
+  filter(fct_match(marital, c("Married", "Divorceeeed")))
+```
+
+```{r}
+gss_cat %>%
+  filter(marital %in% c("Married", "Divorceeeed"))
+```
+
+### Improvements
+
+[^citation]: Citation needed. Or better yet, data.
