@@ -1,0 +1,63 @@
+---
+title: Extracting DOI from text
+author: Martin John Hadley
+date: '2019-03-13'
+slug: extracting-doi-from-text
+categories:
+  - R
+  - data scraping
+tidy: 'styler'
+tags:
+  - regular expressions
+  - stringr
+banner: "img/blog-images/header-images/2019-03-13_extracting-doi-from-text.png"
+description: "This one weird regex matches 97% of DOI..."
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+<p>At least once a month I’m tasked with something that involves working with DOI, but I’ve never bothered to write a function for extracting these from texts. Time to end that by putting together a tidyversesque <code>add_doi()</code> function!</p>
+<p>… wait, why?</p>
+<p>The <a href="https://r4ds.had.co.nz/functions.html">R for Data Science</a> book has lots of excellent advice, including this snippet about reducing duplicated code by writing functions:</p>
+<p><img src="/blog/2019-03-13_extracting-doi-from-text_files/when-to-write-a-function.png" alt="&quot;&quot;" width="550" /></p>
+<p>So, what are DOI? DOI (Digital Object Identifiers) are the gold standard for citations. They’re guaranteed to point directly to the resource you care about. But how can we reliably extracting DOI from, for example, the following references?</p>
+<pre class="r"><code>library(&quot;tidyverse&quot;)
+example_references &lt;- tibble(
+  text_citation = c(&#39;Gueorgi Kossinets and Duncan J. Watts, &quot;Origins of Homophily in an Evolving Social Network,&quot; American Journal of Sociology 115 (2009):414, accessed December 5, 2014, doi:10.1086/599247&#39;,
+                        &#39;Morey, C. C., Cong, Y., Zheng, Y., Price, M., &amp; Morey, R. D. (2015). The color-sharing bonus: Roles of perceptual organization and attentive processes in visual working memory. Archives of Scientific Psychology, 3, 18–29. https://doi.org/10.1037/arc0000014&#39;,
+                        &#39;Barros, B., Read, T. &amp; Verdejo, M. F. (2008) Virtual collaborative experimentation:
+an approach combining remote and local labs. IEEE Transactions on Education. 51 (2),
+242–250. Available from: doi:10.1109/TE.2007.908071&#39;))</code></pre>
+<p>CrossRef have a great blogpost about how to <a href="https://www.crossref.org/blog/dois-and-matching-regular-expressions/">match DOIs using regular expressions</a> where they recommend the following regex, which matches 97% of the 74.9 million DOI they tested. The majority of the ~500,000 not matched by this regex are from the <em>bad old days</em> of the early noughties, and outside of our interest.</p>
+<pre class="r"><code>doi_regex &lt;- &quot;10.\\d{4,9}/[-._;()/:a-z0-9A-Z]+&quot;</code></pre>
+<p>Using <code>str_extract()</code> from the tidyverse package <code>stringr</code> allows us to extract the DOIs from our reference:</p>
+<pre class="r"><code>example_references %&gt;%
+  mutate(doi = str_extract(text_citation, doi_regex))</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   text_citation                                            doi             
+##   &lt;chr&gt;                                                    &lt;chr&gt;           
+## 1 &quot;Gueorgi Kossinets and Duncan J. Watts, \&quot;Origins of Ho… 10.1086/599247  
+## 2 Morey, C. C., Cong, Y., Zheng, Y., Price, M., &amp; Morey, … 10.1037/arc0000…
+## 3 &quot;Barros, B., Read, T. &amp; Verdejo, M. F. (2008) Virtual c… 10.1109/TE.2007…</code></pre>
+<p>This can all be rolled together into a function; <code>add_doi()</code>. If you’re unfamiliar with <code>!!</code>, <code>enquo</code> and <code>:=</code> that’s because I’m using <code>tidyeval</code>, <a href="https://tidyeval.tidyverse.org/modifying-inputs.html">find out more about tidyeval here</a>.</p>
+<pre class="r"><code>add_doi &lt;- function(.data, citation_column, name = &quot;doi&quot;) {
+  citation_column &lt;- enquo(citation_column)
+
+  if (name != &quot;n&quot; &amp;&amp; name %in% colnames(.data)) {
+    rlang::abort(glue::glue(&quot;Column `{name}` already exists in the data&quot;))
+  }
+  
+  .data %&gt;%
+    mutate(!!name := str_extract(!!citation_column, &quot;10.\\d{4,9}/[-._;()/:a-z0-9A-Z]+&quot;))
+}</code></pre>
+<p>Because the function is written with <code>tidyeval</code> I can use <em>naked column names</em> just as a I would with <code>dplyr::add_count()</code>:</p>
+<pre class="r"><code>example_references %&gt;%
+  add_doi(text_citation, &quot;extracted_doi&quot;)</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   text_citation                                         extracted_doi      
+##   &lt;chr&gt;                                                 &lt;chr&gt;              
+## 1 &quot;Gueorgi Kossinets and Duncan J. Watts, \&quot;Origins of… 10.1086/599247     
+## 2 Morey, C. C., Cong, Y., Zheng, Y., Price, M., &amp; More… 10.1037/arc0000014 
+## 3 &quot;Barros, B., Read, T. &amp; Verdejo, M. F. (2008) Virtua… 10.1109/TE.2007.90…</code></pre>
