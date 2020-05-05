@@ -1,6 +1,6 @@
 ---
 title: At Visible Data *we* do...
-author: Martin John Hadley
+author: Charlie Joey Hadley
 date: '2018-03-29'
 slug: at-visible-data-we-do
 categories:
@@ -17,7 +17,7 @@ There are so many awesome folks in the [#rstats](https://twitter.com/search?src=
 
 **Visible Data Ltd** is all about encouraging/consulting on how folks can be open and transparent about their research, analyses, data and the workflows behind these - and this necessarily includes being candid about personal struggles and the complexities of living that often get smoothed over any ignored.
 
-As of March 2018, **Visible Data Ltd** is a single-person consultancy. It's just me ([\@martinjhnhadley](http://twitter.com/martinjhnhadley)) working on it. Something that really challenges me about that is deciding how to write about what Visible Data is and what it does. In the future, I plan to collaborate with a few folks I know on consultancy projects and I'm really excited about that. Because of that I want to prepare a consultancy that is setup to have multiple personalities in it and respect all their contributions and ideas, also as a genderqueer human I find it particularly important to use non-exclusionary language. This leads to the slightly uncomfortable requirement to use the phrase
+As of March 2018, **Visible Data Ltd** is a single-person consultancy. It's just me ([\@charliejhadley](http://twitter.com/charliejhadley)) working on it. Something that really challenges me about that is deciding how to write about what Visible Data is and what it does. In the future, I plan to collaborate with a few folks I know on consultancy projects and I'm really excited about that. Because of that I want to prepare a consultancy that is setup to have multiple personalities in it and respect all their contributions and ideas, also as a genderqueer human I find it particularly important to use non-exclusionary language. This leads to the slightly uncomfortable requirement to use the phrase
 
 <blockquote>
 At Visible Data **we** do...
@@ -26,7 +26,7 @@ At Visible Data **we** do...
 This phrasing has significant commercial benefits, it makes the consultancy seem more legitimate but it also feels weird when I write about an opinion/view of the consultancy which (at present) is exclusively mine. I felt enough discomfort about this to run a Twitter poll, I was delighted that the poll had quite high engagement rate of ~7% (20 votes from 293 impressions):
 
 <center>
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">I run a <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">#dataviz</a> consultancy that&#39;s currently just me, thought might bring other folks on board in the future... if in blogs etc I write <br><br>&quot;At Visible Data *we* do X&quot; <br><br>how does that sound?</p>&mdash; Martin John Hadley (@martinjhnhadley) <a href="https://twitter.com/martinjhnhadley/status/976835348318875648?ref_src=twsrc%5Etfw">March 22, 2018</a></blockquote>
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">I run a <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">#dataviz</a> consultancy that&#39;s currently just me, thought might bring other folks on board in the future... if in blogs etc I write <br><br>&quot;At Visible Data *we* do X&quot; <br><br>how does that sound?</p>&mdash; Charlie Joey Hadley (@charliejhadley) <a href="https://twitter.com/charliejhadley/status/976835348318875648?ref_src=twsrc%5Etfw">March 22, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </center>
 

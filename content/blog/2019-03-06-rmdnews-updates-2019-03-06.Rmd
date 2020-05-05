@@ -1,8 +1,9 @@
 ---
 title: '#rmdnews updates 2019-03-06'
-author: Martin John Hadley
+author: Charlie Joey Hadley
 date: '2019-03-06'
 slug: rmdnews-updates-2019-03-06
+draft: yes
 categories:
   - R
 tags:
@@ -41,7 +42,7 @@ I love [`forcats`](https://forcats.tidyverse.org/). It massively simplifies mani
 `fct_cross()` is an entirely new function that allows us to combine together multiple factors. It's similar to `purrr::cross` which creates all combinations of list elements. The functionality was [suggested back in July 2018](https://github.com/tidyverse/forcats/issues/136) along with this great example use case:
 
 ```{r}
-library("forcats")
+library("tidyverse")
 gss_cat %>% 
   select(year, marital, race, rincome) %>%
 	mutate(
@@ -58,12 +59,12 @@ gss_cat %>%
 
 This functionality was [suggested back in April 2018](https://github.com/tidyverse/forcats/issues/126) so as to explicitly provide errors if levels do not exist in the factor. Compare the output using `fct_match` and `%in%` below:
 
-```{r}
+```{r, eval=FALSE}
 gss_cat %>%
   filter(fct_match(marital, c("Married", "Divorceeeed")))
 ```
 
-```{r}
+```{r, eval = FALSE}
 gss_cat %>%
   filter(marital %in% c("Married", "Divorceeeed"))
 ```

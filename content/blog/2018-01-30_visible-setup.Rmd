@@ -1,6 +1,6 @@
 ---
 title: Visible Setup
-author: Martin John Hadley
+author: Charlie Joey Hadley
 date: '2018-01-30'
 slug: visible-setup
 categories:
@@ -22,7 +22,7 @@ banner: "img/blog-images/header-images/2018-01-30_visible-setup_header-image.png
         <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
             <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
                 <br>
-                Martin John Hadley
+                Charlie Joey Hadley
                 <br>
                 (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
         </center>
@@ -200,7 +200,7 @@ This website uses the wonderful [Hugo Universal Theme](https://github.com/devcow
         <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
             <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
                 <br>
-                Martin John Hadley
+                Charlie Joey Hadley
                 <br>
                 (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
         </center>

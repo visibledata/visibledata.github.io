@@ -86,7 +86,7 @@ paginate = 10
 
 [params]
     viewMorePostLink = "/blog/"
-    author = "Martin John Hadley"
+    author = "Charlie Joey Hadley"
     defaultKeywords = ["devows", "hugo", "go"]
     defaultDescription = "Site template made by devcows using hugo"
     summary_length = 200
