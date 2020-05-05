@@ -1,6 +1,6 @@
 ---
 title: One weird regex matches 97% of DOI...
-author: Martin John Hadley
+author: Charlie Joey Hadley
 date: '2019-03-13'
 slug: extracting-doi-from-text
 categories:

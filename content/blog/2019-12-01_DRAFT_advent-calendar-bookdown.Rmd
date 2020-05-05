@@ -1,0 +1,15 @@
+---
+title: XXX Advent Calendar (BOOKDOWN)
+author: ''
+date: '2019-12-01'
+slug: xxx-advent-calendar-bookdown
+categories: []
+tags: []
+draft: yes
+---
+
+1. Chapters automatically get headings, 
+
+\# Deciding between $ and []
+
+Will automatically be converted to: deciding-between--and-----

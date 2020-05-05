@@ -30,7 +30,7 @@ This course is designed for those who want to create interactive data visualisat
 
 This course is designed for both new and existing users of R. All the pre-requisite skills for creating the data visualisations will be taught in the two days. We've split tickets into new and existing users to save you time - no pre-course survey!
 
-Your trainer (Martin John Hadley) has run this course for 3 years to over 500 students. Martin is confident that you won't be left behind if your new and will have plenty to learn if you're unfamiliar with the tidyverse and htmlwidgets.
+Your trainer (Charlie Joey Hadley) has run this course for 3 years to over 500 students. Martin is confident that you won't be left behind if your new and will have plenty to learn if you're unfamiliar with the tidyverse and htmlwidgets.
 
 ### BYOD (Bring Your Own Device)
 
@@ -47,7 +47,7 @@ This is a two day course (2019/04/01 and 2019/04/02) in the dedicated training r
 - Training finishes at 16:30 both days
 
 ### Who is training us?
-Martin John Hadley. Hello! You can find me on Twitter ([\@martinjhnhadley](http://twitter.com/martinjhnhadley)) and on [LinkedIn](https://www.linkedin.com/in/martinjohnhadley/).
+Charlie Joey Hadley. Hello! You can find me on Twitter ([\@charliejhadley](http://twitter.com/charliejhadley)) and on [LinkedIn](https://www.linkedin.com/in/martinjohnhadley/).
 
 I'm an RSE at University of Oxford where I teach R on a number of Masters programmes and at divisional level to PhD researchers, I also founded the [Interactive Data Network](http://idn.it.ox.ac.uk/) which uses Shiny to make research data more open and accessible.
 

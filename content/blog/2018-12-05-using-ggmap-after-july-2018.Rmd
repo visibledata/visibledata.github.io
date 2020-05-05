@@ -1,6 +1,6 @@
 ---
 title: "Using ggmap after July 2018"
-author: Martin John Hadley
+author: Charlie Joey Hadley
 date: '2018-12-05'
 slug: using-ggmap-after-july-2018
 categories:

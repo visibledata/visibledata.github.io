@@ -9,7 +9,7 @@ If physical location is important to you, we split our time between Oxford and B
 
 <!-- **Visible Data** is all about making data more accessible and reproducibly available, so as to bridge what is often called the "data gap". Data visualisation is only a small part of that, but it's the shiniest part. This site makes use of [reproducibility ratings](/reproducibility-ratings) at the top of all the blogposts to help readers identify and find the author, data and code behind the posts. -->
 
-# Martin John Hadley <a href='../martin-john-hadley'><button type="button" class="btn btn-primary">Full Profile</button></a>
+# Charlie Joey Hadley <a href='../martin-john-hadley'><button type="button" class="btn btn-primary">Full Profile</button></a>
 
 
 <div class='row'>
@@ -20,9 +20,9 @@ If physical location is important to you, we split our time between Oxford and B
 
 <p>My published works and research datasets are thoroughly documented on my ORCID profile: <a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/orcid_16x16.png" style="width:1em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a></p>
 
-<p>My GitHub profile contains all of my Open Source contributions and public codebases: <a href="https://github.com/martinjhnhadley" target="github.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub logo">github.com/martinjhnhadley</a>.
+<p>My GitHub profile contains all of my Open Source contributions and public codebases: <a href="https://github.com/charliejhadley" target="github.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../img/GitHub-Mark-32px.png" style="width:1em;margin-right:.5em;" alt="GitHub logo">github.com/charliejhadley</a>.
 
-<p>I tweet about reproducibility, #rstats, LGBTQIA+ and sex positivity at: <a href="https://twitter.com/martinjhnhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @martinjhnhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.</p>
+<p>I tweet about reproducibility, #rstats, LGBTQIA+ and sex positivity at: <a href="https://twitter.com/charliejhadley?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @charliejhadley</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>.</p>
 
 <p>Please do contact me about developing technical training courses for your analysis teams or consultancy opportunities at martin@visibledata.co.uk.
 
@@ -32,7 +32,7 @@ If physical location is important to you, we split our time between Oxford and B
 
 <center>
 <script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
-<div class="LI-profile-badge"  data-version="v1" data-size="large" data-locale="en_US" data-type="vertical" data-theme="light" data-vanity="martinjohnhadley"><a class="LI-simple-link" href='https://uk.linkedin.com/in/martinjohnhadley?trk=profile-badge'>Martin John Hadley</a></div>
+<div class="LI-profile-badge"  data-version="v1" data-size="large" data-locale="en_US" data-type="vertical" data-theme="light" data-vanity="martinjohnhadley"><a class="LI-simple-link" href='https://uk.linkedin.com/in/martinjohnhadley?trk=profile-badge'>Charlie Joey Hadley</a></div>
 </center>
 
 </div>

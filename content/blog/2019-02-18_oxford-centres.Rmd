@@ -451,8 +451,8 @@ register_google(key = "My-FAKE-KEY")
 
 ```{r internal-register-google-key, echo = FALSE}
 my_vault <- here("static", "data", "secret-vault.vault")
-martinjhnhadley_private_key <- file.path("~/.ssh", "blog_vault")
-ggmaps_rstats_key <- get_secret("ggmaps_rstats_key", key = martinjhnhadley_private_key, vault = my_vault)
+charliejhadley_private_key <- file.path("~/.ssh", "blog_vault")
+ggmaps_rstats_key <- get_secret("ggmap_key_2020", key = charliejhadley_private_key, vault = my_vault)
 register_google(ggmaps_rstats_key)
 ```
 

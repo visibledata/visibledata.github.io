@@ -1,6 +1,6 @@
 ---
 title: '#rmdnews updates 2019-03-06'
-author: Martin John Hadley
+author: Charlie Joey Hadley
 date: '2019-03-06'
 slug: rmdnews-updates-2019-03-06
 draft: yes
