@@ -3,7 +3,7 @@ title = "About"
 description = "About"
 +++
 
-Visible Data is a consultancy and technical training company focusing on data science, data visualisation and reproducibility. Visible Data is also a blog where our team share stories about their work and datasets that interest them. If you'd like to get in touch the best way to do that is by email: contact@visibledata.co.uk.
+Visible Data is a consultancy and technical training company focusing on data science, data visualisation and reproducibility. Visible Data is also a blog where our team share stories about their work and datasets that interest them. If you'd like to get in touch the best way to do that is by email, contact@visibledata.co.uk.
 
 If physical location is important to you, we split our time between Oxford and Bristol in the UK. However, we're very happy to travel to your offices in the UK and Europe and work with you on your turf.
 
