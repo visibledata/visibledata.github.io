@@ -1,0 +1,415 @@
+---
+title: Shiny Modules for useful controls
+author: Charlie Joey Hadley
+date: '2019-03-25'
+slug: shiny-modules-for-useful-controls
+categories:
+  - shiny
+tags:
+  - shiny
+draft: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+<p><a href="https://shiny.rstudio.com/articles/modules.html">Shiny Modules</a> are an “advanced” feature of Shiny apps that developers can use to reduce code duplication, simplify complex inter-relating controls, allow UI elements to be compartmentalised into R packages… and generally be a Shiny magician.</p>
+<p>Much of the stuff written about modules gets lost in the weeds. We’re not going to do that here. We’re going to make the Shiny app I’ve embedded below (as an iframe), both with and without modules.</p>
+<iframe width="100%" height="550px" scrolling="no" frameborder="yes" src="https://visibledata.shinyapps.io/shiny-with-modules_gg_ma_timeseries/">
+</iframe>
+<p>This app is slightly complicated, but deliberately so. I want to give you a real world example of using Shiny modules.</p>
+<p>We’ll go through the following steps:</p>
+<ol style="list-style-type: decimal">
+<li><p>Data import and wrangling</p></li>
+<li><p>server.R skeleton</p></li>
+<li><p><code>gg_ma_timeseries()</code></p></li>
+</ol>
+<div id="how-to-follow-along" class="section level2">
+<h2>How to follow along</h2>
+<p>To follow along you are advised to <strong>create a new RStudio Project</strong> and create the files detailed below in turn.</p>
+</div>
+<div id="whats-the-app" class="section level2">
+<h2>What’s the app?</h2>
+<p>The app allows the viewer to interact with data from the <a href="https://ilabour.oii.ox.ac.uk/online-labour-index/">Online Labour Index</a>. This is a project undertaken by the University of Oxford’s Internet Institute to study the online labour market, and ultimately to provide an economic indicator for the gig economy. The data is deposited on Figshare, which means anyone can access (and importantly, cite) the data with the following DOI: <a href="https://doi.org/10.6084/m9.figshare.3761562">10.6084/m9.figshare.3761562</a>.</p>
+</div>
+<div id="data-import-wrangling-and-stuff" class="section level2">
+<h2>Data import, wrangling and stuff</h2>
+<p>Let’s completely ignore the details of accessing and wrangling the data. This is a tutorial on Shiny modules.</p>
+<p>Create yourself a new script file called <code>data-processing.R</code> and insert this code. Please note that when this script is run it will download a dataset that in early 2019 is 37Mb in size, this will double every 3 years<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+<pre class="r"><code>## This code should be inserted into your data-processing.R script
+fs_deposit_id &lt;- 3761562
+deposit_details &lt;- fs_details(fs_deposit_id)
+
+deposit_details &lt;- unlist(deposit_details$files)
+deposit_details &lt;-
+  data.frame(split(deposit_details, names(deposit_details)), stringsAsFactors = F)
+
+imported_country_group_data &lt;- deposit_details %&gt;%
+  filter(str_detect(name, &quot;bcountrydata_&quot;)) %&gt;%
+  pull(download_url) %&gt;%
+  read_csv() %&gt;%
+  mutate(timestamp = as_date(timestamp)) %&gt;%
+  rename(date = timestamp)
+
+gigs_by_country_group &lt;- imported_country_group_data %&gt;%
+  group_by(date, country_group) %&gt;%
+  summarise(jobs = sum(count)) %&gt;%
+  ungroup()
+
+gigs_by_occupation &lt;- imported_country_group_data %&gt;%
+  group_by(date, occupation) %&gt;%
+  summarise(count = sum(count)) %&gt;%
+  rename(jobs = count) %&gt;%
+  ungroup()</code></pre>
+<p>Please note, we don’t run this code yet. It’s going to be loaded in our <code>server.R</code> file.</p>
+</div>
+<div id="server.r-skeleton" class="section level2">
+<h2>server.R skeleton</h2>
+<p>Here’s the skeleton for our <code>server.R</code> file, go ahead and create this on your machine:</p>
+<pre class="r"><code>## this is how your server.R file should look
+library(&quot;shiny&quot;)
+library(&quot;tidyverse&quot;)
+library(&quot;rfigshare&quot;)
+library(&quot;lubridate&quot;)
+library(&quot;xts&quot;)
+library(&quot;ggsci&quot;)
+
+source(&quot;data-processing.R&quot;, local = TRUE)
+
+function(input, output, session){
+  
+  
+}</code></pre>
+<p>Some things to note about our file:</p>
+<ul>
+<li><p>We’ve loaded all of the packages needed for the whole app, not just the data wrangling.</p></li>
+<li><p>We’ve used <code>source()</code> to run the data wrangling script when the Shiny app loads</p></li>
+<li><p>Our shiny server function contains <strong>three</strong> arguments. Many Shiny tutorials ommit the <code>session</code> argument, but it’s integral for Shiny modules to work correctly.</p></li>
+</ul>
+<p>We’re about to run our script file, but first <strong>register for a Figshare.com account</strong> so you can use the <code>rfigshare</code> package. Now <strong>run this script</strong>.</p>
+</div>
+<div id="gg_ma_timeseries" class="section level2">
+<h2>gg_ma_timeseries</h2>
+<p>Let’s assume for a minute that the dataviz we’re creating here is important enough that we might want to use it in other places than just this Shiny app. The easiest way to support this is by placing the script for the dataviz in its own file.</p>
+<p>Create a new file called <code>gg_ma_timeseries.R</code> and add the following code, we’ll walk through the potentially mysterious <code>enquo</code> part of the functions in two minutes.</p>
+<pre class="r"><code>## this is how your gg_ma_timeseries.R file should look
+gg_ma_timeseries &lt;- function(.data, date, value, category) {
+  date &lt;- enquo(date)
+  
+  value &lt;- enquo(value)
+  
+  category &lt;- enquo(category)
+  
+  n_colours &lt;- .data %&gt;%
+    pull(!!category) %&gt;%
+    unique() %&gt;%
+    length()
+  
+  colours_from_startrek &lt;- colorRampPalette(pal_startrek(palette = c(&quot;uniform&quot;))(7))(n_colours)
+  
+  
+  .data %&gt;%
+    ggplot(aes(
+      x = !!date,
+      y = !!value,
+      color = !!category
+    )) +
+    geom_line() +
+    theme_bw() +
+    scale_color_manual(values = colours_from_startrek) +
+    scale_x_date(expand = c(0.01, 0.01)) +
+    scale_y_continuous(expand = c(0.01, 0)) +
+    labs(
+      title = &quot;Example dataviz of Online Labour Index data&quot;,
+      subtitle = &quot;DOI:10.6084/m9.figshare.376156&quot;)
+}
+
+ma_job_count &lt;- function(.data, date, value, category, window_width){
+  
+  date &lt;- enquo(date)
+  
+  value &lt;- enquo(value)
+  
+  category &lt;- enquo(category)
+  
+  window_width &lt;- as.numeric(window_width)
+  
+  .data %&gt;%
+    group_by(!!category) %&gt;%
+    arrange(!!date) %&gt;%
+    mutate(!!value := rollmean(!!value,
+                           k = window_width,
+                           na.pad = TRUE,
+                           align = &quot;right&quot;
+    )) %&gt;%
+    filter(!is.na(!!value)) %&gt;%
+    ungroup()
+  
+}</code></pre>
+<ul>
+<li><p><code>gg_ma_timeseries()</code> is the function which creates our <code>ggplot2</code> timeseries dataviz</p></li>
+<li><p><code>ma_job_count()</code> is a little utility function for smoothing the data with <code>xts::rollmean()</code>.</p></li>
+</ul>
+<p>Let’s load this file in our <code>server.R</code> script, so the file now has all of the code in it from before. <strong>Run this entire script</strong>.</p>
+<pre class="r"><code>## this is how your server.R file should look
+library(&quot;shiny&quot;)
+library(&quot;tidyverse&quot;)
+library(&quot;rfigshare&quot;)
+library(&quot;lubridate&quot;)
+library(&quot;xts&quot;)
+library(&quot;ggsci&quot;)
+
+source(&quot;data-processing.R&quot;, local = TRUE)
+
+source(&quot;gg_ma_timeseries.R&quot;, local = TRUE)
+
+function(input, output, session){
+  
+  
+}</code></pre>
+<p>I want to prove to you that this works. Create a new script file <code>scratch-pad.R</code> where we can experiment and play. Add the following code, and then <strong>run the script</strong>.</p>
+<pre class="r"><code>## this is how your scratch-pad.R file should look
+gigs_by_occupation %&gt;%
+  ma_job_count(date, jobs, occupation, 28) %&gt;%
+  gg_ma_timeseries(date, jobs, occupation)</code></pre>
+<p><img src="/blog/2019-03-25-shiny-modules-for-useful-controls_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Notice how the column names <code>jobs</code>, <code>occupation</code> and <code>date</code> have been given to <code>gg_ma_timeseries</code> without quotation marks? This is exactly the same as how we use functions from <code>dplyr</code>, e.g. <code>iris %&gt;% mutate(species = toupper(species))</code>. These are what we call <strong>naked column names</strong>.</p>
+<p>That’s why the functions use <code>enquo()</code> internally, it’s implementing non-standard evaluation with <a href="https://tidyeval.tidyverse.org">tidyeval</a>. However, there’s zero need to understand this now (if you don’t want to). This is a Shiny module tutorial, so let’s move on to the <code>ui.R</code> file.</p>
+</div>
+<div id="ui.r-skeleton" class="section level2">
+<h2>ui.R skeleton</h2>
+<p>Here’s the skeleton for our <code>ui.R</code> file, go ahead and create this on your machine:</p>
+<pre class="r"><code>## this is how your ui.R file should look
+library(&quot;shiny&quot;)
+library(&quot;shinycustomloader&quot;)
+shinyServer(navbarPage(
+  &quot;Shiny Modules&quot;,
+  tabPanel(
+    &quot;By occupation&quot;,
+    fluidPage()
+  ),
+  tabPanel(
+    &quot;By country&quot;,
+    fluidPage()
+  )
+))</code></pre>
+</div>
+<div id="shiny-app-without-modules" class="section level2">
+<h2>Shiny app without modules</h2>
+<p>A complete copy of this Shiny app that doesn’t use modules is available on Github here: <a href="https://github.cocharliejhnhadley/training_shiny-module/tree/master/gg_ma_timeseries/shiny-without-modules">https://github.cocharliejhnhadley/training_shiny-module/tree/master/gg_ma_timeseries/shiny-without-modules</a>.</p>
+<p>There’s a tremendous amount of duplication in the <code>ui.R</code> file to get the <code>radioButtons()</code> to look how I want them to. We need to use Shiny modules to simplify this, which we’ll do in the section below.</p>
+<pre class="r"><code>## DO NOT COPY THIS CODE.
+## This is how the ui.R file looks without using modules.
+library(&quot;shiny&quot;)
+library(&quot;shinycustomloader&quot;)
+
+shinyServer(navbarPage(
+  &quot;Shiny without Modules&quot;,
+  tabPanel(
+    &quot;By occupation&quot;,
+    fluidPage(fluidRow(column(
+      radioButtons(
+        &quot;by_occupation_landing_rollmean_k&quot;,
+        label = &quot;&quot;,
+        choices = list(
+          &quot;Show daily value&quot; = 1,
+          &quot;Show 28-day moving average&quot; = 28
+        ),
+        selected = 28,
+        inline = TRUE
+      ),
+      width = 12
+    )),
+    withLoader(plotOutput(&quot;gg_gigs_by_occupation&quot;)),
+    type = &quot;html&quot;, loader = &quot;dnaspin&quot;
+    )
+  ),
+  tabPanel(
+    &quot;By country&quot;,
+    fluidPage(fluidRow(column(
+      radioButtons(
+        &quot;by_country_group_landing_rollmean_k&quot;,
+        label = &quot;&quot;,
+        choices = list(
+          &quot;Show daily value&quot; = 1,
+          &quot;Show 28-day moving average&quot; = 28
+        ),
+        selected = 28,
+        inline = TRUE
+      ),
+      width = 12
+    )),
+    withLoader(plotOutput(&quot;gg_gigs_by_country_group&quot;)),
+    type = &quot;html&quot;, loader = &quot;dnaspin&quot;
+    )
+  )
+))</code></pre>
+<p>The <code>server.R</code> file is fairly tidy because we’ve already abstracted a lot of the app into functions:</p>
+<pre class="r"><code>## DO NOT COPY THIS CODE.
+## This is how the server.R file looks without using modules.
+library(&quot;shiny&quot;)
+library(&quot;tidyverse&quot;)
+library(&quot;rfigshare&quot;)
+library(&quot;lubridate&quot;)
+library(&quot;xts&quot;)
+library(&quot;ggsci&quot;)
+
+source(&quot;data-processing.R&quot;, local = TRUE)
+
+source(&quot;gg_ma_timeseries.R&quot;, local = TRUE)
+
+function(input, output, session) {
+  output$gg_gigs_by_occupation &lt;- renderPlot({
+    
+    gigs_by_occupation %&gt;%
+      ma_job_count(date, jobs, occupation, input$by_occupation_landing_rollmean_k) %&gt;%
+      gg_ma_timeseries(date, jobs, occupation)
+    
+  })
+
+  output$gg_gigs_by_country_group &lt;- renderPlot({
+    
+    gigs_by_country_group %&gt;%
+      ma_job_count(date, jobs, country_group, input$by_country_group_landing_rollmean_k) %&gt;%
+      gg_ma_timeseries(date, jobs, country_group)
+    
+  })
+}</code></pre>
+</div>
+<div id="introducing-the-shiny-module" class="section level2">
+<h2>Introducing the Shiny Module</h2>
+<p>The Shiny Module is composed of two components:</p>
+<ul>
+<li><code>gg_ma_timeseries_input()</code> creates an instance of our controls.</li>
+<li><code>gg_ma_timeseries_output()</code> creates an instance of the chart, which is dependent on a set of controls (specified in the server.R file).</li>
+</ul>
+<center>
+<img src="/blog/2019-03-25-shiny-modules-for-useful-controls_files/the-whole-module.png" width="450" />
+</center>
+<p>It’s crucial that we place the code for these elements of the module in the correct place:</p>
+<center>
+<img src="/blog/2019-03-25-shiny-modules-for-useful-controls_files/where-things-live.png" width="450" />
+</center>
+<div id="rules-for-modules" class="section level3">
+<h3>Rules for modules</h3>
+<p>This is one of the things left out of the other Shiny module tutorials I’ve read. Most tutorials deal with a toy example and don’t split the code into distinct <code>ui.R</code> and <code>server.R</code> files. Let’s establish some hard and fast rules about modules:</p>
+<ul>
+<li><p>Place your module code in a subfolder called <code>/modules</code>.</p></li>
+<li><p>Code for inputs (controls) must be sourced in the <code>ui.R</code> file.</p></li>
+<li><p>Code for outputs (charts) must be sourced in the <code>server.R</code> file.</p></li>
+</ul>
+</div>
+</div>
+<div id="namespaces-with-ns" class="section level2">
+<h2>Namespaces with <code>NS</code></h2>
+<p>Remember our <code>server.R</code> function?</p>
+<pre class="r"><code>server &lt;- function(input, output, session){
+  
+}</code></pre>
+<p>Inside of our modules we need to manipulate values from both the <code>input</code> and <code>output</code> objects. In programming speak, we need to be careful about namespaces. In Shiny, this means we need to use the <code>NS()</code> function to guarantee we’re refering to the values we think we’re refering to. Let’s create the control for our modules, in a new script file: <code>/modules/client-side_gg-ma-timeseries.R</code>.</p>
+<pre class="r"><code>## This is how your /modules/client-side_gg-ma-timeseries.R file should look
+gg_ma_timeseries_input &lt;- function(id) {
+  ns &lt;- NS(id)
+  tagList(
+    &quot;This entire tab is a shiny module, including; this text, the radio buttons and the chart.&quot;,
+    fluidRow(column(
+      radioButtons(
+        ns(&quot;landing_rollmean_k&quot;),
+        label = &quot;&quot;,
+        choices = list(
+          &quot;Show daily value&quot; = 1,
+          &quot;Show 28-day moving average&quot; = 28
+        ),
+        selected = 28,
+        inline = TRUE
+      ),
+      width = 12
+    ))
+  )
+}</code></pre>
+<p>Things to take away from the <code>gg_ma_timeseries_input()</code> function:</p>
+<ul>
+<li><p><code>ns &lt;- NS(id)</code> ensures we’re refering to values from the server <code>input</code> object</p></li>
+<li><p><code>ns(&quot;landing_rollmean_k&quot;)</code> translates to <code>input$landing_rollmean_k</code></p></li>
+<li><p>If returning <strong>multiple ui elements</strong> they must be contained within <code>tagList()</code>… <em>but</em> it’s a great idea to use <code>tagList()</code> by default, it will prevent mishaps.</p></li>
+</ul>
+<p>That’s our control. We need to create our output function that will display the chart rendered by the server, which we’ll call <code>gg_ma_timeseries_output()</code>. It takes a while to download and display the data in our chart, so it’s a good idea to use the excellent [<code>shinycustomloader</code>] package to show an animated “loading” GIF to the user. Please update your <code>/modules/client-side_gg-ma-timeseries.R</code> file so it looks like this:</p>
+<pre class="r"><code>## This is how your /modules/client-side_gg-ma-timeseries.R file should look
+library(&quot;shinycustomloader&quot;)
+
+gg_ma_timeseries_input &lt;- function(id) {
+  ns &lt;- NS(id)
+  tagList(
+    &quot;This entire tab is a shiny module, including; this text, the radio buttons and the chart.&quot;,
+    fluidRow(column(
+      radioButtons(
+        ns(&quot;landing_rollmean_k&quot;),
+        label = &quot;&quot;,
+        choices = list(
+          &quot;Show daily value&quot; = 1,
+          &quot;Show 28-day moving average&quot; = 28
+        ),
+        selected = 28,
+        inline = TRUE
+      ),
+      width = 12
+    ))
+  )
+}
+
+gg_ma_timeseries_output &lt;- function(id) {
+  ns &lt;- NS(id)
+  withLoader(plotOutput(ns(&quot;ma_plot&quot;)), type = &quot;html&quot;, loader = &quot;dnaspin&quot;)
+}</code></pre>
+<p>Our output function is more complex than our input, because <code>ns(&quot;ma_plot&quot;)</code> refers to an instace of <code>output$ma_plot</code> from the Shiny module, which we haven’t created yet</p>
+<p>The trick to how <code>NS()</code> works inside of <code>gg_ma_timeseries_output()</code> is more complicated than our input function, and is explained in the section below. However, let’s</p>
+<pre class="r"><code>## This is how your ui.R file should look
+library(&quot;shiny&quot;)
+
+source(&quot;modules/client-side_gg-ma-timeseries.R&quot;, local = TRUE)
+
+shinyServer(navbarPage(
+  &quot;Shiny Modules&quot;,
+  tabPanel(
+    &quot;By occupation&quot;,
+    fluidPage(
+      gg_ma_timeseries_input(&quot;occupation_controls&quot;),
+      gg_ma_timeseries_output(&quot;occupation_chart&quot;)
+    )
+  ),
+  tabPanel(
+    &quot;By country&quot;,
+    fluidPage(
+      gg_ma_timeseries_input(&quot;by_country_controls&quot;),
+      gg_ma_timeseries_output(&quot;by_country_chart&quot;)
+    )
+  )
+))</code></pre>
+<ul>
+<li><p>We’re going to be extracting</p></li>
+<li><p><code>ns &lt;- NS(id)</code> ensures we’re</p></li>
+<li><p><code>ns(&quot;ma_plot&quot;)</code></p></li>
+</ul>
+</div>
+<div id="things-they-dont-tell-you" class="section level2">
+<h2>Things they don’t tell you</h2>
+<ul>
+<li><p>Load the ui in the ui.R file</p></li>
+<li><p>Delete the scratch-pad.R file</p></li>
+</ul>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1">I was interested in how important file size warnings are in tutorials, I was surprised that most folks wanted a warning for files bigger than 10Mb
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+Imagine you're following an R tutorial that includes<br><br>read_csv(&quot;<a href="http://online_csv%22" class="uri">http://online_csv&quot;</a>;)<br><br>How large would that csv need to be before you'd want a warning written into the tutorial?
+</p>
+�Charlie Joeyhn Hadley (<span class="citation">@martinjhnhadley</span>) <a href="https://twitter.com/martinjhnhadley/status/1110203236177334278?ref_src=twsrc%5Etfw">March 25, 2019</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<a href="#fnref1" class="footnote-back">↩</a></li>
+</ol>
+</div>

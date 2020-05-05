@@ -1,0 +1,212 @@
+---
+title: 'The Office: Who''s who?'
+author: ''
+date: '2019-12-16'
+slug: the-office-who-s-who
+categories: []
+tags: []
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+<p>I’m going to basically copy Julia Silge’s work from here: <a href="https://juliasilge.com/blog/tidy-text-classification/" class="uri">https://juliasilge.com/blog/tidy-text-classification/</a></p>
+<pre class="r"><code>library(&quot;tidyverse&quot;)</code></pre>
+<pre><code>## ── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.2.1     ✓ purrr   0.3.3
+## ✓ tibble  3.0.0     ✓ dplyr   0.8.5
+## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.4.0</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## ── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(&quot;tidytext&quot;)
+library(&quot;schrute&quot;)</code></pre>
+<p>I’d like to tidy up the data a little bit:</p>
+<pre class="r"><code>theoffice_characters &lt;- theoffice %&gt;%
+  select(season:text) %&gt;%
+  mutate(season = as.numeric(season),
+         episode = as.numeric(episode))
+theoffice_characters</code></pre>
+<pre><code>## # A tibble: 55,130 x 5
+##    season episode episode_name character text                              
+##     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;                             
+##  1      1       1 &quot; Pilot&quot;     Michael   &quot; All right Jim. Your quarterlies…
+##  2      1       1 &quot; Pilot&quot;     Jim       &quot; Oh, I told you. I couldn&#39;t clos…
+##  3      1       1 &quot; Pilot&quot;     Michael   &quot; So you&#39;ve come to the master fo…
+##  4      1       1 &quot; Pilot&quot;     Jim       &quot; Actually, you called me in here…
+##  5      1       1 &quot; Pilot&quot;     Michael   &quot; All right. Well, let me show yo…
+##  6      1       1 &quot; Pilot&quot;     Michael   &quot; So that&#39;s the way it&#39;s done.&quot;   
+##  7      1       1 &quot; Pilot&quot;     Michael   &quot; I&#39;ve, uh, I&#39;ve been at Dunder M…
+##  8      1       1 &quot; Pilot&quot;     Pam       &quot; Well. I don&#39;t know.&quot;            
+##  9      1       1 &quot; Pilot&quot;     Michael   &quot; If you think she&#39;s cute now, yo…
+## 10      1       1 &quot; Pilot&quot;     Pam       &quot; What?&quot;                          
+## # … with 55,120 more rows</code></pre>
+<p>In Julia’s article she adds a <code>document</code> row without really highlighting why… I think it’s actually crucial, so let’s do that:</p>
+<pre class="r"><code>theoffice_characters &lt;- theoffice_characters %&gt;%
+  mutate(document = row_number())</code></pre>
+<p>I want to see how good Jim and Dwight’s impressions of one another are, which appear in “Product Recall” - Season 3, Episode 21.</p>
+<p>Let’s use every episode before this as our training set:</p>
+<pre class="r"><code>theoffice_before_product_recall &lt;- theoffice_characters %&gt;%
+  filter(season &lt;= 3,
+         episode &lt; 21)</code></pre>
+<p>For the moment we only care about Jim and Dwight, so let’s extract out the unigrams for each speaker using <code>unnest_tokens()</code> and throw away the stop words:</p>
+<pre class="r"><code>jim_dwight_unigrams_before_product_recall &lt;- theoffice_characters %&gt;%
+  filter(character %in% c(&quot;Dwight&quot;, &quot;Jim&quot;)) %&gt;%
+  select(character, text, document) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(get_stopwords())</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<p>I’m going to duplicate one of Julia’s charts so we can compare the most common words used by Dwight and Jim.</p>
+<pre class="r"><code>jim_dwight_unigrams_before_product_recall %&gt;%
+  count(character, word, sort = TRUE) %&gt;%
+  group_by(character) %&gt;%
+  top_n(20) %&gt;%
+  ungroup() %&gt;%
+  ggplot(aes(reorder_within(word, n, character), n,
+    fill = character
+  )) +
+  geom_col(alpha = 0.8, show.legend = FALSE) +
+  scale_x_reordered() +
+  coord_flip() +
+  facet_wrap(~character, scales = &quot;free&quot;) +
+  scale_y_continuous(expand = c(0, 0)) +
+  labs(
+    x = NULL, y = &quot;Word count&quot;,
+    title = &quot;Most frequent words after removing stop words&quot;,
+    subtitle = &quot;Words like &#39;said&#39; occupy similar ranks but other words are quite different&quot;
+  )</code></pre>
+<pre><code>## Selecting by n</code></pre>
+<p><img src="/blog/2019-12-16-the-office-who-s-who_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>These lists are very similar to one another. That’s because the stop words in the <code>{tidytext}</code> package are collated from prose, and not from spoken word - or <strong>dialogue</strong>.</p>
+<p>We</p>
+<pre class="r"><code>theoffice_characters %&gt;%
+  filter(character %in% c(&quot;Dwight&quot;, &quot;Jim&quot;)) %&gt;%
+  select(character, text, document) %&gt;%
+  unnest_tokens(ngrams, text, token = &quot;ngrams&quot;, n = 2) %&gt;%
+  separate(ngrams, into = c(&quot;word_1&quot;,
+                            &quot;word_2&quot;)) %&gt;%
+  filter(!word_1 %in% stop_words$word,
+         !word_2 %in% stop_words$word) %&gt;%
+  count(character, word_1, word_2, sort = TRUE)</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Additional pieces discarded in 12531 rows [21,
+## 22, 23, 24, 25, 35, 36, 76, 119, 120, 137, 138, 141, 142, 153, 154, 166,
+## 169, 170, 175, ...].</code></pre>
+<pre><code>## # A tibble: 9,426 x 4
+##    character word_1    word_2       n
+##    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;
+##  1 Jim       &lt;NA&gt;      &lt;NA&gt;       874
+##  2 Dwight    &lt;NA&gt;      &lt;NA&gt;       662
+##  3 Dwight    dwight    schrute     47
+##  4 Dwight    hey       hey         42
+##  5 Dwight    ha        ha          41
+##  6 Dwight    dunder    mifflin     34
+##  7 Dwight    regional  manager     33
+##  8 Dwight    wait      wait        24
+##  9 Dwight    assistant regional    20
+## 10 Dwight    la        la          17
+## # … with 9,416 more rows</code></pre>
+<p>We need to create ourselves a set of filler words:</p>
+<pre class="r"><code>filler_words &lt;- tibble(
+  word = c(&quot;yeah&quot;, &quot;oh&quot;, &quot;well&quot;, &quot;like&quot;, &quot;uh&quot;, &quot;okay&quot;, &quot;just&quot;, &quot;um&quot;)
+)</code></pre>
+<p>Now we have ourselves</p>
+<pre class="r"><code>jim_dwight_unigrams_before_product_recall &lt;- theoffice_characters %&gt;%
+  filter(character %in% c(&quot;Dwight&quot;, &quot;Jim&quot;)) %&gt;%
+  select(character, text, document) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(get_stopwords()) %&gt;%
+  anti_join(filler_words)</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;
+## Joining, by = &quot;word&quot;</code></pre>
+<pre class="r"><code>jim_dwight_unigrams_before_product_recall %&gt;%
+  count(character, word, sort = TRUE) %&gt;%
+  group_by(character) %&gt;%
+  top_n(20) %&gt;%
+  ungroup() %&gt;%
+  ggplot(aes(reorder_within(word, n, character), n,
+    fill = character
+  )) +
+  geom_col(alpha = 0.8, show.legend = FALSE) +
+  scale_x_reordered() +
+  coord_flip() +
+  facet_wrap(~character, scales = &quot;free&quot;) +
+  scale_y_continuous(expand = c(0, 0)) +
+  labs(
+    x = NULL, y = &quot;Word count&quot;,
+    title = &quot;Most frequent words after removing stop words&quot;,
+    subtitle = &quot;Words like &#39;said&#39; occupy similar ranks but other words are quite different&quot;
+  )</code></pre>
+<pre><code>## Selecting by n</code></pre>
+<p><img src="/blog/2019-12-16-the-office-who-s-who_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div id="building-our-model" class="section level2">
+<h2>Building our model</h2>
+<p>The <code>{rsample}</code> package is designe for splitting up data into training and test sets.</p>
+<pre class="r"><code>library(&quot;rsample&quot;)</code></pre>
+<p>But we’re going to be unfair and split our data as follows:</p>
+<ul>
+<li>Training: the episodes before the impressions</li>
+<li>Test: the episode of the impressions</li>
+</ul>
+<pre class="r"><code>tidy_training_data &lt;- theoffice_before_product_recall %&gt;%
+  select(character, text, document) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(get_stopwords()) %&gt;%
+  anti_join(filler_words)</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;
+## Joining, by = &quot;word&quot;</code></pre>
+<p>Transform into a sparse matrix:</p>
+<pre class="r"><code>theoffice_sparse_words &lt;- tidy_training_data %&gt;%
+  count(document, word) %&gt;%
+  inner_join(tidy_training_data) %&gt;%
+  cast_sparse(document, word, n)</code></pre>
+<pre><code>## Joining, by = c(&quot;document&quot;, &quot;word&quot;)</code></pre>
+<p>Now we build a data.frame to store our response variable:</p>
+<pre class="r"><code>word_rownames &lt;- as.integer(rownames(theoffice_sparse_words))
+
+theoffice_rejoined_product_recall &lt;- tibble(document = word_rownames) %&gt;%
+  left_join(theoffice_before_product_recall %&gt;%
+              select(document, character))</code></pre>
+<pre><code>## Joining, by = &quot;document&quot;</code></pre>
+<pre class="r"><code>dim(theoffice_rejoined_product_recall)</code></pre>
+<pre><code>## [1] 10949     2</code></pre>
+<pre class="r"><code>dim(theoffice_sparse_words)</code></pre>
+<pre><code>## [1] 10949  8039</code></pre>
+<pre class="r"><code>library(&quot;glmnet&quot;)</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:tidyr&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## Loaded glmnet 3.0-2</code></pre>
+<pre class="r"><code>library(&quot;doMC&quot;)</code></pre>
+<pre><code>## Loading required package: foreach</code></pre>
+<pre><code>## 
+## Attaching package: &#39;foreach&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:purrr&#39;:
+## 
+##     accumulate, when</code></pre>
+<pre><code>## Loading required package: iterators</code></pre>
+<pre><code>## Loading required package: parallel</code></pre>
+<pre class="r"><code>registerDoMC(cores = 8)
+
+is_jim &lt;- theoffice_rejoined_product_recall$character == &quot;Jim&quot;
+model &lt;- cv.glmnet(theoffice_sparse_words, is_jim,
+  family = &quot;binomial&quot;,
+  parallel = TRUE, keep = TRUE
+)</code></pre>
+<pre class="r"><code>library(broom)
+
+coefs &lt;- model$glmnet.fit %&gt;%
+  tidy() %&gt;%
+  filter(lambda == model$lambda.1se)</code></pre>
+<pre class="r"><code>coefs %&gt;%
+  group_by(estimate &gt; 0) %&gt;%
+  top_n(10, abs(estimate)) %&gt;%
+  ungroup() %&gt;%
+  ggplot(aes(fct_reorder(term, estimate), estimate, fill = estimate &gt; 0)) </code></pre>
+<p><img src="/blog/2019-12-16-the-office-who-s-who_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>

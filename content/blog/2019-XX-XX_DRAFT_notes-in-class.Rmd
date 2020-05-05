@@ -1,0 +1,105 @@
+---
+title: Notes in class
+author: Charlie Joey Hadley
+date: '2018-12-19'
+tidy: 'styler'
+draft: yes
+categories:
+  - R
+  - meta
+tags:
+  - meta
+  - teaching
+editor_options: 
+  chunk_output_type: console
+description: "DRAFT POST ABOUT COURSE NOTES"
+---
+
+Something I feel simulataneously confident & unconfident is whether I should give students handouts for my training courses before the event.
+
+It's difficult to get a good handle on what other folks do. I ran an extremely pitiful Twitter poll with 7 responses (43% give handsouts during the course, 29% give handouts before).
+
+So I've decided to create a survey of both students and trainers that I will try to spread as wide and broadly as possible. The survey results are [publicly available here](https://docs.google.com/spreadsheets/d/1Wp14rgAKv3yv8KxpXVHPLpt0dG4HtqEjZLrCr8w2UvA/edit?usp=sharing) and please feel free to [share the survey](https://docs.google.com/forms/d/e/1FAIpQLSfbHMLqX-jctvxZdwyyok96ZSUzXdpIDrMsQ2b-A2X2hVCz1w/viewform?usp=sf_link) elsewhere.
+
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#take-the-survey">Take the survey!</a></li>
+  <li><a data-toggle="tab" href="#pros-and-cons">What are the pros and cons?</a></li>
+</ul>
+
+<div class="tab-content">
+  <div id="take-the-survey" class="tab-pane fade in active">
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbHMLqX-jctvxZdwyyok96ZSUzXdpIDrMsQ2b-A2X2hVCz1w/viewform?embedded=true" width="100%" height="2173" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+
+  </div>
+  <div id="pros-and-cons" class="tab-pane fade">
+
+In an attempt not to bias responses, I've hidden my personal opinion as deeply as possible on this page[^1]. What are the arguments for and against sharing notes before classes?
+
+<!--html_preserve-->
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">General points</a>
+        </h4>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse">
+        <div class="panel-body">
+        
+<div class="row">
+
+<div class="col-md-6">
+
+Pros
+
+- 
+
+</div>
+
+
+<div class="col-md-6">
+
+</div>
+
+</div>
+        
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Collapsible Group 2</a>
+        </h4>
+      </div>
+      <div id="collapse2" class="panel-collapse collapse">
+        <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Collapsible Group 3</a>
+        </h4>
+      </div>
+      <div id="collapse3" class="panel-collapse collapse">
+        <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+      </div>
+    </div>
+</div>
+<!--/html_preserve-->
+
+  </div>
+</div>
+
+
+
+
+<!-- <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Fellow <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> trainers and teachers 👋 <br><br>How do you folks handle giving learners handouts/notes for your workshops?<br><br>I personally give handouts after.</p>&mdasCharlie Joeyohn Hadleycharliejjhnhadley) <a href="https://twitter.ccharliejjhnhadley/status/1072876971686809600?ref_src=twsrc%5Etfw">December 12, 2018</a></blockquote> -->
+<!-- <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> -->
+
+[^1]: In general, I never provide notes before a course.

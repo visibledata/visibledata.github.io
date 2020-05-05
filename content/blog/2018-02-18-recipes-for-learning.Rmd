@@ -1,6 +1,6 @@
 ---
 title: Recipes for learning
-author: Martin John Hadley
+author: Charlie Joey Hadley
 date: '2018-02-18'
 slug: recipes-for-learning
 categories:
@@ -22,7 +22,7 @@ description: >
         <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
             <p><a href='/blog/2018/02/07/2018-xx-xx_reproducible-blogposts/#reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
                 <br>
-                Martin John Hadley
+                Charlie Joey Hadley
                 <br>
                 (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon" target='_blank'>orcid.org/0000-0002-3039-6849</a>)
         </center>
@@ -114,7 +114,7 @@ read.table(file.path(recipes_data_dir, "srep00196-s3.csv"),
   head()
 ```
 
-At the time I continued to analyse and visualise the data ready for my interview exercise, for which I also learned how to use GitHub! The outputs I used in my presentation are still available in my [RecipeVisualisations](https://github.com/martinjhnhadley/RecipeVisualisations) repo. It turns out on reflection that there were two bad things that I did at the time:
+At the time I continued to analyse and visualise the data ready for my interview exercise, for which I also learned how to use GitHub! The outputs I used in my presentation are still available in my [RecipeVisualisations](https://github.com/charliejhadley/RecipeVisualisations) repo. It turns out on reflection that there were two bad things that I did at the time:
 
 - I didn't know enough R to have a reproducible workflow so have lost some of my tidying scripts
 - `read.table` uses a bad heuristic to decide how many columns there are in the data! The longest recipe is **not** 17 ingredients long.
@@ -200,7 +200,7 @@ recipes_df <- tibble(
         <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
             <p><a href='/blog/2018/02/07/2018-xx-xx_reproducible-blogposts/#reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
                 <br>
-                Martin John Hadley
+                Charlie Joey Hadley
                 <br>
                 (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon" target='_blank'>orcid.org/0000-0002-3039-6849</a>)
         </center>

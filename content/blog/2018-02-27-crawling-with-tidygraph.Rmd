@@ -1,6 +1,6 @@
 ---
 title: Crawling with tidygraph
-author: Martin John Hadley
+author: Charlie Joey Hadley
 date: '2018-02-27'
 slug: crawling-with-tidygraph
 categories:
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
         <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
             <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
                 <br>
-                Martin John Hadley
+                Charlie Joey Hadley
                 <br>
                 (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
         </center>
@@ -68,7 +68,7 @@ This blogpost covers the basics of how I scraped the data and wrangled it with `
 
 </div>
 
-The `Rcrawler` documentation includes an example [^1] of how to build a network of the internal links in a website, using the code below. This takes up to 2 minutes, so I've made the data available in a [Gist here](https://gist.github.com/martinjhnhadley/ba5a983e4e29cae29d379fc9daf1d873).
+The `Rcrawler` documentation includes an example [^1] of how to build a network of the internal links in a website, using the code below. This takes up to 2 minutes, so I've made the data available in a [Gist here](https://gist.github.com/charliejhadley/ba5a983e4e29cae29d379fc9daf1d873).
 
 ```{r crawl-site, include=TRUE, eval=FALSE}
 library("Rcrawler")
@@ -116,8 +116,8 @@ Now we can import the data directly from the gist as follows:
 
 ```{r get-gist-data}
 library("tidyverse")
-rdo_oxford_edges <- read_csv("https://gist.githubusercontent.com/martinjhnhadley/ba5a983e4e29cae29d379fc9daf1d873/raw/dea7df7ae9a1542372fe6203362991ec019bb1c3/rdo_oxford_edges.csv")
-rdo_oxford_index <- read_csv("https://gist.githubusercontent.com/martinjhnhadley/ba5a983e4e29cae29d379fc9daf1d873/raw/c3ead87cd4dc95696432b4f6547e4d7762132721/rdo_oxford_index.csv")
+rdo_oxford_edges <- read_csv("https://gist.githubusercontent.com/charliejhadley/ba5a983e4e29cae29d379fc9daf1d873/raw/dea7df7ae9a1542372fe6203362991ec019bb1c3/rdo_oxford_edges.csv")
+rdo_oxford_index <- read_csv("https://gist.githubusercontent.com/charliejhadley/ba5a983e4e29cae29d379fc9daf1d873/raw/c3ead87cd4dc95696432b4f6547e4d7762132721/rdo_oxford_index.csv")
 ```
 
 Let's generate an `igraph` object for manipulation with the `tidygraph` library, after first removing self-loops via the `simplify` function but retain multiple edges between pairs of webpages. The graph is too large to visualise sensibly at present:
@@ -160,7 +160,7 @@ Let's also markup the pages linked to from the websites navigation menu and foot
 library("rvest")
 navbar_links <-
   read_html(
-  "https://gist.githubusercontent.com/martinjhnhadley/ba5a983e4e29cae29d379fc9daf1d873/raw/4294b8180866b70f081c05a1dca9cb3bfd172fe3/navigation.html"
+  "https://gist.githubusercontent.com/charliejhadley/ba5a983e4e29cae29d379fc9daf1d873/raw/4294b8180866b70f081c05a1dca9cb3bfd172fe3/navigation.html"
   ) %>%
   html_nodes("a") %>%
   html_attr('href') %>%
@@ -275,7 +275,7 @@ This was a really fun way to learn how to use `tidygraph` and `ggraph`, which I'
         <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
             <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
                 <br>
-                Martin John Hadley
+                Charlie Joey Hadley
                 <br>
                 (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
         </center>

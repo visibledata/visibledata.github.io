@@ -53,7 +53,7 @@ This code is to be inserted at the top of each post, note the use of a `<hr>` ta
             &lt;center&gt; &lt;span class="fa fa-star fa-2x text-center" style="color:Tomato"&gt;&lt;/span&gt;
                 &lt;p&gt;&lt;a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'&gt;Citable Author&lt;i class="fa fa-question-circle "&gt;&lt;/i&gt;&lt;/a&gt;
                     &lt;br&gt;
-                    Martin John Hadley
+                    Charlie Joey Hadley
                     &lt;br&gt;
                     (&lt;a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'&gt;&lt;img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon"&gt;orcid.org/0000-0002-3039-6849&lt;/a&gt;)
             &lt;/center&gt;
@@ -89,7 +89,7 @@ This is the code to be inserted at the end of a post:
             &lt;center&gt; &lt;span class="fa fa-star fa-2x text-center" style="color:Tomato"&gt;&lt;/span&gt;
                 &lt;p&gt;&lt;a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'&gt;Citable Author&lt;i class="fa fa-question-circle "&gt;&lt;/i&gt;&lt;/a&gt;
                     &lt;br&gt;
-                    Martin John Hadley
+                    Charlie Joey Hadley
                     &lt;br&gt;
                     (&lt;a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'&gt;&lt;img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon"&gt;orcid.org/0000-0002-3039-6849&lt;/a&gt;)
             &lt;/center&gt;

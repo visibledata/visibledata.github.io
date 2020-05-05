@@ -1,6 +1,6 @@
 ---
 title: Great circles with sf and leaflet
-author: Martin John Hadley
+author: Charlie Joey Hadley
 date: '2018-02-28'
 slug: great-circles-with-sf-and-leaflet
 categories:
@@ -35,7 +35,7 @@ banner: "img/blog-images/header-images/2018-02-28_great-circles-with-sf.png"
         <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
             <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
                 <br>
-                Martin John Hadley
+                Charlie Joey Hadley
                 <br>
                 (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
         </center>
@@ -91,7 +91,7 @@ raw_journey_data</code></pre>
 </ul>
 <div id="journeys_to_sf" class="section level1">
 <h1>journeys_to_sf</h1>
-<p>Here’s my function for converting a <code>data.frame</code> containing journeys to a usable <code>&quot;sf&quot; &quot;data.frame&quot;</code> through the use of <a href="http://dplyr.tidyverse.org/articles/programming.html">tidyeval</a>:</p>
+<p>Here’s my function for converting a <code>data.frame</code> containing journeys to a usable <code>"sf" "data.frame"</code> through the use of <a href="http://dplyr.tidyverse.org/articles/programming.html">tidyeval</a>:</p>
 <pre class="r"><code>journeys_to_sf &lt;- function(journeys_data,
                            start_long = start.long,
                            start_lat = start.lat,
@@ -193,14 +193,12 @@ journey_data</code></pre>
 ## bbox:           xmin: -119.6982 ymin: 24.77426 xmax: 126.6333 ymax: 59.43696
 ## epsg (SRID):    4326
 ## proj4string:    +proj=longlat +datum=WGS84 +no_defs
-##   start.long start.lat   end.long  end.lat                    name
-## 1  -0.118092  51.50986 -119.69819 34.42083 London to Santa Barbara
-## 2  31.496773  30.02630   24.75357 59.43696    New Cairo to Tallinn
-## 3 126.633333  45.75000   46.73859 24.77426        Harbin to Riyadh
-##                         geometry
-## 1 LINESTRING (-119.6982 34.42...
-## 2 LINESTRING (24.75357 59.436...
-## 3 LINESTRING (46.73859 24.774...</code></pre>
+## # A tibble: 3 x 6
+##   start.long start.lat end.long end.lat name                       geometry
+##        &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;              &lt;LINESTRING [°]&gt;
+## 1     -0.118      51.5   -120.     34.4 London … (-119.6982 34.42083, -0.1…
+## 2     31.5        30.0     24.8    59.4 New Cai… (24.75357 59.43696, 31.49…
+## 3    127.         45.8     46.7    24.8 Harbin … (46.73859 24.77426, 126.6…</code></pre>
 <p>Let’s go through the stages required and re-write my method to be more <code>purrr</code> dependent:</p>
 <ol style="list-style-type: decimal">
 <li>Create a list of <code>LINESTRING</code>s</li>
@@ -288,7 +286,7 @@ list_of_linestrings</code></pre>
 </div>
 <div id="collecting-features" class="section level2">
 <h2>Collecting features</h2>
-<p>Eventually we will create an <code>&quot;sf&quot; &quot;data.frame&quot;</code> which contains our <code>LINESTRING</code>s in the <code>geometry</code> column. We create a set of features for this column from our list of <code>LINESTRING</code>s with the <code>st_sfc</code> function. Note that we need to specify a coordinate system, the most obvious choice is the WGS84 coordinate reference system, that’s why we specify <code>crs = 4326</code>:</p>
+<p>Eventually we will create an <code>"sf" "data.frame"</code> which contains our <code>LINESTRING</code>s in the <code>geometry</code> column. We create a set of features for this column from our list of <code>LINESTRING</code>s with the <code>st_sfc</code> function. Note that we need to specify a coordinate system, the most obvious choice is the WGS84 coordinate reference system, that’s why we specify <code>crs = 4326</code>:</p>
 <pre class="r"><code>list_of_linestrings %&gt;%
   st_sfc(crs = 4326)</code></pre>
 <pre><code>## Geometry set for 3 features 
@@ -297,7 +295,7 @@ list_of_linestrings</code></pre>
 ## bbox:           xmin: -119.6982 ymin: 24.77426 xmax: 126.6333 ymax: 59.43696
 ## epsg (SRID):    4326
 ## proj4string:    +proj=longlat +datum=WGS84 +no_defs</code></pre>
-<p>Now we have this set of features we create a collection of them in a <code>&quot;sf&quot; &quot;data.frame&quot;</code> with <code>st_sf</code>:</p>
+<p>Now we have this set of features we create a collection of them in a <code>"sf" "data.frame"</code> with <code>st_sf</code>:</p>
 <pre class="r"><code>collection_sf &lt;- list_of_linestrings %&gt;%
   st_sfc(crs = 4326) %&gt;%
   st_sf(geometry = .)
@@ -381,7 +379,7 @@ collection_sf</code></pre>
         <center> <span class="fa fa-star fa-2x text-center" style="color:Tomato"></span>
             <p><a href='/reproducibility-ratings' data-toggle="tooltip" data-placement="right" title="" data-original-title="Click for info" style='font-weight:bold;color:black;text-decoration:underline;' target='_blank'>Citable Author<i class="fa fa-question-circle "></i></a>
                 <br>
-                Martin John Hadley
+                Charlie Joey Hadley
                 <br>
                 (<a href="https://orcid.org/0000-0002-3039-6849" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"  target='_blank'><img src="/img/orcid_16x16.png" style="width:1em;margin-right:.2em;" alt="ORCID iD icon">orcid.org/0000-0002-3039-6849</a>)
         </center>
