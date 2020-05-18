@@ -147,7 +147,7 @@ I get carried away with laying things out though, but it's really fun playing wi
 This website uses the wonderful [Hugo Universal Theme](https://github.com/devcows/hugo-universal-theme) and was built using the following steps (a slightly tailored version of the workflow in Yihui's book, [**do read the book**](https://bookdown.org/yihui/blogdown/))
 
 1. Create a new RStudio Project (if you're not using RStudio projects, [you really should be](https://www.lynda.com/R-tutorials/Why-should-you-use-projects-RStudio/586672/648981-4.html))
-1. Initialise a git repo with `usethis::usethis::use_git()`
+1. Initialise a git repo with `usethis::use_git()`
 1. Run `blogdown::new_site(theme = 'devcows/hugo-universal-theme')`
 1. In the `config.toml` file make the following changes:
     + `baseurl = "/"`
