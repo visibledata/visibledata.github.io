@@ -1,0 +1,14 @@
+---
+title: "About"
+toc: false
+---
+
+Visible Data is my data science consultancy. Who am I? I'm Charlotte Hadley.
+
+I'm an R instructor and data science consultant. This is website serves as a portfolio of my courses, charts and other things that don't have a good home elsewhere. I'm also an Open Data and Reproducible Research evangelist.
+
+I also happen to be trans 🏳️‍⚧️. All tech is political and our common future requires [intersectionality](https://time.com/5560575/intersectionality-theory/).
+
+## Can I make a website like this?
+
+Yup! I'm indebted to [Drew Dimmery](https://ddimmery.com/) who makes the source of his Quarto website available here - [https://github.com/ddimmery/quarto-website](https://github.com/ddimmery/quarto-website)

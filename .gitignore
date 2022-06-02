@@ -1,9 +1,5 @@
+/.quarto/
+*.RData
+*.rdb
+*.rdx
 .Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-public/
-draft-blogs/
-.httr-oauth
-static/data/secret-keys.R
-static/data/secret-vault.vault

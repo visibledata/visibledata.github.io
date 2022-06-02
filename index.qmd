@@ -1,0 +1,82 @@
+---
+title: "Visible Data"
+# description: "Methods in Causal Inference, Data Science and Social Science"
+page-layout: full
+toc: false
+image: /social-card.jpg
+resources:
+    - "social-card.jpg"
+---
+
+
+::: {.column-page-inset}
+::: {.column-page-inset-left}
+
+We're a UK-based data science consultancy and training organisation run by Charlotte Hadley. We specialise in the R language and reproducible research methods.
+
+We have over a decade's experience in building training courses and syllabi with a focus on students without a traditional STEM or programming background.
+
+Please get in touch if you're interested in working with us: charlie@visibledata.co.uk
+
+:::
+
+<div class="column-margin column-container">
+<img class="rounded" src='images/visible-data-logo.png' style='max-height:200px;height:100%'/>
+</div>
+:::
+
+::: {.column-page-inset}
+
+:::: {.columns}
+
+```{=html}
+<center>
+<div class="row" width='100%'>
+    <div class="col-md-4">
+        <div class="card border-primary mb-3" style="max-width: 20rem;border: 1px solid gray !important;">
+            <div class="card-body">
+                <center><img src='images/rin3-months.png' style='max-width:250px;padding:10px;width:100%' /></center>
+                <p class="card-text">R in 3 Months is an incredible opportunity to learn R with weekly personalised video feedback.</p>
+            </div>
+            <a href="https://rfortherestofus.com/3months/" arget="_blank" class="stretched-link"></a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-primary mb-3" style="max-width: 20rem;;border: 1px solid gray !important;">
+            <div class="card-body">
+                <center><img src='images/lil-courses.png' style='max-width:250px;padding:10px;width:100%' /></center>
+                <p class="card-text">We've created 5+ courses @ LinkedIn Learning on building interactive dataviz & shiny apps with R.</p>
+            </div>
+            <a href="https://www.linkedin.com/learning/instructors/charlie-joey-hadley?u=2125562" target="_blank" class="stretched-link"></a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-primary mb-3" style="max-width: 20rem;;border: 1px solid gray !important;">
+            <div class="card-body">
+                <center><img src='images/mapping-with-r.png' style='max-width:250px;padding:10px;width:100%' /></center>
+                <p class="card-text">We're extremely proud of this $99 course on building static and interactive maps with R.</p>
+            </div>
+            <a href="https://rfortherestofus.com/courses/mapping/" target="_blank" class="stretched-link"></a>
+        </div>
+    </div>
+</div>
+</center>
+```
+
+::::
+
+::: {.text-center}
+
+```{=html}
+<a class="btn btn-outline-dark", href="https://twitter.com/charliejhadley" target="_blank" rel="noopener noreferrer">
+    <i class="bi bi-twitter" role='img' aria-label='Twitter'></i>
+</a>
+
+<a class="btn btn-outline-dark", href="https://github.com/charliejhadley" target="_blank" rel="noopener noreferrer">
+    <i class="bi bi-github" role='img' aria-label='Github'></i>
+</a>
+```
+
+:::
+
+:::

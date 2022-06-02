@@ -1,0 +1,33 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Visible Data"
+  description: "Data Science Consultancy & Training"
+  site-url: https://visibledata.co.uk
+  repo-url: https://github.com/ddimmery/quarto-website
+  # google-analytics: "XX"
+  open-graph: true
+  favicon: favicon.png
+  twitter-card: 
+    creator: "@charliejhadley"
+    site: "@charliejhadley"
+    card-style: "summary_large_image"
+  navbar:
+    left:
+      - href: training.qmd
+      - href: blog.qmd
+      - href: about.qmd
+
+format:
+  html:
+    theme: default
+    css: styles.css
+    toc: true
+    toc-depth: 4
+    toc-title: "Contents"
+    html-math-method: katex
+    include-in-header:
+      - includes.html
+    highlight-style: tango

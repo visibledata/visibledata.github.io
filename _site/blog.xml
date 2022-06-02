@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Visible Data</title>
+<link>https://visibledata.co.uk/blog.html</link>
+<atom:link href="https://visibledata.co.uk/blog.xml" rel="self" type="application/rss+xml"/>
+<description>Data Science Consultancy & Training</description>
+<generator>quarto-0.9.288</generator>
+<lastBuildDate>Mon, 09 May 2022 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Stub</title>
+  <link>https://visibledata.co.uk/posts/softblock-demo/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>This is a stubby stub</p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2022,
+  author = {Charlotte Hadley},
+  title = {Stub},
+  date = {2022-05-10},
+  url = {https://visibledata.co.uk/posts/softblock-demo},
+  langid = {en},
+  abstract = {Long stubb!.}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2022" class="csl-entry quarto-appendix-citeas">
+Charlotte Hadley. 2022. <span>“Stub.”</span> May 10, 2022. <a href="https://visibledata.co.uk/posts/softblock-demo">https://visibledata.co.uk/posts/softblock-demo</a>.
+</div></div></section></div> ]]></description>
+  <category>experimental-design</category>
+  <category>demo</category>
+  <guid>https://visibledata.co.uk/posts/softblock-demo/index.html</guid>
+  <pubDate>Mon, 09 May 2022 23:00:00 GMT</pubDate>
+  <media:content url="https://visibledata.co.uk//posts/softblock-demo/three-designs.jpg" medium="image" type="image/jpeg"/>
+</item>
+</channel>
+</rss>

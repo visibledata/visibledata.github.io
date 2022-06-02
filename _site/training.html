@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.288">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Visible Data - Training</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<link href="./favicon.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<style>
+.quarto-title-banner {
+  
+}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+<script src="https://kit.fontawesome.com/a0f522c241.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Visible Data - Training">
+<meta property="og:site-name" content="Visible Data">
+<meta name="twitter:title" content="Visible Data - Training">
+<meta name="twitter:creator" content="@charliejhadley">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Visible Data</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./training.html" aria-current="page">Training</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./blog.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">About</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#r-in-3-months" id="toc-r-in-3-months" class="nav-link active" data-scroll-target="#r-in-3-months">R in 3 Months</a></li>
+  <li><a href="#on-demand-training" id="toc-on-demand-training" class="nav-link" data-scroll-target="#on-demand-training">On-demand Training</a>
+  <ul class="collapse">
+  <li><a href="#linkedin-learning" id="toc-linkedin-learning" class="nav-link" data-scroll-target="#linkedin-learning">LinkedIn Learning</a></li>
+  <li><a href="#mapping-with-r-99" id="toc-mapping-with-r-99" class="nav-link" data-scroll-target="#mapping-with-r-99">Mapping with R ($99)</a></li>
+  </ul></li>
+  <li><a href="#public-courses" id="toc-public-courses" class="nav-link" data-scroll-target="#public-courses">Public courses</a></li>
+  <li><a href="#custom-training-courses" id="toc-custom-training-courses" class="nav-link" data-scroll-target="#custom-training-courses">Custom training courses</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Training</h1>
+</div>
+
+
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>We have a wide variety of on-demand training courses available from various online learning providers and also provide bespoke training courses both in-person and online.</p>
+<p>In addition we deliver <a href="#public-courses">regular public courses through JB International and the Royal Statistical Society</a>. I’m also a visiting lecturer at Birmingham City University.</p>
+<section id="r-in-3-months" class="level2 column-page-inset" style="padding-top:10px">
+<h2 class="anchored" data-anchor-id="r-in-3-months">R in 3 Months</h2>
+<div class="columns">
+<div class="row">
+<div class="col-md-9">
+<p>I’m particularly proud of my work as a co-instructor on the excellent <a href="https://rfortherestofus.com/3months/">R in 3 Months</a> course that runs twice a year in the Spring and Fall.</p>
+<p>The course includes weekly assignments where students <strong>use their own datasets</strong> and I record personalised feedback videos for each student. Over the course of the 12 weeks students build up a solid understanding of R and how to use RMarkdown to create rich and easy to read reports.</p>
+<p>The course is $999 or $399 for those in countries with lower GDPs.</p>
+</div>
+<div class="col-md-3">
+<center>
+<img src="images/rin3-months.png" style="max-width:200px;width:100%">
+</center>
+</div>
+</div><p>This course was designed and is co-taught by <a href="https://twitter.com/dgkeyes">David Keyes</a> from the wonderful <a href="https://rfortherestofus.com/">R for the Rest of Us consultancy</a>. I’m very pleased to also collaborate with the diverse R for the Rest of Us on various consultancy projects.</p>
+</div>
+</section>
+<div class="column-page-inset" style="padding-top:10px">
+
+<section id="on-demand-training" class="level2">
+<h2 class="anchored" data-anchor-id="on-demand-training">On-demand Training</h2>
+<section id="linkedin-learning" class="level4">
+<h4 class="anchored" data-anchor-id="linkedin-learning">LinkedIn Learning</h4>
+<p>I’ve been recording training courses for LinkedIn Learning since 2016. Access to these courses is available through a LinkedIn Premium subscription or can be purchased a la carte. Many Universities provide students and staff with free access to LinkedIn Learning - check with your IT department.</p>
+<div class="columns">
+<div class="row">
+<div class="col-md-4">
+        <div class="card border-primary mb-3" style="border: 1px solid gray !important;">
+            <div class="card-body">
+                <center><img src="images/lil_shiny-data-apps.jpg" style="max-width:250px;padding:10px;width:100%"></center>
+                <p class="card-text">Go from zero to well designed shiny apps in 2h50m.</p>
+            </div>
+            <a href="https://www.linkedin.com/learning/building-data-apps-with-r-and-shiny-essential-training?trk=learning-course_related-content-card&amp;upsellOrderOrigin=default_guest_learning" target="_blank" class="stretched-link"></a>
+        </div>
+</div>
+<div class="col-md-4">
+        <div class="card border-primary mb-3" style="border: 1px solid gray !important;">
+            <div class="card-body">
+                <center><img src="images/lil_tidyverse-overview.jpg" style="max-width:250px;padding:10px;width:100%"></center>
+                <p class="card-text">Learn to wrangle and explore data with the tidyverse.</p>
+            </div>
+            <a href="https://www.linkedin.com/learning/instructors/charlie-joey-hadley?u=2125562" target="_blank" class="stretched-link"></a>
+        </div>
+</div>
+<div class="col-md-4">
+        <div class="card border-primary mb-3" style="border: 1px solid gray !important;">
+            <div class="card-body">
+                <center><img src="images/lil_htmlwidgets.jpg" style="max-width:250px;padding:10px;width:100%"></center>
+                <p class="card-text">A 5h25m intro to interactive maps, charts and more with R.</p>
+            </div>
+            <a href="https://www.linkedin.com/learning/instructors/charlie-joey-hadley?u=2125562" target="_blank" class="stretched-link"></a>
+        </div>
+</div>
+</div><div class="row">
+<div class="col-md-4">
+        <div class="card border-primary mb-3" style="border: 1px solid gray !important;">
+            <div class="card-body">
+                <center><img src="images/lil_rmarkdown.jpg" style="max-width:250px;padding:10px;width:100%"></center>
+                <p class="card-text">A thorough introduction to reports and more with RMarkdown.</p>
+            </div>
+            <a href="https://www.linkedin.com/learning/instructors/charlie-joey-hadley?u=2125562" target="_blank" class="stretched-link"></a>
+        </div>
+</div>
+<div class="col-md-4">
+        <div class="card border-primary mb-3" style="border: 1px solid gray !important;">
+            <div class="card-body">
+                <center><img src="images/lil_interactive-presentations.jpg" style="max-width:250px;padding:10px;width:100%"></center>
+                <p class="card-text">Learn how to combine {shiny} and RMarkdown together.</p>
+            </div>
+            <a href="https://www.linkedin.com/learning/instructors/charlie-joey-hadley?u=2125562" target="_blank" class="stretched-link"></a>
+        </div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="mapping-with-r-99" class="level4">
+<h4 class="anchored" data-anchor-id="mapping-with-r-99">Mapping with R ($99)</h4>
+<div class="card border-primary mb-3" style="border: 1px solid gray !important;">
+<div class="card-body">
+<div class="row">
+<p><a href="https://rfortherestofus.com/courses/mapping/" arget="_blank" class="stretched-link"></a></p>
+<div class="col-md-9">
+<p>I’ve designed this course specifically for folks who’ve never built a map or worked with GIS datasets before. The course introduces you to the excellent {sf} package and how to use it alongside the tidyverse for wrangling and exploring spatial data.</p>
+<p>You’ll then learn how to create static maps with {ggplot2} and interactive maps with {leaflet}. I’ll also ensure you go away with sufficiency knowledge to work with projections, CRS and where to obtain shapefiles.</p>
+<p>This course is available through the excellent <strong>R for the Rest of Us</strong> course catalogue.</p>
+</div>
+<div class="col-md-3">
+<center>
+<img src="images/rin3-months.png" style="max-width:200px;width:100%">
+</center>
+</div>
+</div>
+</div>
+</div>
+</section></section></div>
+
+
+<section id="public-courses" class="level2 column-page-inset">
+<h2 class="anchored" data-anchor-id="public-courses">Public courses</h2>
+<div class="columns">
+<ul>
+<li><p>I partner with <strong>JB International</strong> to deliver <a href="https://jbinternational.co.uk/courses/r">monthly scheduled public R courses</a>. <br> JB International have 20+ years experience in hosting and organising corporate training courses - but we also often see academics in these public courses too. Public courses are an affordable choice and an excellent opportunity to learn alongside other folks. If you’d prefer a bespoke course, please see below.</p></li>
+<li><p>I also deliver 3 courses a year through the <a href="https://rss.org.uk/training-events/training/public-courses/">Royal Statistical Society</a>. <br> These courses are attended equally by both academics and folks from industry. This happens to be the most cost effective way to attend our courses, for non-RSS members attendance is £693.60 + VAT.</p></li>
+</ul>
+</div>
+</section>
+<section id="custom-training-courses" class="level2 column-page-inset">
+<h2 class="anchored" data-anchor-id="custom-training-courses">Custom training courses</h2>
+<div class="columns">
+<p>Our training courses focus on using the R language for data science, reporting or data visualisation. Our courses are delivered using RMardown lecture slides for foundational material and use live coding exercises to replicate the real-world experience of using R.</p><p>We encourage learners to tell us:</p><blockquote class="blockquote">
+<p>“we need that chart/dashboard to do X”</p>
+<p>or</p>
+<p>“that’s not good enough for our needs - we need Y”</p>
+</blockquote><p>I’d recommend considering booking a bespoke course through our partner <a href="https://jbinternational.co.uk/page/44/contact-page">JB International</a>. They’ve been working with both small and (very) large corporates since 1995 and are better suited to processing payments and booking requests than my small consultancy. I genuinely enjoy working with these folks - they’re very fair to me and to their customers.</p><p>If you would prefer to get in touch directly with me, then please email me at <strong>charlie@visibledata.co.uk</strong>.</p>
+</div>
+</section>
+
+
+
+</main> <!-- /main -->
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

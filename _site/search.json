@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "posts/softblock-demo/index.html",
+    "href": "posts/softblock-demo/index.html",
+    "title": "Stub",
+    "section": "",
+    "text": "Reusehttps://creativecommons.org/licenses/by/4.0/CitationBibTeX citation:@online{hadley2022,\n  author = {Charlotte Hadley},\n  title = {Stub},\n  date = {2022-05-10},\n  url = {https://visibledata.co.uk/posts/softblock-demo},\n  langid = {en},\n  abstract = {Long stubb!.}\n}\nFor attribution, please cite this work as:\nCharlotte Hadley. 2022. “Stub.” May 10, 2022. https://visibledata.co.uk/posts/softblock-demo."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Visible Data",
+    "section": "",
+    "text": "R in 3 Months is an incredible opportunity to learn R with weekly personalised video feedback.\n            \n            \n        \n    \n    \n        \n            \n                \n                We've created 5+ courses @ LinkedIn Learning on building interactive dataviz & shiny apps with R.\n            \n            \n        \n    \n    \n        \n            \n                \n                We're extremely proud of this $99 course on building static and interactive maps with R."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Visible Data is my data science consultancy. Who am I? I’m Charlotte Hadley.\nI’m an R instructor and data science consultant. This is website serves as a portfolio of my courses, charts and other things that don’t have a good home elsewhere. I’m also an Open Data and Reproducible Research evangelist.\nI also happen to be trans 🏳️‍⚧️. All tech is political and our common future requires intersectionality."
+  },
+  {
+    "objectID": "about.html#can-i-make-a-website-like-this",
+    "href": "about.html#can-i-make-a-website-like-this",
+    "title": "About",
+    "section": "Can I make a website like this?",
+    "text": "Can I make a website like this?\nYup! I’m indebted to Drew Dimmery who makes the source of his Quarto website available here - https://github.com/ddimmery/quarto-website"
+  },
+  {
+    "objectID": "training.html",
+    "href": "training.html",
+    "title": "Training",
+    "section": "",
+    "text": "We have a wide variety of on-demand training courses available from various online learning providers and also provide bespoke training courses both in-person and online.\nIn addition we deliver regular public courses through JB International and the Royal Statistical Society. I’m also a visiting lecturer at Birmingham City University."
+  },
+  {
+    "objectID": "training.html#r-in-3-months",
+    "href": "training.html#r-in-3-months",
+    "title": "Training",
+    "section": "R in 3 Months",
+    "text": "R in 3 Months\n\n\n\nI’m particularly proud of my work as a co-instructor on the excellent R in 3 Months course that runs twice a year in the Spring and Fall.\nThe course includes weekly assignments where students use their own datasets and I record personalised feedback videos for each student. Over the course of the 12 weeks students build up a solid understanding of R and how to use RMarkdown to create rich and easy to read reports.\nThe course is $999 or $399 for those in countries with lower GDPs.\n\n\n\n\n\n\nThis course was designed and is co-taught by David Keyes from the wonderful R for the Rest of Us consultancy. I’m very pleased to also collaborate with the diverse R for the Rest of Us on various consultancy projects."
+  },
+  {
+    "objectID": "training.html#on-demand-training",
+    "href": "training.html#on-demand-training",
+    "title": "Training",
+    "section": "On-demand Training",
+    "text": "On-demand Training\n\nLinkedIn Learning\nI’ve been recording training courses for LinkedIn Learning since 2016. Access to these courses is available through a LinkedIn Premium subscription or can be purchased a la carte. Many Universities provide students and staff with free access to LinkedIn Learning - check with your IT department.\n\n\n\n        \n            \n                \n                Go from zero to well designed shiny apps in 2h50m.\n            \n            \n        \n\n\n        \n            \n                \n                Learn to wrangle and explore data with the tidyverse.\n            \n            \n        \n\n\n        \n            \n                \n                A 5h25m intro to interactive maps, charts and more with R.\n            \n            \n        \n\n\n\n        \n            \n                \n                A thorough introduction to reports and more with RMarkdown.\n            \n            \n        \n\n\n        \n            \n                \n                Learn how to combine {shiny} and RMarkdown together.\n            \n            \n        \n\n\n\n\n\n\nMapping with R ($99)\n\n\n\n\n\nI’ve designed this course specifically for folks who’ve never built a map or worked with GIS datasets before. The course introduces you to the excellent {sf} package and how to use it alongside the tidyverse for wrangling and exploring spatial data.\nYou’ll then learn how to create static maps with {ggplot2} and interactive maps with {leaflet}. I’ll also ensure you go away with sufficiency knowledge to work with projections, CRS and where to obtain shapefiles.\nThis course is available through the excellent R for the Rest of Us course catalogue."
+  },
+  {
+    "objectID": "training.html#public-courses",
+    "href": "training.html#public-courses",
+    "title": "Training",
+    "section": "Public courses",
+    "text": "Public courses\n\n\nI partner with JB International to deliver monthly scheduled public R courses.  JB International have 20+ years experience in hosting and organising corporate training courses - but we also often see academics in these public courses too. Public courses are an affordable choice and an excellent opportunity to learn alongside other folks. If you’d prefer a bespoke course, please see below.\nI also deliver 3 courses a year through the Royal Statistical Society.  These courses are attended equally by both academics and folks from industry. This happens to be the most cost effective way to attend our courses, for non-RSS members attendance is £693.60 + VAT."
+  },
+  {
+    "objectID": "training.html#custom-training-courses",
+    "href": "training.html#custom-training-courses",
+    "title": "Training",
+    "section": "Custom training courses",
+    "text": "Custom training courses\n\nOur training courses focus on using the R language for data science, reporting or data visualisation. Our courses are delivered using RMardown lecture slides for foundational material and use live coding exercises to replicate the real-world experience of using R.We encourage learners to tell us:\n“we need that chart/dashboard to do X”\nor\n“that’s not good enough for our needs - we need Y”\nI’d recommend considering booking a bespoke course through our partner JB International. They’ve been working with both small and (very) large corporates since 1995 and are better suited to processing payments and booking requests than my small consultancy. I genuinely enjoy working with these folks - they’re very fair to me and to their customers.If you would prefer to get in touch directly with me, then please email me at charlie@visibledata.co.uk."
+  },
+  {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "2021\nDavid Arbour, Drew Dimmery, and Arjun Sondhi. (2021) \"Permutation Weighting.\" ICML\n        \n        Preprint\n     \n        \n        Published\n    \nDavid Arbour, Drew Dimmery, and Anup Rao. (2021) \"Efficient Balanced Treatment Assignments for Experimentation.\" AISTATS\n        \n        Preprint\n     \n        \n        Github\n     \n        \n        Published\n    \nMy Phan, David Arbour, Drew Dimmery, and Anup Rao. (2021) \"Designing Transportable Experiments Under S-admissability.\" AISTATS\n        \n        Preprint\n     \n        \n        Github\n     \n        \n        Published\n    \n2020\nArjun Sondhi, David Arbour, and Drew Dimmery. (2020) \"Balanced off-policy evaluation in general action spaces.\" AISTATS\n        \n        Preprint\n     \n        \n        Published\n    \n2019\nDrew Dimmery, Eytan Bakshy, and Jasjeet Sekhon. (2019) \"Shrinkage Estimators in Online Experiments.\" KDD\n        \n        Preprint\n     \n        \n        Published\n    \n2016\nDrew Dimmery and Andrew Peterson. (2016) \"Shining the Light on Dark Money: Political Spending by Nonprofits.\" RSF: The Russell Sage Foundation Journal of the Social Sciences\n        \n        Published\n    \n2012\nC.T Kullenberg, S.R. Mishra, Drew Dimmery, and the NOMAD Collaboration. (2012) \"A search for single photon events in neutrino interactions.\" Physics Letters B\n        \n        Published\n    \nWorking Papers / Non-archival\n2022\nDavid Arbour, Drew Dimmery, Tung Mai, and Anup Rao. (2022) \"Online Balanced Experimental Design.\"\n        \n        Preprint\n    \nHan Wu, Sarah Tan, Weiwei Li, Mia Garrard, Adam Obeng, Drew Dimmery, Shaun Singh, Hanson Wang, Daniel Jiang, and Eytan Bakshy. (2022) \"Distilling Heterogeneity: From Explanations of Heterogeneous Treatment Effect Models to Interpretable Policies.\"\n        \n        Preprint\n    \n2021\nMolly Offer-Westort and Drew Dimmery. (2021) \"Experimentation for Homogenous Policy Change.\"\n        \n        Preprint\n    \nYan Leng and Drew Dimmery. (2021) \"Calibration of Heterogeneous Treatment Effects in Random Experiments.\"\n        \n        Preprint\n    \n2019\nHongzi Mao, Shannon Chen, Drew Dimmery, Shaun Singh, Drew Blaisdell, Yuandong Tian, Mohammad Alizadeh, and Eytan Bakshy. (2019) \"Real-world Video Adaptation with Reinforcement Learning.\" ICML Workshop - RL4RealLife\n        \n        Preprint\n    \nSam Daulton, Shaun Singh, Vashist Avadhanula, Drew Dimmery, and Eytan Bakshy. (2019) \"Thompson Sampling for Contextual Bandit Problems with Auxiliary Safety Constraints.\" NeurIPS Workshop - Safety and Robustness in Decision Making\n        \n        Preprint"
+  },
+  {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "Curriculum Vitae",
+    "section": "",
+    "text": "{{< include research.md >}}"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nexperimental-design\n\n\ndemo\n\n\n\n\nMore stub!\n\n\n\n\n\n\nMay 10, 2022\n\n\n\n\n\n\nNo matching items"
+  }
+]
