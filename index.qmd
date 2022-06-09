@@ -14,14 +14,16 @@ resources:
 
 We're a UK-based data science consultancy and training organisation run by Charlotte Hadley. We specialise in the R language and reproducible research methods.
 
-We have over a decade's experience in building training courses and syllabi with a focus on students without a traditional STEM or programming background.
+We have over a decade's experience in [building training courses](/training.html) and syllabi with a focus on students without a traditional STEM or programming background.
 
-Please get in touch if you're interested in working with us: charlie@visibledata.co.uk
+Please get in touch if you're interested in working with us, **charlie@visibledata.co.uk**
 
 :::
 
 <div class="column-margin column-container">
+<center>
 <img class="rounded" src='images/visible-data-logo.png' style='max-height:200px;height:100%'/>
+</center>
 </div>
 :::
 
@@ -75,6 +77,11 @@ Please get in touch if you're interested in working with us: charlie@visibledata
 <a class="btn btn-outline-dark", href="https://github.com/charliejhadley" target="_blank" rel="noopener noreferrer">
     <i class="bi bi-github" role='img' aria-label='Github'></i>
 </a>
+
+<a class="btn btn-outline-dark", href="https://orcid.org/0000-0002-3039-6849" target="_blank" rel="noopener noreferrer">
+    <i class="fa-brands fa-orcid"></i>
+</a>
+
 ```
 
 :::

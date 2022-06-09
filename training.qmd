@@ -3,7 +3,7 @@ title: "Training"
 toc: true
 ---
 
-We have a wide variety of on-demand training courses available from various online learning providers and also provide bespoke training courses both in-person and online.
+We have a wide variety of on-demand training courses available from several online learning providers and also provide bespoke training courses both in-person and online.
 
 In addition we deliver [regular public courses through JB International and the Royal Statistical Society](#public-courses). I'm also a visiting lecturer at Birmingham City University.
 
@@ -13,7 +13,11 @@ In addition we deliver [regular public courses through JB International and the 
 
 :::: {.columns}
 
+<div class="card border-primary mb-3" style="border: 1px solid gray !important;">
+<div class="card-body">
+
 ::: {.row}
+<a href="https://rfortherestofus.com/3months/" arget="_blank" class="stretched-link"></a>
 
 :::: {.col-md-9}
 
@@ -34,6 +38,9 @@ The course is $999 or $399 for those in countries with lower GDPs.
 ::::
 
 :::
+
+</div>
+</div>
 
 This course was designed and is co-taught by [David Keyes](https://twitter.com/dgkeyes) from the wonderful [R for the Rest of Us consultancy](https://rfortherestofus.com/). I'm very pleased to also collaborate with the diverse R for the Rest of Us on various consultancy projects.
 
@@ -163,7 +170,7 @@ This course is available through the excellent **R for the Rest of Us** course c
 :::: {.columns}
 
 - I partner with **JB International** to deliver [monthly scheduled public R courses](https://jbinternational.co.uk/courses/r). <br>
-JB International have 20+ years experience in hosting and organising corporate training courses - but we also often see academics in these public courses too. Public courses are an affordable choice and an excellent opportunity to learn alongside other folks. If you'd prefer a bespoke course, please see below.
+JB International have 20+ years experience in hosting and organising corporate training courses - but we also often see academics in these public courses too. Public courses are an affordable choice and an excellent opportunity to learn alongside other folks. If you'd prefer a bespoke course, [please see below](#custom-training-courses).
 
 - I also deliver 3 courses a year through the [Royal Statistical Society](https://rss.org.uk/training-events/training/public-courses/). <br>
 These courses are attended equally by both academics and folks from industry. This happens to be the most cost effective way to attend our courses, for non-RSS members attendance is £693.60 + VAT.
@@ -189,7 +196,7 @@ We encourage learners to tell us:
 >
 > "that's not good enough for our needs - we need Y"
 
-I'd recommend considering booking a bespoke course through our partner [JB International](https://jbinternational.co.uk/page/44/contact-page). They've been working with both small and (very) large corporates since 1995 and are better suited to processing payments and booking requests than my small consultancy. I genuinely enjoy working with these folks - they're very fair to me and to their customers.
+I'd recommend considering [booking a bespoke course through our partner JB International](https://jbinternational.co.uk/page/44/contact-page). They've been working with both small and (very) large corporates since 1995 and are better suited to processing payments and booking requests than my small consultancy. I genuinely enjoy working with these folks - they're very fair to me and to their customers.
 
 If you would prefer to get in touch directly with me, then please email me at **charlie@visibledata.co.uk**.
 

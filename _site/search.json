@@ -18,7 +18,14 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Visible Data is my data science consultancy. Who am I? I’m Charlotte Hadley.\nI’m an R instructor and data science consultant. This is website serves as a portfolio of my courses, charts and other things that don’t have a good home elsewhere. I’m also an Open Data and Reproducible Research evangelist.\nI also happen to be trans 🏳️‍⚧️. All tech is political and our common future requires intersectionality."
+    "text": "Visible Data is my data science consultancy. Who am I? I’m Charlotte Hadley but usually go by Charlie and use the handle @charliejhadley almost universally.\nI’m an R instructor and data science consultant. This is website serves as a portfolio of my courses, charts and other things that don’t have a good home elsewhere. I’m also an Open Data and Reproducible Research evangelist.\nI also happen to be trans 🏳️‍⚧️. All tech is political and our common future requires intersectionality."
+  },
+  {
+    "objectID": "about.html#more",
+    "href": "about.html#more",
+    "title": "About",
+    "section": "More",
+    "text": "More"
   },
   {
     "objectID": "about.html#can-i-make-a-website-like-this",
@@ -39,7 +46,7 @@
     "href": "training.html#r-in-3-months",
     "title": "Training",
     "section": "R in 3 Months",
-    "text": "R in 3 Months\n\n\n\nI’m particularly proud of my work as a co-instructor on the excellent R in 3 Months course that runs twice a year in the Spring and Fall.\nThe course includes weekly assignments where students use their own datasets and I record personalised feedback videos for each student. Over the course of the 12 weeks students build up a solid understanding of R and how to use RMarkdown to create rich and easy to read reports.\nThe course is $999 or $399 for those in countries with lower GDPs.\n\n\n\n\n\n\nThis course was designed and is co-taught by David Keyes from the wonderful R for the Rest of Us consultancy. I’m very pleased to also collaborate with the diverse R for the Rest of Us on various consultancy projects."
+    "text": "R in 3 Months\n\n\n\n\n\n\nI’m particularly proud of my work as a co-instructor on the excellent R in 3 Months course that runs twice a year in the Spring and Fall.\nThe course includes weekly assignments where students use their own datasets and I record personalised feedback videos for each student. Over the course of the 12 weeks students build up a solid understanding of R and how to use RMarkdown to create rich and easy to read reports.\nThe course is $999 or $399 for those in countries with lower GDPs.\n\n\n\n\n\n\n\n\nThis course was designed and is co-taught by David Keyes from the wonderful R for the Rest of Us consultancy. I’m very pleased to also collaborate with the diverse R for the Rest of Us on various consultancy projects."
   },
   {
     "objectID": "training.html#on-demand-training",
@@ -61,13 +68,6 @@
     "title": "Training",
     "section": "Custom training courses",
     "text": "Custom training courses\n\nOur training courses focus on using the R language for data science, reporting or data visualisation. Our courses are delivered using RMardown lecture slides for foundational material and use live coding exercises to replicate the real-world experience of using R.We encourage learners to tell us:\n“we need that chart/dashboard to do X”\nor\n“that’s not good enough for our needs - we need Y”\nI’d recommend considering booking a bespoke course through our partner JB International. They’ve been working with both small and (very) large corporates since 1995 and are better suited to processing payments and booking requests than my small consultancy. I genuinely enjoy working with these folks - they’re very fair to me and to their customers.If you would prefer to get in touch directly with me, then please email me at charlie@visibledata.co.uk."
-  },
-  {
-    "objectID": "research.html",
-    "href": "research.html",
-    "title": "Research",
-    "section": "",
-    "text": "2021\nDavid Arbour, Drew Dimmery, and Arjun Sondhi. (2021) \"Permutation Weighting.\" ICML\n        \n        Preprint\n     \n        \n        Published\n    \nDavid Arbour, Drew Dimmery, and Anup Rao. (2021) \"Efficient Balanced Treatment Assignments for Experimentation.\" AISTATS\n        \n        Preprint\n     \n        \n        Github\n     \n        \n        Published\n    \nMy Phan, David Arbour, Drew Dimmery, and Anup Rao. (2021) \"Designing Transportable Experiments Under S-admissability.\" AISTATS\n        \n        Preprint\n     \n        \n        Github\n     \n        \n        Published\n    \n2020\nArjun Sondhi, David Arbour, and Drew Dimmery. (2020) \"Balanced off-policy evaluation in general action spaces.\" AISTATS\n        \n        Preprint\n     \n        \n        Published\n    \n2019\nDrew Dimmery, Eytan Bakshy, and Jasjeet Sekhon. (2019) \"Shrinkage Estimators in Online Experiments.\" KDD\n        \n        Preprint\n     \n        \n        Published\n    \n2016\nDrew Dimmery and Andrew Peterson. (2016) \"Shining the Light on Dark Money: Political Spending by Nonprofits.\" RSF: The Russell Sage Foundation Journal of the Social Sciences\n        \n        Published\n    \n2012\nC.T Kullenberg, S.R. Mishra, Drew Dimmery, and the NOMAD Collaboration. (2012) \"A search for single photon events in neutrino interactions.\" Physics Letters B\n        \n        Published\n    \nWorking Papers / Non-archival\n2022\nDavid Arbour, Drew Dimmery, Tung Mai, and Anup Rao. (2022) \"Online Balanced Experimental Design.\"\n        \n        Preprint\n    \nHan Wu, Sarah Tan, Weiwei Li, Mia Garrard, Adam Obeng, Drew Dimmery, Shaun Singh, Hanson Wang, Daniel Jiang, and Eytan Bakshy. (2022) \"Distilling Heterogeneity: From Explanations of Heterogeneous Treatment Effect Models to Interpretable Policies.\"\n        \n        Preprint\n    \n2021\nMolly Offer-Westort and Drew Dimmery. (2021) \"Experimentation for Homogenous Policy Change.\"\n        \n        Preprint\n    \nYan Leng and Drew Dimmery. (2021) \"Calibration of Heterogeneous Treatment Effects in Random Experiments.\"\n        \n        Preprint\n    \n2019\nHongzi Mao, Shannon Chen, Drew Dimmery, Shaun Singh, Drew Blaisdell, Yuandong Tian, Mohammad Alizadeh, and Eytan Bakshy. (2019) \"Real-world Video Adaptation with Reinforcement Learning.\" ICML Workshop - RL4RealLife\n        \n        Preprint\n    \nSam Daulton, Shaun Singh, Vashist Avadhanula, Drew Dimmery, and Eytan Bakshy. (2019) \"Thompson Sampling for Contextual Bandit Problems with Auxiliary Safety Constraints.\" NeurIPS Workshop - Safety and Robustness in Decision Making\n        \n        Preprint"
   },
   {
     "objectID": "cv.html",

@@ -1,13 +1,36 @@
 ---
 title: "About"
-toc: false
+toc: true
 ---
 
-Visible Data is my data science consultancy. Who am I? I'm Charlotte Hadley.
+Visible Data is my data science consultancy. Who am I? I'm Charlotte Hadley but usually go by Charlie and use the handle [@charliejhadley](https://twitter.com/charliejhadley) almost universally.
 
 I'm an R instructor and data science consultant. This is website serves as a portfolio of my courses, charts and other things that don't have a good home elsewhere. I'm also an Open Data and Reproducible Research evangelist.
 
 I also happen to be trans 🏳️‍⚧️. All tech is political and our common future requires [intersectionality](https://time.com/5560575/intersectionality-theory/).
+
+::: {.text-center}
+
+```{=html}
+<a class="btn btn-outline-dark", href="https://twitter.com/charliejhadley" target="_blank" rel="noopener noreferrer">
+    <i class="bi bi-twitter" role='img' aria-label='Twitter'></i>
+</a>
+
+<a class="btn btn-outline-dark", href="https://github.com/charliejhadley" target="_blank" rel="noopener noreferrer">
+    <i class="bi bi-github" role='img' aria-label='Github'></i>
+</a>
+
+<a class="btn btn-outline-dark", href="https://orcid.org/0000-0002-3039-6849" target="_blank" rel="noopener noreferrer">
+    <i class="fa-brands fa-orcid"></i>
+</a>
+
+```
+
+:::
+
+## More
+
+
 
 ## Can I make a website like this?
 
