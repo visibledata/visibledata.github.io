@@ -21,7 +21,7 @@ In addition we deliver [regular public courses through JB International and the 
 
 :::: {.col-md-9}
 
-I'm particularly proud of my work as a co-instructor on the excellent [R in 3 Months](https://rfortherestofus.com/3months/) course that runs twice a year in the Spring and Fall.
+I'm particularly proud of my work as a co-instructor with David Keyes on the excellent [R in 3 Months](https://rfortherestofus.com/3months/) course that runs twice a year in the Spring and Fall.
 
 The course includes weekly assignments where students **use their own datasets** and I record personalised feedback videos for each student. Over the course of the 12 weeks students build up a solid understanding of R and how to use RMarkdown to create rich and easy to read reports.
 
@@ -41,8 +41,6 @@ The course is $999 or $399 for those in countries with lower GDPs.
 
 </div>
 </div>
-
-This course was designed and is co-taught by [David Keyes](https://twitter.com/dgkeyes) from the wonderful [R for the Rest of Us consultancy](https://rfortherestofus.com/). I'm very pleased to also collaborate with the diverse R for the Rest of Us on various consultancy projects.
 
 ::::
 

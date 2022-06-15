@@ -1,11 +1,11 @@
 ---
 title: "About"
-toc: true
+toc: false
 ---
 
 Visible Data is my data science consultancy. Who am I? I'm Charlotte Hadley but usually go by Charlie and use the handle [@charliejhadley](https://twitter.com/charliejhadley) almost universally.
 
-I'm an R instructor and data science consultant. This is website serves as a portfolio of my courses, charts and other things that don't have a good home elsewhere. I'm also an Open Data and Reproducible Research evangelist.
+I'm an R instructor and data science consultant. This website serves as a portfolio of my courses, charts and other things that don't have a good home elsewhere. I'm also an Open Data and Reproducible Research evangelist.
 
 I also happen to be trans 🏳️‍⚧️. All tech is political and our common future requires [intersectionality](https://time.com/5560575/intersectionality-theory/).
 
@@ -28,10 +28,185 @@ I also happen to be trans 🏳️‍⚧️. All tech is political and our common
 
 :::
 
-## More
+<br>
 
+<div class="column-page-inset" style='padding-top:10px'>
+
+```{=html}
+<div class="container-fluid">
+<div class="hori-timeline" dir="ltr">
+                    <ul class="list-inline events">
+                        <li class="list-inline-item event-list">
+                            <div class="px-4">
+                                <div class="event-date bg-soft-success text-success">2022</div>
+                                <h6 style='text-align:center;text-decoration: none;'>Birmingham City University</h6>
+                                <p style='font-size:14px'>Visiting lecturer teaching a MSc in healthcare data science applications.</p>
+                                <div>
+                                    <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-inline-item event-list">
+                            <div class="px-4">
+                                <div class="event-date bg-soft-success text-success">2019</div>
+                                <h6 style='text-align:center;text-decoration: none;'>Visble Data & R for the Rest of Us</h6>
+                                <p style='font-size:14px'>Full-time independent data science consultant and trainer.</p>
+                                <div>
+                                    <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-inline-item event-list">
+                            <div class="px-4">
+                                <div class="event-date bg-soft-success text-success">2017</div>
+                                <h6>LinkedIn Learning Instructor</h6>
+                                <p style='font-size:14px'>Content creator specialising in data science courses.</p>
+                                <div>
+                                    <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-inline-item event-list">
+                            <div class="px-4">
+                                <div class="event-date bg-soft-success text-success">2015</div>
+                                <h6>University of Oxford</h6>
+                                <p style='font-size:14px'>Service delivery manager for the Interactive Data Network.</p>
+                                <div>
+                                    <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+</div>
+```
+
+## Experience timeline
+
+```{=html}
+<!--- CREDIT: https://www.bootdey.com/snippets/view/timeline-events-area -->
+<section class="timeline_area section_padding_130">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-8 col-lg-6">
+                <!-- Section Heading-->
+                <div class="section_heading text-center">
+                    <h6>Our History</h6>
+                    <h3>A brief stories of our 2 years company journey</h3>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <!-- Timeline Area-->
+                <div class="apland-timeline-area">
+                    <!-- Single Timeline Content-->
+                    <div class="single-timeline-area">
+                        <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                            <p>Near Future</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Updated 5.0</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa fa-archive" aria-hidden="true"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Fixed bug</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa fa-address-book" aria-hidden="true"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Reach 1k Users</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Single Timeline Content-->
+                    <div class="single-timeline-area">
+                        <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                            <p>2020</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa fa-briefcase" aria-hidden="true"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Updated 4.4.0</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa fa-desktop" aria-hidden="true"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Fixed bug</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Single Timeline Content-->
+                    <div class="single-timeline-area">
+                        <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                            <p>2019</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa fa-id-card" aria-hidden="true"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Updated 4.0</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa fa-desktop" aria-hidden="true"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Fixed bug</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Reach 500 Users</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+```
 
 
 ## Can I make a website like this?
 
 Yup! I'm indebted to [Drew Dimmery](https://ddimmery.com/) who makes the source of his Quarto website available here - [https://github.com/ddimmery/quarto-website](https://github.com/ddimmery/quarto-website)
+
+</div>
