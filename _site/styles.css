@@ -9,6 +9,23 @@
   margin-left: calc(-50vw + 50% + 10px);
 }
 
+/* Accordion */
+
+.panel-group {
+  margin-bottom: 20px;
+}
+.panel-group .panel {
+  margin-bottom: 0;
+  border-radius: 0;
+  overflow: hidden;
+}
+.panel-group .panel + .panel {
+  margin-top: 5px;
+}
+.panel-group.accordion .panel {
+  border-color: #ccc;
+}
+
 /* Testimonials */
 
 .testimonial {

@@ -6,11 +6,11 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/index.html</loc>
-    <lastmod>2022-06-20T15:07:05.847Z</lastmod>
+    <lastmod>2022-06-20T18:10:38.996Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/about.html</loc>
-    <lastmod>2022-06-17T14:22:11.303Z</lastmod>
+    <lastmod>2022-06-20T18:11:16.428Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/training.html</loc>
@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/blog.html</loc>
-    <lastmod>2022-06-20T15:07:03.703Z</lastmod>
+    <lastmod>2022-06-20T18:10:34.965Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/index.html</loc>
@@ -30,7 +30,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html</loc>
-    <lastmod>2022-06-17T14:18:22.854Z</lastmod>
+    <lastmod>2022-06-20T18:25:06.719Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2022-06-17_test/index.html</loc>
@@ -54,6 +54,34 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2019-02-18_oxford-centres/index.html</loc>
-    <lastmod>2022-06-20T15:07:07.484Z</lastmod>
+    <lastmod>2022-06-20T16:31:17.775Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2019-01-02_keeping-secrets-in-blogdown/index.html</loc>
+    <lastmod>2022-06-20T16:31:23.578Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html</loc>
+    <lastmod>2022-06-20T16:47:18.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2018-11-12-crawling-doi-from-a-sage/index.html</loc>
+    <lastmod>2022-06-20T17:19:48.370Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html</loc>
+    <lastmod>2022-06-20T17:30:18.470Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2018-02-27-crawling-with-tidygraph/index.html</loc>
+    <lastmod>2022-06-20T17:45:04.006Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning/index.html</loc>
+    <lastmod>2022-06-20T18:08:23.786Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html</loc>
+    <lastmod>2022-06-20T18:10:34.408Z</lastmod>
   </url>
 </urlset>

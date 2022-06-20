@@ -7,32 +7,16 @@ categories:
   - GIS
 code-fold: false
 freeze: true
-image: /posts/2019-02-18_oxford-centres/gg_century_centres.png
+image: /posts/2019-02-18_oxford-centres/gg_centres_through_time.png
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
 	echo = TRUE,
-	eval = FALSE,
 	message = FALSE,
 	warning = FALSE
 )
 ```
-
-
-<style>
-.panel-heading .accordion-toggle:after {
-    /* symbol for "opening" panels */
-    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
-    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
-    float: right;        /* adjust as needed */
-    color: grey;         /* adjust as needed */
-}
-.panel-heading .accordion-toggle.collapsed:after {
-    /* symbol for "collapsed" panels */
-    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
-}
-</style>
 
 ```{r internal-libraries, echo=FALSE, message=FALSE, warning=FALSE}
 library("tidyverse")
@@ -47,7 +31,6 @@ library("secret")
 ```
 
 
-
 My team at University of Oxford provide research data management and reproducible research advice to researchers across the whole of the University. A fairly common point of contention is where should we meet, and where is the centre of the University?
 
 We broadly agreed that the centre of the University should be calculated as the (weighted) centre of mass of specific buildings or campuses within the University. Two of our favourite options were:
@@ -57,24 +40,7 @@ We broadly agreed that the centre of the University should be calculated as the 
 
 In this blogpost I go through all the steps of scraping and combining data from the OxPoints service and Wikipedia to create the chart below:
 
-<ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active">
-    <a role="tab" data-toggle="tab" href="#including-plots" aria-controls="including-plots">Centres through time</a>
-    </li>
-<li role="presentation"><a role="tab" data-toggle="tab" href="#and-more" aria-controls="and-more">Obligatory GIF</a></li></ul>
-
-<div class="tab-content"><div id="including-plots" class="section level2 tab-pane tabbed-pane active" role="tabpanel">
-
-![](/posts/2019-02-18_oxford-centres//gg_centres_through_time.png){max-width=530px}
-
-
-</div><div id="and-more" class="section level2 tab-pane tabbed-pane" role="tabpanel">
-
-![](/blog/2019-02-18-oxford-centres_files/oxford-centres.gif){max-width=530px}
-
-</div></div>
-
-There are many steps to this process. I've decided to experiment with an accordion layout for this post, so it's not immediately obvious how long the post is!
+![](oxford-centres.gif){max-width=530px}
 
 ### How to follow along
 
@@ -86,19 +52,8 @@ If you want to follow along, please follow these steps first:
 
 3. Create a script file in the `data` directory called `obtain-oxpoints-data.R`, we'll use this to scrape data from Oxpoint.
 
-<div class="panel-group" id="accordion">
-  
-<div class="panel panel-default">
-<div class="panel-heading">
-<h4 class="panel-title">
-<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#oxpoints">
-Get data from OxPoints
-</a>
-</h4>
-</div>
-    
-<div id="oxpoints" class="panel-collapse collapse in">
-<div class="panel-body">
+
+### Get data from OxPoints
 
 OxPoints is a tool for [accessing geographic information about University of Oxford](https://help.it.ox.ac.uk/oxpoints/index) and was mostly put together by my friend and ex-colleague [Alex Dutton](https://twitter.com/alexsdutton). Now I've highlighted Alex is a friend, I can be slightly more candid in scraping data from the service...
 
@@ -181,23 +136,7 @@ head(college_oxpoints_data)
 
 Let's augment this data with whatever we can easily collect from the Wikipedia page on the Oxford Colleges.
 
-</div>
-</div>
-</div>
-
-<div class="panel-group" id="accordion">
-  
-<div class="panel panel-default">
-<div class="panel-heading">
-<h4 class="panel-title">
-<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#wiki-table">
-Extract data from Wikipedia table
-</a>
-</h4>
-</div>
-    
-<div id="wiki-table" class="panel-collapse collapse">
-<div class="panel-body">
+### Extract data from Wikipedia table
 
 The [Colleges of the University of Oxford Wikipedia page](https://en.wikipedia.org/wiki/Colleges_of_the_University_of_Oxford) provides a useful summary of the colleges, including; year of foundation, financial assets and number of students. We've already loaded the `rvest` package at the top of our script file, which is the go-to tool for web scraping with R. First, let's import the web page using `read_html`. 
 
@@ -226,7 +165,7 @@ We'll throw away the top row by asking for parts `2:length(.)` and also clean up
 
 ```{r 2018-12-29-oxford-centres-3}
 colleges_of_oxford <- colleges_of_oxford %>%
-  .[2:length(.)] %>%
+  .[2:{length(.) - 1}] %>%
   str_trim() 
 ```
 
@@ -252,15 +191,11 @@ colleges_of_oxford %>%
 Turns out `readr::parse_number()` is clever enough to fix our column. It's convenient to use `mutate_at` to modify many columns at once, having previously re-arranged columns so all the targets are together:
 
 ```{r 2018-12-29-oxford-centres-6}
+
 colleges_of_oxford <- colleges_of_oxford %>%
-  select(name, sister.college, everything()) %>%
-  mutate_at(vars(foundation.year:undergraduates), ~list(
-    if (class(.x) == "numeric") {
-      .x
-    } else {
-      parse_number(.x)
-    }
-  ))
+  select(name, sister.college, everything()) %>% 
+  select(name, sister.college, foundation.year, undergraduates, post.graduates, total.students) %>% 
+  mutate(across(foundation.year:total.students, ~parse_number(.x)))
 ```
 
 We've now got all of the information I wanted about the colleges, so let's combine the tables with `left_join()`. But this isn't a well formatted dataset for GIS analysis/visualisation. For that we need to use the `sf` package.
@@ -270,22 +205,7 @@ college_data <- college_oxpoints_data %>%
   left_join(colleges_of_oxford)
 ```
 
-</div>
-</div>
-</div>
-
-
-<div class="panel panel-default">
-<div class="panel-heading">
-<h4 class="panel-title">
-<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#sf-object">
-Creating an `sf` object
-</a>
-</h4>
-</div>
-    
-<div id="sf-object" class="panel-collapse collapse">
-<div class="panel-body">
+### Creating an `sf` object
 
 `sf tibbles` are the augmented tibbles of the excellent `sf` package. They contain both the necessary geometric data for computing & visualising GIS features, and additional non-geometric data about each feature (i.e. the founding year of the college).
 
@@ -300,7 +220,7 @@ college_nongeometric_data <- college_data %>%
 
 In my opinion, this is the one and only fiddly part of using `sf`. We need to create an `sfc` object, which is achieved with the `st_as_sfc()` function. However, this function needs a *vector* of the features and not a `tibble`; which is why in the code below we use `.[[1]]`. If you're unfamiliar with this trick, please refer to [Hadley Wickham's pepper shaker tutorial](https://twitter.com/hadleywickham/status/643381054758363136).
 
-```{r blog-create-college-geometries, eval = FALSE}
+```{r blog-create-college-geometries, eval = TRUE}
 college_features <- college_data %>%
   select(shape) %>%
   .[[1]]
@@ -309,10 +229,9 @@ college_geometries <- st_as_sfc(college_features)
 
 We can now augment `college_nongeometric_data` with this `sfc` object via the `st_geometry()` function. Finally, we'll create a copy of this with a sensible name: `college_shapes` 
 
-```{r blog-append-geometry-data, eval=FALSE}
+```{r blog-append-geometry-data, eval=TRUE}
 st_geometry(college_nongeometric_data) <- college_geometries
-college_shapes <- college_nongeometric_data %>% 
-  select(!where(is.list))
+college_shapes <- college_nongeometric_data
 ```
 
 Our `sf tibble` currently suffers from two issues:
@@ -320,28 +239,13 @@ Our `sf tibble` currently suffers from two issues:
 - There's no projection. We'll assign the standard WGS84 projection with `st_set_crs`.
 - The geometry objects are currently `POLYGON Z` and `MULTIPOLYGON Z` with zero values for `z`. As all values are zero, they're pointless and can be removed with `st_zm`.
 
-```{r blog-crs-and-zm, eval = FALSE}
+```{r blog-crs-and-zm, eval = TRUE}
 college_shapes <- college_shapes %>%
   st_set_crs(4326) %>%
   st_zm()
 ```
 
-
-</div>
-</div>
-</div>
-
-<div class="panel panel-default">
-<div class="panel-heading">
-<h4 class="panel-title">
-<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#visualise-with-leaflet">
-Understanding our shapefiles with `mapview`
-</a>
-</h4>
-</div>
-    
-<div id="visualise-with-leaflet" class="panel-collapse collapse">
-<div class="panel-body">
+### Understanding our shapefiles with `mapview`
 
 Before continuing forwards, we should ensure our shapefiles are what we assume they are: the grounds of each college in the University of Oxford. The `mapview` package is incredibly useful for exploring and understanding `sf tibbles`. If you've been following along precisely, the script file your in already loads `mpaview`!
 
@@ -355,7 +259,6 @@ How does this help us? Well, we can see that the colleges of the University are 
 
 ```{r 2018-12-29-oxford-centres-8}
 college_shapes %>%
-  select(!where(is.list)) %>% 
   slice(which(st_geometry_type(college_shapes) == "MULTIPOLYGON")) %>%
   mapview(zcol = "name", alpha.regions = 1)
 ```
@@ -398,24 +301,9 @@ college_shapes %>%
            driver = "GeoJSON")
 ```
 
-</div>
-</div>
-</div>
+### Visualising college shapefiles with `ggmap`
 
-
-<div class="panel panel-default">
-<div class="panel-heading">
-<h4 class="panel-title">
-<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#visualise-with-ggmap">
-Visualising college shapefiles with `ggmap`
-</a>
-</h4>
-</div>
-    
-<div id="visualise-with-ggmap" class="panel-collapse collapse">
-<div class="panel-body">
-
-`ggmap` is the best tool for obtaining static map tiles for inclusion in `ggplot2` charts, most folks prefer the Google Maps tiles. Unfortunately, since July 2018 users need to provide Google with billing details in order to obtain map tiles. Read my [blogpost on how to setup your Google Maps API Key](https://www.visibledata.co.uk/blog/2018/12/05/2018-12-05-using-ggmap-after-july-2018/) before running the code below.
+`ggmap` is the best tool for obtaining static map tiles for inclusion in `ggplot2` charts, most folks prefer the Google Maps tiles. Unfortunately, since July 2018 users need to provide Google with billing details in order to obtain map tiles. Read my [blogpost on how to setup your Google Maps API Key](https://www.visibledata.co.uk/posts/2018/12/05/2018-12-05-using-ggmap-after-july-2018/) before running the code below.
 
 At the time of writing (January 2018), the version of `ggmap` on CRAN doesn't support the new API changes. Run `packageVersion("ggmap")` in your console, if the version is higher than 2.7 then you're in luck! If not, you need to install the development version of the package as follows:
 
@@ -442,12 +330,12 @@ college_shapes <- read_sf(here("posts", "2019-02-18_oxford-centres", "shapefiles
 
 Before creating our maps we need to register our Google Maps token using `register_google()`:
 
-```{r blog-register-google-key}
+```{r blog-register-google-key, eval=FALSE}
 register_google(key = "My-FAKE-KEY")
 ```
 
-```{r internal-register-google-key, echo = FALSE}
-my_vault <- here("static", "data", "secret-vault.vault")
+```{r internal-register-google-key, echo = FALSE, eval=FALSE}
+my_vault <- here("data", "secret-vault.vault")
 charliejhadley_private_key <- file.path("~/.ssh", "blog_vault")
 ggmaps_rstats_key <- get_secret("ggmap_key_2020", key = charliejhadley_private_key, vault = my_vault)
 register_google(ggmaps_rstats_key)
@@ -536,6 +424,7 @@ gg_oxford_city +
           aes(fill = foundation.year < 1300)) +
   geom_label_repel(
     data = college_shapes %>%
+      select(!where(is.list)) %>% 
                   filter(foundation.year < 1300),
     aes(label = name, geometry = geometry),
     stat = "sf_coordinates",
@@ -544,23 +433,7 @@ gg_oxford_city +
   )
 ```
 
-</div>
-</div>
-</div>
-
-
-
-<div class="panel panel-default">
-<div class="panel-heading">
-<h4 class="panel-title">
-<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#center-of-mass-overtime" href="#collapse3">
-Animating the centre of mass over time
-</a>
-</h4>
-</div>
-    
-<div id="center-of-mass-overtime" class="panel-collapse collapse">
-<div class="panel-body">
+### Animating the centre of mass over time
 
 Now we've finally got to the point that we can compute the centre of the colleges over time! Let's create a new script file `college-centres-over-time.R` and load our libraries.
 
@@ -575,13 +448,12 @@ library("ggrepel")
 Again, we need to import our GIS data:
 
 ```{r blog-reload-shapefiles, eval = FALSE}
-college_shapes <- read_sf(here("data-raw", "shapefiles_oxford_colleges.json"))
+college_shapes <- read_sf(here("posts", "2019-02-18_oxford-centres", "shapefiles_oxford_colleges.json"))
 ```
 
 We also need to ensure that we register with the Google Maps API when running this script and set-up our base map again.
 
 ```{r blog-register-google-key-again, eval = FALSE}
-register_google(key = "My-FAKE-KEY")
 make_ggmap_styles <- function(styles){
   styles %>%
     mutate(style = glue("&style=feature:{feature}|visibility:{visibility}")) %>%
@@ -633,9 +505,16 @@ display_colleges_by_century %>%
 Now we've done this we can calculate the centres for each century:
 
 ```{r 2018-12-29-oxford-centres-14, eval = FALSE}
-century_centres <- colleges_by_century %>%
-  select(century) %>%
-  summarise_all(first) %>%
+
+colleges_by_century %>% 
+  group_by(century) %>%
+  summarise(geometry = st_union(geometry)) %>% 
+  st_centroid()
+
+
+century_centres <- colleges_by_century %>% 
+  group_by(century) %>%
+  summarise(geometry = st_union(geometry)) %>% 
   st_centroid()
 
 gg_century_centres <- gg_oxford_city +
@@ -643,7 +522,7 @@ gg_century_centres <- gg_oxford_city +
           aes(fill = century), inherit.aes = FALSE) +
   geom_sf(data = century_centres,
           aes(fill = century,
-              color = century), inherit.aes = FALSE) +
+              color = "black"), inherit.aes = FALSE, shape = 21) +
   geom_label_repel(
     data = century_centres,
     aes(label = century, fill = century, geometry = geometry),
@@ -652,7 +531,8 @@ gg_century_centres <- gg_oxford_city +
     nudge_x = -1,
     inherit.aes = FALSE,
     size = 5,
-    fontface = 'bold'
+    fontface = 'bold',
+    show.legend = FALSE
   )
 gg_century_centres <- gg_century_centres +
   labs(title = "Centre of Oxford colleges established in each century") +
@@ -661,18 +541,18 @@ gg_century_centres <- gg_century_centres +
 gg_century_centres
 ```
 
-![](/blog/2019-02-18-oxford-centres_files/gg_century_centres.png){width=100%}
+![](gg_century_centres.png){width=100%}
 
 ```{r, echo=FALSE}
-century_centres <- colleges_by_century %>%
-  select(century) %>%
-  summarise_all(first) %>%
+century_centres <- colleges_by_century %>% 
+  group_by(century) %>%
+  summarise(geometry = st_union(geometry)) %>% 
   st_centroid()
 ```
 
 Now we've established the centre of the colleges for each century, let's compute the cumulative centres as time progresses. For simplicity, let's throw away all of the data except for the longitude and latitude of the centre of mass in each century. The `centre_over_time_period()` function returns the centre of mass for all colleges established within the specific time period:
 
-```{r 2018-12-29-oxford-centres-15, eval = FALSE}
+```{r 2018-12-29-oxford-centres-15, eval = TRUE}
 centre_over_time_period <- function(shapes, lower, upper){
   # print("a")
   suppressWarnings(shapes %>%
@@ -705,7 +585,7 @@ centres_through_history <- time_periods %>%
   lower,
   upper)
   })) %>%
-  unnest() %>%
+  unnest(cols = c(centre)) %>%
   st_as_sf(coords = c("long", "lat")) %>%
   st_set_crs(4326) %>%
   mutate(time_period = glue("{lower} - {upper}"))
@@ -728,14 +608,15 @@ gg_centres_through_time <- gg_oxford_city +
     inherit.aes = FALSE,
     seed = 5,
     size = 5,
-    fontface = 'bold'
+    fontface = 'bold',
+    show.legend = FALSE
   ) +
   labs(title = "Centres of University of Oxford through time") +
   scale_fill_viridis_d()
 gg_centres_through_time
 ```
 
-![](/blog/2019-02-18-oxford-centres_files/gg_centres_through_time.png){width=100%}
+![](gg_centres_through_time.png){width=100%}
 
 I'm slightly late to the `gganimate` bandwagon, but let's animate this! The `transition_states()` function will create a GIF that transitions through the `time_period` column, and I've used `shadow_wake()` so that the centre of mass can be tracked more easily by the reader.
 
@@ -753,14 +634,8 @@ anim +
 anim_save(here("oxford-centres.gif"))
 ```
 
-![](/blog/2019-02-18-oxford-centres_files/oxford-centres.gif)
+![](oxford-centres.gif)
 
 I'd really love to be happy with this GIF, but it's really not good! The main issue is that `ggamp` only allows integer zoom levels, so the map is either far too zoomed in or out. It's also quite slow to experiment with `geom_sf` at the moment, I'm quite excited for [Thomas Pederson's promise to speed up `geom_sf`](https://twitter.com/thomasp85/status/1093874268809674752).
-
-</div>
-</div>
-</div>
-
-</div>
 
 

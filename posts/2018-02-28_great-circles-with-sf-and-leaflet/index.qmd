@@ -1,0 +1,296 @@
+---
+title: Great circles with sf and leaflet
+date: '2018-02-28'
+categories:
+  - GIS
+description: "Great circles are the shortest journeys between two points on a map, which can be easily computed and manipulated through the use of the excellent sf library, and visualised interactively with leaflet."
+image: "/posts/2018-02-28_great-circles-with-sf-and-leaflet/great-circles-with-sf.png"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+<div class="row">
+<div class="col-sm-6">
+
+Surprisingly often I'm asked to help folks build maps which visualise the journeys between geographic locations, in the bad old days of early 2017 I would have used the `geospheres` package and `sp`. 
+
+That's because the shortest distance between two points on a map is a **great circle**, and `geospheres` is capable of computing such things. Note that it's these great circles that you see on flight information screens, their exact curvature depends on the projection of the map.
+
+</div>
+
+<div class="col-sm-6">
+
+<center><img src='great-circles-with-sf.png' style='max-width:350px'/></center>
+
+</div>
+
+</div>
+<br>
+However, I'm now an `sf` convert and try to do everything within that package. In my original version of this blogpost I introduced my painfully inefficient way to compute these great circles with `sf` and asked folks in the [R4DS Slack group](https://medium.com/@kierisi/r4ds-the-next-iteration-d51e0a1b0b82) run by [Jesse Maegan](https://www.jessemaegan.com/) if they had any suggested improvements, which I've now baked in below.
+
+Typically my datasets are collections of journeys, here's an example of what the data looks like (these are some of the journeys I took during the 3 years I worked for Wolfram Research):
+
+```{r create-journey-data, eval=FALSE, include=TRUE}
+library("tidyverse")
+library("sf")
+raw_journey_data <- tribble(
+  ~start.long, ~start.lat, ~end.long, ~end.lat, ~name,
+  -0.118092, 51.509865, -119.698189, 34.420830, "London to Santa Barbara",
+  31.496773, 30.026300, 24.753574, 59.436962, "New Cairo to Tallinn",
+  126.633333, 45.75, 46.738586, 24.774265, "Harbin to Riyadh"
+)
+raw_journey_data
+```
+
+```{r hidden-dt, include = TRUE, echo = FALSE}
+library("tidyverse")
+library("sf")
+library("DT")
+raw_journey_data <- tribble(
+  ~start.long, ~start.lat, ~end.long, ~end.lat, ~name,
+  -0.118092, 51.509865, -119.698189, 34.420830, "London to Santa Barbara",
+  31.496773, 30.026300, 24.753574, 59.436962, "New Cairo to Tallinn",
+  126.633333, 45.75, 46.738586, 24.774265, "Harbin to Riyadh"
+)
+dt_journeys <- datatable(
+  raw_journey_data,
+  rownames = FALSE,
+  options = list(
+    dom = "t",
+    pageLength = 3
+  )
+)
+widgetframe::frameWidget(dt_journeys, height = "100%")
+```
+
+I've split this post into two sections below:
+
+- journeys_to_sf: A function for reliably converting journey data to an `sf` object that can be plotted with `leaflet` and `ggplot2`
+- Creating `sf` features from `data.frames`
+
+# journeys_to_sf
+
+Here's my function for converting a `data.frame` containing journeys to a usable `"sf" "data.frame"` through the use of [tidyeval](http://dplyr.tidyverse.org/articles/programming.html):
+
+```{r journeys-to-sf}
+journeys_to_sf <- function(journeys_data,
+                           start_long = start.long,
+                           start_lat = start.lat,
+                           end_long = end.long,
+                           end_lat = end.lat) {
+  quo_start_long <- enquo(start_long)
+  quo_start_lat <- enquo(start_lat)
+  quo_end_long <- enquo(end_long)
+  quo_end_lat <- enquo(end_lat)
+
+  journeys_data %>%
+    select(
+      !! quo_start_long,
+      !! quo_start_lat,
+      !! quo_end_long,
+      !! quo_end_lat
+    ) %>%
+    transpose() %>%
+    map(~ matrix(flatten_dbl(.), nrow = 2, byrow = TRUE)) %>%
+    map(st_linestring) %>%
+    st_sfc(crs = 4326) %>%
+    st_sf(geometry = .) %>%
+    bind_cols(journeys_data) %>%
+    select(everything(), geometry)
+}
+```
+
+This can very easily be inserted into a pipe chain for visualising with `leaflet`:
+
+```{r function-example}
+library("leaflet")
+raw_journey_data %>%
+  journeys_to_sf() %>%
+  st_segmentize(units::set_units(100, km)) %>%
+  leaflet() %>%
+  addTiles() %>%
+  addPolylines() %>%
+  addCircleMarkers(
+    lng = ~start.long,
+    lat = ~start.lat,
+    color = "green",
+    opacity = 1,
+    radius = 2
+  ) %>%
+  addCircleMarkers(
+    lng = ~end.long,
+    lat = ~end.lat,
+    color = "red",
+    opacity = 1,
+    radius = 2
+  ) %>%
+  addLegend(
+    colors = c(
+      "green",
+      "red"
+    ),
+    labels = c(
+      "Journey start",
+      "Journey end"
+    )
+  )
+```
+<br>
+
+A quick note to say, `leaflet` is an awesome `htmlwidget` for building interactive maps. If you've never heard of `htmlwidgets` before, check out my blogpost; [where's the love for htmlwidgets?](http://www.visibledata.co.uk/blog/2018/02/07/2018-02-07_where-s-the-love-for-htmlwidgets/)
+
+# Creating `sf` features from `data.frame`
+
+The `sf` library allows R folks to work with GIS data using the very widely used [Simple Features](https://en.wikipedia.org/wiki/Simple_Features) standard for working with 2D geometries. All `sf` objects are constructed from a combination of 17 unique "simple features", which are usefully [summarised here](https://r-spatial.github.io/sf/articles/sf1.html#simple-feature-geometry-types).
+
+Originally my blogpost used a quite inefficient method for converting `data.frame` to `sf`. Thankfully I'm a member of the excellent [R4DS Slack group](https://www.jessemaegan.com/post/r4ds-the-next-iteration/) and I got great advice from [Jesse Sadler](https://twitter.com/vivalosburros) and [Kent Johnson](http://kentsjohnson.com/). Here's my old horrible method of doing things:
+
+```{r old-method}
+start_locs <- raw_journey_data %>%
+  select(
+    start.long,
+    start.lat
+  ) %>%
+  setNames(c("long", "lat")) %>%
+  mutate(journey_id = row_number())
+
+end_locs <- raw_journey_data %>%
+  select(
+    end.long,
+    end.lat
+  ) %>%
+  setNames(c("long", "lat")) %>%
+  mutate(journey_id = row_number())
+
+journey_data_linestrings <- start_locs %>%
+  bind_rows(end_locs) %>%
+  st_as_sf(coords = c("long", "lat")) %>%
+  group_by(journey_id) %>%
+  arrange(journey_id) %>%
+  summarise() %>%
+  st_cast("LINESTRING")
+
+journey_data_linestrings <- st_set_crs(journey_data_linestrings, st_crs(4326))
+
+journey_data <- raw_journey_data
+st_geometry(journey_data) <- st_geometry(journey_data_linestrings)
+journey_data
+```
+
+Let's go through the stages required and re-write my method to be more `purrr` dependent:
+
+1. Create a list of `LINESTRING`s
+1. Combine the list `LINESTRING`s into a collection of `sf` features
+1. Join this collection of `sf` features with the original dataset
+
+## LINESTRINGs
+
+We need `LINESTRING`s for our great circles as these represent a *"sequence of points connected by straight, non-self intersecting line pieces; one-dimensional geometry"*. As with all simple features, `LINESTRING`s are constructed from matrices:
+
+```{r linestring-example, message=TRUE, warning=TRUE, results='hide'}
+st_linestring(matrix(1:6, 3))
+```
+
+Let's extract the start and end coordinates from our `raw_journeys_data` and convert them to a `list` with `purrr::transpose`:
+
+```{r transpose-to-list}
+raw_journey_data %>% 
+  select(-name) %>% 
+  transpose()
+```
+
+These lists can easily be converted to matrices using `map`:
+
+```{r list-to-matrices}
+raw_journey_data %>% 
+  select(-name) %>% 
+  transpose() %>% 
+  map(~ matrix(flatten_dbl(.), nrow = 2, byrow = TRUE)) 
+```
+
+... and finally we can convert these to 
+
+```{r matrices, message=TRUE, warning=TRUE, results='hide'}
+list_of_linestrings <- raw_journey_data %>%
+  select(-name) %>%
+  transpose() %>%
+  map(~ matrix(flatten_dbl(.), nrow = 2, byrow = TRUE)) %>%
+  map(st_linestring)
+list_of_linestrings
+```
+
+## Collecting features
+
+Eventually we will create an `"sf" "data.frame"` which contains our `LINESTRING`s in the `geometry` column. We create a set of features for this column from our list of `LINESTRING`s with the `st_sfc` function. Note that we need to specify a coordinate system, the most obvious choice is the WGS84 coordinate reference system, that's why we specify `crs = 4326`:
+
+```{r geometry-set}
+list_of_linestrings %>%
+  st_sfc(crs = 4326)
+```
+
+Now we have this set of features we create a collection of them in a `"sf" "data.frame"` with `st_sf`:
+
+```{r geometry-collection}
+collection_sf <- list_of_linestrings %>%
+  st_sfc(crs = 4326) %>%
+  st_sf(geometry = .)
+collection_sf
+```
+
+## Joining feature collections with data
+
+As `sf` collections store all of the GIS data in a column it's very easy to combine this object with our original data - we use `dplyr::bind_columns`
+
+```{r bind-cols}
+collection_sf %>%
+  bind_cols(raw_journey_data)
+```
+
+We can now perform calculations on our dataset, for instance compute great circles with a resolution of 100km:
+
+```{r basic-map}
+collection_sf %>%
+  bind_cols(raw_journey_data) %>%
+  st_segmentize(units::set_units(100, km)) %>%
+  leaflet() %>%
+  addTiles() %>%
+  addPolylines(label = ~name)
+```
+
+Sadly, there's no good solution for adding arrow heads to these great circles - they would be heavily distorted by the map projection and would look ugly. An alternative solution to showing where journeys start and end is to use different coloured circle markers:
+
+```{r labelled-leaflet-map}
+collection_sf %>%
+  bind_cols(raw_journey_data) %>%
+  st_segmentize(units::set_units(100, km)) %>%
+  leaflet() %>%
+  addTiles() %>%
+  addPolylines() %>%
+  addCircleMarkers(
+    lng = ~start.long,
+    lat = ~start.lat,
+    color = "green",
+    opacity = 1,
+    radius = 2
+  ) %>%
+  addCircleMarkers(
+    lng = ~end.long,
+    lat = ~end.lat,
+    color = "red",
+    opacity = 1,
+    radius = 2
+  ) %>%
+  addLegend(
+    colors = c(
+      "green",
+      "red"
+    ),
+    labels = c(
+      "Journey start",
+      "Journey end"
+    )
+  )
+```
+

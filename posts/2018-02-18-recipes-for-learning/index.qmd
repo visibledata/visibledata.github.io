@@ -1,0 +1,154 @@
+---
+title: Recipes for learning
+date: '2018-02-18'
+categories:
+  - dataviz
+image: "/posts/2018-02-18-recipes-for-learning/recipes-for-learning.png"
+description: >
+  In this blogpost I introduce one of my favourite datasets, a treasure trove of 57,000+ recipes scraped from recipe websites for a fascinating research paper <a href='http://doi.org/10.1038/srep00196'>(DOI: 10.1038/srep00196)</a>  comparing how different cuisines choose ingredients. I first used this dataset in May 2015 to learn how to use R and continue to use it to test my understanding of new techniques and analysis. 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	message = FALSE,
+	warning = FALSE
+)
+library("emo")
+```
+
+I can accurately identify the day I started learning R properly as the 30th of April 2015. That's the day I was invited for an interview on the 26th of May at University of Oxford which had an interview exercise that required me to create a dummy 10 minute introduction to dataviz with a tool of my choice, using an **interesting dataset**. At the time, I knew Mathematica (and the Wolfram Language) incredibly well - but it was clear from the description of the task that the interviewers would massively prefer folks who knew R or Python.
+
+Python was clearly a mess of choices, I had to decide between Python 2.x or 3.x and there wasn't a self-contained solution for building web applications. Learning R and Shiny was the obvious choice in just over three weeks, as was the dataset I'd focus on.
+
+<div class='row'>
+
+<div class='col-sm-6'>
+
+One of my absolute favourite datasets comes from a paper published in Nature, "Flavor Network and the principles of food pairing" (<a href="http://doi.org/10.1038/srep00196" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="/img/doi_16x16.png" style="width:1em;margin-right:.2em;" alt="GitHub icon">doi:10.1038/srep00196</a>). The supplementary materials include two files:
+
+- srep00196-s2.csv: details the number of flavour compounds shared between over 1500 ingredients.
+- srep00196-s3.csv: contains over 57,000 recipes categorised by cuisine.
+
+</div>
+
+<div class='col-sm-6'>
+
+<center>
+<img src='2018-02-15_flavor-network-hairball.jpg' style='max-width:300px'/>
+</center>
+
+</div>
+
+</div>
+
+In the paper the authors are interested examining whether different cuisines prefer recipes with highly similar or dissimilar tasting ingredients, amongst other things. I've embedded one of the highly beautified hair ball networks from the paper, and I definitey recommend reading this Open Access paper for some interesting observations about human cuisines. Now, it turned that out this was a fairly challenging dataset to first start learning R with, let's grab the data from Nature [^1] and have a look at why.
+
+```{r download-data-files}
+## Reproducibly download files to a temp location and unzip
+library("tidyverse")
+recipes_data_dir <- tempdir()
+s2_zip <- tempfile(fileext = ".zip")
+s3_zip <- tempfile(fileext = ".zip")
+
+download.file(url = "https://static-content.springer.com/esm/art%3A10.1038%2Fsrep00196/MediaObjects/41598_2011_BFsrep00196_MOESM2_ESM.zip", destfile = s2_zip)
+download.file(url = "https://static-content.springer.com/esm/art%3A10.1038%2Fsrep00196/MediaObjects/41598_2011_BFsrep00196_MOESM3_ESM.zip", destfile = s3_zip)
+
+unzip(s2_zip, exdir = recipes_data_dir)
+unzip(s3_zip, exdir = recipes_data_dir)
+```
+
+The recipes are in a horrendous format. It's not so bad that the first four lines are comments, that's easy to handle, but rows of the data do not have consistent lengths. The first recipe contains 6 items and the second has 17, which means the data's not rectangular and the standard importers aren't going to be that happy.
+
+```{r recipes-readLines}
+readLines(file.path(recipes_data_dir, "srep00196-s3.csv")) %>%
+  head()
+```
+
+I really struggled to understand what to do about this, so I asked my first `R` question on StackOverflow, ["Importing and analysing non-rectangular .csv files in R"](https://stackoverflow.com/a/30016983/1659890). My question was asked back in 2015 [before the tidyverse was born](https://twitter.com/drob/status/748196885307920385), and so the best solution at the time was using `read.table`:
+
+```{r recipes-readtable}
+read.table(file.path(recipes_data_dir, "srep00196-s3.csv"), 
+           sep = ",", 
+           as.is = TRUE, 
+           fill = TRUE, 
+           na.strings = "") %>% 
+  head()
+```
+
+At the time I continued to analyse and visualise the data ready for my interview exercise, for which I also learned how to use GitHub! The outputs I used in my presentation are still available in my [RecipeVisualisations](https://github.com/charliejhadley/RecipeVisualisations) repo. It turns out on reflection that there were two bad things that I did at the time:
+
+- I didn't know enough R to have a reproducible workflow so have lost some of my tidying scripts
+- `read.table` uses a bad heuristic to decide how many columns there are in the data! The longest recipe is **not** 17 ingredients long.
+
+Now I'm much more proficient with R and have the wonderful `purrr` library to process these recipes into a `tibble` with the ingredients stored as a list:
+
+```{r recipes-via-purrr}
+recipe_lists <- readLines(file.path(recipes_data_dir, "srep00196-s3.csv")) %>%
+  strsplit(",")
+recipe_lists <- recipe_lists[5:length(recipe_lists)]
+recipes_df <- tibble(
+  cuisine = map_chr(recipe_lists, 1),
+  ingredients = map(recipe_lists, tail, -1)
+)
+recipes_df %>%
+  head()
+```
+
+It's now much easier to operate on these lists of ingredients by using `map*` functions within `mutate`, for instance I can create a column containing the number of ingredients. Now we discover the joint longest recipes contain a ridiculous **32 ingredients**. 
+
+```{r recipes-n-ingredients}
+recipes_df %>%
+  mutate(n.ingredients = map_int(ingredients, length)) %>%
+  arrange(desc(n.ingredients))
+```
+
+With our ingredients in a list column it's now also easy to filter recipes by specific ingredients:
+
+```{r recipes-with-garlic}
+recipes_df %>%
+  filter(str_detect(ingredients, "garlic"))
+```
+
+I'm going to come back to using this dataset in the future to explore graph theory and machine learning examples, but for now let's [finish like it's Summer 2017](https://eagereyes.org/blog/2017/joy-plots) with a ridgeline plot from the excellent `ggplot2` extension `ggridges`:
+
+```{r recipes-ingredients-ggridge}
+library("ggridges")
+recipes_df %>%
+  mutate(n.ingredients = map_int(ingredients, length)) %>%
+  group_by(cuisine) %>%
+  mutate(median.ingredients = median(n.ingredients)) %>%
+  ungroup() %>%
+  arrange(desc(median.ingredients)) %>%
+  mutate(cuisine = fct_reorder(cuisine, median.ingredients)) %>%
+  ggplot(aes(x = n.ingredients, y = cuisine)) + 
+  geom_density_ridges(scale = 3) + 
+  theme_ridges() +
+  xlab("Number of ingredients") +
+  ggtitle("Comparison of ingredients per recipe by cuisine",
+          subtitle = "Data from doi:10.1038/srep00196")
+```
+
+In future whenever I want to work with this data I'll import it through the following script:
+
+```{r reproducible-recipes-import, eval = FALSE}
+library("tidyverse")
+recipes_data_dir <- tempdir()
+s2_zip <- tempfile(fileext = ".zip")
+s3_zip <- tempfile(fileext = ".zip")
+
+download.file(url = "https://static-content.springer.com/esm/art%3A10.1038%2Fsrep00196/MediaObjects/41598_2011_BFsrep00196_MOESM2_ESM.zip", destfile = s2_zip)
+download.file(url = "https://static-content.springer.com/esm/art%3A10.1038%2Fsrep00196/MediaObjects/41598_2011_BFsrep00196_MOESM3_ESM.zip", destfile = s3_zip)
+
+unzip(s2_zip, exdir = recipes_data_dir)
+unzip(s3_zip, exdir = recipes_data_dir)
+recipe_lists <- readLines(file.path(recipes_data_dir, "srep00196-s3.csv")) %>%
+  strsplit(",")
+recipe_lists <- recipe_lists[5:length(recipe_lists)]
+recipes_df <- tibble(
+  cuisine = map_chr(recipe_lists, 1),
+  ingredients = map(recipe_lists, tail, -1)
+)
+```
+
+
+[^1]: Frustratingly, these data sets are attached to the paper exclusively as supplementary materials, and so these are fragile links. Data should really have distinct DOI, modern journals like Springer Nature's [Scientific Data](www.nature.com/sdata/) do this.

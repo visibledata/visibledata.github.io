@@ -1,0 +1,239 @@
+---
+title: Where’s the love for htmlwidgets?
+date: '2018-02-07'
+categories:
+  - dataviz
+description: "If you've never heard of them, `htmlwidgets` are an amazing part of the work that RStudio (plus ramnathv and timelyportfolio) have undertaken to make R a beautiful tool for doing data science and communicating things about your data. Using leaflet, plotly, highcharter and more it's possible to create rich interactive charts, maps and other visualisations directly from R without having to learn JavaScript"
+banner: "/posts/2018-02-07_where-s-the-love-for-htmlwidgets/where-s-the-love-for-htmlwidgets_header-image.png"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	message = FALSE,
+	warning = FALSE
+)
+library("emo")
+```
+
+<div class="row">
+
+<div class="col-md-6">
+
+If you've never heard of them, `htmlwidgets` are an amazing part of the work that RStudio (plus [Ramnath Vaidyanathan](https://github.com/ramnathv) and [Kent Russell](https://github.com/timelyportfolio))[^1] have undertaken to make R a beautiful tool for doing data science and communicating things about your data. You **probably haven't** heard about `htmlwidgets`, so let's cover what it is first:
+
+`htmlwidgets` is a tool for R developers that allows them to easily build R wrappers for JavaScript libraries, which means useRs can build interactive visualisations! Here are two of my favourite htmlwidget libraries:
+
+- [highcharter](http://jkunst.com/highcharter/index.html): uses the awesome Highcharts library and allows beautiful looking charts, time series and more to be created directly from R code! I really love how professional it looks - see what happens if you select one of the items in the legend `r emo::ji("smile")`
+
+- [leaflet](rstudio.github.io/leaflet/): uses the awesome Leaflet library that allows us to create interactive maps, choropleth and other charts. It has a cousin called `mapview` that's even more powerful that I'll be switching preference to as 2018 rolls on. 
+
+</div>
+
+<div class="col-md-6">
+
+```{r hc-stock-data, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+library("highcharter")
+library("tidyverse")
+library("widgetframe")
+library("quantmod")
+
+usdjpy <- getSymbols("USD/JPY", src = "oanda", auto.assign = FALSE)
+eurjpy <- getSymbols("EUR/JPY", src = "oanda", auto.assign = FALSE)
+
+hc_stock_data <- highchart(type = "stock") %>%
+  hc_add_series(usdjpy, id = "usdjpy", name = "USD / JPY") %>%
+  hc_add_series(eurjpy, id = "eurjpy", name = "EUR / JPY") %>%
+  hc_size(width = "350px", height = "200px") %>%
+  hc_rangeSelector(enabled = FALSE) %>%
+  hc_legend(enabled = TRUE)
+frameWidget(hc_stock_data)
+```
+
+```{r lf-map, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+library("sf")
+library("gapminder")
+library("leaflet")
+geojson_worldmap <- st_read("https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json",
+                            quiet = TRUE)
+geojson_worldmap <- invisible(geojson_worldmap %>%
+  left_join(gapminder %>%
+               filter(year == max(year)) , by = c("name" = "country")) %>%
+  filter(name != "Antarctica"))
+palette_pop <- colorNumeric("YlOrBr" , geojson_worldmap$pop, na.color = "#c0c1c4")
+lf_gapminder_pop <- geojson_worldmap %>%
+  leaflet(width = "300px",
+          height = "200px") %>%
+  addPolygons(fillColor = ~palette_pop(pop),
+              fillOpacity = 0.8,
+              color = "#000",
+              weight = 1,
+              label = ~name)
+frameWidget(lf_gapminder_pop)
+```
+
+</div>
+
+</div>
+
+<br>
+
+So why do I assume you haven't heard of them? 
+
+Well, they're hardly ever spoken about or searched for! Hadley Wickham is a huge promoter of the benefits of visualisation in data science[^2] but has only ever mentioned `htmlwidgets` on Twitter explicitly 3 times prior to February 2018. And just compare the Google Search Trends for `tidyverse` and `htmlwidgets`, there's desperately little love for `htmlwidgets`.
+
+<div class="row">
+
+<div class="col-md-5">
+
+<center>
+<img src='tweets-about-htmlwidgets-from-hadleywickham.png' style='max-width:400px'/>
+</center>
+
+</div>
+
+<div class="col-md-7">
+
+<script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/1294_RC01/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"htmlwidgets","geo":"","time":"2016-06-01 2018-02-03"},{"keyword":"tidyverse","geo":"","time":"2016-06-01 2018-02-03"}],"category":0,"property":""}, {"exploreQuery":"date=2016-06-01%202018-02-03&q=htmlwidgets,tidyverse","guestPath":"https://trends.google.co.uk:443/trends/embed/"}); </script> 
+
+</div>
+
+</div>
+
+The crux of the problem really is that `htmlwidgets` is a developer tool. The actual packages that folks build using it are really popular! `htmlwidgets` spiritual home is [htmlwidgets.org](htmlwidgets.org) which is maintained by the RStudio folks, where they keep a list of featured `htmlwidgets` libraries available oin CRAN. Here's a quick overview of these libraries (as of February 2018), with the following notes:
+
+- so.tag contains the tag(s) used on StackOverflow for questions relating to this package
+- mention.htmlwidgets is TRUE if the website for the package clearly mentions in simple language that it is a htmlwidgets library (or the outputs of the package are htmlwidgets)
+- `rglwidget` was dropped from the list because it's changed to `rgl` but this has not been reflected in the htmlwidgets.org website. 
+
+```{r featured-htmlwidget-libraries, echo=FALSE}
+featured_htmlwidget_libraries <- tribble(
+  ~package, ~so.tag, ~website, ~mention.htmlwidgets,
+  "leaflet", "leaflet", "https://rstudio.github.io/leaflet/", FALSE,
+  "dygraphs", "dygraphs", "https://rstudio.github.io/dygraphs/", FALSE,
+  "plotly", "plotly", "https://plot.ly/r", FALSE,
+  "rbokeh", "rbokeh", "http://hafen.github.io/rbokeh/", FALSE,
+  "highcharter", "r-highcharter", "jkunst.com/highcharter", FALSE,
+  "visNetwork", "visnetwork", "http://dataknowledge.github.io/visNetwork", FALSE,
+  "networkD3", "networkD3", "http://christophergandrud.github.io/networkD3/", TRUE,
+  "d3heatmap", "d3heatmap", "https://github.com/rstudio/d3heatmap", TRUE,
+  "DT", list("dt", "datatable"), "http://rstudio.github.io/DT/", TRUE,
+  "threejs", "three.js", "https://github.com/bwlewis/rthreejs", TRUE,
+  "DiagrammeR", "diagrammer", "http://rich-iannone.github.io/DiagrammeR/", FALSE,
+  "metricsgraphics", "metricsgraphicsjs", "http://hrbrmstr.github.io/metricsgraphics/", FALSE,
+  "htmlwidgets", "htmlwidget", "http://htmlwidgets.org", NA
+)
+library("DT")
+dt_featured_htmlwidget_libraries <- datatable(featured_htmlwidget_libraries, options = list(dom = "t", pageLength = 13))
+frameWidget(dt_featured_htmlwidget_libraries)
+```
+
+<br>
+
+It's really easy to get download figures for CRAN using the `cranlogs` library. In the table below I've collected the daily download figures for the `featured_htmlwidget_libraries` from the first date `htmlwidgets` was published until `r Sys.Date()` and then calculated the median daily downloads. 
+
+```{r median-daily-downloads, echo=TRUE}
+library("versions")
+## Get first release date of htmlwidgets
+## This takes much longer than I'd like to run, so I've cheated
+# vhistory_htmlwidgets <- versions::available.versions("htmlwidgets")
+# release_date_htlmlwidgets <- vhistory_htmlwidgets$htmlwidgets %>%
+#   filter(date == min(date)) %>%
+#   select(date) %>%
+#   .[[1]]
+release_date_htlmlwidgets <- lubridate::ymd("2014-12-09")
+
+library("cranlogs")
+cran_downloads <- featured_htmlwidget_libraries %>%
+  select(package) %>%
+  pmap(function(package, ...) {
+    cran_downloads(packages = package, from = "2014-12-09", to = Sys.Date())
+  }) %>%
+  bind_rows() %>%
+  as_tibble()
+
+median_daily_downloads <- cran_downloads %>%
+  filter(count > 0) %>%
+  filter(package != "htmlwidgets") %>%
+  group_by(package) %>%
+  summarise(median.downloads = median(count)) %>%
+  arrange(desc(median.downloads))
+
+dt_median_daily_downloads <- median_daily_downloads %>%
+  datatable(
+    options = list(dom = "t", pageLength = 13),
+    colnames = c("htmlwidget library", "Median daily downloads (excluding zero download days)")
+  )
+frameWidget(dt_median_daily_downloads)
+```
+
+<br>
+
+The top 6 libraries all have an median of more than 100 daily downloads, is that impressive? Well, I don't have any feel for that unfortunately. The `cranlogs` tells us about top 100 downloaded packages, but these download figures are going to suffer from a highly positively skewed distribution. It would be fun to investigate this distribution and come back to this question in the future. All I want to show here is that the `htmlwidgets` libraries are really popular, but that there's little exposure for the `htmlwidgets` branding.
+
+I can demonstrate the growing popularity of the libraries with a timeseries chart using `dygraphs`, I've chosen to perform a simple 28-day moving average on the data as there is a lot of inter-day noise:
+
+```{r 28day-ma-dygraph, echo=TRUE}
+library("dygraphs")
+## CSS hackery to place the legend nicely and account for the yellow colour in the "Paired"
+## colour scheme
+dygraph_css <- tempfile(fileext = ".css")
+dygraph_css_file <- file(dygraph_css)
+writeLines(".dygraph-title {color: navy;font-weight: bold;}
+.dygraph-axis-label {font-weight: bold;}
+.dygraph-legend {background: #ebebeb !important;left: 100px !important;top: 100px !important;}
+.dygraph {background: #ebebeb !important;}", dygraph_css_file)
+close(dygraph_css_file)
+ 
+cran_downloads_28ma <- cran_downloads %>%
+  filter(package != "htmlwidgets") %>%
+  group_by(package) %>%
+  mutate(mean.count = rollmean(
+    count, k = 28, na.pad = TRUE,
+    align = "right"
+  )) %>%
+  ungroup() %>%
+  replace_na(list(mean.count = 0)) %>%
+  select(-count)
+
+cran_downloads_28ma %>%
+  mutate(package = fct_relevel(package, median_daily_downloads$package)) %>%
+  spread(package, mean.count) %>%
+  # filter(date > ymd("2017-08-01")) %>%
+  timetk::tk_xts(date_var = date) %>%
+  dygraph(main = "Featured htmlwidgets library downloads from CRAN<br> <span style='font-size:18px;'>(28 day moving average)</span>",
+          width = "100%") %>%
+  dyCSS(dygraph_css) %>%
+  dyOptions(colors = RColorBrewer::brewer.pal(12, "Paired")) %>%
+  dyAxis("y", label = "CRAN Downloads") %>%
+  dyLegend(labelsSeparateLines = TRUE)
+```
+
+<br>
+
+I hoped to get a good idea on Twitter about how many folks were using `htmlwidgets` libraries without knowing that's what they were. Unfortuntely, the reach of my poll was very small with the tweet only appearing in a timeline 307 times. I'd really like to collect more data about this and return to this topic in the future.
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">#dataviz</a> folks! Do you use any of these libraries:<br><br>leaflet, dygraph, plotly, rbokeh, highcharter, visNetwork, or DT?<br><br>If so, did you know these are examples of htmlwidgets?<br><br>(See <a href="https://t.co/DtVNBSFJZA">https://t.co/DtVNBSFJZA</a> if you didn&#39;t know!)</p>&mdash; Charlie Joey Hadley (@charliejhadley) <a href="https://twitter.com/charliejhadley/status/960482135508480001?ref_src=twsrc%5Etfw">February 5, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+# Promoting the `htmlwidgets` brand
+
+I think it's shame that there isn't more exposure for the `htmlwidgets` brand and underlying technology. I meet a lot of folks in my training courses who have simply never heard the term, despite perhaps using `leaflet` or `plotly` already. If these folks knew they were `htmlwidgets` they could perhaps find more tools for visualising their data in new and interesting ways.
+
+These are the things I'd really love to see:
+
+- `htmlwidgets` hexsticker: Hexstickers are awesome and really popular amongst useRs, it would be awesome to have a dedicated sticker for the `htmlwidgets` brand.
+- `htmlwidgets` mentioned in plain simple human language in the following places; GitHub README pages, Package DESCRIPTION files, and in the welcome pages for dedicated package websites. Of course, displaying the `htmlwidgets` hexsticker on the README would really help promote the brand
+- Talk about `htmlwidgets` more in Tweets and other comms channels from RStudio.
+
+I kind of get the feeling that `htmlwidgets` is currently in **stealth mode** and I'm not sure why. Maybe RStudio are waiting until the (exciting!) `crosstalk` features are added to more `htmlwidgets` libraries? But that feels like a 2.0 feature! 
+
+I'm going to do everything I can in my teaching, evangelism and general talking about R at parties to promote `htmlwidgets` and I'd love to see others do the same. I also plan to come back later and revisit this subject, analysing other datasets (like StackOverflow questions) and seeing if anything has changed.
+
+I will finish off with a little bit of self-promotion. I have a **5 hour+** overview of `htmlwidgets` on LinkedIn Learning and Lynda.com that you might find useful:
+
+<iframe width='100%' height='315' src='https://www.lynda.com/player/embed/650000?fs=3&w=560&h=315&ps=paused&utm_medium=referral&utm_source=embed+video&utm_campaign=ldc-website&utm_content=vid-650000' mozallowfullscreen='true' webkitallowfullscreen='true' allowfullscreen='true' frameborder='0'></iframe><div style="margin-bottom:10px"><strong><a href="https://www.lynda.com/R-tutorials/R-Interactive-Visualizations-htmlwidgets/586671-2.html" title="Learn how to rapidly create rich, interactive data visualizations with R and htmlwidgets—packages that connect R to popular JavaScript libraries like Plotly, Leaflet, and DT.">R: Interactive Visualizations with htmlwidgets</a></strong> by <a href="https://www.lynda.com/author/4174500">Martin Hadley</a></div>
+
+[^1]: Thanks to Joe Chung for highlighting [\@ramnath_vaidya](https://twitter.com/ramnath_vaidya) and [\@timelyportfolio](https://twitter.com/timelyportfolio)'s contributions on Twitter [link](https://twitter.com/jcheng/status/961696843452203009).
+
+[^2]: [Citation needed](https://xkcd.com/285/).
+

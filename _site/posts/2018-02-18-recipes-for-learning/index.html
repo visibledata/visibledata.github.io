@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.288">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Charlie Joey Hadley">
+<meta name="dcterms.date" content="2018-02-18">
+<meta name="description" content="In this blogpost I introduce one of my favourite datasets, a treasure trove of 57,000+ recipes scraped from recipe websites for a fascinating research paper (DOI: 10.1038/srep00196) comparing how different cuisines choose ingredients. I first used this dataset in May 2015 to learn how to use R and continue to use it to test my understanding of new techniques and analysis.">
+
+<title>Visible Data - Recipes for learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<style>
+.quarto-title-banner {
+  
+}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+<script src="https://kit.fontawesome.com/a0f522c241.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Visible Data - Recipes for learning">
+<meta property="og:description" content="In this blogpost I introduce one of my favourite datasets, a treasure trove of 57,000+ recipes scraped from recipe websites for a fascinating research paper <a href='http://doi.org/10.1038/srep00196'>(DOI: 10.1038/srep00196)</a>  comparing how different cuisines choose ingredients. I first used this dataset in May 2015 to learn how to use R and continue to use it to test my understanding of new techniques and analysis. 
+">
+<meta property="og:image" content="https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning/recipes-for-learning.png">
+<meta property="og:site-name" content="Visible Data">
+<meta property="og:image:height" content="750">
+<meta property="og:image:width" content="1000">
+<meta name="twitter:title" content="Visible Data - Recipes for learning">
+<meta name="twitter:description" content="In this blogpost I introduce one of my favourite datasets, a treasure trove of 57,000+ recipes scraped from recipe websites for a fascinating research paper <a href='http://doi.org/10.1038/srep00196'>(DOI: 10.1038/srep00196)</a>  comparing how different cuisines choose ingredients. I first used this dataset in May 2015 to learn how to use R and continue to use it to test my understanding of new techniques and analysis. 
+">
+<meta name="twitter:image" content="https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning/recipes-for-learning.png">
+<meta name="twitter:creator" content="@charliejhadley">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="750">
+<meta name="twitter:image-width" content="1000">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Visible Data</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../training.html">Training</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Recipes for learning</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">dataviz</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>In this blogpost I introduce one of my favourite datasets, a treasure trove of 57,000+ recipes scraped from recipe websites for a fascinating research paper <a href="http://doi.org/10.1038/srep00196">(DOI: 10.1038/srep00196)</a> comparing how different cuisines choose ingredients. I first used this dataset in May 2015 to learn how to use R and continue to use it to test my understanding of new techniques and analysis.</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Charlie Joey Hadley </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 18, 2018</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>I can accurately identify the day I started learning R properly as the 30th of April 2015. That’s the day I was invited for an interview on the 26th of May at University of Oxford which had an interview exercise that required me to create a dummy 10 minute introduction to dataviz with a tool of my choice, using an <strong>interesting dataset</strong>. At the time, I knew Mathematica (and the Wolfram Language) incredibly well - but it was clear from the description of the task that the interviewers would massively prefer folks who knew R or Python.</p>
+<p>Python was clearly a mess of choices, I had to decide between Python 2.x or 3.x and there wasn’t a self-contained solution for building web applications. Learning R and Shiny was the obvious choice in just over three weeks, as was the dataset I’d focus on.</p>
+<div class="row">
+<div class="col-sm-6">
+<p>One of my absolute favourite datasets comes from a paper published in Nature, “Flavor Network and the principles of food pairing” (<a href="http://doi.org/10.1038/srep00196" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="../../img/doi_16x16.png" style="width:1em;margin-right:.2em;" alt="GitHub icon">doi:10.1038/srep00196</a>). The supplementary materials include two files:</p>
+<ul>
+<li>srep00196-s2.csv: details the number of flavour compounds shared between over 1500 ingredients.</li>
+<li>srep00196-s3.csv: contains over 57,000 recipes categorised by cuisine.</li>
+</ul>
+</div>
+<div class="col-sm-6">
+<center>
+<img src="2018-02-15_flavor-network-hairball.jpg" style="max-width:300px">
+</center>
+</div>
+</div>
+<p>In the paper the authors are interested examining whether different cuisines prefer recipes with highly similar or dissimilar tasting ingredients, amongst other things. I’ve embedded one of the highly beautified hair ball networks from the paper, and I definitey recommend reading this Open Access paper for some interesting observations about human cuisines. Now, it turned that out this was a fairly challenging dataset to first start learning R with, let’s grab the data from Nature <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and have a look at why.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Reproducibly download files to a temp location and unzip</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyverse"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>recipes_data_dir <span class="ot">&lt;-</span> <span class="fu">tempdir</span>()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>s2_zip <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".zip"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>s3_zip <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".zip"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://static-content.springer.com/esm/art%3A10.1038%2Fsrep00196/MediaObjects/41598_2011_BFsrep00196_MOESM2_ESM.zip"</span>, <span class="at">destfile =</span> s2_zip)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://static-content.springer.com/esm/art%3A10.1038%2Fsrep00196/MediaObjects/41598_2011_BFsrep00196_MOESM3_ESM.zip"</span>, <span class="at">destfile =</span> s3_zip)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(s2_zip, <span class="at">exdir =</span> recipes_data_dir)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(s3_zip, <span class="at">exdir =</span> recipes_data_dir)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The recipes are in a horrendous format. It’s not so bad that the first four lines are comments, that’s easy to handle, but rows of the data do not have consistent lengths. The first recipe contains 6 items and the second has 17, which means the data’s not rectangular and the standard importers aren’t going to be that happy.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">readLines</span>(<span class="fu">file.path</span>(recipes_data_dir, <span class="st">"srep00196-s3.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "#"                                                                                                                                         
+[2] "# Flavor network and the principles of food pairing"                                                                                       
+[3] "# Yong-Yeol Ahn, Sebastian E. Ahnert, James P. Bagrow, and Albert-Laszlo Barabasi"                                                         
+[4] "# "                                                                                                                                        
+[5] "African,chicken,cinnamon,soy_sauce,onion,ginger"                                                                                           
+[6] "African,cane_molasses,ginger,cumin,garlic,tamarind,bread,coriander,vinegar,onion,beef,cayenne,parsley,wheat_bread,yogurt,vegetable_oil,egg"</code></pre>
+</div>
+</div>
+<p>I really struggled to understand what to do about this, so I asked my first <code>R</code> question on StackOverflow, <a href="https://stackoverflow.com/a/30016983/1659890">“Importing and analysing non-rectangular .csv files in R”</a>. My question was asked back in 2015 <a href="https://twitter.com/drob/status/748196885307920385">before the tidyverse was born</a>, and so the best solution at the time was using <code>read.table</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.table</span>(<span class="fu">file.path</span>(recipes_data_dir, <span class="st">"srep00196-s3.csv"</span>), </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">sep =</span> <span class="st">","</span>, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">as.is =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">na.strings =</span> <span class="st">""</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       V1            V2       V3          V4       V5       V6       V7
+1 African       chicken cinnamon   soy_sauce    onion   ginger     &lt;NA&gt;
+2 African cane_molasses   ginger       cumin   garlic tamarind    bread
+3 African        butter   pepper       onion cardamom  cayenne   ginger
+4 African     olive_oil   pepper       wheat     beef    onion cardamom
+5 African         honey    wheat       yeast     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;
+6 African        tomato cilantro lemon_juice    onion  cayenne scallion
+              V8      V9      V10  V11     V12     V13         V14    V15
+1           &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
+2      coriander vinegar    onion beef cayenne parsley wheat_bread yogurt
+3 cottage_cheese  garlic brassica &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
+4          cumin  garlic     rice leek    &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
+5           &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
+6           &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt; &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;   &lt;NA&gt;
+            V16  V17
+1          &lt;NA&gt; &lt;NA&gt;
+2 vegetable_oil  egg
+3          &lt;NA&gt; &lt;NA&gt;
+4          &lt;NA&gt; &lt;NA&gt;
+5          &lt;NA&gt; &lt;NA&gt;
+6          &lt;NA&gt; &lt;NA&gt;</code></pre>
+</div>
+</div>
+<p>At the time I continued to analyse and visualise the data ready for my interview exercise, for which I also learned how to use GitHub! The outputs I used in my presentation are still available in my <a href="https://github.com/charliejhadley/RecipeVisualisations">RecipeVisualisations</a> repo. It turns out on reflection that there were two bad things that I did at the time:</p>
+<ul>
+<li>I didn’t know enough R to have a reproducible workflow so have lost some of my tidying scripts</li>
+<li><code>read.table</code> uses a bad heuristic to decide how many columns there are in the data! The longest recipe is <strong>not</strong> 17 ingredients long.</li>
+</ul>
+<p>Now I’m much more proficient with R and have the wonderful <code>purrr</code> library to process these recipes into a <code>tibble</code> with the ingredients stored as a list:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>recipe_lists <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(recipes_data_dir, <span class="st">"srep00196-s3.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">strsplit</span>(<span class="st">","</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>recipe_lists <span class="ot">&lt;-</span> recipe_lists[<span class="dv">5</span><span class="sc">:</span><span class="fu">length</span>(recipe_lists)]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>recipes_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cuisine =</span> <span class="fu">map_chr</span>(recipe_lists, <span class="dv">1</span>),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ingredients =</span> <span class="fu">map</span>(recipe_lists, tail, <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>recipes_df <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  cuisine ingredients
+  &lt;chr&gt;   &lt;list&gt;     
+1 African &lt;chr [5]&gt;  
+2 African &lt;chr [16]&gt; 
+3 African &lt;chr [9]&gt;  
+4 African &lt;chr [10]&gt; 
+5 African &lt;chr [3]&gt;  
+6 African &lt;chr [6]&gt;  </code></pre>
+</div>
+</div>
+<p>It’s now much easier to operate on these lists of ingredients by using <code>map*</code> functions within <code>mutate</code>, for instance I can create a column containing the number of ingredients. Now we discover the joint longest recipes contain a ridiculous <strong>32 ingredients</strong>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>recipes_df <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n.ingredients =</span> <span class="fu">map_int</span>(ingredients, length)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n.ingredients))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 56,498 × 3
+   cuisine          ingredients n.ingredients
+   &lt;chr&gt;            &lt;list&gt;              &lt;int&gt;
+ 1 EasternEuropean  &lt;chr [32]&gt;             32
+ 2 SouthernEuropean &lt;chr [32]&gt;             32
+ 3 NorthAmerican    &lt;chr [30]&gt;             30
+ 4 NorthAmerican    &lt;chr [29]&gt;             29
+ 5 NorthAmerican    &lt;chr [29]&gt;             29
+ 6 NorthAmerican    &lt;chr [29]&gt;             29
+ 7 EasternEuropean  &lt;chr [28]&gt;             28
+ 8 NorthAmerican    &lt;chr [28]&gt;             28
+ 9 NorthAmerican    &lt;chr [27]&gt;             27
+10 NorthAmerican    &lt;chr [26]&gt;             26
+# … with 56,488 more rows</code></pre>
+</div>
+</div>
+<p>With our ingredients in a list column it’s now also easy to filter recipes by specific ingredients:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>recipes_df <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(ingredients, <span class="st">"garlic"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16,893 × 2
+   cuisine ingredients
+   &lt;chr&gt;   &lt;list&gt;     
+ 1 African &lt;chr [16]&gt; 
+ 2 African &lt;chr [9]&gt;  
+ 3 African &lt;chr [10]&gt; 
+ 4 African &lt;chr [12]&gt; 
+ 5 African &lt;chr [11]&gt; 
+ 6 African &lt;chr [8]&gt;  
+ 7 African &lt;chr [9]&gt;  
+ 8 African &lt;chr [12]&gt; 
+ 9 African &lt;chr [15]&gt; 
+10 African &lt;chr [10]&gt; 
+# … with 16,883 more rows</code></pre>
+</div>
+</div>
+<p>I’m going to come back to using this dataset in the future to explore graph theory and machine learning examples, but for now let’s <a href="https://eagereyes.org/blog/2017/joy-plots">finish like it’s Summer 2017</a> with a ridgeline plot from the excellent <code>ggplot2</code> extension <code>ggridges</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggridges"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>recipes_df <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n.ingredients =</span> <span class="fu">map_int</span>(ingredients, length)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cuisine) <span class="sc">%&gt;%</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">median.ingredients =</span> <span class="fu">median</span>(n.ingredients)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(median.ingredients)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cuisine =</span> <span class="fu">fct_reorder</span>(cuisine, median.ingredients)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n.ingredients, <span class="at">y =</span> cuisine)) <span class="sc">+</span> </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges</span>(<span class="at">scale =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>() <span class="sc">+</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Number of ingredients"</span>) <span class="sc">+</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Comparison of ingredients per recipe by cuisine"</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"Data from doi:10.1038/srep00196"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/recipes-ingredients-ggridge-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>In future whenever I want to work with this data I’ll import it through the following script:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyverse"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>recipes_data_dir <span class="ot">&lt;-</span> <span class="fu">tempdir</span>()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>s2_zip <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".zip"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>s3_zip <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".zip"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://static-content.springer.com/esm/art%3A10.1038%2Fsrep00196/MediaObjects/41598_2011_BFsrep00196_MOESM2_ESM.zip"</span>, <span class="at">destfile =</span> s2_zip)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://static-content.springer.com/esm/art%3A10.1038%2Fsrep00196/MediaObjects/41598_2011_BFsrep00196_MOESM3_ESM.zip"</span>, <span class="at">destfile =</span> s3_zip)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(s2_zip, <span class="at">exdir =</span> recipes_data_dir)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(s3_zip, <span class="at">exdir =</span> recipes_data_dir)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>recipe_lists <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(recipes_data_dir, <span class="st">"srep00196-s3.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">strsplit</span>(<span class="st">","</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>recipe_lists <span class="ot">&lt;-</span> recipe_lists[<span class="dv">5</span><span class="sc">:</span><span class="fu">length</span>(recipe_lists)]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>recipes_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">cuisine =</span> <span class="fu">map_chr</span>(recipe_lists, <span class="dv">1</span>),</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">ingredients =</span> <span class="fu">map</span>(recipe_lists, tail, <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+
+
+<div id="quarto-appendix" class="default"><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1" role="doc-endnote"><p>Frustratingly, these data sets are attached to the paper exclusively as supplementary materials, and so these are fragile links. Data should really have distinct DOI, modern journals like Springer Nature’s <a href="www.nature.com/sdata/">Scientific Data</a> do this.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2018,
+  author = {Charlotte Hadley and Charlie Joey Hadley},
+  title = {Recipes for Learning},
+  date = {2018-02-18},
+  url = {https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2018" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Charlotte Hadley, and Charlie Joey Hadley. 2018. <span>“Recipes for
+Learning.”</span> February 18, 2018. <a href="https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning">https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning</a>.
+</div></div></section></div></main> <!-- /main -->
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
