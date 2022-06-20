@@ -1,0 +1,14 @@
+{
+  "hash": "b07d87b69d43eaf580ac49f7508fffaf",
+  "result": {
+    "markdown": "---\ntitle: \"I have children!\"\ndescription: \"More stub!\"\nabstract: >\n  Long stubb!.\ndate: \"2022-05-10\"\ncategories:\n  - experimental-design\n  - demo\ncode-fold: true\nimage: /posts/softblock-demo/three-designs.jpg\n---\n\n\nThis is great[^footnote-1]\n\n::: {.cell}\n\n```{.r .cell-code}\n2 + 2\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 4\n```\n:::\n:::\n\n\n[^footnote-1]: This is the thing\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": null
+  }
+}

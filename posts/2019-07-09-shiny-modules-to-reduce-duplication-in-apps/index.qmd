@@ -1,0 +1,197 @@
+---
+title: "Shiny modules to reduce duplication in apps"
+description: "Help reduce the duplication of code in {shiny} apps through the use of modules"
+date: '2019-07-09'
+categories:
+  - shiny
+tags:
+  - modules
+code-fold: false
+image: /posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/shiny-app-wireframe.png
+---
+
+
+Shiny apps are awesome, with a bit of training you can build fairly impressive interactive web apps. But at some point, the subject of "shiny modules" will rear its head.
+
+When I started learning modules, I found most of the existing [articles](http://shiny.rstudio.com/articles/modules.html) focus on the technical-side of things and don't focus on the **benefits of using modules** - they can significantly simplify and improve your apps.
+
+I'm going to put together a few different tutorials on real-world Shiny apps and how modules can be used to improve them. As these tutorials develop I'll link to them below.
+
+But for now, we're going to build this Shiny app:
+
+<div class="row">
+
+<div class="col-sm-5">
+<center>
+<img src='shiny-app-wireframe.png' alt='Wireframe for shiny app' width='300px'></img>
+</center>
+</div>
+
+<div class="col-sm-7">
+
+- The shiny app displays data from the `WDI` package
+
+- Each "page" of the Shiny app details a different "development indicator" from the `WDI` package
+
+- Users select a country of interest from a pull-down menu
+
+- The chart, text and table underneath the pull-down menu all update when a country is selected
+
+- The charts, text and tables are **the same on each page** except for two variables; the selected country and the indicator detailed on that page.
+</div>
+</div>
+
+### How to use this tutorial
+
+It's often useful to skim read through a tutorial before attempting to run the code on your own machine. If you do want to follow along with the code, you will need to install the `{usethis}` package before starting.
+
+This tutorial is split into 
+
+- Shiny app without modules
+
+- Shiny app 
+
+
+### Shiny app without modules
+
+The module-free version of the Shiny app can be downloaded onto your machine by running this code:
+
+```{r, eval=FALSE}
+usethis::use_course("https://github.com/charliejhadley/training_shiny-module/raw/master/wdi_indicators_modules/01_without-modules.zip")
+```
+
+Once the RStudio project has opened,  let's take a look at the structure of the `ui.R` file in the app:
+
+```{r, eval=FALSE}
+countries_list <- c(...)
+
+navbarPage(
+  "WDI",
+  tabPanel(
+    "Internet",
+    fluidPage(
+      selectInput("internet_country",
+                  choices = countries_list),
+      ...
+    )
+  ),
+  tabPanel(
+    "Bank branches",
+    fluidPage(
+      selectInput("bank_branches_country",
+                  choices = countries_list),
+      ...
+    )
+  ),
+  ...
+)
+```
+
+We're essentailly duplicating the same `selectInput()` in each of our `tabPanel()`s. If there were *many* controls being repeated we could make an argument for using modules from this file alone.
+
+Let's take a look at the `server.R` file of this app:
+
+```{r, eval=FALSE}
+function(input, output, session){
+  
+  output$internet_timeline <- renderPlot({
+    
+    wdi_data %>%
+      gg_wdi_indicator_timeline(input$internet_country,
+                                ...)
+    
+  })
+  
+  output$internet_comparison_table <- renderUI({
+    
+    ranking_table <- wdi_data %>%
+    filter(country == input$internet_country) %>%
+    
+    ranking_table %>%
+        datatable()
+        
+  })
+  
+  output$bank_branches_timeline <- renderPlot({
+    
+    wdi_data %>%
+      gg_wdi_indicator_timeline(input$bank_branches_country,
+                              ...)
+    
+  })
+  
+  output$bank_branches_comparison_table <- renderUI({
+    
+    ranking_table <- wdi_data %>%
+    filter(country == input$bank_branches_country) %>%
+    ...
+    
+    ranking_table %>%
+        datatable(...)
+        
+  })
+  
+}
+```
+
+There's a lot of duplication in this file. If we wanted to add a new tab about the number of secondary school students, we would have to add all of the following:
+
+```{r, eval=FALSE}
+## ui.R
+tabPanel(
+  "Secondary schools",
+  fluidPage(
+    selectInput("secondary_schools_country",
+                choices = countries_list),
+    ...
+  )
+)
+## server.R
+output$secondary_schools_timeline <- renderPlot({
+  
+  wdi_data %>%
+    gg_wdi_indicator_timeline(input$secondary_schools_country,
+                              ...)
+  
+})
+
+output$secondary_schools_comparison_table <- renderUI({
+  
+  ranking_table <- wdi_data %>%
+    filter(country == input$secondary_schools_country) %>%
+    ...
+  
+  ranking_table %>%
+    datatable(...)
+  
+})
+```
+
+Let's breakdown the advantages to re-writing this app to use modules.
+
+#### What would be the benefits of switching to use modules?
+
+
+- Without modules, if we wanted to change the look of the "comparison tables" we would need to do that X times - once for each `output$*_comparison_table` object.<br>
+Modules therefore help reduce transcription or copy/paste errors.
+
+- Modules will allow us to change the 
+
+- Modules will reduce script file length, making the code easier to read and understand
+
+- Currently, if we wanted to change 
+
+If we needed to add another tab to our 
+
+Each time we add a new tab to our shiny app, we'll need to create a new pair of `render*()` functions and corresponding inputs in the `ui.R` file. 
+
+By re-designing our app to use modules, we'll benefit from the following:
+
+- Reduced script file lenght, improving readability
+- Simpler feature updates, changing the module code will update all pages at once.
+
+
+
+
+
+

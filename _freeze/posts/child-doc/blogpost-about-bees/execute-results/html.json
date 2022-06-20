@@ -1,0 +1,14 @@
+{
+  "hash": "41f8e9083b168d509d7f4e99cfae1eb5",
+  "result": {
+    "markdown": "This is great[^footnote-1]\n\n::: {.cell}\n\n```{.r .cell-code}\n2 + 2\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 4\n```\n:::\n:::\n\n\n[^footnote-1]: This is the thing",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": null
+  }
+}

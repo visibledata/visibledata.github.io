@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://visibledata.co.uk/posts/softblock-demo/index.html</loc>
-    <lastmod>2022-06-08T18:56:01.549Z</lastmod>
+    <lastmod>2022-06-17T13:45:08.386Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/index.html</loc>
-    <lastmod>2022-06-15T14:51:21.347Z</lastmod>
+    <lastmod>2022-06-20T15:07:05.847Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/about.html</loc>
-    <lastmod>2022-06-15T15:17:51.413Z</lastmod>
+    <lastmod>2022-06-17T14:22:11.303Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/training.html</loc>
-    <lastmod>2022-06-15T14:51:19.188Z</lastmod>
+    <lastmod>2022-06-17T12:53:40.170Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/cv.html</loc>
@@ -22,6 +22,38 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/blog.html</loc>
-    <lastmod>2022-06-15T14:51:25.091Z</lastmod>
+    <lastmod>2022-06-20T15:07:03.703Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/index.html</loc>
+    <lastmod>2022-06-17T14:23:45.357Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html</loc>
+    <lastmod>2022-06-17T14:18:22.854Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2022-06-17_test/index.html</loc>
+    <lastmod>2022-06-17T13:41:58.753Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2019-03-13_extracting-doi-from-text/index.html</loc>
+    <lastmod>2022-06-17T13:49:58.442Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/child-doc/index.html</loc>
+    <lastmod>2022-06-17T14:18:25.639Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/child-doc/blogpost-about-bees.html</loc>
+    <lastmod>2022-06-17T14:18:24.055Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2018-12-05-using-ggmap-after-july-2018/index.html</loc>
+    <lastmod>2022-06-20T14:55:16.043Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2019-02-18_oxford-centres/index.html</loc>
+    <lastmod>2022-06-20T15:07:07.484Z</lastmod>
   </url>
 </urlset>

@@ -4,6 +4,46 @@
   box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
 
+.wide-div {
+  width: calc(100vw - 20px);
+  margin-left: calc(-50vw + 50% + 10px);
+}
+
+/* Testimonials */
+
+.testimonial {
+  padding: 10px 20px;
+  margin: 0 0 20px;
+  font-size: 14px;
+  border-left: 5px solid #467fbf;
+}
+.testimonial footer,
+.testimonial small,
+.testimonial .small {
+  display: block;
+  font-size: 80%;
+  line-height: 1.42857143;
+  color: #999999;
+}
+.testimonial footer:before,
+.testimonial small:before,
+.testimonial .small:before {
+  content: '\2014 \00A0';
+}
+.blockquote-reverse,
+.testimonial.pull-right {
+  border-right: 5px solid #467fbf;
+}
+
+.testimonial-attribution {
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  padding-top: 5px;
+  font-weight: 900;
+  line-height: 1.1;
+  color: #333333;
+}
+
 /* horizontal timeline */
 
 .hori-timeline .events {
@@ -33,7 +73,7 @@
     border-radius: 4px;
     padding: 2px 4px;
 }
-@media (min-width: 1000px) {
+@media (min-width: 1150px) {
     .hori-timeline .events .event-list {
         display: inline-block;
         width: 24%;
@@ -131,8 +171,8 @@
     }
 }
 .single-timeline-area .single-timeline-content .timeline-icon {
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
+    /* -webkit-transition-duration: 500ms;
+    transition-duration: 500ms; */
     width: 30px;
     height: 30px;
     background-color: #f1c40f;
@@ -149,13 +189,15 @@
     line-height: 30px;
 }
 .single-timeline-area .single-timeline-content .timeline-text h6 {
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
+    /*-webkit-transition-duration: 500ms;
+    transition-duration: 500ms; */
 }
 .single-timeline-area .single-timeline-content .timeline-text p {
     font-size: 13px;
     margin-bottom: 0;
 }
+
+/*
 .single-timeline-area .single-timeline-content:hover .timeline-icon,
 .single-timeline-area .single-timeline-content:focus .timeline-icon {
     background-color: #020710;
@@ -164,3 +206,4 @@
 .single-timeline-area .single-timeline-content:focus .timeline-text h6 {
     color: #3f43fd;
 }
+*/

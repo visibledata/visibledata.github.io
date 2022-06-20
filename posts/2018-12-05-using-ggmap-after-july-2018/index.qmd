@@ -1,0 +1,165 @@
+---
+title: "Using ggmap after July 2018"
+author: Charlie Joey Hadley
+date: '2018-12-05'
+slug: using-ggmap-after-july-2018
+categories:
+  - dataviz
+  - R
+tags:
+  - dataviz
+  - fun
+  - R
+banner: "img/blog-images/2018-12-05_ggmap-output.png"
+---
+
+`ggmap` is an awesome package for creating maps with `ggplot2`. If you've seen a nice looking map built with `ggplot2` I can almost guarantee you that it uses `ggmap` to look that good. The `ggmap` package is used to obtain base maps from the APIs of a number of online mapping tools, the one we care about here is the base maps from Google Maps (because they're very good). 
+
+If you're reading instructions for using `ggmap` written before July 2018 **you will fail to replicate the results** unless you make some changes to your workflow. **You will need to give Google your billing information, but can create maps for free**.
+
+<!-- <div class="row"> -->
+
+<!-- <div class="col-sm-6"> -->
+
+<!-- <a class="btn btn-primary btn-block" data-toggle="collapse" href="#whats-an-api" role="button" aria-expanded="false" aria-controls="collapseExample"> -->
+<!--     What's an API? -->
+<!-- </a> -->
+
+<!-- </div> -->
+
+<!-- <div class="col-sm-6"> -->
+
+<!--   <a class="btn btn-primary btn-block" data-toggle="collapse" href="#what-are-base-maps" role="button" aria-expanded="false" aria-controls="collapseExample"> -->
+<!--     What are base maps? -->
+<!--   </a> -->
+
+<!-- </div> -->
+
+<!-- </div> -->
+
+<!-- <div class="collapse" id="whats-an-api"> -->
+<!--   <div class="card card-body"> -->
+
+<!-- A defined set of interactions with a service to send and receive data. In the case of mapping tools you'll find many API, including one for converting street addresses into longitude and latitudes. -->
+
+<!--   <br/> -->
+<!--   </div> -->
+<!-- </div> -->
+
+<!-- <div class="collapse" id="what-are-base-maps"> -->
+<!--   <div class="card card-body"> -->
+
+<!-- Base maps are the backgrounds of maps. -->
+
+<!--   <br/> -->
+<!--   </div> -->
+<!-- </div> -->
+
+## What's changed?
+
+Before July 2018 it was possible to use the Google Maps API for free without configuration or use account, this is now no longer possible. See the [pricing page](https://cloud.google.com/maps-platform/pricing/) for explicit details from Google themselves.
+
+You must do the following to obtain base maps from Google:
+
+- Have a Google Cloud account.
+
+- Enable the Google Maps Platform.
+
+- Provide Google with your billing details.
+
+You will then be allocated $200 of free usage per month, every month. All API calls will be made against these limits. 
+
+If you're exclusively making static maps with `ggmap` then *you're extremely unlikely to ever be charged by Google*. I've summarised the [pricing policy](https://developers.google.com/maps/billing/understanding-cost-of-use) as of December 2018 below:
+
+```{r static-map-pricing, echo=FALSE, message=FALSE, warning=FALSE}
+library("tidyverse")
+library("DT")
+library("widgetframe")
+
+dt_static_map_pricing <- tribble(
+  ~number_of_maps, ~price_per_call,
+  "0–100,000", "0.002 USD each time ($2 per 1000)",
+  "100,001–500,000", "0.0016 USD each time ($1.60 per 1000)"
+) %>%
+  datatable(rownames = FALSE,
+            colnames = c("Number of times you run get_googlemap", "Price per function call"),
+            options = list(dom = "t",
+                           language = list("sSearch" = "Filter:")))
+
+
+frameWidget(dt_static_map_pricing, height = "100%")
+```
+
+## Let's make our maps
+
+We'll break this into two stages:
+
+1. Preparing our Google Maps Platform account
+
+2. Setting up and using `ggmap`
+
+### Preparing our Google Maps Platform account
+
+1. Navigate to [https://cloud.google.com/maps-platform/](https://cloud.google.com/maps-platform/) and click "Get Started"
+
+2. Select "Maps" in the dialog, leave the other things for another tutorial.
+
+<img src='/blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform-dialog.png' style='width:450px'/>
+
+3. Create a new project for tracking your `ggmap`-incurred expenses, I suggest using the name `ggmap`
+
+<img src='/blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform-project.png' style='width:450px'/>
+
+4. You'll be prompted to create a billing account, click "create a billing account"
+
+5. Select your country, agree to the terms and conditions, and make a decision about marketing. Please note you'll likely be told you're getting \$300 per month rather than \$200 for 12 months, it's because Google are trying to keep devs happy during the roll out.
+
+<img src='/blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform_create-billing-account.png' style='width:450px'/>
+
+6. Fill in your payment details!
+
+7. As of 2018 there's a modal dialog that you want to click through, I assume this will be designed away in the future so don't worry if you don't see it.
+
+<img src='/blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform_enable-your-api.png' style='width:450px'/>
+
+8. Success! Now you have an API key to use in R. You'll want to copy it down somewhere.
+
+<img src='/blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform_api-key.png' style='width:450px'/>
+
+You need to have your API key with you EVERY time that you use `ggmap` for the time being. Make sure you keep a note of it from above, or else you can find it with these steps:
+
+1. Navigate to [https://console.cloud.google.com/apis/dashboard](https://console.cloud.google.com/apis/dashboard) and select the project (I went with `ggmap`) you created from the pull down list:
+
+<img src='/blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform_select-project.png' style='width:450px'/>
+
+1. Select credentials from the left-hand nav and you'll be shown your API key
+
+<img src='/blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform_credentials.png' style='width:450px'/>
+
+### Setting up and using `ggmap`
+
+The instructions for these steps can be found in [Github Issue #51](https://github.com/dkahle/ggmap/issues/51).
+
+1. There's a dev version of the `ggmap` package that uses the new APIs, which we can install as follows:
+
+```{r blog-install-dev-ggmap, eval = FALSE}
+devtools::install_github("dkahle/ggmap", ref = "tidyup")
+```
+
+2. You **must** now restart R.
+
+3. Load the library and provide your API key
+
+```{r register-google, eval = FALSE}
+register_google(key = "My-FAKE-KEY")
+```
+
+4. Now we can get our base maps using `get_googlemap()`
+
+```{r blog-get-base-maps, eval = FALSE}
+base_map <- get_googlemap(center = c(2.2945, 48.858222), maptype = "roadmap")
+ggmap(base_map)
+```
+
+<img src='/blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_ggmap-output.png' style='width:450px'/>
+

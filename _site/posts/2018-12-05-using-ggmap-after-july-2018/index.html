@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.288">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Charlie Joey Hadley">
+<meta name="dcterms.date" content="2018-12-05">
+
+<title>Visible Data - Using ggmap after July 2018</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<style>
+.quarto-title-banner {
+  
+}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+<script src="https://kit.fontawesome.com/a0f522c241.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+<script src="../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="../../site_libs/pymjs-1.3.2/pym.v1.js"></script>
+<script src="../../site_libs/widgetframe-binding-0.3.1/widgetframe.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Visible Data - Using ggmap after July 2018">
+<meta property="og:site-name" content="Visible Data">
+<meta name="twitter:title" content="Visible Data - Using ggmap after July 2018">
+<meta name="twitter:creator" content="@charliejhadley">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Visible Data</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../training.html">Training</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Using ggmap after July 2018</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">dataviz</div>
+                <div class="quarto-category">R</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Charlie Joey Hadley </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">December 5, 2018</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#whats-changed" id="toc-whats-changed" class="nav-link active" data-scroll-target="#whats-changed">What’s changed?</a></li>
+  <li><a href="#lets-make-our-maps" id="toc-lets-make-our-maps" class="nav-link" data-scroll-target="#lets-make-our-maps">Let’s make our maps</a>
+  <ul class="collapse">
+  <li><a href="#preparing-our-google-maps-platform-account" id="toc-preparing-our-google-maps-platform-account" class="nav-link" data-scroll-target="#preparing-our-google-maps-platform-account">Preparing our Google Maps Platform account</a></li>
+  <li><a href="#setting-up-and-using-ggmap" id="toc-setting-up-and-using-ggmap" class="nav-link" data-scroll-target="#setting-up-and-using-ggmap">Setting up and using <code>ggmap</code></a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p><code>ggmap</code> is an awesome package for creating maps with <code>ggplot2</code>. If you’ve seen a nice looking map built with <code>ggplot2</code> I can almost guarantee you that it uses <code>ggmap</code> to look that good. The <code>ggmap</code> package is used to obtain base maps from the APIs of a number of online mapping tools, the one we care about here is the base maps from Google Maps (because they’re very good).</p>
+<p>If you’re reading instructions for using <code>ggmap</code> written before July 2018 <strong>you will fail to replicate the results</strong> unless you make some changes to your workflow. <strong>You will need to give Google your billing information, but can create maps for free</strong>.</p>
+<!-- <div class="row"> -->
+<!-- <div class="col-sm-6"> -->
+<!-- <a class="btn btn-primary btn-block" data-toggle="collapse" href="#whats-an-api" role="button" aria-expanded="false" aria-controls="collapseExample"> -->
+<!--     What's an API? -->
+<!-- </a> -->
+<!-- </div> -->
+<!-- <div class="col-sm-6"> -->
+<!--   <a class="btn btn-primary btn-block" data-toggle="collapse" href="#what-are-base-maps" role="button" aria-expanded="false" aria-controls="collapseExample"> -->
+<!--     What are base maps? -->
+<!--   </a> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- <div class="collapse" id="whats-an-api"> -->
+<!--   <div class="card card-body"> -->
+<!-- A defined set of interactions with a service to send and receive data. In the case of mapping tools you'll find many API, including one for converting street addresses into longitude and latitudes. -->
+<!--   <br/> -->
+<!--   </div> -->
+<!-- </div> -->
+<!-- <div class="collapse" id="what-are-base-maps"> -->
+<!--   <div class="card card-body"> -->
+<!-- Base maps are the backgrounds of maps. -->
+<!--   <br/> -->
+<!--   </div> -->
+<!-- </div> -->
+<section id="whats-changed" class="level2">
+<h2 class="anchored" data-anchor-id="whats-changed">What’s changed?</h2>
+<p>Before July 2018 it was possible to use the Google Maps API for free without configuration or use account, this is now no longer possible. See the <a href="https://cloud.google.com/maps-platform/pricing/">pricing page</a> for explicit details from Google themselves.</p>
+<p>You must do the following to obtain base maps from Google:</p>
+<ul>
+<li><p>Have a Google Cloud account.</p></li>
+<li><p>Enable the Google Maps Platform.</p></li>
+<li><p>Provide Google with your billing details.</p></li>
+</ul>
+<p>You will then be allocated $200 of free usage per month, every month. All API calls will be made against these limits.</p>
+<p>If you’re exclusively making static maps with <code>ggmap</code> then <em>you’re extremely unlikely to ever be charged by Google</em>. I’ve summarised the <a href="https://developers.google.com/maps/billing/understanding-cost-of-use">pricing policy</a> as of December 2018 below:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="htmlwidget-b9c0d536f88f46555929" style="width:100%;height:100%;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b9c0d536f88f46555929">{"x":{"url":"index_files/figure-html//widgets/widget_static-map-pricing.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="lets-make-our-maps" class="level2">
+<h2 class="anchored" data-anchor-id="lets-make-our-maps">Let’s make our maps</h2>
+<p>We’ll break this into two stages:</p>
+<ol type="1">
+<li><p>Preparing our Google Maps Platform account</p></li>
+<li><p>Setting up and using <code>ggmap</code></p></li>
+</ol>
+<section id="preparing-our-google-maps-platform-account" class="level3">
+<h3 class="anchored" data-anchor-id="preparing-our-google-maps-platform-account">Preparing our Google Maps Platform account</h3>
+<ol type="1">
+<li><p>Navigate to <a href="https://cloud.google.com/maps-platform/">https://cloud.google.com/maps-platform/</a> and click “Get Started”</p></li>
+<li><p>Select “Maps” in the dialog, leave the other things for another tutorial.</p></li>
+</ol>
+<p><img src="../../blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform-dialog.png" style="width:450px"></p>
+<ol start="3" type="1">
+<li>Create a new project for tracking your <code>ggmap</code>-incurred expenses, I suggest using the name <code>ggmap</code></li>
+</ol>
+<p><img src="../../blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform-project.png" style="width:450px"></p>
+<ol start="4" type="1">
+<li><p>You’ll be prompted to create a billing account, click “create a billing account”</p></li>
+<li><p>Select your country, agree to the terms and conditions, and make a decision about marketing. Please note you’ll likely be told you’re getting $300 per month rather than $200 for 12 months, it’s because Google are trying to keep devs happy during the roll out.</p></li>
+</ol>
+<p><img src="../../blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform_create-billing-account.png" style="width:450px"></p>
+<ol start="6" type="1">
+<li><p>Fill in your payment details!</p></li>
+<li><p>As of 2018 there’s a modal dialog that you want to click through, I assume this will be designed away in the future so don’t worry if you don’t see it.</p></li>
+</ol>
+<p><img src="../../blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform_enable-your-api.png" style="width:450px"></p>
+<ol start="8" type="1">
+<li>Success! Now you have an API key to use in R. You’ll want to copy it down somewhere.</li>
+</ol>
+<p><img src="../../blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform_api-key.png" style="width:450px"></p>
+<p>You need to have your API key with you EVERY time that you use <code>ggmap</code> for the time being. Make sure you keep a note of it from above, or else you can find it with these steps:</p>
+<ol type="1">
+<li>Navigate to <a href="https://console.cloud.google.com/apis/dashboard">https://console.cloud.google.com/apis/dashboard</a> and select the project (I went with <code>ggmap</code>) you created from the pull down list:</li>
+</ol>
+<p><img src="../../blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform_select-project.png" style="width:450px"></p>
+<ol type="1">
+<li>Select credentials from the left-hand nav and you’ll be shown your API key</li>
+</ol>
+<p><img src="../../blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform_credentials.png" style="width:450px"></p>
+</section>
+<section id="setting-up-and-using-ggmap" class="level3">
+<h3 class="anchored" data-anchor-id="setting-up-and-using-ggmap">Setting up and using <code>ggmap</code></h3>
+<p>The instructions for these steps can be found in <a href="https://github.com/dkahle/ggmap/issues/51">Github Issue #51</a>.</p>
+<ol type="1">
+<li>There’s a dev version of the <code>ggmap</code> package that uses the new APIs, which we can install as follows:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"dkahle/ggmap"</span>, <span class="at">ref =</span> <span class="st">"tidyup"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li><p>You <strong>must</strong> now restart R.</p></li>
+<li><p>Load the library and provide your API key</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">register_google</span>(<span class="at">key =</span> <span class="st">"My-FAKE-KEY"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="4" type="1">
+<li>Now we can get our base maps using <code>get_googlemap()</code></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>base_map <span class="ot">&lt;-</span> <span class="fu">get_googlemap</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">2.2945</span>, <span class="fl">48.858222</span>), <span class="at">maptype =</span> <span class="st">"roadmap"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmap</span>(base_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img src="../../blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_ggmap-output.png" style="width:450px"></p>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2018,
+  author = {Charlotte Hadley and Charlie Joey Hadley},
+  title = {Using Ggmap After {July} 2018},
+  date = {2018-12-05},
+  url = {https://visibledata.co.uk/posts/2018-12-05-using-ggmap-after-july-2018},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2018" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Charlotte Hadley, and Charlie Joey Hadley. 2018. <span>“Using Ggmap
+After July 2018.”</span> December 5, 2018. <a href="https://visibledata.co.uk/posts/2018-12-05-using-ggmap-after-july-2018">https://visibledata.co.uk/posts/2018-12-05-using-ggmap-after-july-2018</a>.
+</div></div></section></div></main> <!-- /main -->
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

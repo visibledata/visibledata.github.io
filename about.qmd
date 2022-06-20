@@ -1,15 +1,16 @@
 ---
 title: "About"
 toc: false
+toc-depth: 2
 ---
 
-Visible Data is my data science consultancy. Who am I? I'm Charlotte Hadley but usually go by Charlie and use the handle [@charliejhadley](https://twitter.com/charliejhadley) almost universally.
+I'm Charlie Hadley and Visible Data is my data science and training consultancy. My handle elsewhere is almost universally [@charliejhadley](https://twitter.com/charliejhadley).
 
-I'm an R instructor and data science consultant. This website serves as a portfolio of my courses, charts and other things that don't have a good home elsewhere. I'm also an Open Data and Reproducible Research evangelist.
+I'm an R instructor and data science consultant. This website is as a portfolio of my courses, charts and other things that don't have a good home elsewhere. I'm also an Open Data and Reproducible Research evangelist.
 
-I also happen to be trans 🏳️‍⚧️. All tech is political and our common future requires [intersectionality](https://time.com/5560575/intersectionality-theory/).
+All tech is political. Our common future and freedom requires [intersectionality](https://time.com/5560575/intersectionality-theory/).
 
-::: {.text-center}
+<div class="text-center" style='padding-top:10px;padding-bottom:20px;'>
 
 ```{=html}
 <a class="btn btn-outline-dark", href="https://twitter.com/charliejhadley" target="_blank" rel="noopener noreferrer">
@@ -26,54 +27,43 @@ I also happen to be trans 🏳️‍⚧️. All tech is political and our common
 
 ```
 
-:::
-
-<br>
+</div>
 
 <div class="column-page-inset" style='padding-top:10px'>
 
 ```{=html}
-<div class="container-fluid">
+<div class="container-fluid wide-div">
 <div class="hori-timeline" dir="ltr">
                     <ul class="list-inline events">
                         <li class="list-inline-item event-list">
                             <div class="px-4">
                                 <div class="event-date bg-soft-success text-success">2022</div>
-                                <h6 style='text-align:center;text-decoration: none;'>Birmingham City University</h6>
-                                <p style='font-size:14px'>Visiting lecturer teaching a MSc in healthcare data science applications.</p>
-                                <div>
+                                <h6 style='text-align:center;text-decoration: none;'>Birmingham City<br>University</h6>
+                                <p style='font-size:14px'>Visiting lecturer teaching a MSc in data science in healthcare.</p>
+                                <!--- <div>
                                     <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                                </div>
+                                </div> --->
                             </div>
                         </li>
                         <li class="list-inline-item event-list">
                             <div class="px-4">
                                 <div class="event-date bg-soft-success text-success">2019</div>
-                                <h6 style='text-align:center;text-decoration: none;'>Visble Data & R for the Rest of Us</h6>
+                                <h6 style='text-align:center;text-decoration: none;'>Visble Data<br>Ltd</h6>
                                 <p style='font-size:14px'>Full-time independent data science consultant and trainer.</p>
-                                <div>
-                                    <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                                </div>
                             </div>
                         </li>
                         <li class="list-inline-item event-list">
                             <div class="px-4">
                                 <div class="event-date bg-soft-success text-success">2017</div>
-                                <h6>LinkedIn Learning Instructor</h6>
+                                <h6>LinkedIn Learning<br>Instructor</h6>
                                 <p style='font-size:14px'>Content creator specialising in data science courses.</p>
-                                <div>
-                                    <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                                </div>
                             </div>
                         </li>
                         <li class="list-inline-item event-list">
                             <div class="px-4">
                                 <div class="event-date bg-soft-success text-success">2015</div>
-                                <h6>University of Oxford</h6>
+                                <h6>University of<br>Oxford</h6>
                                 <p style='font-size:14px'>Service delivery manager for the Interactive Data Network.</p>
-                                <div>
-                                    <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                                </div>
                             </div>
                         </li>
                     </ul>
@@ -81,7 +71,11 @@ I also happen to be trans 🏳️‍⚧️. All tech is political and our common
 </div>
 ```
 
-## Experience timeline
+</div>
+
+I really enjoy talking and delivering workshops about dataviz, R and reproducible research - please do get in touch **charlie@visibledata.co.uk**. The timeline below gives more information about my career changes and a selection of the workshops and talks I've given.
+
+<div class="column-page-inset" style='padding-top:10px'>
 
 ```{=html}
 <!--- CREDIT: https://www.bootdey.com/snippets/view/timeline-events-area -->
@@ -91,8 +85,6 @@ I also happen to be trans 🏳️‍⚧️. All tech is political and our common
             <div class="col-12 col-sm-8 col-lg-6">
                 <!-- Section Heading-->
                 <div class="section_heading text-center">
-                    <h6>Our History</h6>
-                    <h3>A brief stories of our 2 years company journey</h3>
                     <div class="line"></div>
                 </div>
             </div>
@@ -104,94 +96,221 @@ I also happen to be trans 🏳️‍⚧️. All tech is political and our common
                     <!-- Single Timeline Content-->
                     <div class="single-timeline-area">
                         <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-                            <p>Near Future</p>
+                            <p>2022</p>
                         </div>
                         <div class="row">
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
-                                    <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
+                            <div class="col-12 col-md-12 col-lg-12">
+                                <div class="single-timeline-content d-flex" data-wow-delay="0.3s" style="">
+                                    <div class="timeline-icon"><i class="fa-solid fa-person-chalkboard"></i></div>
                                     <div class="timeline-text">
-                                        <h6>Updated 5.0</h6>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
-                                    <div class="timeline-icon"><i class="fa fa-archive" aria-hidden="true"></i></div>
-                                    <div class="timeline-text">
-                                        <h6>Fixed bug</h6>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
-                                    <div class="timeline-icon"><i class="fa fa-address-book" aria-hidden="true"></i></div>
-                                    <div class="timeline-text">
-                                        <h6>Reach 1k Users</h6>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        <h6>Visiting Lecturer: Birmingham City University</h6>
+                                        <p>In 2022 I'm debuting my MSc module <a href='https://eng7218.netlify.app/' target='_blank'>ENG7218 Data Science for Healthcare Applications</a> as a visiting lecturer at Birmingham City University.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </div>
+                        <hr style='margin-left:200px;'>
                     <!-- Single Timeline Content-->
                     <div class="single-timeline-area">
                         <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-                            <p>2020</p>
+                            <p>2021</p>
                         </div>
                         <div class="row">
-                            <div class="col-12 col-md-6 col-lg-4">
+                            <div class="col-12 col-md-12 col-lg-12">
                                 <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
-                                    <div class="timeline-icon"><i class="fa fa-briefcase" aria-hidden="true"></i></div>
+                                    <div class="timeline-icon"><i class="fa-solid fa-person-chalkboard"></i></div>
                                     <div class="timeline-text">
-                                        <h6>Updated 4.4.0</h6>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
-                                    <div class="timeline-icon"><i class="fa fa-desktop" aria-hidden="true"></i></div>
-                                    <div class="timeline-text">
-                                        <h6>Fixed bug</h6>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        <h6>R in 3 Months</h6>
+                                        <p>Since 2021 I've been co-instructor on the awesome <a href='https://rfortherestofus.com/3months/' target='_blank'>R in 3 Months</a> program, which runs twice a year in the Spring and Fall. Each intake has 50+ students who submit weekly assignments and participate in both synchronous and asynchronous weekly content. I'm primarily responsible for weekly feedback and it's the most fun I have teaching each year. I definitely recommend joining the course.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                                            <hr style='margin-left:200px;'>
                     <!-- Single Timeline Content-->
                     <div class="single-timeline-area">
                         <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
                             <p>2019</p>
                         </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6 col-lg-4">
+                                                <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12">
                                 <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
-                                    <div class="timeline-icon"><i class="fa fa-id-card" aria-hidden="true"></i></div>
+                                    <div class="timeline-icon"><i class="fa-solid fa-briefcase"></i></div>
                                     <div class="timeline-text">
-                                        <h6>Updated 4.0</h6>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        <h6>Job change: Full-time self-employed at Visible Data Ltd</h6>
+                                        <p>From mid 2019 I've been working as a full-time independent data science consultant and trainer through my consultancy Visible Data Ltd. I primarily partner with <a href='/training.html#public-courses'>third-party training providers</a> but please do get in touch if you would like custom courses directly. Since 2021 I've also been working on consultancy projects via <a href='https://rfortherestofus.com/'>R for the Rest of Us</a></p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
-                                    <div class="timeline-icon"><i class="fa fa-desktop" aria-hidden="true"></i></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
                                     <div class="timeline-text">
-                                        <h6>Fixed bug</h6>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        <h6>R-Ladies: Chicago</h6>
+                                        <p>Talk about <a href='https://www.rladieschicago.org/talk/2019-12-4-meetup/' target='_blank'>using R to create interactive data visualisations with htmlwidgets and {shiny}</a>.</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
-                                    <div class="timeline-icon"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
+                             <div class="col-12 col-md-6 col-lg-6">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
                                     <div class="timeline-text">
-                                        <h6>Reach 500 Users</h6>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        <h6>DHoxSS 2019</h6>
+                                        <p>Invited talk at DHoxSS about data visualisation to increase research impact.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>BristolR</h6>
+                                        <p>Talk about <a href='https://www.meetup.com/Bristol-R-User-Group/events/256419104/' target='_blank'>building reproducible data visualisation workflows with R and {shiny}</a>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-12 col-md-6 col-lg-6">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-user-gear"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>rstudio::conf workshop</h6>
+                                        <p>As part of my CPD I attended this workshop from RStudio designed to train folks in how to train others to use {shiny}.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                            <hr style='margin-left:200px;'>
+                                        <!-- Single Timeline Content-->
+                    <div class="single-timeline-area">
+                        <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                            <p>2017</p>
+                        </div>
+                                                <div class="row">
+                             <div class="col-12 col-md-12 col-lg-12">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-briefcase"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Job Change: Service Delivery Manager at University of Oxford</h6>
+                                        <p>After successfully managing the Live Data pilot project I was promoted to Service Delivery Manager for the newly instated <a href='https://idn.it.ox.ac.uk/' target='_blank'>Interactive Data Network</a>. The pilot project only provided sufficienct resources for a small-scale service. I was responsible for growing the reputation of the data visualisation service and planning sufficienct instructure to develop an University-wide service.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>     
+                        <div class="row">
+                             <div class="col-12 col-md-12 col-lg-12">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Conference Host: The Missing Link in Publishing: Interactive Data Viz</h6>
+                                        <p>This conference was designed to launch the <a href='https://idn.it.ox.ac.uk/' target='_blank'>Interactive Data Network</a> at University of Oxford. I was responsible for organising and hosting this <a href='https://idn.it.ox.ac.uk/event/missing-link-publishing-interactive-data-visualisation' target='_blank'>one day conference</a>, and also delivered a training workshop. The conference invited speakers from the FT, ONS and OPU to discuss how interactive data visualisation is used to engage their audiences and improve the comprehension of data-rich articles.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-person-chalkboard"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>OSDC Conference Workshop</h6>
+                                        <p>Invited workshop on using R and data visualisations to explore datasets.</p>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-12 col-md-6 col-lg-6">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Royal Statistical Society Conference</h6>
+                                        <p>Invited one day workshop on using R to build interactive data visualisations to tell stories.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                            <hr style='margin-left:200px;'>
+                                                                <div class="single-timeline-area">
+                        <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                            <p>2016</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>IDCC Conference Talk</h6>
+                                        <p>Submitted talk to the IDCC conference about my successful <a href='https://www.dcc.ac.uk/sites/default/files/documents/IDCC16/Parallel%20C/Session%203/Promoting%20Interactive%20Visualisation%20at%20University%20of%20Oxford%20The%20Live%20Data%20Network.pdf' target='_blank'>Live Data pilot project to launch a data visualisation service at University of Oxford</a>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-12 col-md-6 col-lg-6">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-person-chalkboard"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>DHoxSS Workshop</h6>
+                                        <p>Four day workshop introducing humanities researchers to using the Wolfram Language for analysing and visualising humanities data.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                                                <hr style='margin-left:200px;'>
+                    <!-- Single Timeline Content-->
+                    <div class="single-timeline-area">
+                        <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                            <p>2015</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-briefcase"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Job change: Research Support Engineer at University of Oxford</h6>
+                                        <p>In 2015 I joined the Research Support team at University of Oxford as a Research Software Engineer. My daily duties involved supporting researchers in reproducible research methods. Early in my employment I was tasked with being project manager for the Live Data project with the aim of launching a data visualisation service for all researchers at Oxford. This project was successful and led to me being promoted to Service Delivery Manager in 2017.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <hr style='margin-left:200px;'>
+                    <!-- Single Timeline Content-->
+                    <div class="single-timeline-area">
+                        <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                            <p>2014</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-person-chalkboard"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Visiting Lecturer: American University in Cairo</h6>
+                                        <p>As part of a program to roll out teaching with Mathematica across the physical sciences I was invited as a visiting lecturer to the American University in Cairo to train lecturers in the Wolfram Language and the CBM pedagogical approach.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                            <hr style='margin-left:200px;'>
+                    <!-- Single Timeline Content-->
+                    <div class="single-timeline-area">
+                        <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                            <p>2012</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12">
+                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                    <div class="timeline-icon"><i class="fa-solid fa-briefcase"></i></div>
+                                    <div class="timeline-text">
+                                        <h6>Job change: Technical Consultant at Wolfram Research</h6>
+                                        <p>In 2012 I joined Wolfram Research as a pre-sales technical consultant. Initially I was primarily responsible for developing and delivering customer-personalised technical demonstrations of Mathematica, including at C-level meetings. I also revamped several of the commercial training courses, and taught on the CQF program. Towards the end of my employment I was a senior consultant working on-site to build products for customers.</p>
                                     </div>
                                 </div>
                             </div>
@@ -204,9 +323,60 @@ I also happen to be trans 🏳️‍⚧️. All tech is political and our common
 </section>
 ```
 
+</div>
+
+<br>
+
+## Testimonials
+
+<div class="row">
+<div class="col-12 col-md-6 col-lg-6">
+
+<blockquote class="testimonial">
+Charlie’s expertise of R made the training session I had absolutely brilliant! We covered a mass of material, without it seeming overwhelming.
+<p class="testimonial-attribution">Data Scientist, Insurance Industry</p>
+</blockquote>
+
+</div>
+
+<div class="col-12 col-md-6 col-lg-6">
+
+<blockquote class="testimonial">
+ Charlie’s enthusiasm & passion for all things R, are hard not to get caught up in. I will look forward to reading blogs by Charlie and hopefully attending more trainings in the future.
+<p class="testimonial-attribution">Benjamin Sutton, Brit Insurance</p>
+</blockquote>
+
+</div>
+
+</div>
+
+<div class="row">
+<div class="col-12 col-md-6 col-lg-6">
+
+<blockquote class="testimonial">
+Thank you so much Charlie! I'm really impressed with the quality of this course, and I'll be referring back to certain videos/topics as they come up in my geospatial journey ;) Thanks again!
+<p class="testimonial-attribution">Data Scientist, Fishing Industry</p>
+</blockquote>
+
+</div>
+
+<div class="col-12 col-md-6 col-lg-6">
+
+<blockquote class="testimonial">
+Thank you for all the help! I feel like searching the internet for help with R is like looking for a very specific needle across a giant field of haystacks, and you both are the metal detectors that get us where we need to be more quickly.
+<p class="testimonial-attribution">Technical Director, Tropical Health</p>
+</blockquote>
+
+</div>
+
+</div>
+
+
+
+
+<br>
 
 ## Can I make a website like this?
 
 Yup! I'm indebted to [Drew Dimmery](https://ddimmery.com/) who makes the source of his Quarto website available here - [https://github.com/ddimmery/quarto-website](https://github.com/ddimmery/quarto-website)
 
-</div>

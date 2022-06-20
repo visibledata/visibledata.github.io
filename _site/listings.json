@@ -2,7 +2,11 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/posts/softblock-demo/index.html"
+      "/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html",
+      "/posts/2019-03-25-shiny-modules-for-useful-controls/index.html",
+      "/posts/2019-03-13_extracting-doi-from-text/index.html",
+      "/posts/2019-02-18_oxford-centres/index.html",
+      "/posts/2018-12-05-using-ggmap-after-july-2018/index.html"
     ]
   }
 ]
