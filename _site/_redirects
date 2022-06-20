@@ -1,0 +1,2 @@
+# the original blogdown blog used /blob/slug whereas quarto uses /posts/slug
+/blog/*                        /posts/:splat
