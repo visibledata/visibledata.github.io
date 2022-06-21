@@ -1,0 +1,19 @@
+---
+title: 'Overriding individual code chunk options'
+date: '2022-06-20'
+code-fold: false
+---
+
+I've just moved this entire blog from `{blogdown}` to `{quarto}`. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options.
+
+````{yaml}
+---
+output: html_document
+---
+  
+```{r}
+2+2
+```
+
+
+````

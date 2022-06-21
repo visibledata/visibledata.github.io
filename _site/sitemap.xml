@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/blog.html</loc>
-    <lastmod>2022-06-20T18:10:34.965Z</lastmod>
+    <lastmod>2022-06-20T19:11:02.059Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/index.html</loc>
@@ -74,14 +74,22 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2018-02-27-crawling-with-tidygraph/index.html</loc>
-    <lastmod>2022-06-20T17:45:04.006Z</lastmod>
+    <lastmod>2022-06-20T19:01:47.456Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning/index.html</loc>
-    <lastmod>2022-06-20T18:08:23.786Z</lastmod>
+    <lastmod>2022-06-20T19:01:48.189Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html</loc>
-    <lastmod>2022-06-20T18:10:34.408Z</lastmod>
+    <lastmod>2022-06-20T19:01:46.647Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html</loc>
+    <lastmod>2022-06-20T19:06:41.416Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options/index.html</loc>
+    <lastmod>2022-06-20T19:11:01.559Z</lastmod>
   </url>
 </urlset>

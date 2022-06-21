@@ -10,7 +10,174 @@
 <atom:link href="https://visibledata.co.uk/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Data Science Consultancy & Training</description>
 <generator>quarto-0.9.288</generator>
-<lastBuildDate>Mon, 08 Jul 2019 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 19 Jun 2022 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Overriding individual code chunk options</title>
+  <link>https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I’ve just moved this entire blog from <code>{blogdown}</code> to <code>{quarto}</code>. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="pp" style="color: #AD0000;">---</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;">output</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> html_document</span></span>
+<span id="cb1-3"><span class="pp" style="color: #AD0000;">---</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;">  </span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;">```{r}</span></span>
+<span id="cb1-6"><span class="at" style="color: #657422;">2+2</span></span></code></pre></div>
+<p>```</p>
+</div>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2022,
+  author = {Charlie Hadley},
+  title = {Overriding Individual Code Chunk Options},
+  date = {2022-06-20},
+  url = {https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2022" class="csl-entry quarto-appendix-citeas">
+Charlie Hadley. 2022. <span>“Overriding Individual Code Chunk
+Options.”</span> June 20, 2022. <a href="https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options">https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options</a>.
+</div></div></section></div> ]]></description>
+  <guid>https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options/index.html</guid>
+  <pubDate>Sun, 19 Jun 2022 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Writing verbatim SQL in pipe chains using {dbplyr}</title>
+  <link>https://visibledata.co.uk/posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I’ve been trying to use the <a href="https://dbplyr.tidyverse.org/"><code>{dbplyr}</code></a> package when working with SQL and R. It provides a really nice interface for writing tidyverse code against a database connection. I feel that <code>{dbplyr}</code> gives a generally nice interface than using <code>{DBI}</code> which is the approach used in <a href="https://db.rstudio.com">db.rstudio.com</a>, but it’s under documented.</p>
+<p>Here’s a comparison of code using <code>{DBI}</code> and <code>{dbplyr}</code></p>
+<ul>
+<li>Using <code>{dbplyr}</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">library</span>(tidyverse)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;">library</span>(fivethirtyeight)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;">library</span>(dbplyr)</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">bechdel_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">memdb_frame</span>(bechdel, <span class="at" style="color: #657422;">.name =</span> <span class="st" style="color: #20794D;">"bechdel"</span>)</span>
+<span id="cb1-6"></span>
+<span id="cb1-7">bechdel_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb1-8">  <span class="fu" style="color: #4758AB;">filter</span>(year <span class="sc" style="color: #5E5E5E;">&lt;</span> <span class="dv" style="color: #AD0000;">2000</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb1-9">  <span class="fu" style="color: #4758AB;">group_by</span>(clean_test) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb1-10">  <span class="fu" style="color: #4758AB;">summarise</span>(<span class="at" style="color: #657422;">mean_budget_2013 =</span> <span class="fu" style="color: #4758AB;">mean</span>(budget_2013))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [5 x 2]
+# Database: sqlite 3.38.5 [:memory:]
+  clean_test mean_budget_2013
+  &lt;chr&gt;                 &lt;dbl&gt;
+1 dubious           59202525.
+2 men               45896513.
+3 notalk            57963237.
+4 nowomen           51891839.
+5 ok                44990138.</code></pre>
+</div>
+</div>
+<ul>
+<li>Using <code>{DBI}</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;">library</span>(tidyverse)</span>
+<span id="cb3-2"><span class="fu" style="color: #4758AB;">library</span>(fivethirtyeight)</span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;">library</span>(DBI)</span>
+<span id="cb3-4"></span>
+<span id="cb3-5">con <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">dbConnect</span>(RSQLite<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">SQLite</span>(), <span class="st" style="color: #20794D;">":memory:"</span>)</span>
+<span id="cb3-6"><span class="fu" style="color: #4758AB;">copy_to</span>(con, bechdel, <span class="st" style="color: #20794D;">"bechdel"</span>)</span>
+<span id="cb3-7"></span>
+<span id="cb3-8"><span class="fu" style="color: #4758AB;">tbl</span>(con, <span class="st" style="color: #20794D;">"bechdel"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-9">  <span class="fu" style="color: #4758AB;">filter</span>(year <span class="sc" style="color: #5E5E5E;">&lt;</span> <span class="dv" style="color: #AD0000;">2000</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-10">  <span class="fu" style="color: #4758AB;">group_by</span>(clean_test) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-11">  <span class="fu" style="color: #4758AB;">summarise</span>(<span class="at" style="color: #657422;">mean_budget_2013 =</span> <span class="fu" style="color: #4758AB;">mean</span>(budget_2013))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [5 x 2]
+# Database: sqlite 3.38.5 [:memory:]
+  clean_test mean_budget_2013
+  &lt;chr&gt;                 &lt;dbl&gt;
+1 dubious           59202525.
+2 men               45896513.
+3 notalk            57963237.
+4 nowomen           51891839.
+5 ok                44990138.</code></pre>
+</div>
+</div>
+<p>Now, that’s great for when we want to write new queries. But I wanted to go in the other direction. There’s lots of existing SQL code that I don’t want to re-write into R code, so it would be nice to write verbatim SQL within the pipe syntax. I couldn’t figure it out from the documentation so asked the question on Twitter, and as is often the case <a href="https://twitter.com/grrrck">Garrick Aden-Buie</a> gave me the solution.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">tweetrmd<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">tweet_embed</span>(<span class="st" style="color: #20794D;">"https://twitter.com/grrrck/status/1537082896124616705"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<blockquote class="twitter-tweet blockquote" data-width="550" data-lang="en" data-dnt="true" data-theme="light"><p lang="en" dir="ltr">if `bechdel_con` is a connection object then you can<br><br>library(dbplyr)<br>bechdel_con %&gt;% tbl(sql("SELECT title FROM bechdel"))<br><br>if `bechdel_tbl` is a remote tibble then you can<br>bechdel_tbl %&gt;%<br>  remote_con() %&gt;%<br>  tbl("SELECT title FROM bechdel")</p>— Garrick Aden-Buie (@grrrck) <a href="https://twitter.com/grrrck/status/1537082896124616705?ref_src=twsrc%5Etfw">June 15, 2022</a></blockquote>
+
+</div>
+</div>
+<p>Let’s write that into a code chunk:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">bechdel_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb6-2">  <span class="fu" style="color: #4758AB;">remote_con</span>() <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb6-3">  <span class="fu" style="color: #4758AB;">tbl</span>(<span class="fu" style="color: #4758AB;">sql</span>(<span class="st" style="color: #20794D;">"SELECT `clean_test`, AVG(`budget_2013`) AS `mean_budget_2013`</span></span>
+<span id="cb6-4"><span class="st" style="color: #20794D;">FROM `bechdel`</span></span>
+<span id="cb6-5"><span class="st" style="color: #20794D;">WHERE (`year` &lt; 2000.0)</span></span>
+<span id="cb6-6"><span class="st" style="color: #20794D;">GROUP BY `clean_test`"</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [5 x 2]
+# Database: sqlite 3.38.5 [:memory:]
+  clean_test mean_budget_2013
+  &lt;chr&gt;                 &lt;dbl&gt;
+1 dubious           59202525.
+2 men               45896513.
+3 notalk            57963237.
+4 nowomen           51891839.
+5 ok                44990138.</code></pre>
+</div>
+</div>
+<p>Note that we’re still connected to the database here. If we want to return a local tibble we need to use <code>collect()</code> which means our entire workflow is as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">bechdel_tbl <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">memdb_frame</span>(bechdel, <span class="at" style="color: #657422;">.name =</span> <span class="st" style="color: #20794D;">"bechdel"</span>)</span>
+<span id="cb8-2"></span>
+<span id="cb8-3">bechdel_tbl <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb8-4">  <span class="fu" style="color: #4758AB;">remote_con</span>() <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb8-5">  <span class="fu" style="color: #4758AB;">tbl</span>(<span class="fu" style="color: #4758AB;">sql</span>(<span class="st" style="color: #20794D;">"SELECT `clean_test`, AVG(`budget_2013`) AS `mean_budget_2013`</span></span>
+<span id="cb8-6"><span class="st" style="color: #20794D;">FROM `bechdel`</span></span>
+<span id="cb8-7"><span class="st" style="color: #20794D;">WHERE (`year` &lt; 2000.0)</span></span>
+<span id="cb8-8"><span class="st" style="color: #20794D;">GROUP BY `clean_test`"</span>)) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb8-9">  <span class="fu" style="color: #4758AB;">collect</span>()</span></code></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  clean_test mean_budget_2013
+  &lt;chr&gt;                 &lt;dbl&gt;
+1 dubious           59202525.
+2 men               45896513.
+3 notalk            57963237.
+4 nowomen           51891839.
+5 ok                44990138.</code></pre>
+</div>
+</div>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2022,
+  author = {Charlie Hadley},
+  title = {Writing Verbatim {SQL} in Pipe Chains Using \{Dbplyr\}},
+  date = {2022-06-15},
+  url = {https://visibledata.co.uk/posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2022" class="csl-entry quarto-appendix-citeas">
+Charlie Hadley. 2022. <span>“Writing Verbatim SQL in Pipe Chains Using
+{Dbplyr}.”</span> June 15, 2022. <a href="https://visibledata.co.uk/posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains">https://visibledata.co.uk/posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains</a>.
+</div></div></section></div> ]]></description>
+  <guid>https://visibledata.co.uk/posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html</guid>
+  <pubDate>Tue, 14 Jun 2022 23:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Shiny modules to reduce duplication in apps</title>
   <link>https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html</link>
@@ -178,14 +345,14 @@ font-style: italic;">## server.R</span></span>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2019,
-  author = {Charlotte Hadley},
+  author = {Charlie Hadley},
   title = {Shiny Modules to Reduce Duplication in Apps},
   date = {2019-07-09},
   url = {https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2019" class="csl-entry quarto-appendix-citeas">
-Charlotte Hadley. 2019. <span>“Shiny Modules to Reduce Duplication in
+Charlie Hadley. 2019. <span>“Shiny Modules to Reduce Duplication in
 Apps.”</span> July 9, 2019. <a href="https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps">https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps</a>.
 </div></div></section></div> ]]></description>
   <category>shiny</category>
@@ -2892,14 +3059,14 @@ Leaflet.”</span> February 28, 2018. <a href="https://visibledata.co.uk/posts/2
 <li id="fn1"><p>Actually, there was an error in the example so I <a href="https://github.com/salimk/Rcrawler/pull/25">made a pull request</a> to fix it 😄↩︎</p></li>
 </ol>
 </section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2018,
-  author = {Charlotte Hadley},
+  author = {Charlie Hadley},
   title = {Crawling with Tidygraph},
   date = {2018-02-27},
   url = {https://visibledata.co.uk/posts/2018-02-27-crawling-with-tidygraph},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2018" class="csl-entry quarto-appendix-citeas">
-Charlotte Hadley. 2018. <span>“Crawling with Tidygraph.”</span> February
+Charlie Hadley. 2018. <span>“Crawling with Tidygraph.”</span> February
 27, 2018. <a href="https://visibledata.co.uk/posts/2018-02-27-crawling-with-tidygraph">https://visibledata.co.uk/posts/2018-02-27-crawling-with-tidygraph</a>.
 </div></div></section></div> ]]></description>
   <guid>https://visibledata.co.uk/posts/2018-02-27-crawling-with-tidygraph/index.html</guid>
@@ -2908,7 +3075,6 @@ Charlotte Hadley. 2018. <span>“Crawling with Tidygraph.”</span> February
 </item>
 <item>
   <title>Recipes for learning</title>
-  <dc:creator>Charlie Joey Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning/index.html</link>
   <description><![CDATA[ 
 
@@ -3112,15 +3278,15 @@ font-style: italic;">## Reproducibly download files to a temp location and unzip
 <li id="fn1"><p>Frustratingly, these data sets are attached to the paper exclusively as supplementary materials, and so these are fragile links. Data should really have distinct DOI, modern journals like Springer Nature’s <a href="www.nature.com/sdata/">Scientific Data</a> do this.↩︎</p></li>
 </ol>
 </section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2018,
-  author = {Charlotte Hadley and Charlie Joey Hadley},
+  author = {Charlie Hadley},
   title = {Recipes for Learning},
   date = {2018-02-18},
   url = {https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2018" class="csl-entry quarto-appendix-citeas">
-Charlotte Hadley, and Charlie Joey Hadley. 2018. <span>“Recipes for
-Learning.”</span> February 18, 2018. <a href="https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning">https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning</a>.
+Charlie Hadley. 2018. <span>“Recipes for Learning.”</span> February 18,
+2018. <a href="https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning">https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning</a>.
 </div></div></section></div> ]]></description>
   <category>dataviz</category>
   <guid>https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning/index.html</guid>
@@ -3309,14 +3475,14 @@ font-style: italic;">## colour scheme</span></span>
 <li id="fn2"><p><a href="https://xkcd.com/285/">Citation needed</a>.↩︎</p></li>
 </ol>
 </section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2018,
-  author = {Charlotte Hadley},
+  author = {Charlie Hadley},
   title = {Where’s the Love for Htmlwidgets?},
   date = {2018-02-07},
   url = {https://visibledata.co.uk/posts/2018-02-07_where-s-the-love-for-htmlwidgets},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2018" class="csl-entry quarto-appendix-citeas">
-Charlotte Hadley. 2018. <span>“Where’s the Love for Htmlwidgets?”</span>
+Charlie Hadley. 2018. <span>“Where’s the Love for Htmlwidgets?”</span>
 February 7, 2018. <a href="https://visibledata.co.uk/posts/2018-02-07_where-s-the-love-for-htmlwidgets">https://visibledata.co.uk/posts/2018-02-07_where-s-the-love-for-htmlwidgets</a>.
 </div></div></section></div> ]]></description>
   <category>dataviz</category>

@@ -1,0 +1,14 @@
+{
+  "hash": "8962e9975ab5ee042f51f0767aecbcce",
+  "result": {
+    "markdown": "---\ntitle: 'Overriding individual code chunk options'\ndate: '2022-06-20'\ncode-fold: false\n---\n\nI've just moved this entire blog from `{blogdown}` to `{quarto}`. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options.\n\n::: {.cell}\n\n```{.yaml .cell-code}\n---\noutput: html_document\n---\n  \n```{r}\n2+2\n```\n\n```\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": null
+  }
+}

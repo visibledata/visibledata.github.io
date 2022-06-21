@@ -1,0 +1,82 @@
+---
+title: 'Writing verbatim SQL in pipe chains using {dbplyr}'
+date: '2022-06-15'
+code-fold: false
+---
+
+I've been trying to use the [`{dbplyr}`](https://dbplyr.tidyverse.org/) package when working with SQL and R. It provides a really nice interface for writing tidyverse code against a database connection. I feel that `{dbplyr}` gives a generally nice interface than using `{DBI}` which is the approach used in [db.rstudio.com](https://db.rstudio.com), but it's under documented.
+
+Here's a comparison of code using `{DBI}` and `{dbplyr}`
+
+- Using `{dbplyr}`
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(fivethirtyeight)
+library(dbplyr)
+
+bechdel_tbl <- memdb_frame(bechdel, .name = "bechdel")
+
+bechdel_tbl %>% 
+  filter(year < 2000) %>% 
+  group_by(clean_test) %>% 
+  summarise(mean_budget_2013 = mean(budget_2013))
+```
+
+- Using `{DBI}`
+
+```{r}
+library(tidyverse)
+library(fivethirtyeight)
+library(DBI)
+
+con <- dbConnect(RSQLite::SQLite(), ":memory:")
+copy_to(con, bechdel, "bechdel")
+
+tbl(con, "bechdel") %>% 
+  filter(year < 2000) %>% 
+  group_by(clean_test) %>% 
+  summarise(mean_budget_2013 = mean(budget_2013))
+```
+
+Now, that's great for when we want to write new queries. But I wanted to go in the other direction. There's lots of existing SQL code that I don't want to re-write into R code, so it would be nice to write verbatim SQL within the pipe syntax. I couldn't figure it out from the documentation so asked the question on Twitter, and as is often the case [Garrick Aden-Buie](https://twitter.com/grrrck) gave me the solution.
+
+```{r}
+tweetrmd::tweet_embed("https://twitter.com/grrrck/status/1537082896124616705")
+```
+
+Let's write that into a code chunk:
+
+```{r}
+bechdel_tbl %>% 
+  remote_con() %>% 
+  tbl(sql("SELECT `clean_test`, AVG(`budget_2013`) AS `mean_budget_2013`
+FROM `bechdel`
+WHERE (`year` < 2000.0)
+GROUP BY `clean_test`"))
+```
+
+Note that we're still connected to the database here. If we want to return a local tibble we need to use `collect()` which means our entire workflow is as follows:
+
+```{r, eval=FALSE}
+bechdel_tbl <- memdb_frame(bechdel, .name = "bechdel")
+
+bechdel_tbl %>% 
+  remote_con() %>% 
+  tbl(sql("SELECT `clean_test`, AVG(`budget_2013`) AS `mean_budget_2013`
+FROM `bechdel`
+WHERE (`year` < 2000.0)
+GROUP BY `clean_test`")) %>% 
+  collect()
+```
+
+```{r, echo=FALSE}
+bechdel_tbl %>% 
+  remote_con() %>% 
+  tbl(sql("SELECT `clean_test`, AVG(`budget_2013`) AS `mean_budget_2013`
+FROM `bechdel`
+WHERE (`year` < 2000.0)
+GROUP BY `clean_test`")) %>% 
+  collect()
+```
+
