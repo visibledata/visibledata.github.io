@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.288">
+<meta name="generator" content="quarto-1.0.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,13 +17,14 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 </style>
 
+
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
-<meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
 <link href="./favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-listing/list.min.js"></script>
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
@@ -32,10 +33,10 @@ ul.task-list{list-style: none;}
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -77,17 +78,34 @@ ul.task-list{list-style: none;}
       window['quarto-listing-loaded']();
     }
   });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
   </script>
-<style>
-.quarto-title-banner {
-  
-}
-</style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 <script src="https://kit.fontawesome.com/a0f522c241.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 <link rel="stylesheet" href="styles.css">
 <link rel="alternate" type="application/rss+xml" title="Visible Data" href="blog.xml"><meta property="og:title" content="Visible Data - Blog">
@@ -143,8 +161,6 @@ ul.task-list{list-style: none;}
 
 
 
-
-
 <div class="quarto-title-meta">
 
     
@@ -159,33 +175,8 @@ ul.task-list{list-style: none;}
 
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-       <option value="" disabled="" selected="" hidden="">Order By</option>
-       <option value="index" data-direction="asc">Default</option>
-         <option value="listing-title" data-direction="asc">
-          Title
-        </option>
-         <option value="listing-date-sort" data-direction="asc">
-          Date - Oldest
-        </option>
-         <option value="listing-date-sort" data-direction="desc">
-          Date - Newest
-        </option>
-         <option value="listing-author" data-direction="asc">
-          Author
-        </option>
-     </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1655679600000" data-listing-file-modified-sort="1655752259507" data-listing-reading-time-sort="0.17">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1655679600000" data-listing-file-modified-sort="1657792108431" data-listing-reading-time-sort="0.17">
 <div class="thumbnail">
 <a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html">
 <div class="thumbnail-image">
@@ -202,7 +193,7 @@ Overriding individual code chunk options
 
 </div>
 <div class="listing-description">
-<p>I’ve just moved this entire blog from <code>{blogdown}</code> to <code>{quarto}</code>. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options.</p>
+I’ve just moved this entire blog from <code>{blogdown}</code> to <code>{quarto}</code>. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options.
 </div>
 </a>
 </div>
@@ -210,6 +201,9 @@ Overriding individual code chunk options
 <a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html">
 <div class="listing-date">
 Jun 20, 2022
+</div>
+<div class="listing-author">
+Charlie Hadley
 </div>
 </a>
 </div>
@@ -225,13 +219,13 @@ Jun 20, 2022
 <div class="body">
 <a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html">
 <h3 class="no-anchor listing-title">
-Writing verbatim SQL in pipe chains using
+Writing verbatim SQL in pipe chains using {dbplyr}
 </h3>
 <div class="listing-subtitle">
 
 </div>
 <div class="listing-description">
-<p>I’ve been trying to use the <span><code>{dbplyr}</code></span> package when working with SQL and R. It provides a really nice interface for writing tidyverse code against a database connection. I feel that <code>{dbplyr}</code> gives a generally nice interface than using <code>{DBI}</code> which is the approach used in <span>db.rstudio.com</span>, but it’s under documented.</p>
+I’ve been trying to use the <code>{dbplyr}</code> package when working with SQL and R. It provides a really nice interface for writing tidyverse code against a database connection. I feel that <code>{dbplyr}</code> gives a generally nice interface than using <code>{DBI}</code> which is the approach used in db.rstudio.com, but it’s under documented.
 </div>
 </a>
 </div>
@@ -239,6 +233,9 @@ Writing verbatim SQL in pipe chains using
 <a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html">
 <div class="listing-date">
 Jun 15, 2022
+</div>
+<div class="listing-author">
+Charlie Hadley
 </div>
 </a>
 </div>
@@ -272,6 +269,9 @@ shiny
 <div class="listing-date">
 Jul 9, 2019
 </div>
+<div class="listing-author">
+Charlie Hadley
+</div>
 </a>
 </div>
 </div>
@@ -304,6 +304,9 @@ shiny
 <div class="listing-date">
 Mar 25, 2019
 </div>
+<div class="listing-author">
+Charlie Hadley
+</div>
 </a>
 </div>
 </div>
@@ -335,6 +338,9 @@ reproducible research
 <a href="./posts/2019-03-13_extracting-doi-from-text/index.html">
 <div class="listing-date">
 Mar 13, 2019
+</div>
+<div class="listing-author">
+Charlie Hadley
 </div>
 </a>
 </div>
@@ -371,6 +377,9 @@ GIS
 <div class="listing-date">
 Feb 18, 2019
 </div>
+<div class="listing-author">
+Charlie Hadley
+</div>
 </a>
 </div>
 </div>
@@ -405,6 +414,9 @@ Keeping secrets in blogdown
 <div class="listing-date">
 Jan 2, 2019
 </div>
+<div class="listing-author">
+Charlie Hadley
+</div>
 </a>
 </div>
 </div>
@@ -435,7 +447,7 @@ R
 </div>
 <a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html">
 <div class="listing-description">
-<p><code>ggmap</code> is an awesome package for creating maps with <code>ggplot2</code>. If you’ve seen a nice looking map built with <code>ggplot2</code> I can almost guarantee you that it uses <code>ggmap</code> to look that good. The <code>ggmap</code> package is used to obtain base maps from the APIs of a number of online mapping tools, the one we care about here is the base maps from Google Maps (because they’re very good).</p>
+<code>ggmap</code> is an awesome package for creating maps with <code>ggplot2</code>. If you’ve seen a nice looking map built with <code>ggplot2</code> I can almost guarantee you that it uses <code>ggmap</code> to look that good. The <code>ggmap</code> package is used to obtain base maps from the APIs of a number of online mapping tools, the one we care about here is the base maps from Google Maps (because they’re very good).
 </div>
 </a>
 </div>
@@ -445,7 +457,7 @@ R
 Dec 5, 2018
 </div>
 <div class="listing-author">
-Charlie Joey Hadley
+Charlie Hadley, Charlie Joey Hadley
 </div>
 </a>
 </div>
@@ -479,6 +491,9 @@ dataviz
 <div class="listing-date">
 Nov 28, 2018
 </div>
+<div class="listing-author">
+Charlie Hadley
+</div>
 </a>
 </div>
 </div>
@@ -495,7 +510,7 @@ Crawling DOI from a SAGE
 
 </div>
 <div class="listing-description">
-<p>Recently a friend told me they were doing a systematic review of the Hand Therapy Journal published by SAGE. They wanted a way to scrape the journal for all publications - without going mad in the process. It seemed like a good excuse to get them motivated to learn R and for me to practice web scraping with the <code>rvest</code> package.</p>
+Recently a friend told me they were doing a systematic review of the Hand Therapy Journal published by SAGE. They wanted a way to scrape the journal for all publications - without going mad in the process. It seemed like a good excuse to get them motivated to learn R and for me to practice web scraping with the <code>rvest</code> package.
 </div>
 </a>
 </div>
@@ -503,6 +518,9 @@ Crawling DOI from a SAGE
 <a href="./posts/2018-11-12-crawling-doi-from-a-sage/index.html">
 <div class="listing-date">
 Nov 12, 2018
+</div>
+<div class="listing-author">
+Charlie Hadley
 </div>
 </a>
 </div>
@@ -536,6 +554,9 @@ GIS
 <div class="listing-date">
 Feb 28, 2018
 </div>
+<div class="listing-author">
+Charlie Hadley
+</div>
 </a>
 </div>
 </div>
@@ -560,6 +581,9 @@ Crawling with tidygraph
 <a href="./posts/2018-02-27-crawling-with-tidygraph/index.html">
 <div class="listing-date">
 Feb 27, 2018
+</div>
+<div class="listing-author">
+Charlie Hadley
 </div>
 </a>
 </div>
@@ -592,6 +616,9 @@ dataviz
 <a href="./posts/2018-02-18-recipes-for-learning/index.html">
 <div class="listing-date">
 Feb 18, 2018
+</div>
+<div class="listing-author">
+Charlie Hadley
 </div>
 </a>
 </div>
@@ -629,6 +656,9 @@ dataviz
 <div class="listing-date">
 Feb 7, 2018
 </div>
+<div class="listing-author">
+Charlie Hadley
+</div>
 </a>
 </div>
 </div>
@@ -637,8 +667,23 @@ Feb 7, 2018
 No matching items
 </div>
 </div></main> <!-- /main -->
-<script type="application/javascript">
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    toggleBodyColorMode(window.document.querySelector("link#quarto-bootstrap"));
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {

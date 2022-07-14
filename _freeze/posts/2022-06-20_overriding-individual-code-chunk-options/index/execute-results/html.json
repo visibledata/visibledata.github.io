@@ -1,14 +1,16 @@
 {
-  "hash": "8962e9975ab5ee042f51f0767aecbcce",
+  "hash": "2963ea41e6bed8e42ecb59f50175aa29",
   "result": {
-    "markdown": "---\ntitle: 'Overriding individual code chunk options'\ndate: '2022-06-20'\ncode-fold: false\n---\n\nI've just moved this entire blog from `{blogdown}` to `{quarto}`. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options.\n\n::: {.cell}\n\n```{.yaml .cell-code}\n---\noutput: html_document\n---\n  \n```{r}\n2+2\n```\n\n```\n:::",
-    "supporting": [],
+    "markdown": "---\ntitle: 'Overriding individual code chunk options'\ndate: '2022-06-20'\ncode-fold: false\nengine: knitr\n---\n\n\nI've just moved this entire blog from `{blogdown}` to `{quarto}`. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options. Let's make a toy .Rmd document to demonstrate this:\n\n\n\n````default\n---\noutput: html_document\n---\n  \n```{r setup, include=FALSE}\nknitr::opts_chunk$set(echo = TRUE, eval=FALSE)\n```\n\n\nThis code chunk has `eval=TRUE` which I want to override\n\n```{r, eval=TRUE}\n2 + 2\n```\n\n````\n\n- The default behaviour for code chunks is set in the `setup` chunk as `eval=FALSE`\n\n- There's an individual code chunk with `eval=TRUE`\n\n- I want to **override** the individual code chunk behaviour.\n\nI tweeted about this and [Garrick Aden-Buie replied](https://twitter.com/grrrck/status/1538925669756944384?s=20&t=2Wh8cPaoSIgCwhD7yxUlOg) linking me to the documentation for option hooks. I was really pleased to then figure out this solution:\n\n\n````default\n---\noutput: html_document\n---\n\n```{r setup, include=FALSE}\nknitr::opts_hooks$set(force_not_eval = function(value) {\n  value$eval <- FALSE\n  value\n}\n)\nknitr::opts_chunk$set(force_not_eval = TRUE)\n```\n\n```{r, eval=TRUE}\n2 + 2\n```\n````\n\n\n",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],
     "includes": {},
     "engineDependencies": {},
     "preserve": {},
-    "postProcess": null
+    "postProcess": true
   }
 }

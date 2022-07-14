@@ -2,18 +2,54 @@
 title: 'Overriding individual code chunk options'
 date: '2022-06-20'
 code-fold: false
+engine: knitr
 ---
 
-I've just moved this entire blog from `{blogdown}` to `{quarto}`. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options.
+I've just moved this entire blog from `{blogdown}` to `{quarto}`. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options. Let's make a toy .Rmd document to demonstrate this:
 
-````{yaml}
+````{verbatim}
 ---
 output: html_document
 ---
   
-```{r}
-2+2
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+```
+
+This code chunk has `eval=TRUE` which I want to override
+
+```{r, eval=TRUE}
+2 + 2
+```
+
+````
+
+- The default behaviour for code chunks is set in the `setup` chunk as `eval=FALSE`
+
+- There's an individual code chunk with `eval=TRUE`
+
+- I want to **override** the individual code chunk behaviour.
+
+I tweeted about this and [Garrick Aden-Buie replied](https://twitter.com/grrrck/status/1538925669756944384?s=20&t=2Wh8cPaoSIgCwhD7yxUlOg) linking me to the documentation for option hooks. I was really pleased to then figure out this solution:
+
+````{verbatim}
+---
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_hooks$set(force_not_eval = function(value) {
+  value$eval <- FALSE
+  value
+}
+)
+knitr::opts_chunk$set(force_not_eval = TRUE)
 ```
 
 
+```{r, eval=TRUE}
+2 + 2
+```
 ````
+
+

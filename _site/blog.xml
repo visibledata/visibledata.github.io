@@ -9,10 +9,11 @@
 <link>https://visibledata.co.uk/blog.html</link>
 <atom:link href="https://visibledata.co.uk/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Data Science Consultancy & Training</description>
-<generator>quarto-0.9.288</generator>
+<generator>quarto-1.0.18</generator>
 <lastBuildDate>Sun, 19 Jun 2022 23:00:00 GMT</lastBuildDate>
 <item>
   <title>Overriding individual code chunk options</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options/index.html</link>
   <description><![CDATA[ 
 
@@ -20,15 +21,13 @@
 
 
 <p>I’ve just moved this entire blog from <code>{blogdown}</code> to <code>{quarto}</code>. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="pp" style="color: #AD0000;">---</span></span>
-<span id="cb1-2"><span class="fu" style="color: #4758AB;">output</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> html_document</span></span>
-<span id="cb1-3"><span class="pp" style="color: #AD0000;">---</span></span>
-<span id="cb1-4"><span class="at" style="color: #657422;">  </span></span>
-<span id="cb1-5"><span class="at" style="color: #657422;">```{r}</span></span>
-<span id="cb1-6"><span class="at" style="color: #657422;">2+2</span></span></code></pre></div>
-<p>```</p>
-</div>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1">---</span>
+<span id="cb1-2">output: html_document</span>
+<span id="cb1-3">---</span>
+<span id="cb1-4">  </span>
+<span id="cb1-5">```{r}</span>
+<span id="cb1-6">2+2</span>
+<span id="cb1-7">```</span></code></pre></div>
 
 
 
@@ -48,6 +47,7 @@ Options.”</span> June 20, 2022. <a href="https://visibledata.co.uk/posts/2022-
 </item>
 <item>
   <title>Writing verbatim SQL in pipe chains using {dbplyr}</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html</link>
   <description><![CDATA[ 
 
@@ -180,6 +180,7 @@ Charlie Hadley. 2022. <span>“Writing Verbatim SQL in Pipe Chains Using
 </item>
 <item>
   <title>Shiny modules to reduce duplication in apps</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html</link>
   <description><![CDATA[ 
 
@@ -358,10 +359,11 @@ Apps.”</span> July 9, 2019. <a href="https://visibledata.co.uk/posts/2019-07-0
   <category>shiny</category>
   <guid>https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html</guid>
   <pubDate>Mon, 08 Jul 2019 23:00:00 GMT</pubDate>
-  <media:content url="https://visibledata.co.uk//posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/shiny-app-wireframe.png" medium="image" type="image/png" height="125" width="144"/>
+  <media:content url="https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/shiny-app-wireframe.png" medium="image" type="image/png" height="125" width="144"/>
 </item>
 <item>
   <title>Shiny modules for useful controls</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/index.html</link>
   <description><![CDATA[ 
 
@@ -818,10 +820,11 @@ Controls.”</span> March 25, 2019. <a href="https://visibledata.co.uk/posts/201
   <category>shiny</category>
   <guid>https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/index.html</guid>
   <pubDate>Mon, 25 Mar 2019 00:00:00 GMT</pubDate>
-  <media:content url="https://visibledata.co.uk//posts/2019-03-25-shiny-modules-for-useful-controls/shiny-modules-reusable-controls.png" medium="image" type="image/png" height="82" width="144"/>
+  <media:content url="https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/shiny-modules-reusable-controls.png" medium="image" type="image/png" height="82" width="144"/>
 </item>
 <item>
   <title>One weird regex matches 97% of DOI…</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2019-03-13_extracting-doi-from-text/index.html</link>
   <description><![CDATA[ 
 
@@ -902,10 +905,11 @@ DOI...”</span> March 13, 2019. <a href="https://visibledata.co.uk/posts/2019-0
   <category>reproducible research</category>
   <guid>https://visibledata.co.uk/posts/2019-03-13_extracting-doi-from-text/index.html</guid>
   <pubDate>Wed, 13 Mar 2019 00:00:00 GMT</pubDate>
-  <media:content url="https://visibledata.co.uk//posts/softblock-demo/three-designs.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://visibledata.co.uk/posts/softblock-demo/three-designs.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Where is the centre of University of Oxford?</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2019-02-18_oxford-centres/index.html</link>
   <description><![CDATA[ 
 
@@ -1500,10 +1504,11 @@ Oxford?”</span> February 18, 2019. <a href="https://visibledata.co.uk/posts/20
   <category>GIS</category>
   <guid>https://visibledata.co.uk/posts/2019-02-18_oxford-centres/index.html</guid>
   <pubDate>Mon, 18 Feb 2019 00:00:00 GMT</pubDate>
-  <media:content url="https://visibledata.co.uk//posts/2019-02-18_oxford-centres/gg_centres_through_time.png" medium="image" type="image/png" height="86" width="144"/>
+  <media:content url="https://visibledata.co.uk/posts/2019-02-18_oxford-centres/gg_centres_through_time.png" medium="image" type="image/png" height="86" width="144"/>
 </item>
 <item>
   <title>Keeping secrets in blogdown</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2019-01-02_keeping-secrets-in-blogdown/index.html</link>
   <description><![CDATA[ 
 
@@ -1596,6 +1601,7 @@ January 2, 2019. <a href="https://visibledata.co.uk/posts/2019-01-02_keeping-sec
 </item>
 <item>
   <title>Using ggmap after July 2018</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <dc:creator>Charlie Joey Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2018-12-05-using-ggmap-after-july-2018/index.html</link>
   <description><![CDATA[ 
@@ -1736,6 +1742,7 @@ After July 2018.”</span> December 5, 2018. <a href="https://visibledata.co.uk/
 </item>
 <item>
   <title>Christmas Drinks ggplot2 Advent Calendar 2018</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html</link>
   <description><![CDATA[ 
 
@@ -2166,10 +2173,11 @@ Charlotte Hadley. 2018. <span>“Christmas Drinks Ggplot2 Advent Calendar
   <category>dataviz</category>
   <guid>https://visibledata.co.uk/posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html</guid>
   <pubDate>Wed, 28 Nov 2018 00:00:00 GMT</pubDate>
-  <media:content url="https://visibledata.co.uk//posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/2018-11-28_gg-christmass-advent-doors.png" medium="image" type="image/png" height="94" width="144"/>
+  <media:content url="https://visibledata.co.uk/posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/2018-11-28_gg-christmass-advent-doors.png" medium="image" type="image/png" height="94" width="144"/>
 </item>
 <item>
   <title>Crawling DOI from a SAGE</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2018-11-12-crawling-doi-from-a-sage/index.html</link>
   <description><![CDATA[ 
 
@@ -2443,10 +2451,11 @@ November 12, 2018. <a href="https://visibledata.co.uk/posts/2018-11-12-crawling-
 </div></div></section></div> ]]></description>
   <guid>https://visibledata.co.uk/posts/2018-11-12-crawling-doi-from-a-sage/index.html</guid>
   <pubDate>Mon, 12 Nov 2018 00:00:00 GMT</pubDate>
-  <media:content url="https://visibledata.co.uk//posts/2018-11-12-crawling-doi-from-a-sage/2018-11-12_futured-dois.png" medium="image" type="image/png" height="58" width="144"/>
+  <media:content url="https://visibledata.co.uk/posts/2018-11-12-crawling-doi-from-a-sage/2018-11-12_futured-dois.png" medium="image" type="image/png" height="58" width="144"/>
 </item>
 <item>
   <title>Great circles with sf and leaflet</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html</link>
   <description><![CDATA[ 
 
@@ -2836,10 +2845,11 @@ Leaflet.”</span> February 28, 2018. <a href="https://visibledata.co.uk/posts/2
   <category>GIS</category>
   <guid>https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html</guid>
   <pubDate>Wed, 28 Feb 2018 00:00:00 GMT</pubDate>
-  <media:content url="https://visibledata.co.uk//posts/2018-02-28_great-circles-with-sf-and-leaflet/great-circles-with-sf.png" medium="image" type="image/png" height="96" width="144"/>
+  <media:content url="https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet/great-circles-with-sf.png" medium="image" type="image/png" height="96" width="144"/>
 </item>
 <item>
   <title>Crawling with tidygraph</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2018-02-27-crawling-with-tidygraph/index.html</link>
   <description><![CDATA[ 
 
@@ -3071,10 +3081,11 @@ Charlie Hadley. 2018. <span>“Crawling with Tidygraph.”</span> February
 </div></div></section></div> ]]></description>
   <guid>https://visibledata.co.uk/posts/2018-02-27-crawling-with-tidygraph/index.html</guid>
   <pubDate>Tue, 27 Feb 2018 00:00:00 GMT</pubDate>
-  <media:content url="https://visibledata.co.uk//posts/2018-02-27-crawling-with-tidygraph/crawling-with-tidygraph.png" medium="image" type="image/png" height="128" width="144"/>
+  <media:content url="https://visibledata.co.uk/posts/2018-02-27-crawling-with-tidygraph/crawling-with-tidygraph.png" medium="image" type="image/png" height="128" width="144"/>
 </item>
 <item>
   <title>Recipes for learning</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning/index.html</link>
   <description><![CDATA[ 
 
@@ -3291,10 +3302,11 @@ Charlie Hadley. 2018. <span>“Recipes for Learning.”</span> February 18,
   <category>dataviz</category>
   <guid>https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning/index.html</guid>
   <pubDate>Sun, 18 Feb 2018 00:00:00 GMT</pubDate>
-  <media:content url="https://visibledata.co.uk//posts/2018-02-18-recipes-for-learning/recipes-for-learning.png" medium="image" type="image/png" height="108" width="144"/>
+  <media:content url="https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning/recipes-for-learning.png" medium="image" type="image/png" height="108" width="144"/>
 </item>
 <item>
   <title>Where’s the love for htmlwidgets?</title>
+  <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html</link>
   <description><![CDATA[ 
 
