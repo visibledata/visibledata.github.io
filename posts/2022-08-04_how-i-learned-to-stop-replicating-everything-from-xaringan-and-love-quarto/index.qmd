@@ -1,0 +1,74 @@
+---
+title: 'How I learned to stop replicating everything from {xaringan} and love Quarto'
+date: '2022-08-04'
+code-fold: false
+engine: knitr
+---
+
+Since the end of the rstudio::conf(2022) I've been working on replicating the `{xaringan}` RMarkdown presentation format in `{quarto}`. If you've never seen these slides before, here's the self-documenting template from Yihui Xie (click inside the slides and use your arrow keys).
+
+<iframe src='https://slides.yihui.org/xaringan/#1'  width="400px" height="350px"></iframe>
+
+These slides are really quite beautiful. This blog post is about trying to replicate the letter box effect in Quarto. And - specifically - how I learned to stop trying to replicate it because **I** couldn't [in a meaningful way]. I'd be very happy to be shown how to replicate it^[However, take into account that any changes we make like this will break the print formatting of the slides. It might not be worth replicating the web look of {xaringan} if users cannot easily print the slides, as individually each presentation format does make slides that print well.].
+
+I was very pleased to see that [Beatriz Milz](https://twitter.com/beamilz) has already [ported the R-Ladies {xaringan} theme to Quarto](https://github.com/beatrizmilz/quarto-rladies-theme). I will follow up this post with another where I walk through how I'm implementing the default `{xaringan}` theme sans letterboxing, because I think there's some useful things to point out.
+
+## Replicating the letterbox effect
+
+This [repository](https://github.com/charliejhadley/xaringan-letterbox-quarto) contains my attempt to replicate the letterbox affect. You can see the template slides below:
+
+<iframe src='https://charliejhadley.github.io/xaringan-letterbox-quarto/template#/title-slide'  width="400px" height="350px"></iframe>
+
+It looks like it works! There's even the nice drop shadow. But extending it to fully replicate how `{xaringan}` wasn't something I could figure out. This is the CSS I used to create the letterbox effect:
+
+```{css}
+#| eval: false
+.quarto-light {
+  background-color: #D8D8D3;
+}
+
+.slides {
+  background-color: #fff;
+  border-width: 20px 80px 20px 80px;
+  border-style: solid;
+  border-color: #fff;
+  box-shadow: rgb(136, 136, 136) 0px 0px 30px 0px;
+}
+```
+
+Now let's take a look at how the `reveal.js` format constructs slides:
+
+```{html}
+<body class="quarto-light">
+  <div class="slides">
+    <section id="title-slide"> </section>
+    <section id="hello-world" </section>
+    <section id="hello-ninja" </section>
+    <section id="remark.js" </section>
+  </div>
+</div>
+```
+
+The grey background behind the slides is applied to the entire body element - which is fine! But notice that all slides are contained within one `<div>` element. This means we can't supply a different background to individual slides. That's a problem for trying to replicate `{xaringan}` because one of the most obvious features is that some slides have a different background colour - implemented through the `inverse` class. 
+
+In `{xaringan}` that makes sense because of how remark.js constructs slides (notice how the top slide (the title slide) has the `inverse` class):
+
+```{html}
+<div class="remark-slides-area">
+  <div class="remark-slide-container inverse">
+    <div class="remark-slide-scaler"></div>
+  </div>
+  <div class="remark-slide-container">
+    <div class="remark-slide-scaler"></div>
+  </div>
+</div>
+```
+
+I spent ages (and ages) experimenting with different CSS and SASS variables before I figured this out. I wish I'd have taken a step back and looked at how the HTML was constructed before spending so much time on this. But I did end up learning lots of things while trying and failing. I'll document those findings in the next blogpost where I will completely ignore the letterboxing.
+
+I did spend a little bit of time thinking about a complicated way to achieve this. It involved using JavaScript to add parent `<div>` elements to each `<section>` but my initial goal was to learn about Quarto extensions **not** JavaScript. Additionally, it became obvious that adding this letterbox effect broke the PDF printing of the presentation. 
+
+So unless anyone else comes up with a solution, this is how I learned to stop replicating everything from `{xaringan}` and love Quarto.
+
+
+

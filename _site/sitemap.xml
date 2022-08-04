@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/index.html</loc>
-    <lastmod>2022-07-14T09:39:34.150Z</lastmod>
+    <lastmod>2022-08-04T15:42:45.632Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/about.html</loc>
@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/blog.html</loc>
-    <lastmod>2022-07-14T09:48:33.797Z</lastmod>
+    <lastmod>2022-08-04T16:42:07.585Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/index.html</loc>
@@ -91,5 +91,21 @@
   <url>
     <loc>https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options/index.html</loc>
     <lastmod>2022-07-14T09:55:32.338Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html</loc>
+    <lastmod>2022-08-01T15:38:15.814Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/Untitled/Untitled.html</loc>
+    <lastmod>2022-07-29T15:57:14.197Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2022-08-03_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html</loc>
+    <lastmod>2022-08-04T16:40:16.643Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html</loc>
+    <lastmod>2022-08-04T16:40:48.941Z</lastmod>
   </url>
 </urlset>

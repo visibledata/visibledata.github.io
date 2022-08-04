@@ -9,8 +9,404 @@
 <link>https://visibledata.co.uk/blog.html</link>
 <atom:link href="https://visibledata.co.uk/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Data Science Consultancy & Training</description>
-<generator>quarto-1.0.18</generator>
-<lastBuildDate>Sun, 19 Jun 2022 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.0.37</generator>
+<lastBuildDate>Wed, 03 Aug 2022 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>How I learned to stop replicating everything from {xaringan} and love Quarto</title>
+  <dc:creator>Charlie Hadley</dc:creator>
+  <link>https://visibledata.co.uk/posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Since the end of the rstudio::conf(2022) I’ve been working on replicating the <code>{xaringan}</code> RMarkdown presentation format in <code>{quarto}</code>. If you’ve never seen these slides before, here’s the self-documenting template from Yihui Xie (click inside the slides and use your arrow keys).</p>
+<iframe src="https://slides.yihui.org/xaringan/#1" width="400px" height="350px">
+</iframe>
+<p>These slides are really quite beautiful. This blog post is about trying to replicate the letter box effect in Quarto. And - specifically - how I learned to stop trying to replicate it because <strong>I</strong> couldn’t [in a meaningful way]. I’d be very happy to be shown how to replicate it<sup>1</sup>.</p>
+<p>I was very pleased to see that <a href="https://twitter.com/beamilz">Beatriz Milz</a> has already <a href="https://github.com/beatrizmilz/quarto-rladies-theme">ported the R-Ladies {xaringan} theme to Quarto</a>. I will follow up this post with another where I walk through how I’m implementing the default <code>{xaringan}</code> theme sans letterboxing, because I think there’s some useful things to point out.</p>
+<section id="replicating-the-letterbox-effect" class="level2">
+<h2 class="anchored" data-anchor-id="replicating-the-letterbox-effect">Replicating the letterbox effect</h2>
+<p>This <a href="https://github.com/charliejhadley/xaringan-letterbox-quarto">repository</a> contains my attempt to replicate the letterbox affect. You can see the template slides below:</p>
+<iframe src="https://charliejhadley.github.io/xaringan-letterbox-quarto/template#/title-slide" width="400px" height="350px">
+</iframe>
+<p>It looks like it works! There’s even the nice drop shadow. But extending it to fully replicate how <code>{xaringan}</code> wasn’t something I could figure out. This is the CSS I used to create the letterbox effect:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb1-1"><span class="fu" style="color: #4758AB;">.quarto-light</span> {</span>
+<span id="cb1-2">  <span class="kw" style="color: #003B4F;">background-color</span>: <span class="cn" style="color: #8f5902;">#D8D8D3</span><span class="op" style="color: #5E5E5E;">;</span></span>
+<span id="cb1-3">}</span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;">.slides</span> {</span>
+<span id="cb1-6">  <span class="kw" style="color: #003B4F;">background-color</span>: <span class="cn" style="color: #8f5902;">#fff</span><span class="op" style="color: #5E5E5E;">;</span></span>
+<span id="cb1-7">  <span class="kw" style="color: #003B4F;">border-width</span>: <span class="dv" style="color: #AD0000;">20</span><span class="dt" style="color: #AD0000;">px</span> <span class="dv" style="color: #AD0000;">80</span><span class="dt" style="color: #AD0000;">px</span> <span class="dv" style="color: #AD0000;">20</span><span class="dt" style="color: #AD0000;">px</span> <span class="dv" style="color: #AD0000;">80</span><span class="dt" style="color: #AD0000;">px</span><span class="op" style="color: #5E5E5E;">;</span></span>
+<span id="cb1-8">  <span class="kw" style="color: #003B4F;">border-style</span>: <span class="dv" style="color: #AD0000;">solid</span><span class="op" style="color: #5E5E5E;">;</span></span>
+<span id="cb1-9">  <span class="kw" style="color: #003B4F;">border-color</span>: <span class="cn" style="color: #8f5902;">#fff</span><span class="op" style="color: #5E5E5E;">;</span></span>
+<span id="cb1-10">  <span class="kw" style="color: #003B4F;">box-shadow</span>: <span class="fu" style="color: #4758AB;">rgb(</span><span class="dv" style="color: #AD0000;">136</span><span class="op" style="color: #5E5E5E;">,</span> <span class="dv" style="color: #AD0000;">136</span><span class="op" style="color: #5E5E5E;">,</span> <span class="dv" style="color: #AD0000;">136</span><span class="fu" style="color: #4758AB;">)</span> <span class="dv" style="color: #AD0000;">0</span><span class="dt" style="color: #AD0000;">px</span> <span class="dv" style="color: #AD0000;">0</span><span class="dt" style="color: #AD0000;">px</span> <span class="dv" style="color: #AD0000;">30</span><span class="dt" style="color: #AD0000;">px</span> <span class="dv" style="color: #AD0000;">0</span><span class="dt" style="color: #AD0000;">px</span><span class="op" style="color: #5E5E5E;">;</span></span>
+<span id="cb1-11">}</span></code></pre></div>
+</div>
+<p>Now let’s take a look at how the <code>reveal.js</code> format constructs slides:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb2-1"><span class="kw" style="color: #003B4F;">&lt;body</span> <span class="er" style="color: #AD0000;">class</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"quarto-light"</span><span class="kw" style="color: #003B4F;">&gt;</span></span>
+<span id="cb2-2">  <span class="kw" style="color: #003B4F;">&lt;div</span> <span class="er" style="color: #AD0000;">class</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"slides"</span><span class="kw" style="color: #003B4F;">&gt;</span></span>
+<span id="cb2-3">    <span class="kw" style="color: #003B4F;">&lt;section</span> <span class="er" style="color: #AD0000;">id</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"title-slide"</span><span class="kw" style="color: #003B4F;">&gt;</span> <span class="kw" style="color: #003B4F;">&lt;/section&gt;</span></span>
+<span id="cb2-4">    <span class="kw" style="color: #003B4F;">&lt;section</span> <span class="er" style="color: #AD0000;">id</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"hello-world"</span> <span class="er" style="color: #AD0000;">&lt;/section</span><span class="kw" style="color: #003B4F;">&gt;</span></span>
+<span id="cb2-5">    <span class="kw" style="color: #003B4F;">&lt;section</span> <span class="er" style="color: #AD0000;">id</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"hello-ninja"</span> <span class="er" style="color: #AD0000;">&lt;/section</span><span class="kw" style="color: #003B4F;">&gt;</span></span>
+<span id="cb2-6">    <span class="kw" style="color: #003B4F;">&lt;section</span> <span class="er" style="color: #AD0000;">id</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"remark.js"</span> <span class="er" style="color: #AD0000;">&lt;/section</span><span class="kw" style="color: #003B4F;">&gt;</span></span>
+<span id="cb2-7">  <span class="kw" style="color: #003B4F;">&lt;/div&gt;</span></span>
+<span id="cb2-8"><span class="kw" style="color: #003B4F;">&lt;/div&gt;</span></span></code></pre></div>
+</div>
+<p>The grey background behind the slides is applied to the entire body element - which is fine! But notice that all slides are contained within one <code>&lt;div&gt;</code> element. This means we can’t supply a different background to individual slides. That’s a problem for trying to replicate <code>{xaringan}</code> because one of the most obvious features is that some slides have a different background colour - implemented through the <code>inverse</code> class.</p>
+<p>In <code>{xaringan}</code> that makes sense because of how remark.js constructs slides (notice how the top slide (the title slide) has the <code>inverse</code> class):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb3-1"><span class="kw" style="color: #003B4F;">&lt;div</span> <span class="er" style="color: #AD0000;">class</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"remark-slides-area"</span><span class="kw" style="color: #003B4F;">&gt;</span></span>
+<span id="cb3-2">  <span class="kw" style="color: #003B4F;">&lt;div</span> <span class="er" style="color: #AD0000;">class</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"remark-slide-container inverse"</span><span class="kw" style="color: #003B4F;">&gt;</span></span>
+<span id="cb3-3">    <span class="kw" style="color: #003B4F;">&lt;div</span> <span class="er" style="color: #AD0000;">class</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"remark-slide-scaler"</span><span class="kw" style="color: #003B4F;">&gt;&lt;/div&gt;</span></span>
+<span id="cb3-4">  <span class="kw" style="color: #003B4F;">&lt;/div&gt;</span></span>
+<span id="cb3-5">  <span class="kw" style="color: #003B4F;">&lt;div</span> <span class="er" style="color: #AD0000;">class</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"remark-slide-container"</span><span class="kw" style="color: #003B4F;">&gt;</span></span>
+<span id="cb3-6">    <span class="kw" style="color: #003B4F;">&lt;div</span> <span class="er" style="color: #AD0000;">class</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"remark-slide-scaler"</span><span class="kw" style="color: #003B4F;">&gt;&lt;/div&gt;</span></span>
+<span id="cb3-7">  <span class="kw" style="color: #003B4F;">&lt;/div&gt;</span></span>
+<span id="cb3-8"><span class="kw" style="color: #003B4F;">&lt;/div&gt;</span></span></code></pre></div>
+</div>
+<p>I spent ages (and ages) experimenting with different CSS and SASS variables before I figured this out. I wish I’d have taken a step back and looked at how the HTML was constructed before spending so much time on this. But I did end up learning lots of things while trying and failing. I’ll document those findings in the next blogpost where I will completely ignore the letterboxing.</p>
+<p>I did spend a little bit of time thinking about a complicated way to achieve this. It involved using JavaScript to add parent <code>&lt;div&gt;</code> elements to each <code>&lt;section&gt;</code> but my initial goal was to learn about Quarto extensions <strong>not</strong> JavaScript. Additionally, it became obvious that adding this letterbox effect broke the PDF printing of the presentation.</p>
+<p>So unless anyone else comes up with a solution, this is how I learned to stop replicating everything from <code>{xaringan}</code> and love Quarto.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>However, take into account that any changes we make like this will break the print formatting of the slides. It might not be worth replicating the web look of {xaringan} if users cannot easily print the slides, as individually each presentation format does make slides that print well.↩︎</p></li>
+</ol>
+</section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2022,
+  author = {Charlie Hadley},
+  title = {How {I} Learned to Stop Replicating Everything from
+    \{Xaringan\} and Love {Quarto}},
+  date = {2022-08-04},
+  url = {https://visibledata.co.uk/posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2022" class="csl-entry quarto-appendix-citeas">
+Charlie Hadley. 2022. <span>“How I Learned to Stop Replicating
+Everything from {Xaringan} and Love Quarto.”</span> August 4, 2022. <a href="https://visibledata.co.uk/posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto">https://visibledata.co.uk/posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto</a>.
+</div></div></section></div> ]]></description>
+  <guid>https://visibledata.co.uk/posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html</guid>
+  <pubDate>Wed, 03 Aug 2022 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Creating an R-Ladies quarto format</title>
+  <dc:creator>Charlie Hadley</dc:creator>
+  <link>https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>It’s the day after rstudio::conf(2022), and like many folks in the audience I’m very excited about the future of <code>{quarto}</code>. (LINKS). To help me better understand the differences between RMarkdown and quarto I decided I’d convert <a href="https://www.apreshill.com/project/rladies-xaringan/">Alison Hill’s R-Ladies {xaringan} theme</a> into a quarto <strong>format</strong></p>
+<iframe src="https://www.apreshill.com/slides/rladies-demo-slides.html#1" width="400px" height="350px">
+</iframe>
+<p>However, what I realised is that first I needed to replicate the {xaringan} format as closely as possible in {quarto}.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">library</span>(tidyverse)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+✔ tibble  3.1.7     ✔ dplyr   1.0.9
+✔ tidyr   1.2.0     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;">tribble</span>(</span>
+<span id="cb5-2">  <span class="sc" style="color: #5E5E5E;">~</span>feature, <span class="sc" style="color: #5E5E5E;">~</span>description,</span>
+<span id="cb5-3">  <span class="st" style="color: #20794D;">"Code chunk  appearance"</span>, <span class="st" style="color: #20794D;">"Different. Using accessibility features of quarto"</span></span>
+<span id="cb5-4">)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+  feature                description                                      
+  &lt;chr&gt;                  &lt;chr&gt;                                            
+1 Code chunk  appearance Different. Using accessibility features of quarto</code></pre>
+</div>
+</div>
+<section id="how-to-use-the-xaringan-quarto-theme" class="level1">
+<h1>How to use the xaringan quarto theme</h1>
+<p>In the RMarkdown universe we create <code>{xaringan}</code> slides by changing the <code>output</code> type of our RMarkdown document:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb7-1">---</span>
+<span id="cb7-2">output:</span>
+<span id="cb7-3">  xaringan::moon_reader</span>
+<span id="cb7-4">---</span></code></pre></div>
+<p>But in quarto, things are very different. Formats are made available as <a href="https://quarto.org/docs/extensions/formats.html">specific types of extensions</a>, which <strong>must be installed in each distinct project</strong>. You must therefore run this code in the Terminal (not the R console) in RStudio for each presentation you want to write:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">quarto install extension rcharliejhadley<span class="sc" style="color: #5E5E5E;">/</span>xaringan<span class="sc" style="color: #5E5E5E;">-</span>quarto</span></code></pre></div>
+</div>
+<p>This will add the format to the <code>_extensions</code> folder and you can now create your slide deck with in a <code>.qmd</code> as follows:</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb9-1">---</span>
+<span id="cb9-2">title: Your awesome R-Ladies talk</span>
+<span id="cb9-3">format: rladies-revealjs</span>
+<span id="cb9-4">---</span></code></pre></div>
+</section>
+<section id="recreating-xaringan-in-quarto" class="level1">
+<h1>Recreating <code>{xaringan}</code> in <code>{quarto}</code></h1>
+<p>The new <code>{quarto}</code> system makes use of <code>reveal.js</code> for creating HTML slides, whereas <code>{xaringan}</code> uses <code>remark.js</code>. D<a href="https://twitter.com/charliejhadley/status/1553179086390009856?s=20&amp;t=7tThga5ITSGdLu3HXJolZw">espite these libraries sounding similar,</a> they’re very different. This means there’s a lot of styling that needs to be bought across into the new <code>xaringan-quarto</code> theme. But before we progress, let’s think about why we want to replicate the <code>{xaringan}</code> output type:</p>
+<ul>
+<li><p>{xaringan} slides look good!</p></li>
+<li><p>{xaringan} has lots of nice features for formatting slides</p></li>
+</ul>
+<p>So in this new <code>{quarto}</code> format I want to replicate both the styles and the formatting features - as closely as possible, anyhow.</p>
+<section id="adding-remark.js-dependency." class="level2">
+<h2 class="anchored" data-anchor-id="adding-remark.js-dependency.">Adding remark.js dependency.</h2>
+<p>It took me <strong>ages</strong> to figure out how to add a JavaScript dependency to a format. I eventually figured it out from looking at the <a href="https://github.com/quarto-ext/grouped-tabsets">grouped-tabsets extension</a>. These are the steps we need to go through:</p>
+<ol type="1">
+<li>We need to use a <code>.lua</code> file to add our dependencies, add a file called <code>remark-js.lua</code> into the <code>xaringan</code> folder. Within this file we’re going to add our dependency:</li>
+</ol>
+<pre class="verbatim"><code>Div = function(el)
+  if quarto.doc.isFormat("html:js") then
+    quarto.doc.addHtmlDependency({
+        name = "remarkjs",
+        scripts = {"remark-latest.min.js"}
+      })
+  end
+end </code></pre>
+<ol type="1">
+<li><p>Add the <code>remark-latest.min.js</code> file to the <code>xaringan</code> folder. In the future I’ll figure out how to get the hosted file, but for now I copy pasted the contents of <a href="https://remarkjs.com/downloads/remark-latest.min.js" class="uri">https://remarkjs.com/downloads/remark-latest.min.js</a>.</p></li>
+<li><p>In the <code>_extension.yml</code> file we need to add our lua dependency, as part of our format. To do so we need to <a href="https://quarto.org/docs/extensions/formats.html#common-metadata">use the <code>common</code> key</a>.</p></li>
+</ol>
+<pre class="verbatim"><code>contributes:
+  formats:
+    revealjs:
+    common:
+       filters:
+           - remark-js.lua</code></pre>
+</section>
+<section id="adding-.scss-fles-to-formats" class="level2">
+<h2 class="anchored" data-anchor-id="adding-.scss-fles-to-formats">Adding .scss fles to formats</h2>
+<p>Now we’ve got the <code>remark.js</code> loaded we can move onto setting up the <code>{xaringan}</code> CSS styles. However, there’s a little trick to it. <code>{quarto}</code> makes use of <code>.scss</code> files intead of normal <code>.css</code> files, but that’s to our advantage. By using <code>.scss</code> files we can take advantage of <a href="https://quarto.org/docs/output-formats/html-themes.html#sass-variables">Bootstrap SASS variables</a> <a href="https://quarto.org/docs/output-formats/html-themes-more.html">which are very powerful</a>, but I’m not sure how much we’ll make use of them here.</p>
+<p>When creating a <code>.scss</code> file we need to create at least one “layer boundary” otherwise we’ll get this error message:</p>
+<pre class="verbatim"><code>ERROR: The file _extensions/xaringan/xaringan-default.scss doesn't contain at least one layer boundary (/*-- scss:defaults --*/, /*-- scss:rules --*/, /*-- scss:mixins --*/, /*-- scss:functions --*/, or /*-- scss:uses --*/)</code></pre>
+<p>Here are the steps required to start-up our custom styling</p>
+<ol type="1">
+<li>Create a <code>xaringan-default.scss</code> file in the <code>xaringan</code> folder. We’ll set paragraph text to red so we can test it the styles are working:</li>
+</ol>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb13-1"><span class="co" style="color: #5E5E5E;">/*-- scss:rules --*/</span></span>
+<span id="cb13-2"></span>
+<span id="cb13-3">p {</span>
+<span id="cb13-4">  <span class="kw" style="color: #003B4F;">color</span>: <span class="cn" style="color: #8f5902;">red</span><span class="op" style="color: #5E5E5E;">;</span></span>
+<span id="cb13-5">}</span></code></pre></div>
+<ol start="2" type="1">
+<li>Update the <code>_extension.yml</code> file to make use of the <code>.scss</code> file</li>
+</ol>
+<pre class="verbatim"><code>contributes:
+  formats:
+    revealjs:
+       theme: [default, xaringan-default.scss]
+    common:
+       filters:
+           - remark-js.lua</code></pre>
+</section>
+<section id="adding-a-template-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="adding-a-template-presentation">Adding a template presentation</h2>
+<p>It’s a good idea to add a template presentation file so folks know how to use the format. But it has another utility! We can render the template file within our RStudio project to continually test the theme without having to use the quarto cli.</p>
+<p>So, let’s add <code>template.qmd</code> to the top-level directory of our project and some lorem ipsum text:</p>
+<pre class="verbatim"><code>---
+title: "Xarignan Slides"
+format: xaringan-revealjs
+---
+
+
+
+## First slide
+
+This paragraph text will be red!</code></pre>
+<p>We’re now going to iteratively add/remove content to this template while we build up the theme.</p>
+</section>
+<section id="letter-boxing-and-slide-scaling" class="level2">
+<h2 class="anchored" data-anchor-id="letter-boxing-and-slide-scaling">Letter-boxing and slide scaling</h2>
+<p><code>{xaringan}</code> slides are very distinct because of the letter boxing affect from <code>remark.js</code>, and the size of the content rescales with the size of the browser windows. For a first attempt at replicating this, I’ve added <a href="80685b9a269530ce932f211024b5250d91b985a7">some CSS in this commit</a>. I also needed to add padding around the slide content, I’ve implemented this through the <a href="af09b15db3b1bba39ae18a96cb4bcc2e7f3e171e">border of the <code>&lt;div&gt;</code></a> but it’s likely not the best solution.</p>
+<p>When it comes to replicating exactly how the slide aspect ratio changes, I’m not sure what to do. These are the <a href="https://quarto.org/docs/presentations/revealjs/advanced.html#presentation-size">options available for scaling the presentation size in <code>reveal.js</code></a> but at the moment I don’t understand how remark.js does its scaling, and so I can’t replicate it further.</p>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 79%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Option</td>
+<td>Description</td>
+</tr>
+<tr class="even">
+<td><code>margin</code></td>
+<td>Factor of the display size that should remain empty around the content (defaults to 0.1)</td>
+</tr>
+<tr class="odd">
+<td><code>min-scale</code></td>
+<td>Smallest possible scale to apply to content (defaults to 0.2)</td>
+</tr>
+<tr class="even">
+<td><code>max-scale</code></td>
+<td>Largest possible scale to apply to content (defaults to 2.0)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hello-world-slide" class="level2">
+<h2 class="anchored" data-anchor-id="hello-world-slide">Hello world slide</h2>
+<p>Let’s look at duplicating the styling of this slide from the <code>{xaringan</code>} template:</p>
+<p><img src="https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format/images/paste-C45D0768.png" class="img-fluid" width="335"></p>
+<p>There are four thing to look at:</p>
+<ul>
+<li><p>Code chunk and in-line code formatting</p></li>
+<li><p>Text and link formatting</p></li>
+<li><p>Incremental bullet points</p></li>
+<li><p>Footnotes</p></li>
+</ul>
+<section id="code-chunk-formatting" class="level3">
+<h3 class="anchored" data-anchor-id="code-chunk-formatting">Code chunk formatting</h3>
+<p>In <code>{xaringan}</code> the code chunk formatting is very flat. I’m choosing to deliberately use <code>{quarto}</code> code formatting as it improves accessibility and provides further customisation for formats that build on <code>xaringan-quarto</code> and for individual preferences. In the <code>_extension.yml</code> I’ve activated the github highlighting style.</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb16-1">contributes:</span>
+<span id="cb16-2">  formats:</span>
+<span id="cb16-3">    revealjs:</span>
+<span id="cb16-4">       theme: [default, xaringan-default.scss, xaringan-default-fonts.scss]</span>
+<span id="cb16-5">       highlight-style: github</span>
+<span id="cb16-6">       </span></code></pre></div>
+<p>You could use this YAML option for customising all code chunks or individual chunks. The documentation explains how to <a href="https://quarto.org/docs/output-formats/html-code.html#appearance">completely customise chunk appearance</a> and <a href="https://quarto.org/docs/output-formats/html-code.html#custom-highlighting">syntax highlighting</a>.</p>
+<p>Now let’s look at the inline code formatting. In the original <code>xaringan</code> format this text is the same colour as paragraph text but printed in a mono spaced font. In this first alpha release of the format <a href="c16571511f3bb5cc9a4647f7db5398a86bd8077f">I’ve chosen to change this to purple</a>, but this probably won’t be popular.</p>
+</section>
+<section id="text-and-link-formatting" class="level3">
+<h3 class="anchored" data-anchor-id="text-and-link-formatting">Text and link formatting</h3>
+<p>We’re going to use the SASS <code>link-color</code> variable to change the colour of hyperlinks, but remember this must be placed in the defaults layer of the .scss file.</p>
+<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb17-1">/*-- scss:defaults --*/</span>
+<span id="cb17-2">$link-color: rgb(249, 38, 114);</span></code></pre></div>
+<p>In <code>{xaringan}</code> the paragraph text is set to 20px, setting the <code>$presentation-font-size-root</code> to 28px in the .scss results in slides that scale similarly to {xaringan} slides.</p>
+<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb18-1">$presentation-font-size-root: 28px;</span></code></pre></div>
+<p>With <code>{xaringan}</code> we’re free to use whatever level of heading we like for slides. In fact, it’s fairly common to use lower-level headings for longer slide titles. But, in <code>{quarto}</code> we can <strong>only start slides with level 2 headings</strong>. I’ve taken the heading sizes from <code>{xaringan}</code> and added them to the styles:</p>
+<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb19-1">$heading2Size: 55px;</span>
+<span id="cb19-2">$heading3Size: 45px;</span>
+<span id="cb19-3">$heading4Size: 35px;</span></code></pre></div>
+<p>Note that these are still scaled with the size of the browser window.</p>
+</section>
+<section id="incremental-bullet-points" class="level3">
+<h3 class="anchored" data-anchor-id="incremental-bullet-points">Incremental bullet points</h3>
+<p>In <code>{xaringan}</code> we can make anything incremental with two dashes, eg <code>--</code>. But in the <code>{quarto}</code> <code>reveal.js</code> format we need to create a <code>&lt;div&gt;</code> using the incremental class. There’s two ways of doing this, either with explicit <code>&lt;div&gt;&lt;/div&gt;</code> tags or with matching pairs of <code>:::</code>.</p>
+</section>
+<section id="footnotes" class="level3">
+<h3 class="anchored" data-anchor-id="footnotes">Footnotes</h3>
+<p>In {quarto} we use <code>^[footnote text]</code> notation to add footnotes that are then numbered at the bottom of the slide. In my opinion, the default styling for quarto is better than <code>{xaringan}</code> so I’m sticking with it.</p>
+</section>
+</section>
+</section>
+<section id="old-dragons" class="level1">
+<h1>OLD DRAGONS</h1>
+<p>In this blogpost I’ll first explain how to use the R-Ladies quaro presentation format and then <a href="doo">how to build your own quarto formats</a>.</p>
+<section id="how-to-use-the-rladies-quarto-theme" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-use-the-rladies-quarto-theme">How to use the rladies quarto theme</h3>
+<p>In the RMarkdown universe the R-Ladies {xaringan} theme is selected by changing the <code>css</code> option in the YAML header</p>
+<div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb20-1">---</span>
+<span id="cb20-2">output:</span>
+<span id="cb20-3">  xaringan::moon_reader:</span>
+<span id="cb20-4">    css: ["default", "rladies", "rladies-fonts"]</span>
+<span id="cb20-5">---</span></code></pre></div>
+<p>But in quarto, things are very different. Formats are made available as <a href="https://quarto.org/docs/extensions/formats.html">specific types of extensions</a>, which <strong>must be installed in each distinct project</strong>. You must therefore run this code in the Terminal (not the R console) in RStudio for each presentation you want to write:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1">quarto install extension r<span class="sc" style="color: #5E5E5E;">-</span>ladies<span class="sc" style="color: #5E5E5E;">/</span>r<span class="sc" style="color: #5E5E5E;">-</span>ladies<span class="sc" style="color: #5E5E5E;">-</span>quarto</span></code></pre></div>
+</div>
+<p>This will add the format to the <code>_extensions</code> folder and you can now create your slide deck with in a <code>.qmd</code> as follows:</p>
+<div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb22-1">---</span>
+<span id="cb22-2">title: Your awesome R-Ladies talk</span>
+<span id="cb22-3">format: rladies-revealjs</span>
+<span id="cb22-4">---</span></code></pre></div>
+</section>
+<section id="how-to-build-your-own-theme" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-build-your-own-theme">How to build your own theme</h3>
+<p>There is some <a href="https://quarto.org/docs/extensions/formats.html">existing documentation for building your own formats</a> and folder structure is extremely important. The minimum specification for an extension requires you to create an <code>_extension.yml</code> file nested as follows:</p>
+<div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb23-1">rladies-quarto/</span>
+<span id="cb23-2">              _extensions/</span>
+<span id="cb23-3">                          rladies/</span>
+<span id="cb23-4">                                  _extension.yml</span></code></pre></div>
+<p>This extension will be called <code>rladies</code> because of the folder name <code>rladies</code>. Inside of the <code>_extension.yml</code> file we then specify that the extension contributes a format based on the <code>revealjs</code> presentation format using the default theme, note that there are <a href="https://quarto.org/docs/presentations/revealjs/themes.html">11 built-in revealjs themes available</a>.</p>
+<div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb24-1">contributes:</span>
+<span id="cb24-2">  formats:</span>
+<span id="cb24-3">    revealjs:</span>
+<span id="cb24-4">       theme: default</span></code></pre></div>
+<p>We can add some metadata about the extension, and we can make use of <a href="https://quarto.org/docs/reference/formats/presentations/revealjs.html">any of the <code>revealjs</code> options</a>.</p>
+<div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb25-1">title: RLadies quarto Presentation</span>
+<span id="cb25-2">author: Charlotte Hadley</span>
+<span id="cb25-3">version: 0.0.1</span>
+<span id="cb25-4">contributes:</span>
+<span id="cb25-5">  formats:</span>
+<span id="cb25-6">    revealjs:</span>
+<span id="cb25-7">       theme: default</span>
+<span id="cb25-8">       incremental: true</span></code></pre></div>
+<p>It’s now time to add our custom styles. This is achieved using <code>.scss</code> files instead of ordinary <code>.css</code> files, thanks to <code>quarto</code> making use of <a href="https://quarto.org/docs/output-formats/html-themes.html#sass-variables">Bootstrap SASS variables</a>. There are two steps:</p>
+<ul>
+<li>Add the <code>.scss</code> file to the <code>theme</code> option in the <code>_extension.yml</code> file</li>
+</ul>
+<div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb26-1">title: RLadies quarto Presentation</span>
+<span id="cb26-2">author: Charlotte Hadley</span>
+<span id="cb26-3">version: 0.0.1</span>
+<span id="cb26-4">contributes:</span>
+<span id="cb26-5">  formats:</span>
+<span id="cb26-6">    revealjs:</span>
+<span id="cb26-7">       theme: [default, rladies.scss]</span>
+<span id="cb26-8">       incremental: true</span></code></pre></div>
+<ul>
+<li>Add styles to your <code>.scss</code> file that you can easily test</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb27-1">$body-color<span class="in" style="color: #5E5E5E;">: red</span>;</span></code></pre></div>
+<style type="text/css">
+$body-color: red;
+</style>
+</div>
+<p>Let’s kill two birds with one stone by creating a template slide deck that we can also use to test our <code>.scss</code> styles. At the top level of the project add a new file called <code>template.qmd</code> and set the format as <code>rladies-revealjs</code> and click the Render button, if everything is working you’ll see a slide deck with red text.</p>
+<div class="sourceCode" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb28-1">---</span>
+<span id="cb28-2">title: "R-Ladies Xarignan Theme"</span>
+<span id="cb28-3">format: rladies-revealjs</span>
+<span id="cb28-4">---</span>
+<span id="cb28-5"></span>
+<span id="cb28-6">Test</span></code></pre></div>
+<section id="replicating-alison-hills-theme-css" class="level4">
+<h4 class="anchored" data-anchor-id="replicating-alison-hills-theme-css">Replicating Alison Hill’s theme CSS</h4>
+</section>
+<section id="slide-background-color" class="level4">
+<h4 class="anchored" data-anchor-id="slide-background-color">slide background color</h4>
+<p>I tried to change the background color with the scss file, but it only changes the background of the slide content.</p>
+<div class="sourceCode" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb29-1"># .scss file</span>
+<span id="cb29-2">.inverse {</span>
+<span id="cb29-3">  data-background: #562457;</span>
+<span id="cb29-4">}</span>
+<span id="cb29-5"></span>
+<span id="cb29-6"># presentation</span>
+<span id="cb29-7">::: {.inverse}</span></code></pre></div>
+<p><img src="https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format/images/paste-3DDD0D0F.png" class="img-fluid" width="428"></p>
+<p>Confusingly, if we set the <code>data-background</code> attribute within the {} then it does work</p>
+
+
+</section>
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2022,
+  author = {Charlie Hadley},
+  title = {Creating an {R-Ladies} Quarto Format},
+  date = {2022-06-20},
+  url = {https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2022" class="csl-entry quarto-appendix-citeas">
+Charlie Hadley. 2022. <span>“Creating an R-Ladies Quarto Format.”</span>
+June 20, 2022. <a href="https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format">https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format</a>.
+</div></div></section></div> ]]></description>
+  <guid>https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html</guid>
+  <pubDate>Sun, 19 Jun 2022 23:00:00 GMT</pubDate>
+  <media:content url="https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format/images/paste-C45D0768.png" medium="image" type="image/png" height="96" width="144"/>
+</item>
 <item>
   <title>Overriding individual code chunk options</title>
   <dc:creator>Charlie Hadley</dc:creator>
@@ -20,14 +416,43 @@
 
 
 
-<p>I’ve just moved this entire blog from <code>{blogdown}</code> to <code>{quarto}</code>. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options.</p>
+<p>I’ve just moved this entire blog from <code>{blogdown}</code> to <code>{quarto}</code>. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options. Let’s make a toy .Rmd document to demonstrate this:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1">---</span>
 <span id="cb1-2">output: html_document</span>
 <span id="cb1-3">---</span>
 <span id="cb1-4">  </span>
-<span id="cb1-5">```{r}</span>
-<span id="cb1-6">2+2</span>
-<span id="cb1-7">```</span></code></pre></div>
+<span id="cb1-5">```{r setup, include=FALSE}</span>
+<span id="cb1-6">knitr::opts_chunk$set(echo = TRUE, eval=FALSE)</span>
+<span id="cb1-7">```</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"></span>
+<span id="cb1-10">This code chunk has `eval=TRUE` which I want to override</span>
+<span id="cb1-11"></span>
+<span id="cb1-12">```{r, eval=TRUE}</span>
+<span id="cb1-13">2 + 2</span>
+<span id="cb1-14">```</span></code></pre></div>
+<ul>
+<li><p>The default behaviour for code chunks is set in the <code>setup</code> chunk as <code>eval=FALSE</code></p></li>
+<li><p>There’s an individual code chunk with <code>eval=TRUE</code></p></li>
+<li><p>I want to <strong>override</strong> the individual code chunk behaviour.</p></li>
+</ul>
+<p>I tweeted about this and <a href="https://twitter.com/grrrck/status/1538925669756944384?s=20&amp;t=2Wh8cPaoSIgCwhD7yxUlOg">Garrick Aden-Buie replied</a> linking me to the documentation for option hooks. I was really pleased to then figure out this solution:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb2-1">---</span>
+<span id="cb2-2">output: html_document</span>
+<span id="cb2-3">---</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">```{r setup, include=FALSE}</span>
+<span id="cb2-6">knitr::opts_hooks$set(force_not_eval = function(value) {</span>
+<span id="cb2-7">  value$eval &lt;- FALSE</span>
+<span id="cb2-8">  value</span>
+<span id="cb2-9">}</span>
+<span id="cb2-10">)</span>
+<span id="cb2-11">knitr::opts_chunk$set(force_not_eval = TRUE)</span>
+<span id="cb2-12">```</span>
+<span id="cb2-13"></span>
+<span id="cb2-14">```{r, eval=TRUE}</span>
+<span id="cb2-15">2 + 2</span>
+<span id="cb2-16">```</span></code></pre></div>
 
 
 

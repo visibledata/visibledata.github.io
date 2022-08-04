@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Charlie Hadley">
+<meta name="dcterms.date" content="2022-06-20">
+
+<title>Visible Data - Creating an R-Ladies quarto format</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+<script src="https://kit.fontawesome.com/a0f522c241.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Visible Data - Creating an R-Ladies quarto format">
+<meta property="og:description" content="It’s the day after rstudio::conf(2022), and like many folks in the audience I’m very excited about the future of {quarto}. (LINKS).">
+<meta property="og:site-name" content="Visible Data">
+<meta name="twitter:title" content="Visible Data - Creating an R-Ladies quarto format">
+<meta name="twitter:description" content="It’s the day after rstudio::conf(2022), and like many folks in the audience I’m very excited about the future of {quarto}. (LINKS).">
+<meta name="twitter:creator" content="@charliejhadley">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Visible Data</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../training.html">Training</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Creating an R-Ladies quarto format</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Charlie Hadley </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 20, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#how-to-use-the-xaringan-quarto-theme" id="toc-how-to-use-the-xaringan-quarto-theme" class="nav-link active" data-scroll-target="#how-to-use-the-xaringan-quarto-theme">How to use the xaringan quarto theme</a></li>
+  <li><a href="#recreating-xaringan-in-quarto" id="toc-recreating-xaringan-in-quarto" class="nav-link" data-scroll-target="#recreating-xaringan-in-quarto">Recreating <code>{xaringan}</code> in <code>{quarto}</code></a>
+  <ul class="collapse">
+  <li><a href="#adding-remark.js-dependency." id="toc-adding-remark.js-dependency." class="nav-link" data-scroll-target="#adding-remark.js-dependency.">Adding remark.js dependency.</a></li>
+  <li><a href="#adding-.scss-fles-to-formats" id="toc-adding-.scss-fles-to-formats" class="nav-link" data-scroll-target="#adding-.scss-fles-to-formats">Adding .scss fles to formats</a></li>
+  <li><a href="#adding-a-template-presentation" id="toc-adding-a-template-presentation" class="nav-link" data-scroll-target="#adding-a-template-presentation">Adding a template presentation</a></li>
+  <li><a href="#letter-boxing-and-slide-scaling" id="toc-letter-boxing-and-slide-scaling" class="nav-link" data-scroll-target="#letter-boxing-and-slide-scaling">Letter-boxing and slide scaling</a></li>
+  <li><a href="#hello-world-slide" id="toc-hello-world-slide" class="nav-link" data-scroll-target="#hello-world-slide">Hello world slide</a>
+  <ul class="collapse">
+  <li><a href="#code-chunk-formatting" id="toc-code-chunk-formatting" class="nav-link" data-scroll-target="#code-chunk-formatting">Code chunk formatting</a></li>
+  <li><a href="#text-and-link-formatting" id="toc-text-and-link-formatting" class="nav-link" data-scroll-target="#text-and-link-formatting">Text and link formatting</a></li>
+  <li><a href="#incremental-bullet-points" id="toc-incremental-bullet-points" class="nav-link" data-scroll-target="#incremental-bullet-points">Incremental bullet points</a></li>
+  <li><a href="#footnotes" id="toc-footnotes" class="nav-link" data-scroll-target="#footnotes">Footnotes</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#old-dragons" id="toc-old-dragons" class="nav-link" data-scroll-target="#old-dragons">OLD DRAGONS</a>
+  <ul class="collapse">
+  <li><a href="#how-to-use-the-rladies-quarto-theme" id="toc-how-to-use-the-rladies-quarto-theme" class="nav-link" data-scroll-target="#how-to-use-the-rladies-quarto-theme">How to use the rladies quarto theme</a></li>
+  <li><a href="#how-to-build-your-own-theme" id="toc-how-to-build-your-own-theme" class="nav-link" data-scroll-target="#how-to-build-your-own-theme">How to build your own theme</a>
+  <ul class="collapse">
+  <li><a href="#replicating-alison-hills-theme-css" id="toc-replicating-alison-hills-theme-css" class="nav-link" data-scroll-target="#replicating-alison-hills-theme-css">Replicating Alison Hill’s theme CSS</a></li>
+  <li><a href="#slide-background-color" id="toc-slide-background-color" class="nav-link" data-scroll-target="#slide-background-color">slide background color</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>It’s the day after rstudio::conf(2022), and like many folks in the audience I’m very excited about the future of <code>{quarto}</code>. (LINKS). To help me better understand the differences between RMarkdown and quarto I decided I’d convert <a href="https://www.apreshill.com/project/rladies-xaringan/">Alison Hill’s R-Ladies {xaringan} theme</a> into a quarto <strong>format</strong></p>
+<iframe src="https://www.apreshill.com/slides/rladies-demo-slides.html#1" width="400px" height="350px">
+</iframe>
+<p>However, what I realised is that first I needed to replicate the {xaringan} format as closely as possible in {quarto}.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+✔ tibble  3.1.7     ✔ dplyr   1.0.9
+✔ tidyr   1.2.0     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tribble</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>feature, <span class="sc">~</span>description,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Code chunk  appearance"</span>, <span class="st">"Different. Using accessibility features of quarto"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+  feature                description                                      
+  &lt;chr&gt;                  &lt;chr&gt;                                            
+1 Code chunk  appearance Different. Using accessibility features of quarto</code></pre>
+</div>
+</div>
+<section id="how-to-use-the-xaringan-quarto-theme" class="level1">
+<h1>How to use the xaringan quarto theme</h1>
+<p>In the RMarkdown universe we create <code>{xaringan}</code> slides by changing the <code>output</code> type of our RMarkdown document:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>output:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  xaringan::moon_reader</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>---</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But in quarto, things are very different. Formats are made available as <a href="https://quarto.org/docs/extensions/formats.html">specific types of extensions</a>, which <strong>must be installed in each distinct project</strong>. You must therefore run this code in the Terminal (not the R console) in RStudio for each presentation you want to write:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>quarto install extension rcharliejhadley<span class="sc">/</span>xaringan<span class="sc">-</span>quarto</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This will add the format to the <code>_extensions</code> folder and you can now create your slide deck with in a <code>.qmd</code> as follows:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>title: Your awesome R-Ladies talk</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>format: rladies-revealjs</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>---</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="recreating-xaringan-in-quarto" class="level1">
+<h1>Recreating <code>{xaringan}</code> in <code>{quarto}</code></h1>
+<p>The new <code>{quarto}</code> system makes use of <code>reveal.js</code> for creating HTML slides, whereas <code>{xaringan}</code> uses <code>remark.js</code>. D<a href="https://twitter.com/charliejhadley/status/1553179086390009856?s=20&amp;t=7tThga5ITSGdLu3HXJolZw">espite these libraries sounding similar,</a> they’re very different. This means there’s a lot of styling that needs to be bought across into the new <code>xaringan-quarto</code> theme. But before we progress, let’s think about why we want to replicate the <code>{xaringan}</code> output type:</p>
+<ul>
+<li><p>{xaringan} slides look good!</p></li>
+<li><p>{xaringan} has lots of nice features for formatting slides</p></li>
+</ul>
+<p>So in this new <code>{quarto}</code> format I want to replicate both the styles and the formatting features - as closely as possible, anyhow.</p>
+<section id="adding-remark.js-dependency." class="level2">
+<h2 class="anchored" data-anchor-id="adding-remark.js-dependency.">Adding remark.js dependency.</h2>
+<p>It took me <strong>ages</strong> to figure out how to add a JavaScript dependency to a format. I eventually figured it out from looking at the <a href="https://github.com/quarto-ext/grouped-tabsets">grouped-tabsets extension</a>. These are the steps we need to go through:</p>
+<ol type="1">
+<li>We need to use a <code>.lua</code> file to add our dependencies, add a file called <code>remark-js.lua</code> into the <code>xaringan</code> folder. Within this file we’re going to add our dependency:</li>
+</ol>
+<pre class="verbatim"><code>Div = function(el)
+  if quarto.doc.isFormat("html:js") then
+    quarto.doc.addHtmlDependency({
+        name = "remarkjs",
+        scripts = {"remark-latest.min.js"}
+      })
+  end
+end </code></pre>
+<ol type="1">
+<li><p>Add the <code>remark-latest.min.js</code> file to the <code>xaringan</code> folder. In the future I’ll figure out how to get the hosted file, but for now I copy pasted the contents of <a href="https://remarkjs.com/downloads/remark-latest.min.js" class="uri">https://remarkjs.com/downloads/remark-latest.min.js</a>.</p></li>
+<li><p>In the <code>_extension.yml</code> file we need to add our lua dependency, as part of our format. To do so we need to <a href="https://quarto.org/docs/extensions/formats.html#common-metadata">use the <code>common</code> key</a>.</p></li>
+</ol>
+<pre class="verbatim"><code>contributes:
+  formats:
+    revealjs:
+    common:
+       filters:
+           - remark-js.lua</code></pre>
+</section>
+<section id="adding-.scss-fles-to-formats" class="level2">
+<h2 class="anchored" data-anchor-id="adding-.scss-fles-to-formats">Adding .scss fles to formats</h2>
+<p>Now we’ve got the <code>remark.js</code> loaded we can move onto setting up the <code>{xaringan}</code> CSS styles. However, there’s a little trick to it. <code>{quarto}</code> makes use of <code>.scss</code> files intead of normal <code>.css</code> files, but that’s to our advantage. By using <code>.scss</code> files we can take advantage of <a href="https://quarto.org/docs/output-formats/html-themes.html#sass-variables">Bootstrap SASS variables</a> <a href="https://quarto.org/docs/output-formats/html-themes-more.html">which are very powerful</a>, but I’m not sure how much we’ll make use of them here.</p>
+<p>When creating a <code>.scss</code> file we need to create at least one “layer boundary” otherwise we’ll get this error message:</p>
+<pre class="verbatim"><code>ERROR: The file _extensions/xaringan/xaringan-default.scss doesn't contain at least one layer boundary (/*-- scss:defaults --*/, /*-- scss:rules --*/, /*-- scss:mixins --*/, /*-- scss:functions --*/, or /*-- scss:uses --*/)</code></pre>
+<p>Here are the steps required to start-up our custom styling</p>
+<ol type="1">
+<li>Create a <code>xaringan-default.scss</code> file in the <code>xaringan</code> folder. We’ll set paragraph text to red so we can test it the styles are working:</li>
+</ol>
+<div class="sourceCode" id="cb13"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">/*-- scss:rules --*/</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>p {</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span>: <span class="cn">red</span><span class="op">;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="2" type="1">
+<li>Update the <code>_extension.yml</code> file to make use of the <code>.scss</code> file</li>
+</ol>
+<pre class="verbatim"><code>contributes:
+  formats:
+    revealjs:
+       theme: [default, xaringan-default.scss]
+    common:
+       filters:
+           - remark-js.lua</code></pre>
+</section>
+<section id="adding-a-template-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="adding-a-template-presentation">Adding a template presentation</h2>
+<p>It’s a good idea to add a template presentation file so folks know how to use the format. But it has another utility! We can render the template file within our RStudio project to continually test the theme without having to use the quarto cli.</p>
+<p>So, let’s add <code>template.qmd</code> to the top-level directory of our project and some lorem ipsum text:</p>
+<pre class="verbatim"><code>---
+title: "Xarignan Slides"
+format: xaringan-revealjs
+---
+
+
+
+## First slide
+
+This paragraph text will be red!</code></pre>
+<p>We’re now going to iteratively add/remove content to this template while we build up the theme.</p>
+</section>
+<section id="letter-boxing-and-slide-scaling" class="level2">
+<h2 class="anchored" data-anchor-id="letter-boxing-and-slide-scaling">Letter-boxing and slide scaling</h2>
+<p><code>{xaringan}</code> slides are very distinct because of the letter boxing affect from <code>remark.js</code>, and the size of the content rescales with the size of the browser windows. For a first attempt at replicating this, I’ve added <a href="80685b9a269530ce932f211024b5250d91b985a7">some CSS in this commit</a>. I also needed to add padding around the slide content, I’ve implemented this through the <a href="af09b15db3b1bba39ae18a96cb4bcc2e7f3e171e">border of the <code>&lt;div&gt;</code></a> but it’s likely not the best solution.</p>
+<p>When it comes to replicating exactly how the slide aspect ratio changes, I’m not sure what to do. These are the <a href="https://quarto.org/docs/presentations/revealjs/advanced.html#presentation-size">options available for scaling the presentation size in <code>reveal.js</code></a> but at the moment I don’t understand how remark.js does its scaling, and so I can’t replicate it further.</p>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 79%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Option</td>
+<td>Description</td>
+</tr>
+<tr class="even">
+<td><code>margin</code></td>
+<td>Factor of the display size that should remain empty around the content (defaults to 0.1)</td>
+</tr>
+<tr class="odd">
+<td><code>min-scale</code></td>
+<td>Smallest possible scale to apply to content (defaults to 0.2)</td>
+</tr>
+<tr class="even">
+<td><code>max-scale</code></td>
+<td>Largest possible scale to apply to content (defaults to 2.0)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hello-world-slide" class="level2">
+<h2 class="anchored" data-anchor-id="hello-world-slide">Hello world slide</h2>
+<p>Let’s look at duplicating the styling of this slide from the <code>{xaringan</code>} template:</p>
+<p><img src="images/paste-C45D0768.png" class="img-fluid" width="335"></p>
+<p>There are four thing to look at:</p>
+<ul>
+<li><p>Code chunk and in-line code formatting</p></li>
+<li><p>Text and link formatting</p></li>
+<li><p>Incremental bullet points</p></li>
+<li><p>Footnotes</p></li>
+</ul>
+<section id="code-chunk-formatting" class="level3">
+<h3 class="anchored" data-anchor-id="code-chunk-formatting">Code chunk formatting</h3>
+<p>In <code>{xaringan}</code> the code chunk formatting is very flat. I’m choosing to deliberately use <code>{quarto}</code> code formatting as it improves accessibility and provides further customisation for formats that build on <code>xaringan-quarto</code> and for individual preferences. In the <code>_extension.yml</code> I’ve activated the github highlighting style.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>contributes:</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  formats:</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    revealjs:</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>       theme: [default, xaringan-default.scss, xaringan-default-fonts.scss]</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>       highlight-style: github</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>       </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You could use this YAML option for customising all code chunks or individual chunks. The documentation explains how to <a href="https://quarto.org/docs/output-formats/html-code.html#appearance">completely customise chunk appearance</a> and <a href="https://quarto.org/docs/output-formats/html-code.html#custom-highlighting">syntax highlighting</a>.</p>
+<p>Now let’s look at the inline code formatting. In the original <code>xaringan</code> format this text is the same colour as paragraph text but printed in a mono spaced font. In this first alpha release of the format <a href="c16571511f3bb5cc9a4647f7db5398a86bd8077f">I’ve chosen to change this to purple</a>, but this probably won’t be popular.</p>
+</section>
+<section id="text-and-link-formatting" class="level3">
+<h3 class="anchored" data-anchor-id="text-and-link-formatting">Text and link formatting</h3>
+<p>We’re going to use the SASS <code>link-color</code> variable to change the colour of hyperlinks, but remember this must be placed in the defaults layer of the .scss file.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>/*-- scss:defaults --*/</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>$link-color: rgb(249, 38, 114);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In <code>{xaringan}</code> the paragraph text is set to 20px, setting the <code>$presentation-font-size-root</code> to 28px in the .scss results in slides that scale similarly to {xaringan} slides.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>$presentation-font-size-root: 28px;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With <code>{xaringan}</code> we’re free to use whatever level of heading we like for slides. In fact, it’s fairly common to use lower-level headings for longer slide titles. But, in <code>{quarto}</code> we can <strong>only start slides with level 2 headings</strong>. I’ve taken the heading sizes from <code>{xaringan}</code> and added them to the styles:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>$heading2Size: 55px;</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>$heading3Size: 45px;</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>$heading4Size: 35px;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that these are still scaled with the size of the browser window.</p>
+</section>
+<section id="incremental-bullet-points" class="level3">
+<h3 class="anchored" data-anchor-id="incremental-bullet-points">Incremental bullet points</h3>
+<p>In <code>{xaringan}</code> we can make anything incremental with two dashes, eg <code>--</code>. But in the <code>{quarto}</code> <code>reveal.js</code> format we need to create a <code>&lt;div&gt;</code> using the incremental class. There’s two ways of doing this, either with explicit <code>&lt;div&gt;&lt;/div&gt;</code> tags or with matching pairs of <code>:::</code>.</p>
+</section>
+<section id="footnotes" class="level3">
+<h3 class="anchored" data-anchor-id="footnotes">Footnotes</h3>
+<p>In {quarto} we use <code>^[footnote text]</code> notation to add footnotes that are then numbered at the bottom of the slide. In my opinion, the default styling for quarto is better than <code>{xaringan}</code> so I’m sticking with it.</p>
+</section>
+</section>
+</section>
+<section id="old-dragons" class="level1">
+<h1>OLD DRAGONS</h1>
+<p>In this blogpost I’ll first explain how to use the R-Ladies quaro presentation format and then <a href="doo">how to build your own quarto formats</a>.</p>
+<section id="how-to-use-the-rladies-quarto-theme" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-use-the-rladies-quarto-theme">How to use the rladies quarto theme</h3>
+<p>In the RMarkdown universe the R-Ladies {xaringan} theme is selected by changing the <code>css</code> option in the YAML header</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>output:</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  xaringan::moon_reader:</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    css: ["default", "rladies", "rladies-fonts"]</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>---</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But in quarto, things are very different. Formats are made available as <a href="https://quarto.org/docs/extensions/formats.html">specific types of extensions</a>, which <strong>must be installed in each distinct project</strong>. You must therefore run this code in the Terminal (not the R console) in RStudio for each presentation you want to write:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>quarto install extension r<span class="sc">-</span>ladies<span class="sc">/</span>r<span class="sc">-</span>ladies<span class="sc">-</span>quarto</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This will add the format to the <code>_extensions</code> folder and you can now create your slide deck with in a <code>.qmd</code> as follows:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>title: Your awesome R-Ladies talk</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>format: rladies-revealjs</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>---</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="how-to-build-your-own-theme" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-build-your-own-theme">How to build your own theme</h3>
+<p>There is some <a href="https://quarto.org/docs/extensions/formats.html">existing documentation for building your own formats</a> and folder structure is extremely important. The minimum specification for an extension requires you to create an <code>_extension.yml</code> file nested as follows:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>rladies-quarto/</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>              _extensions/</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                          rladies/</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                                  _extension.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This extension will be called <code>rladies</code> because of the folder name <code>rladies</code>. Inside of the <code>_extension.yml</code> file we then specify that the extension contributes a format based on the <code>revealjs</code> presentation format using the default theme, note that there are <a href="https://quarto.org/docs/presentations/revealjs/themes.html">11 built-in revealjs themes available</a>.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>contributes:</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  formats:</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    revealjs:</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>       theme: default</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can add some metadata about the extension, and we can make use of <a href="https://quarto.org/docs/reference/formats/presentations/revealjs.html">any of the <code>revealjs</code> options</a>.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>title: RLadies quarto Presentation</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>author: Charlotte Hadley</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>version: 0.0.1</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>contributes:</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  formats:</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    revealjs:</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>       theme: default</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>       incremental: true</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It’s now time to add our custom styles. This is achieved using <code>.scss</code> files instead of ordinary <code>.css</code> files, thanks to <code>quarto</code> making use of <a href="https://quarto.org/docs/output-formats/html-themes.html#sass-variables">Bootstrap SASS variables</a>. There are two steps:</p>
+<ul>
+<li>Add the <code>.scss</code> file to the <code>theme</code> option in the <code>_extension.yml</code> file</li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>title: RLadies quarto Presentation</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>author: Charlotte Hadley</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>version: 0.0.1</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>contributes:</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  formats:</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    revealjs:</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>       theme: [default, rladies.scss]</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>       incremental: true</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Add styles to your <code>.scss</code> file that you can easily test</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>$body-color<span class="in">: red</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style type="text/css">
+$body-color: red;
+</style>
+</div>
+<p>Let’s kill two birds with one stone by creating a template slide deck that we can also use to test our <code>.scss</code> styles. At the top level of the project add a new file called <code>template.qmd</code> and set the format as <code>rladies-revealjs</code> and click the Render button, if everything is working you’ll see a slide deck with red text.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>title: "R-Ladies Xarignan Theme"</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>format: rladies-revealjs</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>Test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="replicating-alison-hills-theme-css" class="level4">
+<h4 class="anchored" data-anchor-id="replicating-alison-hills-theme-css">Replicating Alison Hill’s theme CSS</h4>
+</section>
+<section id="slide-background-color" class="level4">
+<h4 class="anchored" data-anchor-id="slide-background-color">slide background color</h4>
+<p>I tried to change the background color with the scss file, but it only changes the background of the slide content.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a># .scss file</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>.inverse {</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  data-background: #562457;</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a># presentation</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>::: {.inverse}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="images/paste-3DDD0D0F.png" class="img-fluid" width="428"></p>
+<p>Confusingly, if we set the <code>data-background</code> attribute within the {} then it does work</p>
+
+
+</section>
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2022,
+  author = {Charlie Hadley},
+  title = {Creating an {R-Ladies} Quarto Format},
+  date = {2022-06-20},
+  url = {https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Charlie Hadley. 2022. <span>“Creating an R-Ladies Quarto Format.”</span>
+June 20, 2022. <a href="https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format">https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
