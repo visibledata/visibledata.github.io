@@ -6,15 +6,15 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/index.html</loc>
-    <lastmod>2022-08-04T15:42:45.632Z</lastmod>
+    <lastmod>2023-08-21T12:57:26.294Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/about.html</loc>
-    <lastmod>2022-06-20T18:11:16.428Z</lastmod>
+    <lastmod>2023-05-01T18:57:28.273Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/training.html</loc>
-    <lastmod>2022-07-14T09:39:36.134Z</lastmod>
+    <lastmod>2023-05-01T18:57:25.717Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/cv.html</loc>
@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/blog.html</loc>
-    <lastmod>2022-08-04T16:42:07.585Z</lastmod>
+    <lastmod>2023-08-21T13:18:12.202Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/index.html</loc>
@@ -70,7 +70,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html</loc>
-    <lastmod>2022-06-20T17:30:18.470Z</lastmod>
+    <lastmod>2023-01-30T19:15:26.000Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2018-02-27-crawling-with-tidygraph/index.html</loc>
@@ -107,5 +107,9 @@
   <url>
     <loc>https://visibledata.co.uk/posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html</loc>
     <lastmod>2022-08-04T16:40:48.941Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2022-09-29_change-rmd-template/index.html</loc>
+    <lastmod>2023-02-06T15:49:25.690Z</lastmod>
   </url>
 </urlset>

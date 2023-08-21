@@ -1,0 +1,143 @@
+---
+title: 'Adding {ggplot2} charts as popups to {leaflet} maps'
+date: '2022-07-14'
+code-fold: false
+draft: true
+engine: knitr
+---
+
+I delivered a talk for the [Failed it to Nailed it: Nailing your Data Visualisation: Training Workshop](https://www.ai4science.network/ai3sd-event/13-14-07-2022-failed-it-to-nailed-it-nailing-your-data-visualisation-hands-on-workshop/) hosted by the Artificial Intelligence for Scientific Discovery Network+ (AI3SD). My talk was my general purpose [R is awesome for interactive dataviz](https://github.com/charliejhadley/talk_2022-07-13_ai3d-interactive-dataviz-with-r).
+
+The workshop had a hackathon where I was asked about adding popup images to `{leaflet}` map.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(rnaturalearthdata)
+library(leaflet)
+library(ggtext)
+library(leafpop)
+library(png)
+
+countries_sf <- countries110 %>% 
+  st_as_sf() %>% 
+  filter(!is.na(pop_est)) %>% 
+  arrange(desc(pop_est))
+
+ranked_pop_est <- countries_sf %>% 
+  st_drop_geometry() %>% 
+  select(name, pop_est) %>% 
+  mutate(rank_pop = row_number()) %>% 
+  mutate(name = fct_reorder(name, pop_est)) %>% 
+  as_tibble()
+
+make_relative_pop_gg <- function(country, range_size = 5){
+  
+  rank_of_country <- ranked_pop_est %>% 
+    filter(name == country) %>% 
+    pull(rank_pop)
+ 
+  if(rank_of_country <= range_size){
+    
+    with_zoom_rows <- ranked_pop_est %>% 
+      mutate(zoom_rows = ifelse(rank_pop %in% 1:range_size, 1, 0))
+    
+    print(with_zoom_rows)
+    
+  } else {
+    
+      if(rank_of_country < { nrow(ranked_pop_est) - range_size }){
+    
+    with_zoom_rows <- ranked_pop_est %>% 
+      mutate(zoom_rows = ifelse(rank_pop %in% c({rank_of_country - floor(range_size / 2)}:rank_of_country,
+                                                rank_of_country:{rank_of_country + floor(range_size / 2)}), 1, 0))
+    
+  }
+  
+  if(rank_of_country >= { nrow(ranked_pop_est) - range_size }){
+    
+    with_zoom_rows <- ranked_pop_est %>% 
+      mutate(zoom_rows = ifelse(rank_pop %in% {nrow(ranked_pop_est) - range_size + 1}:nrow(ranked_pop_est), 1, 0))
+    
+  } 
+    
+  }
+  
+  with_zoom_rows %>% 
+    filter(zoom_rows == 1) %>% 
+    ggplot(aes(x = pop_est,
+             y = name)) +
+    geom_col(aes(fill = ifelse(name == country, "Target country", "Other country")),
+             show.legend = FALSE) +
+    geom_text(aes(label = scales::ordinal(rank_pop)),
+              hjust = 2) +
+    scale_fill_manual(values = c("Target country" = "#6495ED",
+                                 "Other country" = "grey")) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ",")) +
+    labs(title = str_glue("<span style='color:#6495ED'>{country} is the {scales::label_ordinal()(rank_of_country)}</span> most populous country in the world"),
+         x = "Population",
+         y = "") +
+    theme_minimal(base_size = 16) +
+    theme(plot.title = element_textbox_simple(padding = margin(t = 10))) %>%
+    identity()
+}
+
+
+make_relative_pop_gg("United Kingdom") 
+```
+
+```{r}
+list_gg_populous_charts <- countries_sf %>%
+
+  filter(!is.na(pop_est)) %>% 
+  arrange(desc(pop_est)) %>% 
+  pull(name) %>% 
+  map(~make_relative_pop_gg(.x))
+
+list_country_names <- countries_sf %>%
+  st_drop_geometry() %>% 
+  filter(!is.na(pop_est)) %>% 
+  arrange(desc(pop_est)) %>% 
+  pull(name)
+
+pwalk(list(list_gg_populous_charts, list_country_names),
+     ~ggsave(here::here("posts", "2022-07-14_leafpop-for-ggplot2-charts-in-leaflet-popups", "ggplot2-charts", str_glue("{..2}.png")),
+             ..1,
+             width = 9,
+             height = 5,
+             bg = "white"))
+```
+
+```{r}
+# Now generate all the charts?!
+
+pal_pop_est <- colorNumeric("viridis", countries_sf$pop_est, na.color = "pink")
+
+img_paths <- list.files("ggplot2-charts/") %>% 
+  tibble(file = .) %>% 
+  mutate(country = str_remove(file, ".png")) %>% 
+  left_join(st_drop_geometry(countries_sf),
+            by = c("country" = "name")) %>% 
+  select(file, country, pop_est) %>% 
+  arrange(desc(pop_est)) %>% 
+  mutate(file = here::here("posts", "2022-07-14_leafpop-for-ggplot2-charts-in-leaflet-popups", "ggplot2-charts", str_glue("{file}"))) %>% 
+  pull(file)
+
+leaflet() %>% 
+  addPolygons(data = countries_sf,
+              color = "white",
+              weight = 1,
+              fillColor = ~pal_pop_est(pop_est),
+              group = "pop_est",
+              fillOpacity = 1) %>% 
+  addPopupImages(img_paths,
+                 group = "pop_est",
+                 width = 400) %>% 
+  addLegend(data = countries_sf,
+            pal = pal_pop_est,
+            values = ~pop_est)
+```
+
+
+
+

@@ -1,0 +1,126 @@
+---
+title: '2022-09-01_ggplot2-breaks-geom-sf-calls-in-3-3-6'
+date: '2022-09-01'
+code-fold: false
+engine: knitr
+draft: true
+---
+
+This is a draft blogpost. 
+
+As detailed here https://github.com/tidyverse/ggplot2/issues/4883 the 3.3.6 version of {ggplot2} introduces a new linewidth aesthetic. For ALL geoms except for geom_sf() and geom_pointrange() this causes no issues.
+
+But in choropleth built with {ggplot2} where size = n was used to decrease the weight of polygon lines will no longer be effective. I tweeted about it here: https://twitter.com/charliejhadley/status/1562800738816106496?s=20&t=ixvEsEfT7lAgFfmJb3yTQg
+
+I think that some static code analysis could help with this!
+
+- Identify the line numbers of all geom_sf() calls with size as a direct argument [ie not inside aes]
+
+- Optionally allow users to specify a range for the size value, predicting that the size being smaller than 1 is a useful hueretistic for identifying problematic code.
+
+I started doing a bit of research:
+
+```{r}
+#| label: code-to-analyse
+library(tidyverse)
+library(rnaturalearthdata)
+library(sf)
+
+world_sf <- countries110 %>% 
+  st_as_sf()
+
+ggplot() +
+  geom_sf(data = world_sf,
+          size = 0.1)
+
+ggplot() +
+  geom_sf(data = world_sf,
+          fill = "green",
+          size = 0.4)
+```
+
+This parses out an expression - but doesn't give me line numbers
+
+```{r}
+parse(here::here("posts", "2022-09-01_ggplot2-breaks-geom-sf-calls-in-3-3-6", "code-to-analyse.R")) %>% 
+  keep(is.language)  %>% 
+  keep(~grepl(", geom_sf", toString(.x)))
+```
+
+getParseData() is a really useful function that gives LOTS of data. But I'm not sure how to partse it yey
+
+```{r}
+#| eval: false
+parse_data <- parse(here::here("posts", "2022-09-01_ggplot2-breaks-geom-sf-calls-in-3-3-6", "code-to-analyse.R")) %>% 
+  getParseData() %>% 
+  rownames_to_column() %>% 
+  rename(parent_id = rowname) %>% 
+  mutate(parent_id = as.integer(parent_id)) %>% 
+  as_tibble()
+
+
+parse_data %>% 
+  relocate(parent_id, parent, token, text) %>% 
+  filter(text == "geom_sf")
+```
+
+This is probably quite close to what I need https://stackoverflow.com/a/47189529
+
+```{r}
+#| eval: false
+library(tidyverse)
+library(rnaturalearthdata)
+library(sf)
+library(rlang)
+world_sf <- countries110 %>% 
+  st_as_sf()
+
+
+fenv <- new.env()
+
+evaluated_geom_sf <- parse(here::here("posts", "2022-09-01_ggplot2-breaks-geom-sf-calls-in-3-3-6", "code-to-analyse.R")) %>% 
+  keep(is.language)  %>% 
+  keep(~grepl(", geom_sf", toString(.x))) %>% 
+  map(expression, envir=fenv) 
+
+parse(here::here("posts", "2022-09-01_ggplot2-breaks-geom-sf-calls-in-3-3-6", "code-to-analyse.R")) %>% 
+  keep(is.language)  %>% 
+  keep(~grepl(", geom_sf", toString(.x))) %>% 
+  map(expr_interp) %>% 
+  map(call_args)
+
+evaluated_geom_sf %>% 
+  map(quote)
+
+rlang::call_name(evaluated_geom_sf[1])
+
+  map_df(~{
+    params <- list(names(formals(.x)))
+    bdy <- deparse(body(.x))
+    bdy <- bdy[length(bdy)-1]
+    data_frame(target = trimws(bdy), params = params)
+  }) %>% 
+  mutate(fname = ls(fenv))
+```
+
+```{r}
+#| eval: false
+fenv <- new.env()
+
+evaluated_fns <- parse(here::here("posts", "2022-09-01_ggplot2-breaks-geom-sf-calls-in-3-3-6", "function-code.R")) %>% 
+  keep(is.language)  %>% 
+  keep(~grepl(", function", toString(.x))) %>% 
+  map(eval, envir=fenv) %>% 
+  map_df(~{
+    params <- list(names(formals(.x)))
+    bdy <- deparse(body(.x))
+    bdy <- bdy[length(bdy)-1]
+    data_frame(target = trimws(bdy), params = params)
+  }) %>% 
+  mutate(fname = ls(fenv))
+
+evaluated_fns %>% 
+  unnest(params)
+```
+
+

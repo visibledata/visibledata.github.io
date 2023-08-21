@@ -369,6 +369,15 @@ Thank you for all the help! I feel like searching the internet for help with R i
 
 </div>
 
+<div class="col-12 col-md-6 col-lg-6">
+
+<blockquote class="testimonial">
+I thank you for the last feedback, I loved it because now I can change the style with css, which I had no idea about. You are a sweetheart, because when I listen to your video I feel light and at peace!
+<p class="testimonial-attribution">Researcher, Plant Science</p>
+</blockquote>
+
+</div>
+
 </div>
 
 

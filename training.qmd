@@ -63,7 +63,7 @@ I've been recording training courses for LinkedIn Learning since 2016. Access to
         <div class="card border-primary mb-3" style="border: 1px solid gray !important;">
             <div class="card-body">
                 <center><img src='images/lil_shiny-data-apps.jpg' style='max-width:250px;padding:10px;width:100%' /></center>
-                <p class="card-text">Go from zero to well designed shiny apps in 2h50m.</p>
+                <p class="card-text">Go from zero to well designed shiny apps in 2h50m with a thorough, easy to follow explanation of reactivity.</p>
             </div>
             <a href="https://www.linkedin.com/learning/building-data-apps-with-r-and-shiny-essential-training?trk=learning-course_related-content-card&upsellOrderOrigin=default_guest_learning" target="_blank" class="stretched-link"></a>
         </div>
@@ -75,7 +75,7 @@ I've been recording training courses for LinkedIn Learning since 2016. Access to
         <div class="card border-primary mb-3" style="border: 1px solid gray !important;">
             <div class="card-body">
                 <center><img src='images/lil_tidyverse-overview.jpg' style='max-width:250px;padding:10px;width:100%' /></center>
-                <p class="card-text">Learn to wrangle and explore data with the tidyverse.</p>
+                <p class="card-text">A thorough introduction to tidyverse concerpts and how to use them to solve common data wrangling tasks.</p>
             </div>
             <a href="https://www.linkedin.com/learning/instructors/charlie-joey-hadley?u=2125562" target="_blank" class="stretched-link"></a>
         </div>
@@ -87,7 +87,7 @@ I've been recording training courses for LinkedIn Learning since 2016. Access to
         <div class="card border-primary mb-3" style="border: 1px solid gray !important;">
             <div class="card-body">
                 <center><img src='images/lil_htmlwidgets.jpg' style='max-width:250px;padding:10px;width:100%' /></center>
-                <p class="card-text">A 5h25m intro to interactive maps, charts and more with R.</p>
+                <p class="card-text">Learn how to make interactive charts, tables, maps and more in this dedicated 5h30min course.</p>
             </div>
             <a href="https://www.linkedin.com/learning/instructors/charlie-joey-hadley?u=2125562" target="_blank" class="stretched-link"></a>
         </div>
@@ -103,7 +103,7 @@ I've been recording training courses for LinkedIn Learning since 2016. Access to
         <div class="card border-primary mb-3" style="border: 1px solid gray !important;">
             <div class="card-body">
                 <center><img src='images/lil_rmarkdown.jpg' style='max-width:250px;padding:10px;width:100%' /></center>
-                <p class="card-text">A thorough introduction to reports and more with RMarkdown.</p>
+                <p class="card-text">Learn to use RMarkdown to build reports and slide decks in both PDF and interactive HTML.</p>
             </div>
             <a href="https://www.linkedin.com/learning/instructors/charlie-joey-hadley?u=2125562" target="_blank" class="stretched-link"></a>
         </div>
@@ -115,7 +115,19 @@ I've been recording training courses for LinkedIn Learning since 2016. Access to
         <div class="card border-primary mb-3" style="border: 1px solid gray !important;">
             <div class="card-body">
                 <center><img src='images/lil_interactive-presentations.jpg' style='max-width:250px;padding:10px;width:100%' /></center>
-                <p class="card-text">Learn how to combine {shiny} and RMarkdown together.</p>
+                <p class="card-text">Learn how to combine {shiny} and RMarkdown together to create slide decks with interactive elements.</p>
+            </div>
+            <a href="https://www.linkedin.com/learning/instructors/charlie-joey-hadley?u=2125562" target="_blank" class="stretched-link"></a>
+        </div>
+</div>
+```
+
+```{=html}
+<div class="col-md-4">
+        <div class="card border-primary mb-3" style="border: 1px solid gray !important;">
+            <div class="card-body">
+                <center><img src='images/lil_mapping.jpg' style='max-width:250px;padding:10px;width:100%' /></center>
+                <p class="card-text">Need to make maps but don't know any GIS? After this course you can make static and interactive maps!</p>
             </div>
             <a href="https://www.linkedin.com/learning/instructors/charlie-joey-hadley?u=2125562" target="_blank" class="stretched-link"></a>
         </div>

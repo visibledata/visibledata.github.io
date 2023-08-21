@@ -1,0 +1,404 @@
+---
+title: '2022-09-01 Dataviz - Top 10 Sankey'
+date: '2023-02-06'
+draft: true
+execute:
+  freeze: true
+code-fold: false
+engine: knitr
+---
+
+# Obtain data
+
+This blogpost walks through how to obtain data about albums https://medium.com/@caineosborne/analysing-uk-chart-history-1956-to-2017-6fec0ecc991b
+
+This gives the Top 20 albums on 1961-07-02
+
+http://www.officialcharts.com/charts/albums-chart/19610702/7502/
+
+This gives the Top 100 singles for 1999-12-26 to 2000-01-01
+
+https://www.officialcharts.com/charts/singles-chart/19991226/7501/
+
+Let's generate the dates from then until now
+
+```{r setup}
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(rvest)
+library(furrr)
+```
+
+```{r}
+dates_charts <- seq(ymd("1999-12-26"), ymd("2023-01-01"), "7 days")
+```
+
+This function will extract the data:
+
+```{r}
+get_week_top100_data <- function(week_start) {
+  
+  raw_date = str_remove_all(week_start, "-")
+  
+  page_results <-
+    str_glue("https://www.officialcharts.com/charts/singles-chart/{raw_date}/7501/") %>%
+    read_html()
+  
+  
+  page_results %>%
+    html_table() %>%
+    .[[1]] %>%
+    clean_names() %>%
+    filter(pos %in% as.character(1:100)) %>%
+    select(1:3) %>%
+    separate(title_artist,
+             sep = "\r\n                        \r\n                        \r\n\r\n                            ",
+             into = c("title", "artist_label")) %>%
+    separate(artist_label,
+             sep = "\r\n                        \r\n                        ",
+             into = c("artist", "label")) %>%
+    set_names(c(
+      "position_current",
+      "position_previous",
+      "title",
+      "artist",
+      "label"
+    )) %>% 
+    mutate(date_week_start = week_start) %>% 
+    relocate(date_week_start)
+}
+
+dates_charts[1] %>% 
+  get_week_top100_data()
+
+```
+
+Now let's map this
+
+```{r}
+#| eval: false
+plan(multisession)
+data_raw_all_charts <- dates_charts %>% 
+  future_map_dfr(get_week_top100_data)
+
+data_raw_all_charts %>% 
+  write_csv(here::here("posts", "2023-02-06_dataviz_top-10-sankey", "data_raw_all_charts.csv"))
+```
+
+# Explore and tidy up
+
+```{r}
+data_raw_all_charts <- read_csv(here::here("posts", "2023-02-06_dataviz_top-10-sankey", "data_raw_all_charts.csv"))
+```
+
+There are ZERO `NA` values!!!
+
+```{r}
+data_charts_with_ids <- data_raw_all_charts %>% 
+  group_by(title, artist) %>% 
+  mutate(id_title_artist = cur_group_id()) %>%
+  group_by(title, artist, label) %>% 
+  mutate(id_title_artist_label = cur_group_id()) %>% 
+  ungroup()
+```
+
+There are `r max(data_charts_with_ids$id_title_artist_label) - max(data_charts_with_ids$id_title_artist)` more unique songs when splitting the data by Title, Artist and Label. 
+
+After looking at these everything feel okay. I can go with title and artist ids.
+
+```{r}
+data_charts_with_ids %>% 
+  group_by(title, artist) %>% 
+  mutate(n_labels = n_distinct(label)) %>% 
+  ungroup() %>% 
+  filter(n_labels > 1) %>% 
+  select(title, artist, label, contains("id"), n_labels) %>% 
+  unique() %>% 
+  arrange(title, artist)
+```
+
+## Inserting consecutiveness
+
+position_previous needs recoding
+
+```{r}
+data_charts_with_lags <- data_charts_with_ids %>%
+  arrange(date_week_start) %>%
+  group_by(id_title_artist) %>%
+  mutate(
+    position_next = lead(position_current, order_by = date_week_start)
+  ) %>% 
+  ungroup() %>% 
+  mutate(status = case_when(position_previous == "New" ~ "New release",
+                            position_previous == "Re" ~ "Re-release",
+                            !is.na(position_next) ~ "Consecutive week"),
+         position_previous = as.numeric(position_previous))
+```
+
+
+```{r}
+data_charts_with_rereleases <- data_charts_with_lags %>% 
+  arrange(date_week_start, id_title_artist) %>% 
+  group_by(id_title_artist) %>%
+  arrange(date_week_start) %>% 
+  mutate(check_rerelease = ifelse(status == "Re-release", 1, 0)) %>%
+  mutate(check_rerelease = case_when(
+    date_week_start == min(date_week_start) ~ 0, # handle re-release in first week of data
+    status == "Re-release" ~ 1,
+    TRUE ~ 0
+  )) %>%
+  mutate(nth_time_on_chart = cumsum(check_rerelease) + 1) %>%
+  ungroup()
+```
+
+## Look at re-releases
+
+```{r}
+data_charts_with_rereleases %>% 
+  select(date_week_start, title, starts_with("position"), nth_time_on_chart, everything()) %>% 
+  filter(title == "SHAPE OF YOU")
+```
+
+```{r}
+data_charts_with_rereleases %>% 
+  arrange(desc(nth_time_on_chart)) %>% 
+  group_by(id_title_artist) %>% 
+  filter(nth_time_on_chart == max(nth_time_on_chart)) %>% 
+  ungroup() %>% 
+  distinct(title, artist, nth_time_on_chart) %>% 
+  rename(times_on_chart = nth_time_on_chart) %>% 
+  slice(1:10) %>% 
+  gt::gt()
+```
+
+## Finish up
+
+```{r}
+data_3rd_millenium_charts <- data_charts_with_rereleases %>% 
+  mutate(year = year(date_week_start)) %>% 
+  group_by(id_title_artist) %>% 
+  mutate(total_times_on_chart = max(nth_time_on_chart)) %>% 
+  ungroup() %>% 
+  select(-check_rerelease) %>% 
+  group_by(id_title_artist) %>% 
+  arrange(id_title_artist, date_week_start) %>% 
+  mutate(nth_week_on_chart = n()) %>% 
+  mutate(total_weeks_on_chart = max(nth_week_on_chart)) %>% 
+  ungroup()
+```
+
+```{r}
+data_3rd_millenium_charts <- data_charts_with_rereleases %>% 
+  mutate(year = year(date_week_start)) %>% 
+  select(-check_rerelease)
+```
+
+# Functions
+
+```{r}
+generate_nth_time_in_charts <- function(data) {
+  data %>%
+    group_by(id_title_artist) %>%
+    mutate(total_times_on_chart = max(nth_time_on_chart)) %>%
+    ungroup() %>%
+    group_by(id_title_artist) %>%
+    arrange(id_title_artist, date_week_start) %>%
+    mutate(nth_week_on_chart = row_number()) %>%
+    mutate(total_weeks_on_chart = max(nth_week_on_chart)) %>%
+    ungroup()
+}
+```
+
+
+# Top 100 Track Lines
+
+## By year
+
+To start I'm going to look at just 2022 and work up from there
+
+```{r}
+data_top10_2022 <- data_3rd_millenium_charts %>% 
+  filter(
+    # date_week_start > ymd("2022-01-01"),
+    #      date_week_start < ymd("2023-01-01"),
+         year == 2022,
+         position_current <= 10) %>% 
+  select(date_week_start, starts_with("position"), title, id_title_artist, everything()) %>%
+  mutate(id_song_nth_time = paste(id_title_artist, nth_time_on_chart)) %>% 
+  arrange(date_week_start, position_current)
+```
+
+```{r}
+data_top10_2022 %>% 
+  select(id_song_nth_time, everything())
+```
+
+## Square chart
+
+```{r}
+data_top10_2022 %>% 
+  generate_nth_time_in_charts() %>% 
+  drop_na(position_next) %>% 
+  identity() %>% 
+  filter(position_next <= 10) %>% 
+  select(date_week_start, position_current, title, id_title_artist, nth_week_on_chart) %>% 
+  ggplot(aes(x = date_week_start,
+                y = position_current,
+                group = as.character(id_title_artist),
+             colour = nth_week_on_chart
+             # linewidth = nth_week_on_chart
+             )) +
+  # geom_point(size = 0.3) +
+  # stat_smooth(se = FALSE) +
+  geom_line() +
+  # scale_colour_viridis_c() +
+  scale_colour_gradient(low = "black",
+                        high = "white") +
+  scale_linewidth_continuous(breaks = c(4, 5, 6)) +
+  guides(colour = guide_none()) +
+  theme_void() +
+  theme(panel.background = element_rect(fill = "black")) +
+  NULL
+
+
+```
+
+
+```{r}
+data_3rd_millenium_charts %>% 
+  filter(
+    # date_week_start > ymd("2022-01-01"),
+    #      date_week_start < ymd("2023-01-01"),
+         year == 2022,
+         between(position_current, 0, 20)
+         ) %>% 
+  select(date_week_start, starts_with("position"), title, id_title_artist, everything()) %>%
+  mutate(id_song_nth_time = paste(id_title_artist, nth_time_on_chart)) %>% 
+  arrange(date_week_start, position_current) %>% 
+  generate_nth_time_in_charts() %>% 
+  drop_na(position_next) %>% 
+  identity() %>% 
+  filter(position_next <= 20) %>%
+  select(date_week_start, position_current, title, id_title_artist, nth_week_on_chart) %>% 
+  ggplot(aes(x = date_week_start,
+                y = position_current,
+                group = as.character(id_title_artist),
+             colour = nth_week_on_chart
+             # linewidth = nth_week_on_chart
+             )) +
+  geom_point() +
+  # stat_smooth(se = FALSE) +
+  geom_line() +
+  # scale_colour_viridis_c() +
+  scale_colour_gradient(low = "black",
+                        high = "white") +
+  scale_linewidth_continuous(breaks = c(4, 5, 6)) +
+  guides(colour = guide_none()) +
+  theme_void() +
+  theme(panel.background = element_rect(fill = "black")) +
+  NULL
+```
+
+
+
+## Polar
+
+
+```{r}
+data_top10_2022 %>% 
+  generate_nth_time_in_charts() %>% 
+  drop_na(position_next) %>% 
+  identity() %>% 
+  filter(position_next <= 10) %>% 
+  select(date_week_start, position_current, title, id_title_artist, nth_week_on_chart) %>% 
+  ggplot(aes(x = date_week_start,
+                y = position_current,
+                group = as.character(id_title_artist),
+             colour = nth_week_on_chart
+             # linewidth = nth_week_on_chart
+             )) +
+  # geom_point() +
+  # stat_smooth(se = FALSE) +
+  geom_line() +
+  # scale_colour_viridis_c() +
+  scale_colour_gradient(low = "black",
+                        high = "white") +
+  scale_linewidth_continuous(breaks = c(4, 5, 6)) +
+  coord_polar(start = 0) +
+  ylim(0, NA) +
+  # theme_void() +
+  # theme(panel.background = element_rect(fill = "black")) +
+  NULL
+
+
+```
+
+### Instead of song look for runs at the same position
+
+```{r}
+data_top10_2022 %>% 
+  filter(position_current <= 5) %>% 
+  arrange(date_week_start, position_current) %>% 
+  select(date_week_start, starts_with("position"), title, id_title_artist) %>% 
+  mutate(position_kept = ifelse(position_current == position_next, 1, 0)) %>%
+  slice(1:40) %>% 
+  group_by(position_current, position_kept) %>% 
+  group_by(position_current) %>%
+  arrange(date_week_start) %>%
+  mutate(position_run = cumsum(position_kept))  %>%
+  group_by(position_current, id_title_artist, position_kept) %>%
+  mutate(position_run_id = cur_group_id()) %>% 
+  ungroup() %>% 
+  # View()
+  ggplot(aes(x = date_week_start,
+             y = position_current,
+             colour = position_run_id,
+             group = position_run_id)) +
+  geom_point() +
+  geom_line() +
+  scale_colour_viridis_c()
+```
+
+
+
+```{r}
+data_top10_2022 %>% 
+  filter(position_current <= 6) %>%
+  arrange(date_week_start, position_current) %>% 
+  select(date_week_start, starts_with("position"), title, id_title_artist) %>% 
+  filter(position_current == position_next) %>% 
+  group_by(position_current) %>% 
+  arrange(date_week_start) %>% 
+  mutate(consecutive_run = lead(date_week_start) == date_week_start + days(7)) %>% 
+  mutate(run_length = cumsum(consecutive_run)) %>% 
+  ungroup() %>% 
+  group_by(position_current, id_title_artist, consecutive_run) %>% 
+  mutate(position_run_id = cur_group_id()) %>% 
+  ungroup() %>% 
+  arrange(date_week_start, position_current) %>% 
+  filter(position_current >= 4 & position_current <= 6) %>% 
+  ggplot(aes(x = date_week_start,
+             y = position_current,
+             # colour = position_run_id,
+             group = as.character(position_run_id))) +
+  # geom_point() +
+  geom_line() +
+  scale_colour_viridis_c()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
