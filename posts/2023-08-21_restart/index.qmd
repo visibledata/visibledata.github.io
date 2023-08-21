@@ -3,6 +3,8 @@ title: '2023-08-21 Restart in less than an hour'
 date: '2023-08-21'
 execute:
   freeze: true
+  message: false
+  warning: false
 code-fold: false
 engine: knitr
 ---
@@ -56,7 +58,6 @@ gss_party_by_marital %>%
 The issue is that {highcharter} needs explicitly empty levels, which the `complete()` function provides.
 
 ```{r}
-
 gss_completed_data <- gss_cat %>% 
   summarise(n_in_subcategory = n(), .by = c(partyid, marital)) %>% 
   complete(partyid,
@@ -66,7 +67,6 @@ gss_completed_data <- gss_cat %>%
   mutate(partyid = fct_reorder(partyid, n_in_category)) %>% 
   arrange(desc(n_in_category))
 
-gss_completed_data
 
 gss_completed_data %>% 
   hchart(
@@ -80,7 +80,9 @@ gss_completed_data %>%
   hc_plotOptions(series = list(stacking = "normal"))
 ```
 
+## And that's a wrap
 
+In 50mins I updated R, RStudio, my packages and got the blog deploying successfully.
 
 
 
