@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/2023-08-21_restart/index.html",
       "/posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html",
       "/posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html",
       "/posts/2022-06-20_overriding-individual-code-chunk-options/index.html",
