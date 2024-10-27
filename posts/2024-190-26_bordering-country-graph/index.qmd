@@ -1,0 +1,54 @@
+---
+title: "Bordering countries graph"
+date: '2024-10-24'
+execute:
+  freeze: true
+  message: false
+  warning: false
+code-fold: false
+engine: knitr
+filters:
+  - line-highlight
+---
+
+
+```{r}
+library("tidyverse")
+library("tidygraph")
+
+data_country_borders <- read_csv("https://raw.githubusercontent.com/geodatasource/country-borders/refs/heads/master/GEODATASOURCE-COUNTRY-BORDERS.CSV")
+
+nodes_countries <- data_country_borders %>% 
+  reframe(id = country_code, country_name) %>% 
+  unique()
+
+edges_countries <- data_country_borders %>% 
+  reframe(from = country_code,
+          to = country_border_code)
+
+graph_countries <- tbl_graph(nodes = nodes_countries,
+          edges = edges_countries)
+
+
+graph_countries %>% 
+  to_directed()
+```
+
+
+```{r}
+library("ggraph")
+
+graph_countries %>% 
+  ggraph() +
+  geom_node_point() +
+  geom_edge_link()
+
+```
+
+```{r}
+library("visNetwork")
+
+
+visNetwork(nodes_countries, edges_countries)
+```
+

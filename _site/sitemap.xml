@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/index.html</loc>
-    <lastmod>2023-08-21T12:57:26.294Z</lastmod>
+    <lastmod>2022-06-17T14:23:50.355Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/about.html</loc>
@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/training.html</loc>
-    <lastmod>2023-05-01T18:57:25.717Z</lastmod>
+    <lastmod>2023-02-20T16:33:52.510Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/cv.html</loc>
@@ -22,15 +22,15 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/blog.html</loc>
-    <lastmod>2023-08-21T13:38:09.627Z</lastmod>
+    <lastmod>2022-06-17T14:25:24.238Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/index.html</loc>
-    <lastmod>2022-06-17T14:23:45.357Z</lastmod>
+    <lastmod>2022-06-17T14:25:05.826Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html</loc>
-    <lastmod>2022-06-20T18:25:06.719Z</lastmod>
+    <lastmod>2022-06-20T15:53:22.586Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2022-06-17_test/index.html</loc>
@@ -38,7 +38,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2019-03-13_extracting-doi-from-text/index.html</loc>
-    <lastmod>2022-06-17T13:49:58.442Z</lastmod>
+    <lastmod>2022-06-17T13:49:54.509Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/child-doc/index.html</loc>
@@ -50,7 +50,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2018-12-05-using-ggmap-after-july-2018/index.html</loc>
-    <lastmod>2022-06-20T14:55:16.043Z</lastmod>
+    <lastmod>2022-06-20T14:55:07.445Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2019-02-18_oxford-centres/index.html</loc>
@@ -74,7 +74,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2018-02-27-crawling-with-tidygraph/index.html</loc>
-    <lastmod>2022-06-20T19:01:47.456Z</lastmod>
+    <lastmod>2023-08-30T13:07:19.305Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2018-02-18-recipes-for-learning/index.html</loc>
@@ -82,7 +82,7 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html</loc>
-    <lastmod>2022-06-20T19:01:46.647Z</lastmod>
+    <lastmod>2023-08-26T16:17:48.592Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html</loc>
@@ -90,11 +90,11 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options/index.html</loc>
-    <lastmod>2022-07-14T09:55:32.338Z</lastmod>
+    <lastmod>2022-07-14T09:55:27.275Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html</loc>
-    <lastmod>2022-08-01T15:38:15.814Z</lastmod>
+    <lastmod>2022-08-01T15:38:13.039Z</lastmod>
   </url>
   <url>
     <loc>https://visibledata.co.uk/Untitled/Untitled.html</loc>
@@ -114,6 +114,22 @@
   </url>
   <url>
     <loc>https://visibledata.co.uk/posts/2023-08-21_restart/index.html</loc>
-    <lastmod>2023-08-21T13:38:09.023Z</lastmod>
+    <lastmod>2023-08-21T13:38:02.661Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2024-02-27_empty-checkboxes/null checkboxgroup check.html</loc>
+    <lastmod>2024-02-27T14:53:24.705Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2024-10-21_30daychartchallenge-2022-waffles/index.html</loc>
+    <lastmod>2024-10-24T20:07:49.810Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2024-10-21_30daychartchallenge-2022-emoji-standard-deviation-chart/index.html</loc>
+    <lastmod>2024-10-24T20:09:36.579Z</lastmod>
+  </url>
+  <url>
+    <loc>https://visibledata.co.uk/posts/2024-10-24_Highchart-doesnt-like-empty-factors/index.html</loc>
+    <lastmod>2024-10-24T20:54:41.413Z</lastmod>
   </url>
 </urlset>

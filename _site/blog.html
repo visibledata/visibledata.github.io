@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.0.37">
+<meta name="generator" content="quarto-1.4.554">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,10 +11,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
 </style>
 
 
@@ -43,7 +48,13 @@ ul.task-list{list-style: none;}
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -52,8 +63,10 @@ ul.task-list{list-style: none;}
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script>
@@ -107,11 +120,39 @@ ul.task-list{list-style: none;}
   </script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="Visible Data" href="blog.xml"><meta property="og:title" content="Visible Data - Blog">
-<meta property="og:site-name" content="Visible Data">
+<link rel="alternate" type="application/rss+xml" title="Visible Data" href="blog.xml" data-external="1"><meta property="og:title" content="Visible Data - Blog">
+<meta property="og:site_name" content="Visible Data">
 <meta name="twitter:title" content="Visible Data - Blog">
 <meta name="twitter:creator" content="@charliejhadley">
+<meta name="twitter:site" content="@charliejhadley">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -119,28 +160,35 @@ ul.task-list{list-style: none;}
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <a class="navbar-brand" href="./index.html">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Visible Data</span>
-  </a>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./training.html">Training</a>
+    <a class="nav-link" href="./training.html"> 
+<span class="menu-text">Training</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./blog.html" aria-current="page">Blog</a>
+    <a class="nav-link active" href="./blog.html" aria-current="page"> 
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html">About</a>
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -150,7 +198,7 @@ ul.task-list{list-style: none;}
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(17)</span></div><div class="category" data-category="GIS">GIS <span class="quarto-category-count">(2)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dataviz">dataviz <span class="quarto-category-count">(5)</span></div><div class="category" data-category="reproducible research">reproducible research <span class="quarto-category-count">(1)</span></div><div class="category" data-category="shiny">shiny <span class="quarto-category-count">(2)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(19)</span></div><div class="category" data-category="30DayChartChallenge 2022">30DayChartChallenge 2022 <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Data visualisation">Data visualisation <span class="quarto-category-count">(2)</span></div><div class="category" data-category="GIS">GIS <span class="quarto-category-count">(2)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dataviz">dataviz <span class="quarto-category-count">(5)</span></div><div class="category" data-category="reproducible research">reproducible research <span class="quarto-category-count">(1)</span></div><div class="category" data-category="shiny">shiny <span class="quarto-category-count">(2)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -164,9 +212,11 @@ ul.task-list{list-style: none;}
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
+
 
 </header>
 
@@ -174,33 +224,30 @@ ul.task-list{list-style: none;}
 
 
 
+
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1692572400000" data-listing-file-modified-sort="1692625082661" data-listing-reading-time-sort="1.845">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1729724400000" data-listing-file-modified-sort="1729803281413" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="543">
 <div class="thumbnail">
-<a href="./posts/2023-08-21_restart/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/2023-08-21_restart/index.html"></a></p>
+<p><a href="./posts/2024-10-24_Highchart-doesnt-like-empty-factors/index.html" class="no-external"></a></p><a href="./posts/2024-10-24_Highchart-doesnt-like-empty-factors/index.html" class="no-external">
+<p class="card-img-top"><img src="posts/2024-10-24_Highchart-doesnt-like-empty-factors/highchart-doesnt-like-empty-factors_youtube-thumbnail.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2024-10-24_Highchart-doesnt-like-empty-factors/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-08-21_restart/index.html">
 <h3 class="no-anchor listing-title">
-2023-08-21 Restart in less than an hour
+<a href="./posts/2024-10-24_Highchart-doesnt-like-empty-factors/index.html" class="no-external">{highcharts} doesn’t like empty factors (and the .by argument is quite nice, actually)</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2024-10-24_Highchart-doesnt-like-empty-factors/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-It’s been over a year since I last published an update to this blog and six months since I’ve loaded up the project.
+<a href="./posts/2024-10-24_Highchart-doesnt-like-empty-factors/index.html" class="no-external">Heard of <code>{plotly}</code> for interactive charts? I massively prefer <code>{highcharts}</code> as it’s more accessible, mobile friendly and <strong>simply more beautiful</strong>. Both of these packages are <em>htmlw…</em></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-08-21_restart/index.html">
+<a href="./posts/2024-10-24_Highchart-doesnt-like-empty-factors/index.html" class="no-external">
 <div class="listing-date">
-Aug 21, 2023
+Oct 24, 2024
 </div>
 <div class="listing-author">
 Charlie Hadley
@@ -208,29 +255,97 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1659567600000" data-listing-file-modified-sort="1659631247650" data-listing-reading-time-sort="2.875">
+<div class="quarto-post image-right" data-index="1" data-categories="Data visualisation,30DayChartChallenge 2022" data-listing-date-sort="1729465200000" data-listing-file-modified-sort="1729800576579" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3110">
 <div class="thumbnail">
-<a href="./posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html"></a></p>
+<p><a href="./posts/2024-10-21_30daychartchallenge-2022-emoji-standard-deviation-chart/index.html" class="no-external"></a></p><a href="./posts/2024-10-21_30daychartchallenge-2022-emoji-standard-deviation-chart/index.html" class="no-external">
+<p class="card-img-top"><img src="posts/2024-10-21_30daychartchallenge-2022-emoji-standard-deviation-chart/gg_emoji_histogram_fancy.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2024-10-21_30daychartchallenge-2022-emoji-standard-deviation-chart/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html">
 <h3 class="no-anchor listing-title">
-How I learned to stop replicating everything from {xaringan} and love Quarto
+<a href="./posts/2024-10-21_30daychartchallenge-2022-emoji-standard-deviation-chart/index.html" class="no-external">From the archive: 30DayChartChallenge 2022 Pictogram</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2024-10-21_30daychartchallenge-2022-emoji-standard-deviation-chart/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data visualisation'); return false;">
+Data visualisation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('30DayChartChallenge 2022'); return false;">
+30DayChartChallenge 2022
+</div>
 </div>
 <div class="listing-description">
-Since the end of the rstudio::conf(2022) I’ve been working on replicating the <code>{xaringan}</code> RMarkdown presentation format in <code>{quarto}</code>. If you’ve never seen these slides before, here’s the self-documenting template from Yihui Xie (click inside the slides and use your arrow keys).
+<a href="./posts/2024-10-21_30daychartchallenge-2022-emoji-standard-deviation-chart/index.html" class="no-external">This post has been rescued from a side-project blog that I’ve disposed of and slowly reposting content from. In this post I created one of my favourite charts:</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/2024-10-21_30daychartchallenge-2022-emoji-standard-deviation-chart/index.html" class="no-external">
+<div class="listing-date">
+Oct 21, 2024
+</div>
+<div class="listing-author">
+Charlie Hadley
 </div>
 </a>
 </div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="Data visualisation,30DayChartChallenge 2022" data-listing-date-sort="1729465200000" data-listing-file-modified-sort="1729800469810" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1205">
+<div class="thumbnail">
+<p><a href="./posts/2024-10-21_30daychartchallenge-2022-waffles/index.html" class="no-external"></a></p><a href="./posts/2024-10-21_30daychartchallenge-2022-waffles/index.html" class="no-external">
+<p class="card-img-top"><img src="posts/2024-10-21_30daychartchallenge-2022-waffles/cw_bechdel_waffles.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2024-10-21_30daychartchallenge-2022-waffles/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/2024-10-21_30daychartchallenge-2022-waffles/index.html" class="no-external">From the archive: 30DayChartChallenge 2022 Waffles</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/2024-10-21_30daychartchallenge-2022-waffles/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data visualisation'); return false;">
+Data visualisation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('30DayChartChallenge 2022'); return false;">
+30DayChartChallenge 2022
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/2024-10-21_30daychartchallenge-2022-waffles/index.html" class="no-external">This post has been rescued from a side-project blog that I’ve disposed of and slowly reposting content from. In this post I made this waffle chart:</a>
+</div>
+</div>
 <div class="metadata">
-<a href="./posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html">
+<a href="./posts/2024-10-21_30daychartchallenge-2022-waffles/index.html" class="no-external">
+<div class="listing-date">
+Oct 21, 2024
+</div>
+<div class="listing-author">
+Charlie Hadley
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1659567600000" data-listing-file-modified-sort="1659631247650" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="575">
+<div class="thumbnail">
+<p><a href="./posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html" class="no-external"></a></p><a href="./posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html" class="no-external">How I learned to stop replicating everything from {xaringan} and love Quarto</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="./posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html" class="no-external">Since the end of the rstudio::conf(2022) I’ve been working on replicating the <code>{xaringan}</code> RMarkdown presentation format in <code>{quarto}</code>. If you’ve never seen these slides before…</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/2022-08-04_how-i-learned-to-stop-replicating-everything-from-xaringan-and-love-quarto/index.html" class="no-external">
 <div class="listing-date">
 Aug 4, 2022
 </div>
@@ -240,25 +355,25 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1655679600000" data-listing-file-modified-sort="1659368293039" data-listing-reading-time-sort="10.705">
+<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1655679600000" data-listing-file-modified-sort="1659368293039" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2141">
 <div class="thumbnail">
-<p><a href="./posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html"> <img src="./posts/2022-07-29_creating-an-r-ladies-quarto-format/images/paste-C45D0768.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html" class="no-external"></a></p><a href="./posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html" class="no-external">
+<p class="card-img-top"><img src="posts/2022-07-29_creating-an-r-ladies-quarto-format/images/paste-C45D0768.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html">
 <h3 class="no-anchor listing-title">
-Creating an R-Ladies quarto format
+<a href="./posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html" class="no-external">Creating an R-Ladies quarto format</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-It’s the day after rstudio::conf(2022), and like many folks in the audience I’m very excited about the future of <code>{quarto}</code>. (LINKS). To help me better understand the differences between RMarkdown and quarto I decided I’d convert Alison Hill’s R-Ladies {xaringan} theme into a quarto <strong>format</strong>
+<a href="./posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html" class="no-external">It’s the day after rstudio::conf(2022), and like many folks in the audience I’m very excited about the future of <code>{quarto}</code>. (LINKS). To help me better understand the…<strong></strong></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html">
+<a href="./posts/2022-07-29_creating-an-r-ladies-quarto-format/index.html" class="no-external">
 <div class="listing-date">
 Jun 20, 2022
 </div>
@@ -268,29 +383,25 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1655679600000" data-listing-file-modified-sort="1657792527275" data-listing-reading-time-sort="0.66">
+<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1655679600000" data-listing-file-modified-sort="1657792527275" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="132">
 <div class="thumbnail">
-<a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html"></a></p>
+<p><a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html" class="no-external"></a></p><a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html">
 <h3 class="no-anchor listing-title">
-Overriding individual code chunk options
+<a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html" class="no-external">Overriding individual code chunk options</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-I’ve just moved this entire blog from <code>{blogdown}</code> to <code>{quarto}</code>. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options. Let’s make a toy .Rmd document to demonstrate this:
+<a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html" class="no-external">I’ve just moved this entire blog from <code>{blogdown}</code> to <code>{quarto}</code>. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html">
+<a href="./posts/2022-06-20_overriding-individual-code-chunk-options/index.html" class="no-external">
 <div class="listing-date">
 Jun 20, 2022
 </div>
@@ -300,29 +411,25 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1655247600000" data-listing-file-modified-sort="1655751739285" data-listing-reading-time-sort="1.425">
+<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1655247600000" data-listing-file-modified-sort="1655751739285" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="285">
 <div class="thumbnail">
-<a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html"></a></p>
+<p><a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html" class="no-external"></a></p><a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html">
 <h3 class="no-anchor listing-title">
-Writing verbatim SQL in pipe chains using {dbplyr}
+<a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html" class="no-external">Writing verbatim SQL in pipe chains using {dbplyr}</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-I’ve been trying to use the <code>{dbplyr}</code> package when working with SQL and R. It provides a really nice interface for writing tidyverse code against a database connection. I feel that <code>{dbplyr}</code> gives a generally nice interface than using <code>{DBI}</code> which is the approach used in db.rstudio.com, but it’s under documented.
+<a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html" class="no-external">I’ve been trying to use the <code>{dbplyr}</code> package when working with SQL and R. It provides a really nice interface for writing tidyverse code against a database connection. I…<code></code><code></code></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html">
+<a href="./posts/2022-06-15_verbatim-sql-in-dbplyr-pipe-chains/index.html" class="no-external">
 <div class="listing-date">
 Jun 15, 2022
 </div>
@@ -332,32 +439,30 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="shiny" data-listing-date-sort="1562626800000" data-listing-file-modified-sort="1655740402586" data-listing-reading-time-sort="4.7">
+<div class="quarto-post image-right" data-index="7" data-categories="shiny" data-listing-date-sort="1562626800000" data-listing-file-modified-sort="1655740402586" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="940">
 <div class="thumbnail">
-<p><a href="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html"> <img src="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/shiny-app-wireframe.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html" class="no-external"></a></p><a href="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html" class="no-external">
+<p><img src="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/shiny-app-wireframe.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html">
 <h3 class="no-anchor listing-title">
-Shiny modules to reduce duplication in apps
+<a href="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html" class="no-external">Shiny modules to reduce duplication in apps</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('shiny'); return false;">
 shiny
 </div>
 </div>
-<a href="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html">
 <div class="listing-description">
-<p>Help reduce the duplication of code in {shiny} apps through the use of modules</p>
+<a href="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html" class="no-external">Help reduce the duplication of code in {shiny} apps through the use of modules</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html">
+<a href="./posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps/index.html" class="no-external">
 <div class="listing-date">
 Jul 9, 2019
 </div>
@@ -367,32 +472,30 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="shiny" data-listing-date-sort="1553472000000" data-listing-file-modified-sort="1655475905826" data-listing-reading-time-sort="12.455">
+<div class="quarto-post image-right" data-index="8" data-categories="shiny" data-listing-date-sort="1553472000000" data-listing-file-modified-sort="1655475905826" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2491">
 <div class="thumbnail">
-<p><a href="./posts/2019-03-25-shiny-modules-for-useful-controls/index.html"> <img src="./posts/2019-03-25-shiny-modules-for-useful-controls/shiny-modules-reusable-controls.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2019-03-25-shiny-modules-for-useful-controls/index.html" class="no-external"></a></p><a href="./posts/2019-03-25-shiny-modules-for-useful-controls/index.html" class="no-external">
+<p><img src="./posts/2019-03-25-shiny-modules-for-useful-controls/shiny-modules-reusable-controls.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2019-03-25-shiny-modules-for-useful-controls/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2019-03-25-shiny-modules-for-useful-controls/index.html">
 <h3 class="no-anchor listing-title">
-Shiny modules for useful controls
+<a href="./posts/2019-03-25-shiny-modules-for-useful-controls/index.html" class="no-external">Shiny modules for useful controls</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2019-03-25-shiny-modules-for-useful-controls/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('shiny'); return false;">
 shiny
 </div>
 </div>
-<a href="./posts/2019-03-25-shiny-modules-for-useful-controls/index.html">
 <div class="listing-description">
-<p>If you need to re-use combinations of controls in {shiny} apps (or across multiple app) then modules can help!</p>
+<a href="./posts/2019-03-25-shiny-modules-for-useful-controls/index.html" class="no-external">If you need to re-use combinations of controls in {shiny} apps (or across multiple app) then modules can help!</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2019-03-25-shiny-modules-for-useful-controls/index.html">
+<a href="./posts/2019-03-25-shiny-modules-for-useful-controls/index.html" class="no-external">
 <div class="listing-date">
 Mar 25, 2019
 </div>
@@ -402,32 +505,30 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="reproducible research" data-listing-date-sort="1552435200000" data-listing-file-modified-sort="1655473794509" data-listing-reading-time-sort="2.06">
+<div class="quarto-post image-right" data-index="9" data-categories="reproducible research" data-listing-date-sort="1552435200000" data-listing-file-modified-sort="1655473794509" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="412">
 <div class="thumbnail">
-<p><a href="./posts/2019-03-13_extracting-doi-from-text/index.html"> <img src="./posts/softblock-demo/three-designs.jpg" class="thumnail-image"> </a></p>
+<p><a href="./posts/2019-03-13_extracting-doi-from-text/index.html" class="no-external"></a></p><a href="./posts/2019-03-13_extracting-doi-from-text/index.html" class="no-external">
+<p><img src="./posts/softblock-demo/three-designs.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/2019-03-13_extracting-doi-from-text/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2019-03-13_extracting-doi-from-text/index.html">
 <h3 class="no-anchor listing-title">
-One weird regex matches 97% of DOI…
+<a href="./posts/2019-03-13_extracting-doi-from-text/index.html" class="no-external">One weird regex matches 97% of DOI…</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2019-03-13_extracting-doi-from-text/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('reproducible research'); return false;">
 reproducible research
 </div>
 </div>
-<a href="./posts/2019-03-13_extracting-doi-from-text/index.html">
 <div class="listing-description">
-<p>This one weird regex matches 97% of DOI…</p>
+<a href="./posts/2019-03-13_extracting-doi-from-text/index.html" class="no-external">This one weird regex matches 97% of DOI…</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2019-03-13_extracting-doi-from-text/index.html">
+<a href="./posts/2019-03-13_extracting-doi-from-text/index.html" class="no-external">
 <div class="listing-date">
 Mar 13, 2019
 </div>
@@ -437,19 +538,19 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="dataviz,GIS" data-listing-date-sort="1550448000000" data-listing-file-modified-sort="1655741799807" data-listing-reading-time-sort="18.545">
+<div class="quarto-post image-right" data-index="10" data-categories="dataviz,GIS" data-listing-date-sort="1550448000000" data-listing-file-modified-sort="1655741799807" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3709">
 <div class="thumbnail">
-<p><a href="./posts/2019-02-18_oxford-centres/index.html"> <img src="./posts/2019-02-18_oxford-centres/gg_centres_through_time.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2019-02-18_oxford-centres/index.html" class="no-external"></a></p><a href="./posts/2019-02-18_oxford-centres/index.html" class="no-external">
+<p><img src="./posts/2019-02-18_oxford-centres/gg_centres_through_time.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2019-02-18_oxford-centres/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2019-02-18_oxford-centres/index.html">
 <h3 class="no-anchor listing-title">
-Where is the centre of University of Oxford?
+<a href="./posts/2019-02-18_oxford-centres/index.html" class="no-external">Where is the centre of University of Oxford?</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2019-02-18_oxford-centres/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('dataviz'); return false;">
 dataviz
@@ -458,14 +559,12 @@ dataviz
 GIS
 </div>
 </div>
-<a href="./posts/2019-02-18_oxford-centres/index.html">
 <div class="listing-description">
-<p>University of Oxford has over 800 years of history to it, but if you want to organise a meeting at the centre of campus… where do you meet?</p>
+<a href="./posts/2019-02-18_oxford-centres/index.html" class="no-external">University of Oxford has over 800 years of history to it, but if you want to organise a meeting at the centre of campus… where do you meet?</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2019-02-18_oxford-centres/index.html">
+<a href="./posts/2019-02-18_oxford-centres/index.html" class="no-external">
 <div class="listing-date">
 Feb 18, 2019
 </div>
@@ -475,34 +574,28 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="" data-listing-date-sort="1546387200000" data-listing-file-modified-sort="1655742658352" data-listing-reading-time-sort="1.935">
+<div class="quarto-post image-right" data-index="11" data-categories="" data-listing-date-sort="1546387200000" data-listing-file-modified-sort="1655742658352" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="387">
 <div class="thumbnail">
-<a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html"></a></p>
+<p><a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html" class="no-external"></a></p><a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html" class="no-external">
+<p class="card-img-top"><img src="posts/2019-01-02_keeping-secrets-in-blogdown/index_files/figure-html/unnamed-chunk-4-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html">
 <h3 class="no-anchor listing-title">
-Keeping secrets in blogdown
+<a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html" class="no-external">Keeping secrets in blogdown</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 
 </div>
-<a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html">
 <div class="listing-description">
-<p>Keeping API keys and passwords secret in a blogdown blog using the static/ folder and the secret package.</p>
+<a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html" class="no-external">Keeping API keys and passwords secret in a blogdown blog using the static/ folder and the secret package.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html">
+<a href="./posts/2019-01-02_keeping-secrets-in-blogdown/index.html" class="no-external">
 <div class="listing-date">
 Jan 2, 2019
 </div>
@@ -512,23 +605,19 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="dataviz,R" data-listing-date-sort="1543968000000" data-listing-file-modified-sort="1655736907445" data-listing-reading-time-sort="4.02">
+<div class="quarto-post image-right" data-index="12" data-categories="dataviz,R" data-listing-date-sort="1543968000000" data-listing-file-modified-sort="1655736907445" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="804">
 <div class="thumbnail">
-<a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html"></a></p>
+<p><a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html" class="no-external"></a></p><a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html" class="no-external">
+<p class="card-img-top"><img src="blog/2018-12-05-using-ggmap-after-july-2018/2018-12-05_google-maps-platform-dialog.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html">
 <h3 class="no-anchor listing-title">
-Using ggmap after July 2018
+<a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html" class="no-external">Using ggmap after July 2018</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('dataviz'); return false;">
 dataviz
@@ -537,14 +626,12 @@ dataviz
 R
 </div>
 </div>
-<a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html">
 <div class="listing-description">
-<code>ggmap</code> is an awesome package for creating maps with <code>ggplot2</code>. If you’ve seen a nice looking map built with <code>ggplot2</code> I can almost guarantee you that it uses <code>ggmap</code> to look that good. The <code>ggmap</code> package is used to obtain base maps from the APIs of a number of online mapping tools, the one we care about here is the base maps from Google Maps (because they’re very good).
+<a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html" class="no-external"><code>ggmap</code> is an awesome package for creating maps with <code>ggplot2</code>. If you’ve seen a nice looking map built with <code>ggplot2</code> I can almost guarantee you that it uses <code>ggmap</code> to look that…<code></code></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html">
+<a href="./posts/2018-12-05-using-ggmap-after-july-2018/index.html" class="no-external">
 <div class="listing-date">
 Dec 5, 2018
 </div>
@@ -554,32 +641,30 @@ Charlie Hadley, Charlie Joey Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="dataviz" data-listing-date-sort="1543363200000" data-listing-file-modified-sort="1655743616722" data-listing-reading-time-sort="18.41">
+<div class="quarto-post image-right" data-index="13" data-categories="dataviz" data-listing-date-sort="1543363200000" data-listing-file-modified-sort="1655743616722" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3682">
 <div class="thumbnail">
-<p><a href="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html"> <img src="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/2018-11-28_gg-christmass-advent-doors.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html" class="no-external"></a></p><a href="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html" class="no-external">
+<p><img src="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/2018-11-28_gg-christmass-advent-doors.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html">
 <h3 class="no-anchor listing-title">
-Christmas Drinks ggplot2 Advent Calendar 2018
+<a href="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html" class="no-external">Christmas Drinks ggplot2 Advent Calendar 2018</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('dataviz'); return false;">
 dataviz
 </div>
 </div>
-<a href="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html">
 <div class="listing-description">
-<p>There are just about 24 Christmassy hot drinks available in the big UK cafes. I’ve made an advent calendae of them in ggplot2, read this post to find out how to do the same.</p>
+<a href="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html" class="no-external">There are just about 24 Christmassy hot drinks available in the big UK cafes. I’ve made an advent calendae of them in ggplot2, read this post to find out how to do the same.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html">
+<a href="./posts/2018-11-28-christmas-drinks-ggplot2-advent-calendar-2018/index.html" class="no-external">
 <div class="listing-date">
 Nov 28, 2018
 </div>
@@ -589,25 +674,25 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-listing-date-sort="1541980800000" data-listing-file-modified-sort="1655745568242" data-listing-reading-time-sort="12.525">
+<div class="quarto-post image-right" data-index="14" data-listing-date-sort="1541980800000" data-listing-file-modified-sort="1655745568242" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2505">
 <div class="thumbnail">
-<p><a href="./posts/2018-11-12-crawling-doi-from-a-sage/index.html"> <img src="./posts/2018-11-12-crawling-doi-from-a-sage/2018-11-12_futured-dois.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2018-11-12-crawling-doi-from-a-sage/index.html" class="no-external"></a></p><a href="./posts/2018-11-12-crawling-doi-from-a-sage/index.html" class="no-external">
+<p><img src="./posts/2018-11-12-crawling-doi-from-a-sage/2018-11-12_futured-dois.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2018-11-12-crawling-doi-from-a-sage/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2018-11-12-crawling-doi-from-a-sage/index.html">
 <h3 class="no-anchor listing-title">
-Crawling DOI from a SAGE
+<a href="./posts/2018-11-12-crawling-doi-from-a-sage/index.html" class="no-external">Crawling DOI from a SAGE</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2018-11-12-crawling-doi-from-a-sage/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-Recently a friend told me they were doing a systematic review of the Hand Therapy Journal published by SAGE. They wanted a way to scrape the journal for all publications - without going mad in the process. It seemed like a good excuse to get them motivated to learn R and for me to practice web scraping with the <code>rvest</code> package.
+<a href="./posts/2018-11-12-crawling-doi-from-a-sage/index.html" class="no-external">Recently a friend told me they were doing a systematic review of the Hand Therapy Journal published by SAGE. They wanted a way to scrape the journal for all publications -…<code></code></a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2018-11-12-crawling-doi-from-a-sage/index.html">
+<a href="./posts/2018-11-12-crawling-doi-from-a-sage/index.html" class="no-external">
 <div class="listing-date">
 Nov 12, 2018
 </div>
@@ -617,32 +702,30 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-categories="GIS" data-listing-date-sort="1519776000000" data-listing-file-modified-sort="1655746213613" data-listing-reading-time-sort="7.1">
+<div class="quarto-post image-right" data-index="15" data-categories="GIS" data-listing-date-sort="1519776000000" data-listing-file-modified-sort="1655746213613" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1420">
 <div class="thumbnail">
-<p><a href="./posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html"> <img src="./posts/2018-02-28_great-circles-with-sf-and-leaflet/great-circles-with-sf.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html" class="no-external"></a></p><a href="./posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html" class="no-external">
+<p><img src="./posts/2018-02-28_great-circles-with-sf-and-leaflet/great-circles-with-sf.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html">
 <h3 class="no-anchor listing-title">
-Great circles with sf and leaflet
+<a href="./posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html" class="no-external">Great circles with sf and leaflet</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('GIS'); return false;">
 GIS
 </div>
 </div>
-<a href="./posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html">
 <div class="listing-description">
-<p>Great circles are the shortest journeys between two points on a map, which can be easily computed and manipulated through the use of the excellent sf library, and visualised interactively with leaflet.</p>
+<a href="./posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html" class="no-external">Great circles are the shortest journeys between two points on a map, which can be easily computed and manipulated through the use of the excellent sf library, and visualised interactively with leaflet.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html">
+<a href="./posts/2018-02-28_great-circles-with-sf-and-leaflet/index.html" class="no-external">
 <div class="listing-date">
 Feb 28, 2018
 </div>
@@ -652,25 +735,25 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="14" data-listing-date-sort="1519689600000" data-listing-file-modified-sort="1655751642530" data-listing-reading-time-sort="6.84">
+<div class="quarto-post image-right" data-index="16" data-listing-date-sort="1519689600000" data-listing-file-modified-sort="1655751642530" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1368">
 <div class="thumbnail">
-<p><a href="./posts/2018-02-27-crawling-with-tidygraph/index.html"> <img src="./posts/2018-02-27-crawling-with-tidygraph/crawling-with-tidygraph.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2018-02-27-crawling-with-tidygraph/index.html" class="no-external"></a></p><a href="./posts/2018-02-27-crawling-with-tidygraph/index.html" class="no-external">
+<p><img src="./posts/2018-02-27-crawling-with-tidygraph/crawling-with-tidygraph.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2018-02-27-crawling-with-tidygraph/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2018-02-27-crawling-with-tidygraph/index.html">
 <h3 class="no-anchor listing-title">
-Crawling with tidygraph
+<a href="./posts/2018-02-27-crawling-with-tidygraph/index.html" class="no-external">Crawling with tidygraph</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2018-02-27-crawling-with-tidygraph/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>In this blogpost I use crawling the internal links between pages in the University of Oxford’s Research Data website as an excuse for finally getting to grips with tidygraph and ggraph</p>
+<a href="./posts/2018-02-27-crawling-with-tidygraph/index.html" class="no-external">In this blogpost I use crawling the internal links between pages in the University of Oxford’s Research Data website as an excuse for finally getting to grips with tidygraph and ggraph</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2018-02-27-crawling-with-tidygraph/index.html">
+<a href="./posts/2018-02-27-crawling-with-tidygraph/index.html" class="no-external">
 <div class="listing-date">
 Feb 27, 2018
 </div>
@@ -680,32 +763,30 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="15" data-categories="dataviz" data-listing-date-sort="1518912000000" data-listing-file-modified-sort="1655751642933" data-listing-reading-time-sort="4.61">
+<div class="quarto-post image-right" data-index="17" data-categories="dataviz" data-listing-date-sort="1518912000000" data-listing-file-modified-sort="1655751642933" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="922">
 <div class="thumbnail">
-<p><a href="./posts/2018-02-18-recipes-for-learning/index.html"> <img src="./posts/2018-02-18-recipes-for-learning/recipes-for-learning.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2018-02-18-recipes-for-learning/index.html" class="no-external"></a></p><a href="./posts/2018-02-18-recipes-for-learning/index.html" class="no-external">
+<p><img src="./posts/2018-02-18-recipes-for-learning/recipes-for-learning.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2018-02-18-recipes-for-learning/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2018-02-18-recipes-for-learning/index.html">
 <h3 class="no-anchor listing-title">
-Recipes for learning
+<a href="./posts/2018-02-18-recipes-for-learning/index.html" class="no-external">Recipes for learning</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2018-02-18-recipes-for-learning/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('dataviz'); return false;">
 dataviz
 </div>
 </div>
-<a href="./posts/2018-02-18-recipes-for-learning/index.html">
-</a><div class="listing-description"><a href="./posts/2018-02-18-recipes-for-learning/index.html">
-</a><p><a href="./posts/2018-02-18-recipes-for-learning/index.html">In this blogpost I introduce one of my favourite datasets, a treasure trove of 57,000+ recipes scraped from recipe websites for a fascinating research paper </a><a href="http://doi.org/10.1038/srep00196">(DOI: 10.1038/srep00196)</a> comparing how different cuisines choose ingredients. I first used this dataset in May 2015 to learn how to use R and continue to use it to test my understanding of new techniques and analysis.</p>
+<div class="listing-description">
+<a href="./posts/2018-02-18-recipes-for-learning/index.html" class="no-external">In this blogpost I introduce one of my favourite datasets, a treasure trove of 57,000+ recipes scraped from recipe websites for a fascinating research paper </a><a href="http://doi.org/10.1038/srep00196">(DOI: 10.1038/srep00196)</a> comparing how different cuisines choose ingredients. I first used this dataset in May 2015 to learn how to use R and continue to use it to test my understanding of new techniques and analysis. 
 </div>
-
 </div>
 <div class="metadata">
-<a href="./posts/2018-02-18-recipes-for-learning/index.html">
+<a href="./posts/2018-02-18-recipes-for-learning/index.html" class="no-external">
 <div class="listing-date">
 Feb 18, 2018
 </div>
@@ -715,36 +796,30 @@ Charlie Hadley
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="16" data-categories="dataviz" data-listing-date-sort="1517961600000" data-listing-file-modified-sort="1655751642762" data-listing-reading-time-sort="7.855">
+<div class="quarto-post image-right" data-index="18" data-categories="dataviz" data-listing-date-sort="1517961600000" data-listing-file-modified-sort="1655751642762" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1571">
 <div class="thumbnail">
-<a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html"></a></p>
+<p><a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html" class="no-external"></a></p><a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html" class="no-external">
+<p class="card-img-top"><img src="posts/2018-02-07_where-s-the-love-for-htmlwidgets/tweets-about-htmlwidgets-from-hadleywickham.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html">
 <h3 class="no-anchor listing-title">
-Where’s the love for htmlwidgets?
+<a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html" class="no-external">Where’s the love for htmlwidgets?</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('dataviz'); return false;">
 dataviz
 </div>
 </div>
-<a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html">
 <div class="listing-description">
-<p>If you’ve never heard of them, <code>htmlwidgets</code> are an amazing part of the work that RStudio (plus ramnathv and timelyportfolio) have undertaken to make R a beautiful tool for doing data science and communicating things about your data. Using leaflet, plotly, highcharter and more it’s possible to create rich interactive charts, maps and other visualisations directly from R without having to learn JavaScript</p>
+<a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html" class="no-external">If you’ve never heard of them, <code>htmlwidgets</code> are an amazing part of the work that RStudio (plus ramnathv and timelyportfolio) have undertaken to make R a beautiful tool for doing data science and communicating things about your data. Using leaflet, plotly, highcharter and more it’s possible to create rich interactive charts, maps and other visualisations directly from R without having to learn JavaScript</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html">
+<a href="./posts/2018-02-07_where-s-the-love-for-htmlwidgets/index.html" class="no-external">
 <div class="listing-date">
 Feb 7, 2018
 </div>
@@ -786,9 +861,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -800,17 +889,51 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/visibledata\.co\.uk");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -820,43 +943,308 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

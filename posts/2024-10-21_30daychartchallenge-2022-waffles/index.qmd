@@ -1,0 +1,191 @@
+---
+title: 'From the archive: 30DayChartChallenge 2022 Waffles'
+date: '2024-10-21'
+execute:
+  freeze: false
+  message: false
+  warning: false
+code-fold: false
+engine: knitr
+categories:
+  - Data visualisation
+  - "30DayChartChallenge 2022"
+---
+
+```{r setup}
+#| include: false
+set.seed(as.integer(Sys.Date()))
+sample(1:5, 1)
+sample(1:52, 1)
+
+quarto_here <- function(rest_of_path){
+  here::here(ifelse(
+  rstudioapi::isAvailable(), 
+  rstudioapi::getActiveDocumentContext()$path,
+  knitr::current_input(dir = TRUE)
+) |> dirname(),
+rest_of_path)
+}
+```
+
+<hr/>
+
+This post has been rescued from a side-project blog that I've disposed of and slowly reposting content from. In this post I made this waffle chart:
+
+![](cw_bechdel_waffles.png)
+
+<hr/>
+
+This chart was built for the "Part-to-whole" prompt in the 2022 #30DayChartChallenge. I wanted to make a waffle chart and also experiment with combining multiple charts together, I've still not really committed to `{cowplot}` or `{patchwork}` and when I began 2022's 30DayChartChallenge one of my big goals was to get stuck into comparing them. Although I didn't get too far with that, it was still constructive to build this chart.
+
+I'm very fond of the Bechdel dataset from `{fivethirtyeight}` so this was a simple choice for chart. If you don't know, `knitr::kable()` is a really cheap way to make a Markdown table that looks fine in Quarto and RMarkdown:
+
+```{r }
+library(fivethirtyeight)
+library(tidyverse)
+bechdel_count_clean_test <- bechdel %>% 
+  count(clean_test)
+
+label_tests_vec <- c("nowomen" = "No women in the movie", "notalk" = "No talking between women", "men" = "Talk about men", "dubious" = "Dubiously passes", "ok" = "Passed the test!")
+label_tests_tib <- enframe(label_tests_vec) %>% 
+  rename(clean_test = name,
+         test_label = value)
+
+
+bechdel_count_clean_test <- bechdel %>% 
+  count(clean_test, sort = TRUE) %>% 
+  left_join(label_tests_tib) %>% 
+  mutate(test_label = fct_reorder(test_label, n))
+
+bechdel_count_clean_test %>% 
+  knitr::kable()
+```
+
+In 2022 it looked like [{waffle}](https://github.com/hrbrmstr/waffle) package was the best for making waffle charts with {ggplot2}. I got side tracked thinking about the math behind making aesthetically pleasing but eventually settled on the most square possible chart via `round(sqrt(nrow(bechdel)))`.
+
+```{r}
+library(waffle)
+library(ggpomological)
+library(hrbrthemes)
+library(ggtext)
+gg_waffle_bechdel <- bechdel_count_clean_test %>% 
+  ggplot(aes(fill = test_label, values = n)) +
+  geom_waffle(n_rows = round(sqrt(nrow(bechdel))), size = 0.33, colour = "white", flip = TRUE) +
+  coord_equal()
+gg_waffle_bechdel
+```
+
+Let's beautify:
+
+```{r}
+bechdel_count_clean_test %>% 
+  ggplot(aes(fill = test_label, values = n)) +
+  geom_waffle(n_rows = round(sqrt(nrow(bechdel))), size = 0.33, colour = "white", flip = TRUE) +
+  scale_fill_pomological(name = "") +
+  coord_equal() +
+  theme_ipsum_rc(grid="") +
+  theme_enhance_waffle()
+```
+
+Let's do this by decade. Again, it was fun to experiment with different `n_rows()` values. It feels to me like the best option is to use prime factors of the decade with most observations, which became 7 * 2.
+
+```{r}
+bechdel_by_decade <- bechdel %>% 
+  mutate(decade = floor(year / 10) * 10) %>% 
+  count(decade, clean_test, sort = TRUE) %>% 
+  left_join(label_tests_tib) %>% 
+  mutate(test_label = fct_reorder(test_label, n))
+
+bechdel_by_decade %>% 
+  ggplot(aes(fill = clean_test, values = n)) +
+  geom_waffle(n_rows = 7 * 2, size = 0.33, colour = "white", flip = TRUE) +
+  facet_wrap(~decade, nrow = 1, strip.position = "bottom") +
+  scale_fill_pomological(name = "") +
+  coord_equal() +
+  theme_ipsum_rc(grid="") +
+  theme_enhance_waffle()
+```
+
+While that's an interesting way to look at the data I abandoned this as I wanted something slightly more squarish for the eventual `{cowplot}` so I made a waffle per decade and added some title text.
+
+```{r}
+gg_bechdel_decade_prop <- bechdel_by_decade %>% 
+  mutate(test_label = fct_relevel(test_label, label_tests_tib$test_label)) %>% 
+  ggplot(aes(fill = test_label, values = n)) +
+  geom_waffle(n_rows = 10, size = 0.33, colour = "white", flip = TRUE, show.legend = TRUE, make_proportional = TRUE) +
+  facet_wrap(~decade, nrow = 2, strip.position = "bottom") +
+  scale_fill_ipsum(name = "") +
+  labs(subtitle = paste("{waffle} charts are pretty fun!",
+                      "<br>",
+                      "<b>Square waffles</b>",
+                      "<br>",
+                      str_wrap("For the squarest waffles use this code: round(sqrt(nrow(data))). It'd be fun if this was an optional argument for geom_waffle()", 20),
+                      "<br>",
+                      "<b>Proportional Faceted waffles</b>",
+                      "<br>",
+                      "With proportional faceting n_rows should be a factor of 10. If not proportional, it feels like the best option is finding prime factors for the largest group. Consider using numbers::primeFactors() for that",
+                      "<br>",
+                      "<b>Paragraphs of text</b>",
+                      "<br>",
+                      "I've not really used {patchwork} or {cowplot} to add paragraphs of text. I'm always really impressed by folks who do have these nicely displayed summaries in their charts. So that's something I'm going to experiment with a lot this edition of #30DaysChartChallenge",
+                      "<br>"
+  )) +
+  coord_equal() +
+  theme_ipsum_rc(grid="") +
+  theme_enhance_waffle() +
+  theme(
+    # plot.subtitle = element_markdown(lineheight = 1.25, hjust = 0, size = 13),
+        plot.subtitle = element_textbox_simple(
+      size = 10,
+      padding = margin(2, 2, 2, 2),
+      margin = margin(0, 0, 2, 0),
+      lineheight = 1.25
+    ),
+        text = element_text(colour = "#242c28", family = "Arvo"))
+
+gg_bechdel_decade_prop
+```
+
+These were then assembled together with `{cowplot}`:
+
+```{r}
+library(cowplot)
+
+gg_bechdel_waffle <- bechdel_count_clean_test %>% 
+  ggplot(aes(fill = test_label, values = n)) +
+  geom_waffle(n_rows = round(sqrt(nrow(bechdel))), size = 0.33, colour = "white", flip = TRUE, show.legend = TRUE) +
+  scale_fill_pomological(name = "") +
+  guides(fill = guide_legend(nrow = 2)) +
+  coord_equal() +
+  theme_ipsum_rc(grid="") +
+  theme_enhance_waffle() +
+  theme(legend.position = "bottom")
+
+cw_bechdel_waffles <- plot_grid(
+  ggdraw() + 
+  draw_label(
+    "#30DayChartChallenge 2022-04-01 Part to Whole: Waffles and the Bechdel Test",
+    fontface = 'bold',
+    x = 0,
+    hjust = 0
+  ) +
+  theme(
+    plot.margin = margin(0, 0, -10, 10),
+    plot.title = element_text(family = "Arvo")
+  ),
+  plot_grid(gg_bechdel_waffle,
+  gg_bechdel_decade_prop,
+  nrow = 1,
+  rel_widths = c(2, 3)),
+  ncol= 1,
+  rel_heights = c(0.05, 1)
+)
+
+cw_bechdel_waffles %>% 
+  ggsave(quarto_here("cw_bechdel_waffles.png"),
+         .,
+         width = 18,
+         height = 8)
+```
+
+![](cw_bechdel_waffles.png)

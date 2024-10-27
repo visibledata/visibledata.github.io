@@ -1,0 +1,118 @@
+---
+title: "{highcharts} doesn't like empty factors (and the .by argument is quite nice, actually)"
+date: '2024-10-24'
+execute:
+  freeze: true
+  message: false
+  warning: false
+code-fold: false
+engine: knitr
+filters:
+  - line-highlight
+---
+
+:::{layout-ncol=2}
+
+:::{.left}
+
+Heard of `{plotly}` for interactive charts? I massively prefer `{highcharts}` as it's more accessible, mobile friendly and **simply more beautiful**. Both of these packages are *htmlwidgets* and there are [so many packages for making interactive charts, maps and more](https://www.htmlwidgets.org/showcase_highcharts.html).
+
+But. We're here to discuss how `{highcharter}` doesn't like empty factor levels - with my own YouTubesque thumbnail.
+
+:::
+
+:::{.right}
+
+![](highchart-doesnt-like-empty-factors_youtube-thumbnail.png)
+
+:::
+
+:::
+
+Let's demonstrate how `{ggplot2}` handles ordering of factor levels that are empty:
+
+```{r}
+library(tidyverse)
+
+gss_party_by_marital <- gss_cat %>% 
+  summarise(n_in_subcategory = n(), .by = c(partyid, marital)) %>% 
+  mutate(n_in_category = sum(n_in_subcategory), .by = partyid) %>% 
+  mutate(partyid = fct_reorder(partyid, n_in_category))
+
+gss_party_by_marital %>% 
+  ggplot(aes(x = n_in_subcategory,
+             y = partyid,
+             fill = marital)) +
+  geom_col() +
+  scale_fill_viridis_d(option = "A", direction = 1) +
+  guides(fill = guide_legend(reverse = TRUE))
+```
+
+That's a nicely ordered stacked bar chart! We've got the bars going from big to small, even though the final two categories don't contain all of the marital states.
+
+```{r}
+gss_party_by_marital %>% 
+  filter(partyid %in% c("No answer", "Don't know")) %>% 
+  knitr::kable()
+```
+
+Let's throw this into `{highcharter}` and we see just a complete **mess**.
+
+```{r}
+library(highcharter)
+
+gss_party_by_marital %>% 
+  hchart(
+    type = "bar",
+    hcaes(
+      y = n_in_subcategory,
+      x = partyid,
+      group = marital
+    )
+  ) %>% 
+  hc_plotOptions(series = list(stacking = "normal"))
+```
+
+## Using complete() and talking about that .by argument
+
+You might have missed it in my code above, but I used groups without `group_by()` or `ungroup()`! Back in late 2022 there was a [suggestion that the grouping functions gain a `.by` argument](https://github.com/tidyverse/dplyr/pull/6528) which was added as an experimental feature. 
+
+I initially I really didn't like it. But, look how neat this is. I've highlighted the `summarise()` and `mutate()` lines that make use of the `.by` argument, it saves having to call `group_by()` and `ungroup()`... and just to be clear `complete()` is filling in empty factor levels with an explicit value of 0.
+
+```{r}
+#| source-line-numbers: "2,6"
+gss_completed_data <- gss_cat %>% 
+  summarise(n_in_subcategory = n(), .by = c(partyid, marital)) %>% 
+  complete(partyid,
+           marital,
+           fill = list(n_in_subcategory = 0)) %>% 
+  mutate(n_in_category = sum(n_in_subcategory), .by = partyid) %>% 
+  mutate(partyid = fct_reorder(partyid, n_in_category)) %>% 
+  arrange(desc(n_in_category))
+
+gss_completed_data %>% 
+  filter(partyid %in% c("No answer", "Don't know")) %>% 
+  knitr::kable()
+```
+
+Now those empty factor levels are filled we can throw it back into `{highcharter}`. Make sure to interact with the chart, and click on the legend items to see just how beautiful `{highcharter}` is.
+
+```{r}
+gss_completed_data %>% 
+  hchart(
+    type = "bar",
+    hcaes(
+      y = n_in_subcategory,
+      x = partyid,
+      group = marital
+    )
+  ) %>% 
+  hc_plotOptions(series = list(stacking = "normal"))
+```
+
+## A necessary aside on licensing
+
+`{highcharter}` is a wrapper for the incredible [https://highcharts.com/](highcharts.com) JavaScript framework. It is **not free** to use `{highcharter}` in [commercial projects](https://shop.highcharts.com/), but there are free license options for [personal projects](https://shop.highcharts.com/contact/personal) and [educational usage](https://www.highcharts.com/blog/education/).
+
+
+

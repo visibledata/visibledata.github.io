@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/ dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# sioc: http://rdfs.org/sioc/ns# sioct: http://rdfs.org/sioc/types# skos: http://www.w3.org/2004/02/skos/core# xsd: http://www.w3.org/2001/XMLSchema#">
+<head>
+  <!-- force compatibility mode (quirks mode) off in IE  to avoid IE8/9/10 rendering as IE7 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8"><script type="text/javascript">(window.NREUM||(NREUM={})).init={ajax:{deny_list:["bam.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={xpid:"VQABUFZaCxAFVVZbAwIFXg==",licenseKey:"74a7a5817d",applicationID:"51794328"};;/*! For license information please see nr-loader-full-1.238.0.min.js.LICENSE.txt */
+(()=>{"use strict";var e,t,r={5763:(e,t,r)=>{r.d(t,{P_:()=>f,Mt:()=>g,C5:()=>s,DL:()=>m,OP:()=>T,lF:()=>D,Yu:()=>y,Dg:()=>h,CX:()=>c,GE:()=>b,sU:()=>_});var n=r(8632),i=r(9567);const o={beacon:n.ce.beacon,errorBeacon:n.ce.errorBeacon,licenseKey:void 0,applicationID:void 0,sa:void 0,queueTime:void 0,applicationTime:void 0,ttGuid:void 0,user:void 0,account:void 0,product:void 0,extra:void 0,jsAttributes:{},userAttributes:void 0,atts:void 0,transactionName:void 0,tNamePlain:void 0},a={};function s(e){if(!e)throw new Error("All info objects require an agent identifier!");if(!a[e])throw new Error("Info for ".concat(e," was never set"));return a[e]}function c(e,t){if(!e)throw new Error("All info objects require an agent identifier!");a[e]=(0,i.D)(t,o),(0,n.Qy)(e,a[e],"info")}var d=r(7056);const u=()=>{const e={blockSelector:"[data-nr-block]",maskInputOptions:{password:!0}};return{allow_bfcache:!0,privacy:{cookies_enabled:!0},ajax:{deny_list:void 0,block_internal:!0,enabled:!0,harvestTimeSeconds:10},distributed_tracing:{enabled:void 0,exclude_newrelic_header:void 0,cors_use_newrelic_header:void 0,cors_use_tracecontext_headers:void 0,allowed_origins:void 0},session:{domain:void 0,expiresMs:d.oD,inactiveMs:d.Hb},ssl:void 0,obfuscate:void 0,jserrors:{enabled:!0,harvestTimeSeconds:10},metrics:{enabled:!0},page_action:{enabled:!0,harvestTimeSeconds:30},page_view_event:{enabled:!0},page_view_timing:{enabled:!0,harvestTimeSeconds:30,long_task:!1},session_trace:{enabled:!0,harvestTimeSeconds:10},harvest:{tooManyRequestsDelay:60},session_replay:{enabled:!1,harvestTimeSeconds:60,sampleRate:.1,errorSampleRate:.1,maskTextSelector:"*",maskAllInputs:!0,get blockClass(){return"nr-block"},get ignoreClass(){return"nr-ignore"},get maskTextClass(){return"nr-mask"},get blockSelector(){return e.blockSelector},set blockSelector(t){e.blockSelector+=",".concat(t)},get maskInputOptions(){return e.maskInputOptions},set maskInputOptions(t){e.maskInputOptions={...t,password:!0}}},spa:{enabled:!0,harvestTimeSeconds:10}}},l={};function f(e){if(!e)throw new Error("All configuration objects require an agent identifier!");if(!l[e])throw new Error("Configuration for ".concat(e," was never set"));return l[e]}function h(e,t){if(!e)throw new Error("All configuration objects require an agent identifier!");l[e]=(0,i.D)(t,u()),(0,n.Qy)(e,l[e],"config")}function g(e,t){if(!e)throw new Error("All configuration objects require an agent identifier!");var r=f(e);if(r){for(var n=t.split("."),i=0;i<n.length-1;i++)if("object"!=typeof(r=r[n[i]]))return;r=r[n[n.length-1]]}return r}const p={accountID:void 0,trustKey:void 0,agentID:void 0,licenseKey:void 0,applicationID:void 0,xpid:void 0},v={};function m(e){if(!e)throw new Error("All loader-config objects require an agent identifier!");if(!v[e])throw new Error("LoaderConfig for ".concat(e," was never set"));return v[e]}function b(e,t){if(!e)throw new Error("All loader-config objects require an agent identifier!");v[e]=(0,i.D)(t,p),(0,n.Qy)(e,v[e],"loader_config")}const y=(0,n.mF)().o;var w=r(385),A=r(6818);const x={buildEnv:A.Re,bytesSent:{},queryBytesSent:{},customTransaction:void 0,disabled:!1,distMethod:A.gF,isolatedBacklog:!1,loaderType:void 0,maxBytes:3e4,offset:Math.floor(w._A?.performance?.timeOrigin||w._A?.performance?.timing?.navigationStart||Date.now()),onerror:void 0,origin:""+w._A.location,ptid:void 0,releaseIds:{},session:void 0,xhrWrappable:"function"==typeof w._A.XMLHttpRequest?.prototype?.addEventListener,version:A.q4,denyList:void 0},E={};function T(e){if(!e)throw new Error("All runtime objects require an agent identifier!");if(!E[e])throw new Error("Runtime for ".concat(e," was never set"));return E[e]}function _(e,t){if(!e)throw new Error("All runtime objects require an agent identifier!");E[e]=(0,i.D)(t,x),(0,n.Qy)(e,E[e],"runtime")}function D(e){return function(e){try{const t=s(e);return!!t.licenseKey&&!!t.errorBeacon&&!!t.applicationID}catch(e){return!1}}(e)}},9567:(e,t,r)=>{r.d(t,{D:()=>i});var n=r(50);function i(e,t){try{if(!e||"object"!=typeof e)return(0,n.Z)("Setting a Configurable requires an object as input");if(!t||"object"!=typeof t)return(0,n.Z)("Setting a Configurable requires a model to set its initial properties");const r=Object.create(Object.getPrototypeOf(t),Object.getOwnPropertyDescriptors(t)),o=0===Object.keys(r).length?e:r;for(let a in o)if(void 0!==e[a])try{"object"==typeof e[a]&&"object"==typeof t[a]?r[a]=i(e[a],t[a]):r[a]=e[a]}catch(e){(0,n.Z)("An error occurred while setting a property of a Configurable",e)}return r}catch(e){(0,n.Z)("An error occured while setting a Configurable",e)}}},6818:(e,t,r)=>{r.d(t,{Re:()=>i,gF:()=>o,q4:()=>n});const n="1.238.0",i="PROD",o="CDN"},385:(e,t,r)=>{r.d(t,{FN:()=>a,IF:()=>d,Nk:()=>l,Tt:()=>s,_A:()=>o,il:()=>n,pL:()=>c,v6:()=>i,w1:()=>u});const n="undefined"!=typeof window&&!!window.document,i="undefined"!=typeof WorkerGlobalScope&&("undefined"!=typeof self&&self instanceof WorkerGlobalScope&&self.navigator instanceof WorkerNavigator||"undefined"!=typeof globalThis&&globalThis instanceof WorkerGlobalScope&&globalThis.navigator instanceof WorkerNavigator),o=n?window:"undefined"!=typeof WorkerGlobalScope&&("undefined"!=typeof self&&self instanceof WorkerGlobalScope&&self||"undefined"!=typeof globalThis&&globalThis instanceof WorkerGlobalScope&&globalThis),a=""+o?.location,s=/iPad|iPhone|iPod/.test(navigator.userAgent),c=s&&"undefined"==typeof SharedWorker,d=(()=>{const e=navigator.userAgent.match(/Firefox[/\s](\d+\.\d+)/);return Array.isArray(e)&&e.length>=2?+e[1]:0})(),u=Boolean(n&&window.document.documentMode),l=!!navigator.sendBeacon},1117:(e,t,r)=>{r.d(t,{w:()=>o});var n=r(50);const i={agentIdentifier:"",ee:void 0};class o{constructor(e){try{if("object"!=typeof e)return(0,n.Z)("shared context requires an object as input");this.sharedContext={},Object.assign(this.sharedContext,i),Object.entries(e).forEach((e=>{let[t,r]=e;Object.keys(i).includes(t)&&(this.sharedContext[t]=r)}))}catch(e){(0,n.Z)("An error occured while setting SharedContext",e)}}}},8e3:(e,t,r)=>{r.d(t,{L:()=>u,R:()=>c});var n=r(8325),i=r(1284),o=r(4322),a=r(3325);const s={};function c(e,t){const r={staged:!1,priority:a.p[t]||0};d(e),s[e].get(t)||s[e].set(t,r)}function d(e){e&&(s[e]||(s[e]=new Map))}function u(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"feature";if(d(e),!e||!s[e].get(t))return a(t);s[e].get(t).staged=!0;const r=[...s[e]];function a(t){const r=e?n.ee.get(e):n.ee,a=o.X.handlers;if(r.backlog&&a){var s=r.backlog[t],c=a[t];if(c){for(var d=0;s&&d<s.length;++d)l(s[d],c);(0,i.D)(c,(function(e,t){(0,i.D)(t,(function(t,r){r[0].on(e,r[1])}))}))}delete a[t],r.backlog[t]=null,r.emit("drain-"+t,[])}}r.every((e=>{let[t,r]=e;return r.staged}))&&(r.sort(((e,t)=>e[1].priority-t[1].priority)),r.forEach((e=>{let[t]=e;a(t)})))}function l(e,t){var r=e[1];(0,i.D)(t[r],(function(t,r){var n=e[0];if(r[0]===n){var i=r[1],o=e[3],a=e[2];i.apply(o,a)}}))}},8325:(e,t,r)=>{r.d(t,{A:()=>c,ee:()=>d});var n=r(8632),i=r(2210),o=r(5763);class a{constructor(e){this.contextId=e}}var s=r(3117);const c="nr@context:".concat(s.a),d=function e(t,r){var n={},s={},u={},f=!1;try{f=16===r.length&&(0,o.OP)(r).isolatedBacklog}catch(e){}var h={on:p,addEventListener:p,removeEventListener:function(e,t){var r=n[e];if(!r)return;for(var i=0;i<r.length;i++)r[i]===t&&r.splice(i,1)},emit:function(e,r,n,i,o){!1!==o&&(o=!0);if(d.aborted&&!i)return;t&&o&&t.emit(e,r,n);for(var a=g(n),c=v(e),u=c.length,l=0;l<u;l++)c[l].apply(a,r);var f=b()[s[e]];f&&f.push([h,e,r,a]);return a},get:m,listeners:v,context:g,buffer:function(e,t){const r=b();if(t=t||"feature",h.aborted)return;Object.entries(e||{}).forEach((e=>{let[n,i]=e;s[i]=t,t in r||(r[t]=[])}))},abort:l,aborted:!1,isBuffering:function(e){return!!b()[s[e]]},debugId:r,backlog:f?{}:t&&"object"==typeof t.backlog?t.backlog:{}};return h;function g(e){return e&&e instanceof a?e:e?(0,i.X)(e,c,(()=>new a(c))):new a(c)}function p(e,t){n[e]=v(e).concat(t)}function v(e){return n[e]||[]}function m(t){return u[t]=u[t]||e(h,t)}function b(){return h.backlog}}(void 0,"globalEE"),u=(0,n.fP)();function l(){d.aborted=!0,d.backlog={}}u.ee||(u.ee=d)},5546:(e,t,r)=>{r.d(t,{E:()=>n,p:()=>i});var n=r(8325).ee.get("handle");function i(e,t,r,i,o){o?(o.buffer([e],i),o.emit(e,t,r)):(n.buffer([e],i),n.emit(e,t,r))}},4322:(e,t,r)=>{r.d(t,{X:()=>o});var n=r(5546);o.on=a;var i=o.handlers={};function o(e,t,r,o){a(o||n.E,i,e,t,r)}function a(e,t,r,i,o){o||(o="feature"),e||(e=n.E);var a=t[o]=t[o]||{};(a[r]=a[r]||[]).push([e,i])}},3239:(e,t,r)=>{r.d(t,{bP:()=>s,iz:()=>c,m$:()=>a});var n=r(385);let i=!1,o=!1;try{const e={get passive(){return i=!0,!1},get signal(){return o=!0,!1}};n._A.addEventListener("test",null,e),n._A.removeEventListener("test",null,e)}catch(e){}function a(e,t){return i||o?{capture:!!e,passive:i,signal:t}:!!e}function s(e,t){let r=arguments.length>2&&void 0!==arguments[2]&&arguments[2],n=arguments.length>3?arguments[3]:void 0;window.addEventListener(e,t,a(r,n))}function c(e,t){let r=arguments.length>2&&void 0!==arguments[2]&&arguments[2],n=arguments.length>3?arguments[3]:void 0;document.addEventListener(e,t,a(r,n))}},3117:(e,t,r)=>{r.d(t,{a:()=>n});const n=(0,r(4402).Rl)()},4402:(e,t,r)=>{r.d(t,{Ht:()=>d,M:()=>c,Rl:()=>a,ky:()=>s});var n=r(385);const i="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";function o(e,t){return e?15&e[t]:16*Math.random()|0}function a(){const e=n._A?.crypto||n._A?.msCrypto;let t,r=0;return e&&e.getRandomValues&&(t=e.getRandomValues(new Uint8Array(31))),i.split("").map((e=>"x"===e?o(t,++r).toString(16):"y"===e?(3&o()|8).toString(16):e)).join("")}function s(e){const t=n._A?.crypto||n._A?.msCrypto;let r,i=0;t&&t.getRandomValues&&(r=t.getRandomValues(new Uint8Array(31)));const a=[];for(var s=0;s<e;s++)a.push(o(r,++i).toString(16));return a.join("")}function c(){return s(16)}function d(){return s(32)}},7056:(e,t,r)=>{r.d(t,{Bq:()=>n,Hb:()=>o,oD:()=>i});const n="NRBA",i=144e5,o=18e5},7894:(e,t,r)=>{function n(){return Math.round(performance.now())}r.d(t,{z:()=>n})},7243:(e,t,r)=>{r.d(t,{e:()=>o});var n=r(385),i={};function o(e){if(e in i)return i[e];if(0===(e||"").indexOf("data:"))return{protocol:"data"};let t;var r=n._A?.location,o={};if(n.il)t=document.createElement("a"),t.href=e;else try{t=new URL(e,r.href)}catch(e){return o}o.port=t.port;var a=t.href.split("://");!o.port&&a[1]&&(o.port=a[1].split("/")[0].split("@").pop().split(":")[1]),o.port&&"0"!==o.port||(o.port="https"===a[0]?"443":"80"),o.hostname=t.hostname||r.hostname,o.pathname=t.pathname,o.protocol=a[0],"/"!==o.pathname.charAt(0)&&(o.pathname="/"+o.pathname);var s=!t.protocol||":"===t.protocol||t.protocol===r.protocol,c=t.hostname===r.hostname&&t.port===r.port;return o.sameOrigin=s&&(!t.hostname||c),"/"===o.pathname&&(i[e]=o),o}},50:(e,t,r)=>{function n(e,t){"function"==typeof console.warn&&(console.warn("New Relic: ".concat(e)),t&&console.warn(t))}r.d(t,{Z:()=>n})},2587:(e,t,r)=>{r.d(t,{N:()=>c,T:()=>d});var n=r(8325),i=r(5546),o=r(8e3),a=r(3325);const s={stn:[a.D.sessionTrace],err:[a.D.jserrors,a.D.metrics],ins:[a.D.pageAction],spa:[a.D.spa],sr:[a.D.sessionReplay,a.D.sessionTrace]};function c(e,t){const r=n.ee.get(t);e&&"object"==typeof e&&(Object.entries(e).forEach((e=>{let[t,n]=e;void 0===d[t]&&(s[t]?s[t].forEach((e=>{n?(0,i.p)("feat-"+t,[],void 0,e,r):(0,i.p)("block-"+t,[],void 0,e,r),(0,i.p)("rumresp-"+t,[Boolean(n)],void 0,e,r)})):n&&(0,i.p)("feat-"+t,[],void 0,void 0,r),d[t]=Boolean(n))})),Object.keys(s).forEach((e=>{void 0===d[e]&&(s[e]?.forEach((t=>(0,i.p)("rumresp-"+e,[!1],void 0,t,r))),d[e]=!1)})),(0,o.L)(t,a.D.pageViewEvent))}const d={}},2210:(e,t,r)=>{r.d(t,{X:()=>i});var n=Object.prototype.hasOwnProperty;function i(e,t,r){if(n.call(e,t))return e[t];var i=r();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,t,{value:i,writable:!0,enumerable:!1}),i}catch(e){}return e[t]=i,i}},1284:(e,t,r)=>{r.d(t,{D:()=>n});const n=(e,t)=>Object.entries(e||{}).map((e=>{let[r,n]=e;return t(r,n)}))},4351:(e,t,r)=>{r.d(t,{P:()=>o});var n=r(8325);const i=()=>{const e=new WeakSet;return(t,r)=>{if("object"==typeof r&&null!==r){if(e.has(r))return;e.add(r)}return r}};function o(e){try{return JSON.stringify(e,i())}catch(e){try{n.ee.emit("internal-error",[e])}catch(e){}}}},3960:(e,t,r)=>{r.d(t,{K:()=>a,b:()=>o});var n=r(3239);function i(){return"undefined"==typeof document||"complete"===document.readyState}function o(e,t){if(i())return e();(0,n.bP)("load",e,t)}function a(e){if(i())return e();(0,n.iz)("DOMContentLoaded",e)}},8632:(e,t,r)=>{r.d(t,{EZ:()=>d,Qy:()=>c,ce:()=>o,fP:()=>a,gG:()=>u,mF:()=>s});var n=r(7894),i=r(385);const o={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net"};function a(){return i._A.NREUM||(i._A.NREUM={}),void 0===i._A.newrelic&&(i._A.newrelic=i._A.NREUM),i._A.NREUM}function s(){let e=a();return e.o||(e.o={ST:i._A.setTimeout,SI:i._A.setImmediate,CT:i._A.clearTimeout,XHR:i._A.XMLHttpRequest,REQ:i._A.Request,EV:i._A.Event,PR:i._A.Promise,MO:i._A.MutationObserver,FETCH:i._A.fetch}),e}function c(e,t,r){let i=a();const o=i.initializedAgents||{},s=o[e]||{};return Object.keys(s).length||(s.initializedAt={ms:(0,n.z)(),date:new Date}),i.initializedAgents={...o,[e]:{...s,[r]:t}},i}function d(e,t){a()[e]=t}function u(){return function(){let e=a();const t=e.info||{};e.info={beacon:o.beacon,errorBeacon:o.errorBeacon,...t}}(),function(){let e=a();const t=e.init||{};e.init={...t}}(),s(),function(){let e=a();const t=e.loader_config||{};e.loader_config={...t}}(),a()}},7956:(e,t,r)=>{r.d(t,{N:()=>i});var n=r(3239);function i(e){let t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],r=arguments.length>2?arguments[2]:void 0,i=arguments.length>3?arguments[3]:void 0;return void(0,n.iz)("visibilitychange",(function(){if(t)return void("hidden"==document.visibilityState&&e());e(document.visibilityState)}),r,i)}},1214:(e,t,r)=>{r.d(t,{em:()=>b,u5:()=>j,QU:()=>O,Kf:()=>k});var n=r(8325),i=r(3117);const o="nr@original:".concat(i.a);var a=Object.prototype.hasOwnProperty,s=!1;function c(e,t){return e||(e=n.ee),r.inPlace=function(e,t,n,i,o){n||(n="");const a="-"===n.charAt(0);for(let s=0;s<t.length;s++){const c=t[s],d=e[c];u(d)||(e[c]=r(d,a?c+n:n,i,c,o))}},r.flag=o,r;function r(t,r,n,s,c){return u(t)?t:(r||(r=""),nrWrapper[o]=t,function(e,t,r){if(Object.defineProperty&&Object.keys)try{return Object.keys(e).forEach((function(r){Object.defineProperty(t,r,{get:function(){return e[r]},set:function(t){return e[r]=t,t}})})),t}catch(e){d([e],r)}for(var n in e)a.call(e,n)&&(t[n]=e[n])}(t,nrWrapper,e),nrWrapper);function nrWrapper(){var o,a,u,l;try{a=this,o=[...arguments],u="function"==typeof n?n(o,a):n||{}}catch(t){d([t,"",[o,a,s],u],e)}i(r+"start",[o,a,s],u,c);try{return l=t.apply(a,o)}catch(e){throw i(r+"err",[o,a,e],u,c),e}finally{i(r+"end",[o,a,l],u,c)}}}function i(r,n,i,o){if(!s||t){var a=s;s=!0;try{e.emit(r,n,i,t,o)}catch(t){d([t,r,n,i],e)}s=a}}}function d(e,t){t||(t=n.ee);try{t.emit("internal-error",e)}catch(e){}}function u(e){return!(e&&e instanceof Function&&e.apply&&!e[o])}var l=r(2210),f=r(385);const h={},g=f._A.XMLHttpRequest,p="addEventListener",v="removeEventListener",m="nr@wrapped:".concat(n.A);function b(e){var t=function(e){return(e||n.ee).get("events")}(e);if(h[t.debugId]++)return t;h[t.debugId]=1;var r=c(t,!0);function i(e){r.inPlace(e,[p,v],"-",o)}function o(e,t){return e[1]}return"getPrototypeOf"in Object&&(f.il&&y(document,i),y(f._A,i),y(g.prototype,i)),t.on(p+"-start",(function(e,t){var n=e[1];if(null!==n&&("function"==typeof n||"object"==typeof n)){var i=(0,l.X)(n,m,(function(){var e={object:function(){if("function"!=typeof n.handleEvent)return;return n.handleEvent.apply(n,arguments)},function:n}[typeof n];return e?r(e,"fn-",null,e.name||"anonymous"):n}));this.wrapped=e[1]=i}})),t.on(v+"-start",(function(e){e[1]=this.wrapped||e[1]})),t}function y(e,t){let r=e;for(;"object"==typeof r&&!Object.prototype.hasOwnProperty.call(r,p);)r=Object.getPrototypeOf(r);for(var n=arguments.length,i=new Array(n>2?n-2:0),o=2;o<n;o++)i[o-2]=arguments[o];r&&t(r,...i)}var w="fetch-",A=w+"body-",x=["arrayBuffer","blob","json","text","formData"],E=f._A.Request,T=f._A.Response,_="prototype";const D={};function j(e){const t=function(e){return(e||n.ee).get("fetch")}(e);if(!(E&&T&&f._A.fetch))return t;if(D[t.debugId]++)return t;function r(e,r,i){var o=e[r];"function"==typeof o&&(e[r]=function(){var e,r=[...arguments],a={};t.emit(i+"before-start",[r],a),a[n.A]&&a[n.A].dt&&(e=a[n.A].dt);var s=o.apply(this,r);return t.emit(i+"start",[r,e],s),s.then((function(e){return t.emit(i+"end",[null,e],s),e}),(function(e){throw t.emit(i+"end",[e],s),e}))})}return D[t.debugId]=1,x.forEach((e=>{r(E[_],e,A),r(T[_],e,A)})),r(f._A,"fetch",w),t.on(w+"end",(function(e,r){var n=this;if(r){var i=r.headers.get("content-length");null!==i&&(n.rxSize=i),t.emit(w+"done",[null,r],n)}else t.emit(w+"done",[e],n)})),t}const C={},S=["pushState","replaceState"];function O(e){const t=function(e){return(e||n.ee).get("history")}(e);return!f.il||C[t.debugId]++||(C[t.debugId]=1,c(t).inPlace(window.history,S,"-")),t}var P=r(3239);var R=r(50);const I={},N=["open","send"];function k(e){var t=e||n.ee;const r=function(e){return(e||n.ee).get("xhr")}(t);if(I[r.debugId]++)return r;I[r.debugId]=1,b(t);var i=c(r),o=f._A.XMLHttpRequest,a=f._A.MutationObserver,s=f._A.Promise,d=f._A.setInterval,u="readystatechange",l=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],h=[],g=f._A.XMLHttpRequest=function(e){const t=new o(e),n=r.context(t);try{r.emit("new-xhr",[t],n),t.addEventListener(u,(a=n,function(){var e=this;e.readyState>3&&!a.resolved&&(a.resolved=!0,r.emit("xhr-resolved",[],e)),i.inPlace(e,l,"fn-",A)}),(0,P.m$)(!1))}catch(e){(0,R.Z)("An error occurred while intercepting XHR",e);try{r.emit("internal-error",[e])}catch(e){}}var a;return t};function p(e,t){i.inPlace(t,["onreadystatechange"],"fn-",A)}if(function(e,t){for(var r in e)t[r]=e[r]}(o,g),g.prototype=o.prototype,i.inPlace(g.prototype,N,"-xhr-",A),r.on("send-xhr-start",(function(e,t){p(e,t),function(e){h.push(e),a&&(v?v.then(w):d?d(w):(m=-m,y.data=m))}(t)})),r.on("open-xhr-start",p),a){var v=s&&s.resolve();if(!d&&!s){var m=1,y=document.createTextNode(m);new a(w).observe(y,{characterData:!0})}}else t.on("fn-end",(function(e){e[0]&&e[0].type===u||w()}));function w(){for(var e=0;e<h.length;e++)p(0,h[e]);h.length&&(h=[])}function A(e,t){return t}return r}},7825:(e,t,r)=>{r.d(t,{t:()=>n});const n=r(3325).D.ajax},6660:(e,t,r)=>{r.d(t,{t:()=>n});const n=r(3325).D.jserrors},3081:(e,t,r)=>{r.d(t,{gF:()=>o,mY:()=>i,t9:()=>n,vz:()=>s,xS:()=>a});const n=r(3325).D.metrics,i="sm",o="cm",a="storeSupportabilityMetrics",s="storeEventMetrics"},4649:(e,t,r)=>{r.d(t,{t:()=>n});const n=r(3325).D.pageAction},7633:(e,t,r)=>{r.d(t,{Dz:()=>i,OJ:()=>a,qw:()=>o,t9:()=>n});const n=r(3325).D.pageViewEvent,i="firstbyte",o="domcontent",a="windowload"},9251:(e,t,r)=>{r.d(t,{t:()=>n});const n=r(3325).D.pageViewTiming},3614:(e,t,r)=>{r.d(t,{BST_RESOURCE:()=>i,END:()=>s,FEATURE_NAME:()=>n,FN_END:()=>d,FN_START:()=>c,PUSH_STATE:()=>u,RESOURCE:()=>o,START:()=>a});const n=r(3325).D.sessionTrace,i="bstResource",o="resource",a="-start",s="-end",c="fn"+a,d="fn"+s,u="pushState"},5938:(e,t,r)=>{r.d(t,{W:()=>o});var n=r(5763),i=r(8325);class o{constructor(e,t,r){this.agentIdentifier=e,this.aggregator=t,this.ee=i.ee.get(e,(0,n.OP)(this.agentIdentifier).isolatedBacklog),this.featureName=r,this.blocked=!1}}},9144:(e,t,r)=>{r.d(t,{j:()=>v});var n=r(3325),i=r(5763),o=r(5546),a=r(8325),s=r(7894),c=r(8e3),d=r(3960),u=r(385),l=r(50),f=r(3081),h=r(8632);function g(){const e=(0,h.gG)();["setErrorHandler","finished","addToTrace","inlineHit","addRelease","addPageAction","setCurrentRouteName","setPageViewName","setCustomAttribute","interaction","noticeError","setUserId","setApplicationVersion"].forEach((t=>{e[t]=function(){for(var r=arguments.length,n=new Array(r),i=0;i<r;i++)n[i]=arguments[i];return function(t){for(var r=arguments.length,n=new Array(r>1?r-1:0),i=1;i<r;i++)n[i-1]=arguments[i];let o=[];return Object.values(e.initializedAgents).forEach((e=>{e.exposed&&e.api[t]&&o.push(e.api[t](...n))})),o.length>1?o:o[0]}(t,...n)}}))}var p=r(2587);function v(e){let t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},v=arguments.length>2?arguments[2]:void 0,m=arguments.length>3?arguments[3]:void 0,{init:b,info:y,loader_config:w,runtime:A={loaderType:v},exposed:x=!0}=t;const E=(0,h.gG)();y||(b=E.init,y=E.info,w=E.loader_config),(0,i.Dg)(e,b||{}),(0,i.GE)(e,w||{}),y.jsAttributes??={},u.v6&&(y.jsAttributes.isWorker=!0),(0,i.CX)(e,y);const T=(0,i.P_)(e);A.denyList=[...T.ajax?.deny_list||[],...T.ajax?.block_internal?[y.beacon,y.errorBeacon]:[]],(0,i.sU)(e,A),g();const _=function(e,t){t||(0,c.R)(e,"api");const h={};var g=a.ee.get(e),p=g.get("tracer"),v="api-",m=v+"ixn-";function b(t,r,n,o){const a=(0,i.C5)(e);return null===r?delete a.jsAttributes[t]:(0,i.CX)(e,{...a,jsAttributes:{...a.jsAttributes,[t]:r}}),A(v,n,!0,o||null===r?"session":void 0)(t,r)}function y(){}["setErrorHandler","finished","addToTrace","inlineHit","addRelease"].forEach((e=>h[e]=A(v,e,!0,"api"))),h.addPageAction=A(v,"addPageAction",!0,n.D.pageAction),h.setCurrentRouteName=A(v,"routeName",!0,n.D.spa),h.setPageViewName=function(t,r){if("string"==typeof t)return"/"!==t.charAt(0)&&(t="/"+t),(0,i.OP)(e).customTransaction=(r||"http://custom.transaction")+t,A(v,"setPageViewName",!0)()},h.setCustomAttribute=function(e,t){let r=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if("string"==typeof e){if(["string","number"].includes(typeof t)||null===t)return b(e,t,"setCustomAttribute",r);(0,l.Z)("Failed to execute setCustomAttribute.\nNon-null value must be a string or number type, but a type of <".concat(typeof t,"> was provided."))}else(0,l.Z)("Failed to execute setCustomAttribute.\nName must be a string type, but a type of <".concat(typeof e,"> was provided."))},h.setUserId=function(e){if("string"==typeof e||null===e)return b("enduser.id",e,"setUserId",!0);(0,l.Z)("Failed to execute setUserId.\nNon-null value must be a string type, but a type of <".concat(typeof e,"> was provided."))},h.setApplicationVersion=function(e){if("string"==typeof e||null===e)return b("application.version",e,"setApplicationVersion",!1);(0,l.Z)("Failed to execute setApplicationVersion. Expected <String | null>, but got <".concat(typeof e,">."))},h.interaction=function(){return(new y).get()};var w=y.prototype={createTracer:function(e,t){var r={},i=this,a="function"==typeof t;return(0,o.p)(m+"tracer",[(0,s.z)(),e,r],i,n.D.spa,g),function(){if(p.emit((a?"":"no-")+"fn-start",[(0,s.z)(),i,a],r),a)try{return t.apply(this,arguments)}catch(e){throw p.emit("fn-err",[arguments,this,e],r),e}finally{p.emit("fn-end",[(0,s.z)()],r)}}}};function A(e,t,r,i){return function(){return(0,o.p)(f.xS,["API/"+t+"/called"],void 0,n.D.metrics,g),i&&(0,o.p)(e+t,[(0,s.z)(),...arguments],r?null:this,i,g),r?void 0:this}}function x(){r.e(63).then(r.bind(r,7438)).then((t=>{let{setAPI:r}=t;r(e),(0,c.L)(e,"api")})).catch((()=>(0,l.Z)("Downloading runtime APIs failed...")))}return["actionText","setName","setAttribute","save","ignore","onEnd","getContext","end","get"].forEach((e=>{w[e]=A(m,e,void 0,n.D.spa)})),h.noticeError=function(e,t){"string"==typeof e&&(e=new Error(e)),(0,o.p)(f.xS,["API/noticeError/called"],void 0,n.D.metrics,g),(0,o.p)("err",[e,(0,s.z)(),!1,t],void 0,n.D.jserrors,g)},u.il?(0,d.b)((()=>x()),!0):x(),h}(e,m);return(0,h.Qy)(e,_,"api"),(0,h.Qy)(e,x,"exposed"),(0,h.EZ)("activatedFeatures",p.T),_}},3325:(e,t,r)=>{r.d(t,{D:()=>n,p:()=>i});const n={ajax:"ajax",jserrors:"jserrors",metrics:"metrics",pageAction:"page_action",pageViewEvent:"page_view_event",pageViewTiming:"page_view_timing",sessionReplay:"session_replay",sessionTrace:"session_trace",spa:"spa"},i={[n.pageViewEvent]:1,[n.pageViewTiming]:2,[n.metrics]:3,[n.jserrors]:4,[n.ajax]:5,[n.sessionTrace]:6,[n.pageAction]:7,[n.spa]:8,[n.sessionReplay]:9}}},n={};function i(e){var t=n[e];if(void 0!==t)return t.exports;var o=n[e]={exports:{}};return r[e](o,o.exports,i),o.exports}i.m=r,i.d=(e,t)=>{for(var r in t)i.o(t,r)&&!i.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:t[r]})},i.f={},i.e=e=>Promise.all(Object.keys(i.f).reduce(((t,r)=>(i.f[r](e,t),t)),[])),i.u=e=>"nr-full.6ee41851-1.238.0.min.js",i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),e={},t="NRBA-1.238.0.PROD:",i.l=(r,n,o,a)=>{if(e[r])e[r].push(n);else{var s,c;if(void 0!==o)for(var d=document.getElementsByTagName("script"),u=0;u<d.length;u++){var l=d[u];if(l.getAttribute("src")==r||l.getAttribute("data-webpack")==t+o){s=l;break}}s||(c=!0,(s=document.createElement("script")).charset="utf-8",s.timeout=120,i.nc&&s.setAttribute("nonce",i.nc),s.setAttribute("data-webpack",t+o),s.src=r),e[r]=[n];var f=(t,n)=>{s.onerror=s.onload=null,clearTimeout(h);var i=e[r];if(delete e[r],s.parentNode&&s.parentNode.removeChild(s),i&&i.forEach((e=>e(n))),t)return t(n)},h=setTimeout(f.bind(null,void 0,{type:"timeout",target:s}),12e4);s.onerror=f.bind(null,s.onerror),s.onload=f.bind(null,s.onload),c&&document.head.appendChild(s)}},i.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},i.p="https://js-agent.newrelic.com/",(()=>{var e={29:0,789:0};i.f.j=(t,r)=>{var n=i.o(e,t)?e[t]:void 0;if(0!==n)if(n)r.push(n[2]);else{var o=new Promise(((r,i)=>n=e[t]=[r,i]));r.push(n[2]=o);var a=i.p+i.u(t),s=new Error;i.l(a,(r=>{if(i.o(e,t)&&(0!==(n=e[t])&&(e[t]=void 0),n)){var o=r&&("load"===r.type?"missing":r.type),a=r&&r.target&&r.target.src;s.message="Loading chunk "+t+" failed.\n("+o+": "+a+")",s.name="ChunkLoadError",s.type=o,s.request=a,n[1](s)}}),"chunk-"+t,t)}};var t=(t,r)=>{var n,o,[a,s,c]=r,d=0;if(a.some((t=>0!==e[t]))){for(n in s)i.o(s,n)&&(i.m[n]=s[n]);if(c)c(i)}for(t&&t(r);d<a.length;d++)o=a[d],i.o(e,o)&&e[o]&&e[o][0](),e[o]=0},r=self["webpackChunk:NRBA-1.238.0.PROD"]=self["webpackChunk:NRBA-1.238.0.PROD"]||[];r.forEach(t.bind(null,0)),r.push=t.bind(null,r.push.bind(r))})(),(()=>{var e=i(50);class t{addPageAction(t,r){(0,e.Z)("Call to agent api addPageAction failed. The session trace feature is not currently initialized.")}setPageViewName(t,r){(0,e.Z)("Call to agent api setPageViewName failed. The page view feature is not currently initialized.")}setCustomAttribute(t,r,n){(0,e.Z)("Call to agent api setCustomAttribute failed. The js errors feature is not currently initialized.")}noticeError(t,r){(0,e.Z)("Call to agent api noticeError failed. The js errors feature is not currently initialized.")}setUserId(t){(0,e.Z)("Call to agent api setUserId failed. The js errors feature is not currently initialized.")}setApplicationVersion(t){(0,e.Z)("Call to agent api setApplicationVersion failed. The agent is not currently initialized.")}setErrorHandler(t){(0,e.Z)("Call to agent api setErrorHandler failed. The js errors feature is not currently initialized.")}finished(t){(0,e.Z)("Call to agent api finished failed. The page action feature is not currently initialized.")}addRelease(t,r){(0,e.Z)("Call to agent api addRelease failed. The agent is not currently initialized.")}}var r=i(3325),n=i(5763);const o=Object.values(r.D);function a(e){const t={};return o.forEach((r=>{t[r]=function(e,t){return!1!==(0,n.Mt)(t,"".concat(e,".enabled"))}(r,e)})),t}var s=i(9144);var c=i(5546),d=i(385),u=i(8e3),l=i(5938),f=i(3960);class h extends l.W{constructor(e,t,r){let n=!(arguments.length>3&&void 0!==arguments[3])||arguments[3];super(e,t,r),this.auto=n,this.abortHandler,this.featAggregate,this.onAggregateImported,n&&(0,u.R)(e,r)}importAggregator(){let t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};if(this.featAggregate||!this.auto)return;const r=d.il&&!0===(0,n.Mt)(this.agentIdentifier,"privacy.cookies_enabled");let o;this.onAggregateImported=new Promise((e=>{o=e}));const a=async()=>{let n;try{if(r){const{setupAgentSession:e}=await i.e(63).then(i.bind(i,3228));n=e(this.agentIdentifier)}}catch(t){(0,e.Z)("A problem occurred when starting up session manager. This page will not start or extend any session.",t)}try{if(!this.shouldImportAgg(this.featureName,n))return(0,u.L)(this.agentIdentifier,this.featureName),void o(!1);const{lazyFeatureLoader:e}=await i.e(63).then(i.bind(i,8582)),{Aggregate:r}=await e(this.featureName,"aggregate");this.featAggregate=new r(this.agentIdentifier,this.aggregator,t),o(!0)}catch(t){(0,e.Z)("Downloading and initializing ".concat(this.featureName," failed..."),t),this.abortHandler?.(),o(!1)}};d.il?(0,f.b)((()=>a()),!0):a()}shouldImportAgg(e,t){return e!==r.D.sessionReplay||!!n.Yu.MO&&(!1!==(0,n.Mt)(this.agentIdentifier,"session_trace.enabled")&&(!!t?.isNew||!!t?.state.sessionReplay))}}var g=i(7633),p=i(7894);class v extends h{static featureName=g.t9;constructor(e,t){let i=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];if(super(e,t,g.t9,i),("undefined"==typeof PerformanceNavigationTiming||d.Tt)&&"undefined"!=typeof PerformanceTiming){const t=(0,n.OP)(e);t[g.Dz]=Math.max(Date.now()-t.offset,0),(0,f.K)((()=>t[g.qw]=Math.max((0,p.z)()-t[g.Dz],0))),(0,f.b)((()=>{const e=(0,p.z)();t[g.OJ]=Math.max(e-t[g.Dz],0),(0,c.p)("timing",["load",e],void 0,r.D.pageViewTiming,this.ee)}))}this.importAggregator()}}var m=i(1117),b=i(1284);class y extends m.w{constructor(e){super(e),this.aggregatedData={}}store(e,t,r,n,i){var o=this.getBucket(e,t,r,i);return o.metrics=function(e,t){t||(t={count:0});return t.count+=1,(0,b.D)(e,(function(e,r){t[e]=w(r,t[e])})),t}(n,o.metrics),o}merge(e,t,r,n,i){var o=this.getBucket(e,t,n,i);if(o.metrics){var a=o.metrics;a.count+=r.count,(0,b.D)(r,(function(e,t){if("count"!==e){var n=a[e],i=r[e];i&&!i.c?a[e]=w(i.t,n):a[e]=function(e,t){if(!t)return e;t.c||(t=A(t.t));return t.min=Math.min(e.min,t.min),t.max=Math.max(e.max,t.max),t.t+=e.t,t.sos+=e.sos,t.c+=e.c,t}(i,a[e])}}))}else o.metrics=r}storeMetric(e,t,r,n){var i=this.getBucket(e,t,r);return i.stats=w(n,i.stats),i}getBucket(e,t,r,n){this.aggregatedData[e]||(this.aggregatedData[e]={});var i=this.aggregatedData[e][t];return i||(i=this.aggregatedData[e][t]={params:r||{}},n&&(i.custom=n)),i}get(e,t){return t?this.aggregatedData[e]&&this.aggregatedData[e][t]:this.aggregatedData[e]}take(e){for(var t={},r="",n=!1,i=0;i<e.length;i++)t[r=e[i]]=x(this.aggregatedData[r]),t[r].length&&(n=!0),delete this.aggregatedData[r];return n?t:null}}function w(e,t){return null==e?function(e){e?e.c++:e={c:1};return e}(t):t?(t.c||(t=A(t.t)),t.c+=1,t.t+=e,t.sos+=e*e,e>t.max&&(t.max=e),e<t.min&&(t.min=e),t):{t:e}}function A(e){return{t:e,min:e,max:e,sos:e*e,c:1}}function x(e){return"object"!=typeof e?[]:(0,b.D)(e,E)}function E(e,t){return t}var T=i(8632),_=i(4402),D=i(4351);var j=i(7956),C=i(3239),S=i(9251);class O extends h{static featureName=S.t;constructor(e,t){let r=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,t,S.t,r),d.il&&((0,n.OP)(e).initHidden=Boolean("hidden"===document.visibilityState),(0,j.N)((()=>(0,c.p)("docHidden",[(0,p.z)()],void 0,S.t,this.ee)),!0),(0,C.bP)("pagehide",(()=>(0,c.p)("winPagehide",[(0,p.z)()],void 0,S.t,this.ee))),this.importAggregator())}}var P=i(3081);class R extends h{static featureName=P.t9;constructor(e,t){let r=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,t,P.t9,r),this.importAggregator()}}var I=i(6660);class N{constructor(e,t,r,n){this.name="UncaughtError",this.message=e,this.sourceURL=t,this.line=r,this.column=n}}class k extends h{static featureName=I.t;#e=new Set;constructor(e,t){let n=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,t,I.t,n);try{this.removeOnAbort=new AbortController}catch(e){}this.ee.on("fn-err",((e,t,n)=>{this.abortHandler&&!this.#e.has(n)&&(this.#e.add(n),(0,c.p)("err",[this.#t(n),(0,p.z)()],void 0,r.D.jserrors,this.ee))})),this.ee.on("internal-error",(e=>{this.abortHandler&&(0,c.p)("ierr",[this.#t(e),(0,p.z)(),!0],void 0,r.D.jserrors,this.ee)})),d._A.addEventListener("unhandledrejection",(e=>{this.abortHandler&&(0,c.p)("err",[this.#r(e),(0,p.z)(),!1,{unhandledPromiseRejection:1}],void 0,r.D.jserrors,this.ee)}),(0,C.m$)(!1,this.removeOnAbort?.signal)),d._A.addEventListener("error",(e=>{this.abortHandler&&(this.#e.has(e.error)?this.#e.delete(e.error):(0,c.p)("err",[this.#n(e),(0,p.z)()],void 0,r.D.jserrors,this.ee))}),(0,C.m$)(!1,this.removeOnAbort?.signal)),this.abortHandler=this.#i,this.importAggregator()}#i(){this.removeOnAbort?.abort(),this.#e.clear(),this.abortHandler=void 0}#t(e){return e instanceof Error?e:void 0!==e?.message?new N(e.message,e.filename||e.sourceURL,e.lineno||e.line,e.colno||e.col):new N("string"==typeof e?e:(0,D.P)(e))}#r(e){let t="Unhandled Promise Rejection: ";if(e?.reason instanceof Error)try{return e.reason.message=t+e.reason.message,e.reason}catch(t){return e.reason}if(void 0===e.reason)return new N(t);const r=this.#t(e.reason);return r.message=t+r.message,r}#n(e){return e.error instanceof Error?e.error:new N(e.message,e.filename,e.lineno,e.colno)}}var z=i(2210);let H=1;const L="nr@id";function M(e){const t=typeof e;return!e||"object"!==t&&"function"!==t?-1:e===d._A?0:(0,z.X)(e,L,(function(){return H++}))}function B(e){if("string"==typeof e&&e.length)return e.length;if("object"==typeof e){if("undefined"!=typeof ArrayBuffer&&e instanceof ArrayBuffer&&e.byteLength)return e.byteLength;if("undefined"!=typeof Blob&&e instanceof Blob&&e.size)return e.size;if(!("undefined"!=typeof FormData&&e instanceof FormData))try{return(0,D.P)(e).length}catch(e){return}}}var F=i(1214),U=i(7243);class q{constructor(e){this.agentIdentifier=e}generateTracePayload(e){if(!this.shouldGenerateTrace(e))return null;var t=(0,n.DL)(this.agentIdentifier);if(!t)return null;var r=(t.accountID||"").toString()||null,i=(t.agentID||"").toString()||null,o=(t.trustKey||"").toString()||null;if(!r||!i)return null;var a=(0,_.M)(),s=(0,_.Ht)(),c=Date.now(),d={spanId:a,traceId:s,timestamp:c};return(e.sameOrigin||this.isAllowedOrigin(e)&&this.useTraceContextHeadersForCors())&&(d.traceContextParentHeader=this.generateTraceContextParentHeader(a,s),d.traceContextStateHeader=this.generateTraceContextStateHeader(a,c,r,i,o)),(e.sameOrigin&&!this.excludeNewrelicHeader()||!e.sameOrigin&&this.isAllowedOrigin(e)&&this.useNewrelicHeaderForCors())&&(d.newrelicHeader=this.generateTraceHeader(a,s,c,r,i,o)),d}generateTraceContextParentHeader(e,t){return"00-"+t+"-"+e+"-01"}generateTraceContextStateHeader(e,t,r,n,i){return i+"@nr=0-1-"+r+"-"+n+"-"+e+"----"+t}generateTraceHeader(e,t,r,n,i,o){if(!("function"==typeof d._A?.btoa))return null;var a={v:[0,1],d:{ty:"Browser",ac:n,ap:i,id:e,tr:t,ti:r}};return o&&n!==o&&(a.d.tk=o),btoa((0,D.P)(a))}shouldGenerateTrace(e){return this.isDtEnabled()&&this.isAllowedOrigin(e)}isAllowedOrigin(e){var t=!1,r={};if((0,n.Mt)(this.agentIdentifier,"distributed_tracing")&&(r=(0,n.P_)(this.agentIdentifier).distributed_tracing),e.sameOrigin)t=!0;else if(r.allowed_origins instanceof Array)for(var i=0;i<r.allowed_origins.length;i++){var o=(0,U.e)(r.allowed_origins[i]);if(e.hostname===o.hostname&&e.protocol===o.protocol&&e.port===o.port){t=!0;break}}return t}isDtEnabled(){var e=(0,n.Mt)(this.agentIdentifier,"distributed_tracing");return!!e&&!!e.enabled}excludeNewrelicHeader(){var e=(0,n.Mt)(this.agentIdentifier,"distributed_tracing");return!!e&&!!e.exclude_newrelic_header}useNewrelicHeaderForCors(){var e=(0,n.Mt)(this.agentIdentifier,"distributed_tracing");return!!e&&!1!==e.cors_use_newrelic_header}useTraceContextHeadersForCors(){var e=(0,n.Mt)(this.agentIdentifier,"distributed_tracing");return!!e&&!!e.cors_use_tracecontext_headers}}var Z=i(7825),V=["load","error","abort","timeout"],G=V.length,W=n.Yu.REQ,X=n.Yu.XHR;class Q extends h{static featureName=Z.t;constructor(e,t){let i=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,t,Z.t,i),(0,n.OP)(e).xhrWrappable&&(this.dt=new q(e),this.handler=(e,t,r,n)=>(0,c.p)(e,t,r,n,this.ee),(0,F.u5)(this.ee),(0,F.Kf)(this.ee),function(e,t,i,o){function a(e){var t=this;t.totalCbs=0,t.called=0,t.cbTime=0,t.end=E,t.ended=!1,t.xhrGuids={},t.lastSize=null,t.loadCaptureCalled=!1,t.params=this.params||{},t.metrics=this.metrics||{},e.addEventListener("load",(function(r){_(t,e)}),(0,C.m$)(!1)),d.IF||e.addEventListener("progress",(function(e){t.lastSize=e.loaded}),(0,C.m$)(!1))}function s(e){this.params={method:e[0]},T(this,e[1]),this.metrics={}}function c(t,r){var i=(0,n.DL)(e);i.xpid&&this.sameOrigin&&r.setRequestHeader("X-NewRelic-ID",i.xpid);var a=o.generateTracePayload(this.parsedOrigin);if(a){var s=!1;a.newrelicHeader&&(r.setRequestHeader("newrelic",a.newrelicHeader),s=!0),a.traceContextParentHeader&&(r.setRequestHeader("traceparent",a.traceContextParentHeader),a.traceContextStateHeader&&r.setRequestHeader("tracestate",a.traceContextStateHeader),s=!0),s&&(this.dt=a)}}function u(e,r){var n=this.metrics,i=e[0],o=this;if(n&&i){var a=B(i);a&&(n.txSize=a)}this.startTime=(0,p.z)(),this.listener=function(e){try{"abort"!==e.type||o.loadCaptureCalled||(o.params.aborted=!0),("load"!==e.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof r.onload)&&"function"==typeof o.end)&&o.end(r)}catch(e){try{t.emit("internal-error",[e])}catch(e){}}};for(var s=0;s<G;s++)r.addEventListener(V[s],this.listener,(0,C.m$)(!1))}function l(e,t,r){this.cbTime+=e,t?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof r.onload||"function"!=typeof this.end||this.end(r)}function f(e,t){var r=""+M(e)+!!t;this.xhrGuids&&!this.xhrGuids[r]&&(this.xhrGuids[r]=!0,this.totalCbs+=1)}function h(e,t){var r=""+M(e)+!!t;this.xhrGuids&&this.xhrGuids[r]&&(delete this.xhrGuids[r],this.totalCbs-=1)}function g(){this.endTime=(0,p.z)()}function v(e,r){r instanceof X&&"load"===e[0]&&t.emit("xhr-load-added",[e[1],e[2]],r)}function m(e,r){r instanceof X&&"load"===e[0]&&t.emit("xhr-load-removed",[e[1],e[2]],r)}function b(e,t,r){t instanceof X&&("onload"===r&&(this.onload=!0),("load"===(e[0]&&e[0].type)||this.onload)&&(this.xhrCbStart=(0,p.z)()))}function y(e,r){this.xhrCbStart&&t.emit("xhr-cb-time",[(0,p.z)()-this.xhrCbStart,this.onload,r],r)}function w(e){var t,r=e[1]||{};if("string"==typeof e[0]?0===(t=e[0]).length&&d.il&&(t=""+d._A.location.href):e[0]&&e[0].url?t=e[0].url:d._A?.URL&&e[0]&&e[0]instanceof URL?t=e[0].href:"function"==typeof e[0].toString&&(t=e[0].toString()),"string"==typeof t&&0!==t.length){t&&(this.parsedOrigin=(0,U.e)(t),this.sameOrigin=this.parsedOrigin.sameOrigin);var n=o.generateTracePayload(this.parsedOrigin);if(n&&(n.newrelicHeader||n.traceContextParentHeader))if(e[0]&&e[0].headers)s(e[0].headers,n)&&(this.dt=n);else{var i={};for(var a in r)i[a]=r[a];i.headers=new Headers(r.headers||{}),s(i.headers,n)&&(this.dt=n),e.length>1?e[1]=i:e.push(i)}}function s(e,t){var r=!1;return t.newrelicHeader&&(e.set("newrelic",t.newrelicHeader),r=!0),t.traceContextParentHeader&&(e.set("traceparent",t.traceContextParentHeader),t.traceContextStateHeader&&e.set("tracestate",t.traceContextStateHeader),r=!0),r}}function A(e,t){this.params={},this.metrics={},this.startTime=(0,p.z)(),this.dt=t,e.length>=1&&(this.target=e[0]),e.length>=2&&(this.opts=e[1]);var r,n=this.opts||{},i=this.target;"string"==typeof i?r=i:"object"==typeof i&&i instanceof W?r=i.url:d._A?.URL&&"object"==typeof i&&i instanceof URL&&(r=i.href),T(this,r);var o=(""+(i&&i instanceof W&&i.method||n.method||"GET")).toUpperCase();this.params.method=o,this.txSize=B(n.body)||0}function x(e,t){var n;this.endTime=(0,p.z)(),this.params||(this.params={}),this.params.status=t?t.status:0,"string"==typeof this.rxSize&&this.rxSize.length>0&&(n=+this.rxSize);var o={txSize:this.txSize,rxSize:n,duration:(0,p.z)()-this.startTime};i("xhr",[this.params,o,this.startTime,this.endTime,"fetch"],this,r.D.ajax)}function E(e){var t=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var o=0;o<G;o++)e.removeEventListener(V[o],this.listener,!1);t.aborted||(n.duration=(0,p.z)()-this.startTime,this.loadCaptureCalled||4!==e.readyState?null==t.status&&(t.status=0):_(this,e),n.cbTime=this.cbTime,i("xhr",[t,n,this.startTime,this.endTime,"xhr"],this,r.D.ajax))}}function T(e,t){var r=(0,U.e)(t),n=e.params;n.hostname=r.hostname,n.port=r.port,n.protocol=r.protocol,n.host=r.hostname+":"+r.port,n.pathname=r.pathname,e.parsedOrigin=r,e.sameOrigin=r.sameOrigin}function _(e,t){e.params.status=t.status;var r=function(e,t){var r=e.responseType;return"json"===r&&null!==t?t:"arraybuffer"===r||"blob"===r||"json"===r?B(e.response):"text"===r||""===r||void 0===r?B(e.responseText):void 0}(t,e.lastSize);if(r&&(e.metrics.rxSize=r),e.sameOrigin){var n=t.getResponseHeader("X-NewRelic-App-Data");n&&(e.params.cat=n.split(", ").pop())}e.loadCaptureCalled=!0}t.on("new-xhr",a),t.on("open-xhr-start",s),t.on("open-xhr-end",c),t.on("send-xhr-start",u),t.on("xhr-cb-time",l),t.on("xhr-load-added",f),t.on("xhr-load-removed",h),t.on("xhr-resolved",g),t.on("addEventListener-end",v),t.on("removeEventListener-end",m),t.on("fn-end",y),t.on("fetch-before-start",w),t.on("fetch-start",A),t.on("fn-start",b),t.on("fetch-done",x)}(e,this.ee,this.handler,this.dt),this.importAggregator())}}var K=i(3614);const{BST_RESOURCE:Y,RESOURCE:J,START:ee,END:te,FEATURE_NAME:re,FN_END:ne,FN_START:ie,PUSH_STATE:oe}=K;var ae=i(4649);class se extends h{static featureName=ae.t;constructor(e,t){let r=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,t,ae.t,r),this.importAggregator()}}new class extends t{constructor(t){let r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:(0,_.ky)(16);super(),d._A?(this.agentIdentifier=r,this.sharedAggregator=new y({agentIdentifier:this.agentIdentifier}),this.features={},this.desiredFeatures=new Set(t.features||[]),this.desiredFeatures.add(v),Object.assign(this,(0,s.j)(this.agentIdentifier,t,t.loaderType||"agent")),this.start()):(0,e.Z)("Failed to initial the agent. Could not determine the runtime environment.")}get config(){return{info:(0,n.C5)(this.agentIdentifier),init:(0,n.P_)(this.agentIdentifier),loader_config:(0,n.DL)(this.agentIdentifier),runtime:(0,n.OP)(this.agentIdentifier)}}start(){const t="features";try{const n=a(this.agentIdentifier),i=[...this.desiredFeatures];i.sort(((e,t)=>r.p[e.featureName]-r.p[t.featureName])),i.forEach((t=>{if(n[t.featureName]||t.featureName===r.D.pageViewEvent){const i=function(e){switch(e){case r.D.ajax:return[r.D.jserrors];case r.D.sessionTrace:return[r.D.ajax,r.D.pageViewEvent];case r.D.sessionReplay:return[r.D.sessionTrace];case r.D.pageViewTiming:return[r.D.pageViewEvent];default:return[]}}(t.featureName);i.every((e=>n[e]))||(0,e.Z)("".concat(t.featureName," is enabled but one or more dependent features has been disabled (").concat((0,D.P)(i),"). This may cause unintended consequences or missing data...")),this.features[t.featureName]=new t(this.agentIdentifier,this.sharedAggregator)}})),(0,T.Qy)(this.agentIdentifier,this.features,t)}catch(r){(0,e.Z)("Failed to initialize all enabled instrument classes (agent aborted) -",r);for(const e in this.features)this.features[e].abortHandler?.();const n=(0,T.fP)();return delete n.initializedAgents[this.agentIdentifier]?.api,delete n.initializedAgents[this.agentIdentifier]?.[t],delete this.sharedAggregator,n.ee?.abort(),delete n.ee?.get(this.agentIdentifier),!1}}addToTrace(t){(0,e.Z)("Call to agent api addToTrace failed. The page action feature is not currently initialized.")}setCurrentRouteName(t){(0,e.Z)("Call to agent api setCurrentRouteName failed. The spa feature is not currently initialized.")}interaction(){(0,e.Z)("Call to agent api interaction failed. The spa feature is not currently initialized.")}}({features:[v,O,class extends h{static featureName=re;constructor(e,t){if(super(e,t,re,!(arguments.length>2&&void 0!==arguments[2])||arguments[2]),!d.il)return;const n=this.ee;let i;(0,F.QU)(n),this.eventsEE=(0,F.em)(n),this.eventsEE.on(ie,(function(e,t){this.bstStart=(0,p.z)()})),this.eventsEE.on(ne,(function(e,t){(0,c.p)("bst",[e[0],t,this.bstStart,(0,p.z)()],void 0,r.D.sessionTrace,n)})),n.on(oe+ee,(function(e){this.time=(0,p.z)(),this.startPath=location.pathname+location.hash})),n.on(oe+te,(function(e){(0,c.p)("bstHist",[location.pathname+location.hash,this.startPath,this.time],void 0,r.D.sessionTrace,n)}));try{i=new PerformanceObserver((e=>{const t=e.getEntries();(0,c.p)(Y,[t],void 0,r.D.sessionTrace,n)})),i.observe({type:J,buffered:!0})}catch(e){}this.importAggregator({resourceObserver:i})}},Q,R,se,k],loaderType:"pro"})})()})();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="Generator" content="Drupal 7 (http://drupal.org)" />
+<link rel="shortlink" href="/node/906621" />
+<meta property="twitter:card" content="summary" />
+<meta property="og:url" content="/data-handling-and-acquisition" />
+<meta property="og:title" content="Data handling and acquisition" />
+<meta property="og:image" content="https://researchdata.ox.ac.uk/sites/default/files/researchdata/site-logo/rdo_logo_redraw_2020_box.png" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,700i,400i,600,500%7CLora:400,700,700i,400i,500%7CAbril+Fatface:400,700,700i" />
+<link rel="canonical" href="https://researchdata.ox.ac.uk/data-handling-and-acquisition" />
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+  <title>Data handling and acquisition | Research Data Oxford</title>
+  <link type="text/css" rel="stylesheet" href="https://researchdata.ox.ac.uk/sites/default/files/css/css_lQaZfjVpwP_oGNqdtWCSpJT1EMqXdMiU84ekLLxQnc4.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://researchdata.ox.ac.uk/sites/default/files/css/css_86f_LO9LjJns9j8-O9rIjSTzPvqUF5yWHhtPul8iVPI.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://researchdata.ox.ac.uk/sites/default/files/css/css_1ouum7EFf8TGsFfDAOsiynRbdF_6QuUiATgV1hD-wDc.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://researchdata.ox.ac.uk/sites/default/files/css/css_hUNvrg7p6JSgTw82MyP22ckJ8XPt9cmTPveqE6pfvr0.css" media="all" />
+<style>select.field-add-more-type option[value=custom_css]{display:none}
+select.field-add-more-type option[value=custom_javascript]{display:none}
+select.field-add-more-type option[value=web_application]{display:none}
+.field-name-field-advanced-section-content .field-name-field-enable-widget-bg-color,.field-name-field-advanced-section-content .field-name-field-widget-background-colour,.field-name-field-advanced-section-content .field-name-field-title-text-colour{display:none;}
+.field-name-field-advanced-tab-content .field-name-field-enable-widget-bg-color,.field-name-field-advanced-tab-content .field-name-field-widget-background-colour,.field-name-field-advanced-tab-content .field-name-field-title-text-colour{display:none;}
+select.field-add-more-type option[value=custom_css]{display:none}
+select.field-add-more-type option[value=custom_javascript]{display:none}
+select.field-add-more-type option[value=web_application]{display:none}
+.field-name-field-advanced-section-content .field-name-field-enable-widget-bg-color,.field-name-field-advanced-section-content .field-name-field-widget-background-colour,.field-name-field-advanced-section-content .field-name-field-title-text-colour{display:none;}
+.field-name-field-advanced-tab-content .field-name-field-enable-widget-bg-color,.field-name-field-advanced-tab-content .field-name-field-widget-background-colour,.field-name-field-advanced-tab-content .field-name-field-title-text-colour{display:none;}
+</style>
+<link type="text/css" rel="stylesheet" href="https://researchdata.ox.ac.uk/sites/default/files/css/css_BZ9ve3RF0KNkwR7CtGW0e1vHO0OgiFrSLQ8_wp6vOmw.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unicorn-fail/drupal-bootstrap-styles@0.0.2/dist/3.3.1/7.x-3.x/drupal-bootstrap.min.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://researchdata.ox.ac.uk/sites/default/files/css/css_LX5ro78kE7GnOpgn6N-imIxiLUwNT4uvreDNOHk_Mcg.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://researchdata.ox.ac.uk/sites/default/files/css/css_m6StR_K21FJSTQpayUy5nKb4kBoka6jfgui6UJbmWiU.css" media="all" />
+  <!-- HTML5 element support for IE6-8 -->
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <script src="https://researchdata.ox.ac.uk/sites/default/files/js/js_3670YW8Ig3WsKzB-Z-aP4AZYic-Sl8TGyNpzZboIaHw.js"></script>
+<script>jQuery.migrateMute=true;jQuery.migrateTrace=false;</script>
+<script src="https://researchdata.ox.ac.uk/sites/default/files/js/js_pTE_KHb06coJF-VmdrCS-0e7w9H8L4JjVC_GhTQ1S3M.js"></script>
+<script src="https://researchdata.ox.ac.uk/sites/default/files/js/js_0wXl1EnRTYvCPvaqnGUsm2_L-4mqB-g1mvIHORl9TdA.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+<script src="https://researchdata.ox.ac.uk/sites/default/files/js/js_lY5Bt0MdnK3FFJCgkndDEG2ZhH1Ijkdi6XTajath94Q.js"></script>
+<script src="https://researchdata.ox.ac.uk/sites/default/files/js/js_4L0puiCGw62aHOXCVWpm8xd6sr4hJaMYZLXH7uqENT0.js"></script>
+<script src="https://www.googletagmanager.com/gtag/js?id=G-YJ4H5GRC9W"></script>
+<script>if (window.navigator.useragent != 'Mosaic Wraith') {window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments)};gtag("js", new Date());gtag("set", "developer_id.dMDhkMT", true);gtag("config", "G-YJ4H5GRC9W", {"groups":"default","cookie_domain":".researchdata.ox.ac.uk","anonymize_ip":true});}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.0/core.js"></script>
+<script src="https://researchdata.ox.ac.uk/sites/default/files/js/js_QTwYtQWExFrR-56wWUn2RHBcHPosjomSxeleMv851LU.js"></script>
+<script src="https://researchdata.ox.ac.uk/sites/default/files/js/js_B5NbkzGrLf7GomXqHBMSDtWJrGuU0l1r5m9iJ0879JI.js"></script>
+<script>
+        if (window.navigator.userAgent != 'Mosaic Wraith') {
+
+          if(typeof ga==='function') {
+             var ga_mosaic = ga;
+          } else {
+             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+             })(window,document,'script','https://www.google-analytics.com/analytics.js','ga_mosaic');
+          }
+
+          ga_mosaic('create',{
+              trackingId: 'UA-72187643-2',
+              cookieDomain: 'unknown',
+              name: 'mosaicTracker',
+              storage: 'none',
+              storeGac: false,
+            }
+          );
+
+          ga_mosaic('mosaicTracker.set', 'anonymizeIp', true);
+          ga_mosaic('mosaicTracker.set', 'contentGroup1', 'Research Data Oxford');
+          ga_mosaic('mosaicTracker.set', 'contentGroup2', '121536');
+          ga_mosaic('mosaicTracker.set', 'contentGroup3', 'anonymous');
+          ga_mosaic('mosaicTracker.set', 'contentGroup4', 'anonymous');
+          ga_mosaic('mosaicTracker.set', 'contentGroup5', 'unknown');
+
+
+          ga_mosaic('mosaicTracker.set', 'dimension1', 'Research Data Oxford');
+          ga_mosaic('mosaicTracker.set', 'dimension2', 'unknown');
+          ga_mosaic('mosaicTracker.set', 'dimension3', '121536');
+          ga_mosaic('mosaicTracker.set', 'dimension4', 'anonymous');
+          ga_mosaic('mosaicTracker.set', 'dimension5', 'anonymous');
+
+          ga_mosaic('mosaicTracker.send', 'pageview', {'dimension1': 'Research Data Oxford', 'dimension2': 'unknown', 'dimension3': '121536', 'dimension4' : 'anonymous', 'dimension5': 'anonymous', 'contentGroup1' : 'Research Data Oxford', 'contentGroup2': '121536', 'contentGroup3' : 'anonymous', 'contentGroup4': 'anonymous', 'contentGroup5': 'unknown'});
+        }
+      </script>
+<script>jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","setHasJsCookie":0,"ajaxPageState":{"theme":"oxtheme_flex","theme_token":"FKgUeDRTmrDlnrw7icuFRBh2galrxisa9Gg2XJiBBc8","js":{"0":1,"1":1,"2":1,"3":1,"sites\/all\/themes\/contrib\/bootstrap\/js\/bootstrap.js":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/jquery\/3.6\/jquery.min.js":1,"4":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/jquery-migrate\/3\/jquery-migrate.min.js":1,"misc\/jquery-extend-3.4.0.js":1,"misc\/jquery-html-prefilter-3.5.0-backport.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.core.min.js":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.widget.min.js":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.mouse.min.js":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.slider.min.js":1,"sites\/all\/libraries\/chosen\/chosen.jquery.min.js":1,"https:\/\/cdn.jsdelivr.net\/npm\/bootstrap@3.4.1\/dist\/js\/bootstrap.min.js":1,"sites\/all\/modules\/custom\/cookiecontrol\/js\/cookieControl-5.1.min.js":1,"sites\/all\/modules\/contrib\/media_preview_slider\/js\/slider.js":1,"sites\/all\/modules\/contrib\/fancybox\/fancybox.js":1,"sites\/all\/libraries\/fancybox\/source\/jquery.fancybox.pack.js":1,"sites\/all\/libraries\/fancybox\/lib\/jquery.mousewheel.pack.js":1,"sites\/all\/modules\/features\/oxdrupal_responsive_header\/oxdrupal_responsive_header.js":1,"sites\/all\/modules\/features\/oxdrupal_core_paragraph_bundles\/js\/bootstrap-accordion.js":1,"sites\/all\/modules\/custom\/google_analytics\/googleanalytics.js":1,"sites\/all\/modules\/custom\/oxdrupal_feedback\/js\/oxdrupal_feedback.js":1,"sites\/all\/modules\/custom\/oxdrupal_widgets\/oxdrupal_webforms\/js\/oxdrupal_webforms.js":1,"https:\/\/www.googletagmanager.com\/gtag\/js?id=G-YJ4H5GRC9W":1,"5":1,"https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/core-js\/2.5.0\/core.js":1,"sites\/all\/libraries\/sweetalert\/sweetalert2.all.min.js":1,"sites\/all\/modules\/features\/oxdrupal_listings\/js\/javascript_pagination.js":1,"sites\/all\/modules\/features\/oxdrupal_feeds\/js\/oxdrupal_feeds.js":1,"sites\/all\/libraries\/twig\/js\/js\/twig.min.js":1,"sites\/all\/libraries\/jquery.truncate\/jquery.truncate.js":1,"sites\/all\/libraries\/swiper\/js\/swiper.min.js":1,"sites\/all\/modules\/custom\/oxdrupal_widgets\/oxdrupal_slideshow\/js\/slideshow_height.js":1,"sites\/all\/modules\/custom\/oxdrupal_widgets\/oxdrupal_vacancies\/js\/oxdrupal_vacancies.js":1,"sites\/all\/modules\/features\/oxdrupal_core_paragraph_bundles\/js\/taxonomy_filter_selects.js":1,"sites\/all\/modules\/features\/oxdrupal_wysiwyg\/oxdrupal_wysiwyg_circled_list.js":1,"sites\/all\/libraries\/moment\/moment.min.js":1,"sites\/all\/modules\/features\/oxdrupal_theme_top_nav\/js\/standard_drop_menu.js":1,"sites\/all\/themes\/custom\/oxtheme\/js\/header.js":1,"sites\/all\/themes\/custom\/oxtheme\/js\/accessibility.js":1,"sites\/all\/modules\/contrib\/chosen\/chosen.js":1,"sites\/all\/themes\/custom\/oxtheme\/..\/..\/..\/libraries\/dataTables\/js\/jquery.dataTables.min.js":1,"sites\/all\/themes\/custom\/oxtheme\/js\/dataTables.js":1,"6":1},"css":{"modules\/system\/system.base.css":1,"misc\/ui\/jquery.ui.core.css":1,"misc\/ui\/jquery.ui.theme.css":1,"misc\/ui\/jquery.ui.slider.css":1,"sites\/all\/modules\/contrib\/chosen\/css\/chosen-drupal.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/contrib\/media_preview_slider\/css\/slider-styles.css":1,"modules\/node\/node.css":1,"sites\/all\/modules\/contrib\/views\/css\/views.css":1,"sites\/all\/modules\/custom\/ckeditor\/css\/ckeditor.css":1,"sites\/all\/modules\/contrib\/entity_embed\/css\/entity_embed.css":1,"sites\/all\/modules\/contrib\/ctools\/css\/ctools.css":1,"sites\/all\/libraries\/fancybox\/source\/jquery.fancybox.css":1,"sites\/all\/modules\/contrib\/panels\/css\/panels.css":1,"0":1,"1":1,"2":1,"3":1,"4":1,"5":1,"6":1,"7":1,"8":1,"9":1,"sites\/all\/modules\/features\/oxdrupal_core_sso\/css\/padlock_status.css":1,"sites\/all\/libraries\/swiper\/css\/swiper.min.css":1,"sites\/all\/modules\/features\/oxdrupal_core_paragraph_bundles\/css\/oxdrupal_core_paragraph.css":1,"https:\/\/cdn.jsdelivr.net\/npm\/bootstrap@3.4.1\/dist\/css\/bootstrap.min.css":1,"https:\/\/cdn.jsdelivr.net\/npm\/@unicorn-fail\/drupal-bootstrap-styles@0.0.2\/dist\/3.3.1\/7.x-3.x\/drupal-bootstrap.min.css":1,"sites\/all\/themes\/custom\/oxtheme\/..\/..\/..\/libraries\/fontawesome\/css\/all.css":1,"sites\/all\/themes\/custom\/oxtheme\/..\/..\/..\/libraries\/fontawesome\/css\/v4-shims.min.css":1,"sites\/all\/themes\/custom\/oxtheme\/..\/..\/..\/libraries\/dataTables\/css\/jquery.dataTables.css":1,"sites\/default\/files\/themes\/oxtheme_style.css":1,"sites\/default\/files\/themes\/custom\/css\/researchdata.web.ox.ac.uk\/oxdrupal_custom_colours.css":1,"sites\/default\/files\/themes\/custom\/css\/researchdata.web.ox.ac.uk\/oxdrupal_custom_fonts.css":1,"sites\/default\/files\/themes\/custom\/css\/researchdata.web.ox.ac.uk\/custom_settings.css":1,"sites\/default\/files\/themes\/custom\/css\/researchdata.web.ox.ac.uk\/custom.css":1}},"fancybox":{"selectors":[".fancybox"]},"chosen":{"selector":"#edit-og-vocabulary select[multiple]","minimum_single":10,"minimum_multiple":0,"minimum_width":650,"options":{"allow_single_deselect":false,"disable_search":false,"disable_search_threshold":0,"search_contains":false,"placeholder_text_multiple":"Choose term(s)","placeholder_text_single":"Choose term","no_results_text":"No results match","inherit_select_classes":true}},"googleanalytics":{"account":["G-YJ4H5GRC9W"],"trackOutbound":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip"},"currentPath":"node\/906621","currentPathIsAdmin":false,"urlIsAjaxTrusted":{"\/data-handling-and-acquisition\/":true},"ogContext":{"groupType":"node","gid":"121536"},"bootstrap":{"anchorsFix":"0","anchorsSmoothScrolling":"0","formHasError":1,"popoverEnabled":1,"popoverOptions":{"animation":1,"html":0,"placement":"right","selector":"","trigger":"click","triggerAutoclose":1,"title":"","content":"","delay":0,"container":"body"},"tooltipEnabled":1,"tooltipOptions":{"animation":1,"html":0,"placement":"auto left","selector":"","trigger":"hover focus","delay":0,"container":"body"}}});</script>
+    <link rel="apple-touch-icon" sizes="180x180" href="https://researchdata.ox.ac.uk/sites/default/files/styles/apple-touch-icon-180x180/public/researchdata/site-favicon/rdomobilelogo.png?itok=s3Y8B5ub"><link rel="icon" type="image/png" href="https://researchdata.ox.ac.uk/sites/default/files/styles/favicon-32x32/public/researchdata/site-favicon/rdomobilelogo.png?itok=JRR2DN1X" sizes="32x32"><link rel="icon" type="image/png" href="https://researchdata.ox.ac.uk/sites/default/files/styles/favicon-16x16/public/researchdata/site-favicon/rdomobilelogo.png?itok=dLKFX_4r" sizes="16x16"><meta name="msapplication-TileColor" content="#193658"><meta name="msapplication-TileImage" content="https://researchdata.ox.ac.uk/sites/default/files/styles/mstile-144x144/public/researchdata/site-favicon/rdomobilelogo.png?itok=YFphltdt"><meta name="theme-color" content="#193658" /></head>
+<body class="html not-front not-logged-in one-sidebar sidebar-first page-node page-node- page-node-906621 node-type-oxdrupal-basic-page og-context og-context-node og-context-node-121536 no-background-image content-position-default header crest_none page-title-align-left page-title-margin-top-double page-title-margin-bottom-single page-subtitle-margin-top-double page-subtitle-margin-bottom-single chevron-right custom_advanced" >
+  <div class="skip-link">
+    <a href="#" tabindex="0" class="element-invisible element-focusable pause-animated-content">Pause animated content</a>
+  </div>
+  <div id="skip-link">
+    <a href="#main-content" tabindex="0" aria-flowto="main-content" aria-label="Skip to main content" class="element-invisible element-focusable">Skip to main content</a>
+  </div>
+    
+<header id="header" class="region-fullwidth mobile_style_one_level standard-content-width header">
+    <div id="topbar" class="sub-container sub-container" >
+    <div class="container">
+                              <div id="topbar-links" class="primary_link_position_right">
+                <div class="links-container">
+                    <div class="primary-links primary_link_icons_0">
+                      </div>
+                    <div class="secondary-links secondary_link_icons_0">
+                      </div>
+        </div>
+                
+    <a href='https://researchdata.ox.ac.uk/saml_login' aria-label='Login to access restricted content' class='fas fa-sign-in-alt user-link'></a>
+        </div>
+    </div>
+  </div>
+    <div id="header-main" class="sub-container ">
+    <div class="container">
+      <div id="header-wrapper">
+                
+    <div class='oxlogo-container '>
+      <a href='http://www.ox.ac.uk'>
+        <img
+          src='/sites/all/themes/custom/oxtheme/images/brandmark/svg/oxlogo-sq-border.svg'
+          alt='Oxford University'
+        />
+      </a>
+    </div>
+                  
+      <div id='logo-container'>
+        <a href='/'>
+          <img class="svg_logo" src='https://researchdata.ox.ac.uk/sites/default/files/researchdata/site-logo/rdo_logo_redraw_2022_with_title3.svg' alt='Logo'/>
+        </a>
+      </div>
+                            
+    <div id='mobile-branding-container'>
+      <a href='/'>
+        
+          <img src='https://researchdata.ox.ac.uk/sites/default/files/researchdata/site-mobile-logo/rdo_mobile_logo_dec22.svg' alt='Logo'/>
+        
+      </a>
+    </div>
+          <div id="mobile-icon-container">
+                    
+    <div id='mobile-links'>
+      
+      <div class='links-container'>
+        <div class='primary-links'>
+          
+        </div>
+        <div class='secondary-links'>
+          
+        </div>
+      </div>
+      
+    <a href='https://researchdata.ox.ac.uk/saml_login' aria-label='Login to access restricted content' class='fas fa-sign-in-alt user-link'></a>
+  
+    </div>
+                      <div class="search-container search_style_standard search_collapse_1450">
+            <a id="search-mobile-trigger" role="button" class="fas fa-search" aria-label="Activate search" tabindex="0"></a>
+              <div class="region region-search">
+    <div id='block-search-form' class="block block-search clearfix">
+      
+  <form role="search" class="form-search content-search" action="/data-handling-and-acquisition/" method="post" id="search-block-form--2" accept-charset="UTF-8"><div><div>
+      <div class="element-invisible">Search form</div>
+    <div style="display:flex;">
+    <input title="Enter the terms you wish to search for" aria-label="Enter the terms you wish to search for" class="form-control form-text" type="text" id="edit-search-block-form--4" name="search_block_form" value="" size="15" maxlength="128" /><div class="form-actions input-group-btn form-wrapper form-group" id="edit-actions--2"><button class="btn btn-primary form-submit" aria-label="Search" type="submit" id="edit-submit--2" name="op" value="&lt;span class=&quot;icon fas fa-search&quot;&gt;&lt;span class=&quot;hide&quot;&gt;Search&lt;/span&gt;&lt;/span&gt;"><span class="icon fas fa-search"><span class="hide">Search</span></span></button>
+</div><input type="hidden" name="form_build_id" value="form-S34_M3iVjj8FROwrIeQBWVvXqAXlQ7Y9kFfx3nqQvik" />
+<input type="hidden" name="form_id" value="search_block_form" />
+  </div>
+</div>
+</div></form>
+</div>
+  </div>
+          </div>
+                    <div id="main-links" class="">
+            <a id="main-links-trigger" role="button" class="fas fa-bars" aria-label="Main menu" tabindex="0"></a>
+            <div class="links-container">
+              <nav id="main-menu" name="Main navigation">
+                  <div class="region region-navigation">
+    <div id='block-menu-block-top-nav' class="block block-menu-block clearfix">
+      
+  <div class="menu-block-wrapper menu-block-top_nav menu-name-menu-og-121536 parent-mlid-0 menu-level-1">
+  <ul class="menu nav navbar-nav fa-caret" aria-expanded="false"><li class="first expanded active-trail menu-mlid-118956">
+      <div class='item-container has-sub-items'>
+        <a href="/welcome" class="active-trail" aria-expanded="false" aria-haspopup="true" id="submenu-button-118956" aria-controls="submenu-container-118956"><span>Welcome</span><span class="icon" aria-hidden="true"></span></a> <a class="mobile-expand fas fa-plus" tabindex="0" role="button" aria-haspopup= "true" aria-controls="submenu-container-118956" aria-label="Expand: Welcome"></a>
+      </div>
+    <ul id="submenu-container-118956" aria-labelledby="submenu-118956" class="menu nav navbar-nav fa-caret" aria-expanded="false"><li class="first leaf menu-mlid-118961">
+      <div class='item-container '>
+        <a href="/about-data-management"><span>About data management</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="leaf menu-mlid-125386">
+      <div class='item-container '>
+        <a href="/data-management-plans"><span>Data management plans</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="leaf menu-mlid-125391">
+      <div class='item-container '>
+        <a href="/ethical-and-legal-issues"><span>Ethical and legal issues</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="leaf active-trail menu-mlid-125396 active">
+      <div class='item-container '>
+        <a href="/data-handling-and-acquisition" class="active-trail active"><span>Data handling and acquisition</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="leaf menu-mlid-125401">
+      <div class='item-container '>
+        <a href="/keeping-working-data-safe"><span>Keeping working data safe</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="leaf menu-mlid-125406">
+      <div class='item-container '>
+        <a href="/post-project-data-preservation"><span>Post-project data preservation</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="leaf menu-mlid-125411">
+      <div class='item-container '>
+        <a href="/sharing-data"><span>Sharing data</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="leaf menu-mlid-125416">
+      <div class='item-container '>
+        <a href="/university-oxford-data-management-policy"><span>University of Oxford research data policy</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="last leaf menu-mlid-133831">
+      <div class='item-container '>
+        <a href="/funder-requirements"><span>Funder requirements</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+</ul></li>
+<li class="leaf menu-mlid-159086">
+      <div class='item-container '>
+        <a href="/tools-services-and-training"><span>Tools, services, and training</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="leaf menu-mlid-125476">
+      <div class='item-container '>
+        <a href="/faqs"><span>FAQs</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="leaf menu-mlid-125471">
+      <div class='item-container '>
+        <a href="/quick-links"><span>Quick links</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="leaf menu-mlid-41186">
+      <div class='item-container '>
+        <a href="/rdm-glossary"><span>Glossary</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+<li class="last leaf menu-mlid-41191">
+      <div class='item-container '>
+        <a href="/contact-us"><span>Contact us</span><span class="icon" aria-hidden="true"></span></a> 
+      </div>
+    </li>
+</ul></div>
+
+</div>
+  </div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div id="wrapper-main" class="wrapper wrapper-main region-fullwidth standard-content-width">
+
+    <!-- REGION PREFACE -->
+    <div id="preface">
+                            </div>
+    <!-- END REGION PREFACE -->
+
+    <!-- main container -->
+    <div id="main-container" class="container">
+
+        <!-- REGION CONTENT -->
+        <div id="maincontent" class="row">
+          
+                        <aside class="col-sm-3 sidebar-first">
+                  <div class="region region-sidebar-first well">
+    <div id='block-menu-block-sidebar-nav' class="block block-menu-block clearfix">
+      
+  <div class="menu-block-wrapper menu-block-sidebar_nav menu-name-menu-og-121536 parent-mlid-118956 menu-level-1">
+  <ul class="menu nav navbar-nav"><li class="first leaf menu-mlid-118961"><a href="/about-data-management"><span>About data management</span><span class="icon" aria-hidden="true"></span></a></li>
+<li class="leaf menu-mlid-125386"><a href="/data-management-plans"><span>Data management plans</span><span class="icon" aria-hidden="true"></span></a></li>
+<li class="leaf menu-mlid-125391"><a href="/ethical-and-legal-issues"><span>Ethical and legal issues</span><span class="icon" aria-hidden="true"></span></a></li>
+<li class="leaf active-trail menu-mlid-125396 active"><a href="/data-handling-and-acquisition" class="active-trail active"><span>Data handling and acquisition</span><span class="icon" aria-hidden="true"></span></a></li>
+<li class="leaf menu-mlid-125401"><a href="/keeping-working-data-safe"><span>Keeping working data safe</span><span class="icon" aria-hidden="true"></span></a></li>
+<li class="leaf menu-mlid-125406"><a href="/post-project-data-preservation"><span>Post-project data preservation</span><span class="icon" aria-hidden="true"></span></a></li>
+<li class="leaf menu-mlid-125411"><a href="/sharing-data"><span>Sharing data</span><span class="icon" aria-hidden="true"></span></a></li>
+<li class="leaf menu-mlid-125416"><a href="/university-oxford-data-management-policy"><span>University of Oxford research data policy</span><span class="icon" aria-hidden="true"></span></a></li>
+<li class="last leaf menu-mlid-133831"><a href="/funder-requirements"><span>Funder requirements</span><span class="icon" aria-hidden="true"></span></a></li>
+</ul></div>
+
+</div>
+  </div>
+              </aside>  <!-- /#sidebar-first-1 -->
+                    
+            <div  class="col-sm-9">
+              
+                <div id="main-content" role="main">
+
+                                                                            <div class="row">
+                          <div class="h1_row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                              <div class="header-title">
+                                  <h1 class="page-header row ">Data handling and acquisition</h1>
+
+                                                                                            </div>
+                          </div>
+                      </div>
+                                    
+                                                        <div class="region region-content">
+    <div id='block-system-main' class="block block-system clearfix">
+      
+  <div class="panelizer-view-mode node node-full node-oxdrupal-basic-page node-906621"  >
+          <div class="bootstrap-twocol-stacked" >
+      <div class="row">
+      <div class="panel-panel top col-xs-12 col-sm-12 col-md-12 col-lg-12"><div class="panel-pane pane-entity-field pane-node-field-region-1"  >
+  
+      
+  
+  <div class="pane-content">
+    
+<div class="paragraphs-items paragraphs-items-field-region-1 paragraphs-items-field-region-1-full paragraphs-items-full">
+  
+<div class="field field-name-field-region-1 field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area margin-bottom widget-width-12-columns widget-style-main paragraphs-item-3292436">
+      <div id="widget-id-3292436"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <p>It's important to have good processes in place for collecting or creating your data, and for working with it during the active phase of your project. This will enable you to get the most out of your data, and will also help maximise its value for the longer term.</p>
+      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+                        <div class="field-item private-show odd">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-advanced-accordion margin-bottom widget-width-12-columns paragraphs-item-1827031">
+    <div class="content">
+            <div id="widget-id-1827031"></div>
+            <div id="views-bootstrap-accordion-1827031" class="views-bootstrap-accordion-plugin-style panel-group">
+                            <p><span class="showmore"><a href='#' id="expand-all-2-1827031" role="button" tabindex="0" class="expand-all" aria-label="Expand all">Expand All</a></span></p>
+              
+<div class="paragraphs-items paragraphs-items-field-paragraph-section paragraphs-items-field-paragraph-section-full paragraphs-items-full">
+  
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827031"
+         href="#collapse1826926">
+        Data collection      </a>
+    </h3>
+  </div>
+  <div id="collapse1826926" class="panel-collapse collapse">
+    <div class="panel-body">
+          <div class="content">
+        
+<div class="paragraphs-items paragraphs-items-field-advanced-section-content paragraphs-items-field-advanced-section-content-full paragraphs-items-full">
+  
+<div class="field field-name-field-advanced-section-content field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area widget-width-12-columns widget-style-main paragraphs-item-1826921">
+      <div id="widget-id-1826921"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <p>Data collection forms the foundation of many research projects. Ensuring that this foundation is as solid as possible gives the rest of the project the best chance of accomplishing its goals. Some issues pertaining to specific types of data collection are discussed in the sub-sections below, but there are a few general key principles to consider:</p>
+<h4>Check for existing data first</h4>
+<p>Before you start planning your data collection, it's good practice to check whether any relevant pre-existing datasets are available to you. See the <a href="https://researchdata.ox.ac.uk/data-handling-and-acquisition#collapse1826936">Finding and reusing existing data</a> section below for more on this</p>
+<h4>Data collection needs to be consistent and accurate</h4>
+<p>Written protocols or standard processes can help with this. These are particularly useful in research groups where multiple people are involved in collection, but are valuable even for lone researchers. It's also important that appropriate quality assurance measures are in place. Depending on the type of data being collected, this might include calibration of instruments, validation of data entry, repeating samples or measurements, or peer review of data.</p>
+<h4>Data should be made as straightforward as possible to work with</h4>
+<p>Depending on the nature of the project, this may apply to the data collection process itself, or to what is done with the data immediately after collection. The progress of the rest of the project can be smoothed through (for example) clear documentation and labelling, standardised file names, and a well-ordered file or folder structure. See the later sections on this page for more on these.</p>
+<h4>Data collection must be ethical and compliant</h4>
+<p>The collection process and any interactions with research subjects need to be conducted ethically. It's also important to make sure you're aware of relevant laws and regulations, and that you have a plan to ensure compliance with these. See the next section for more on this.</p>
+      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+                        <div class="field-item private-show odd">
+
+                    <div class="entity entity-paragraphs-item paragraphs-item-accordion-content margin-bottom widget-width-12-columns paragraphs-item-1827046">
+            <div class="content">
+                      <div id="widget-id-1827046"></div>
+                                <div id="views-bootstrap-accordion-1827046" class="views-bootstrap-accordion-plugin-style panel-group">
+                                <p><span class="showmore"><a id="expand-all-5-1827046" href="#expand-5" class="expand-all">Expand All</a></span></p>
+                            
+<div class="paragraphs-items paragraphs-items-field-wysiwyg-section paragraphs-items-field-wysiwyg-section-full paragraphs-items-full">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827046"
+         href="#collapse3292431">
+        Data from or about human subjects      </a>
+    </h3>
+  </div>
+  <div id="collapse3292431" class="panel-collapse collapse">
+    <div class="panel-body">
+      <p>Any research activity involving human participants requires ethical approval, even if no personal data is being collected. For further information, see the <a href="https://researchsupport.admin.ox.ac.uk/governance/ethics#/" target="_blank">Research Ethics</a> pages on the Research Support website.</p>
+<p>Any personal data - that is, data about an identifiable living individual - needs to be handled in a way that is compliant with the General Data Protection Regulation (GDPR). Any University of Oxford activity which involves processing data will need to make use of the <a href="https://compliance.admin.ox.ac.uk/data-protection-by-design" target="_blank">Data Protection by Design</a> framework, which may involve completing a Data Protection Impact Assessment (DPIA). </p>
+<p>If personal data is being collected directly from participants (e.g. via a survey or interview), a privacy notice or participant information sheet should be used to provide participants with all the relevant information about what will happen to their data: see the <a href="https://compliance.admin.ox.ac.uk/creating-privacy-notices" target="_blank">Creating Privacy Notices</a> page on the <a href="https://compliance.admin.ox.ac.uk/" target="_blank">Compliance</a> website for more details.</p>
+<p>Additional information is available from the <a href="https://researchsupport.admin.ox.ac.uk/policy/data" target="_blank">Data Protection and Research</a> pages on the Research Support website.</p>
+<p>If people other than the members of the research team are involved in data collection or digitisation (if, for example, a transcription service is used), additional steps or processes may be needed. These might include gaining ethical approval for the involvement of the additional personnel, ensuring that the participant information sheet mentions that they will be involved in processing the data, or a <a href="https://www.infosec.ox.ac.uk/third-party-security-assessment" target="_blank">Third Party Security Assessment</a> for an external service. In some cases, a confidentiality agreement or data sharing agreement may be needed: <a href="https://researchsupport.admin.ox.ac.uk/contracts" target="_blank">Research Services</a> can advise on this.</p>
+<p>This topic is covered in more detail in the <a href="https://researchdata.ox.ac.uk/ethical-and-legal-issues">Ethical and legal issues</a> section of this website.</p>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827046"
+         href="#collapse1827036">
+        Surveys      </a>
+    </h3>
+  </div>
+  <div id="collapse1827036" class="panel-collapse collapse">
+    <div class="panel-body">
+      <p>Surveys and questionnaires are a common method of collecting quantitative (and sometimes qualitative) data. They may be conducted via an online platform, via electronic devices such as tablets, or using pen and paper.</p>
+<p>As there is a high chance that data collected via a survey will include personal data, it is important that proper processes are put in place, and appropriate tools are used: see the general notes on <a href="https://researchdata.ox.ac.uk/data-handling-and-acquisition#widget-id-1827046">Data from or about human subjects</a> above for more on this.</p>
+<h4>Online survey platforms</h4>
+<p>Online survey platforms can offer a quick and convenient way of creating and running a survey. Two platforms are available free at the point of use to all University members: <a href="https://help.it.ox.ac.uk/jisc-online-surveys" target="_blank">Jisc Online Surveys</a>, and <a href="https://help.it.ox.ac.uk/microsoft-forms" target="_blank">Microsoft Forms</a>. These have both been approved by the University's Information Security team as suitable places to store University data, including confidential data. They offer solid, user-friendly functionality, though they do not have the more advanced features offered by some survey tools.</p>
+<p>Other tools offering a wider range of features are available to specific groups within the University: for example, the Medical Sciences Division runs an instance of <a href="https://www.medsci.ox.ac.uk/divisional-services/support-services-1/information-technology/collaborative-tools/survey-tools" target="_blank">REDCap</a> for its members, and some departments have subscriptions to other survey platforms (for example <a href="https://www.qualtrics.com/uk/core-xm/survey-software/" target="_blank">Qualtrics</a>) for the use of their members. Consult your local admin staff, research support staff, or IT officer to find out what is available to you.</p>
+<p>If you need to use a survey tool other than those provided by the University, a <a href="https://www.infosec.ox.ac.uk/third-party-security-assessment" target="_blank">Third Party Security Assessment</a> (TPSA) should be completed. A handful of survey tools (including <a href="https://www.qualtrics.com/uk/core-xm/survey-software/" target="_blank">Qualtrics</a> and <a href="https://www.smartsurvey.co.uk/" target="_blank">SmartSurvey</a>) have already been through this process, and are deemed suitable for use with confidential data. New subscriptions should be arranged through your department, rather than via a personal account, so that a contractual relationship exists between the University (which ultimately has legal responsibility for data gathered in the course of University research) and the service provider.</p>
+<p>The <a href="https://help.it.ox.ac.uk/survey-advice-service" target="_blank">IT Services Survey Advice Service</a> can provide advice about selecting a suitable online platform, and training is available via the <a href="https://skills.it.ox.ac.uk/whats-on#/" target="_blank">IT Learning Centre</a>.</p>
+<h4>Electronic devices</h4>
+<p>If a reliable internet connection is not available, it may be more convenient to conduct a survey using an app on an electronic device, such as a tablet or a smartphone. This may be a standalone piece of software, or it may be an offline app that works in tandem with an online survey platform (responses are stored on the device, and then synced with the online platform when internet access is available).</p>
+<p>Thought needs to be given to data storage and handling both on the device, and after data has been transferred elsewhere. If at all possible, portable devices used for storing personal data should be encrypted: if this is not feasible, data should be transferred from the device to secure storage at the earliest opportunity, and the original unencrypted copy deleted. If an app provided by an online survey platform is used, the platform should be selected in line with the guidance given above. Qualtrics and SmartSurvey are examples of suitably secure survey platforms which offer an offline app.</p>
+<h4>Hard copy surveys</h4>
+<p>In some cases, the traditional method of collecting survey responses using pen and paper may be most appropriate. Responses may then be digitised, either by scanning, or by entering the data manually into an electronic survey platform or database. As with electronic collection, care needs to be taken to ensure that the data is handled properly both during collection and subsequently. For example, it may be necessary to store completed survey forms in a locked filing cabinet, and any involvement of non-University personnel in collection or transcription may require a data sharing agreement.</p>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827046"
+         href="#collapse1827041">
+        Fieldwork      </a>
+    </h3>
+  </div>
+  <div id="collapse1827041" class="panel-collapse collapse">
+    <div class="panel-body">
+      <p>Some types of fieldwork raise additional data management challenges: for example, lack of reliable access to electricity or an internet connection may limit data collection and storage options.</p>
+<p>In general:</p>
+<ul><li>Data collection and storage should be as secure as practically possible under the circumstances</li>
+<li>Where compromises have to be made, data should be transferred to secure, properly backed-up storage as soon as feasible</li>
+</ul><p>Thus, for example, if fieldwork involves making recordings of interviews, the recording device should ideally be encrypted. If this is not possible, the recordings should be transferred to encrypted storage (and the unencrypted originals deleted) as soon as practically possible.</p>
+<p>If a sufficiently robust internet connection is available, consider uploading data to secure cloud-based storage such as the University's <a href="https://help.it.ox.ac.uk/onedrive-for-business" target="_blank">Nexus365 OneDrive for Business</a> at the earliest opportunity. This reduces the risk of data loss as a result of portable storage media being damaged, lost, or stolen while travelling. It is also possible to make back-up copies of hard copy data (e.g. consent forms or written questionnaires) by taking photos of these and uploading them to Nexus365 OneDrive. If portable media need to be used, these should be encrypted, and it is sensible to make multiple copies, and keep these in different places.</p>
+<p>However, some countries impose restrictions on travelling with encrypted devices. This has the potential to cause problems at customs, and in extreme cases, can lead to devices being confiscated or to fines or other penalties. Check the situation in your destination before leaving the UK, so you can plan accordingly. If using an encrypted device may be problematic, uploading your data to Nexus365 OneDrive is a good option: this means that sensitive data does not need to be stored on the portable device, but can still be accessed easily once back in the UK.</p>
+<p>Research that forms part of a University of Oxford project needs to comply with relevant UK legislation such as GDPR, even if collection is taking place in another country. You may also need to take local legislation into account.</p>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827046"
+         href="#collapse2143821">
+        Recording and transcribing interviews      </a>
+    </h3>
+  </div>
+  <div id="collapse2143821" class="panel-collapse collapse">
+    <div class="panel-body">
+      <p>Recording an interview is a convenient way to save notetaking and allow you to concentrate on asking questions and responding to the interviewee's answers. Having a transcript of the interview means you can quickly search, browse, and refer to the material without having to listen to the whole recording.</p>
+<p>You should always obtain explicit permission from the participants before recording any conversations. A video or audio recording will contain personally identifiable information, even if that is just the voice or face of the interviewee. As with all personal data, you need to make sure the recording is secure, for example by encrypting the file or only keeping it on secure, encrypted storage (see the <a href="https://researchdata.ox.ac.uk/keeping-working-data-safe#collapse1827111">Keeping working data safe</a> section). Many recording devices, such as digital voice recorders or dictaphones, cannot be encrypted or store the recordings in an encrypted form. If alternative equipment is not available, you can mitigate the risk by deleting the recording data as soon as possible (after copying to your encrypted storage) and locking the device and its storage media away when not in use.</p>
+<p>Another option is to record using <a href="https://help.it.ox.ac.uk/microsoft-stream" target="_blank" title="To the IT Services' page about Microsoft Streams (new tab/window)">Microsoft Stream</a>, which uploads the recording directly to the University’s secure Nexus365 service. As Nexus365 has been approved for use with all kinds of University data, it is a good place to store any personal data that you're collecting. Nexus365 also gives you access to the transcription feature of Microsoft Stream or Word online, which you can use to automatically transcribe material at no cost. For more information, see <a href="https://researchdata.ox.ac.uk/transcribe-interviews-with-nexus365">our guide to transcribing interviews</a>.</p>
+<p>For remote video interviews, <a href="https://help.it.ox.ac.uk/microsoft-teams" target="_blank">Microsoft Teams</a> is the University's recommended platform. Participants do not need a Microsoft account: it is possible to send a link to a Teams meeting that will let them attend as a guest, using either a browser or the Teams app (which is free to download). Recording of Teams meetings can be enabled on request.</p>
+<p>The Research Support website offers <a href="https://researchsupport.admin.ox.ac.uk/covid-19/data" target="_blank">Guidance for Researchers Working Remotely with Participant Data</a>.</p>
+    </div>
+  </div>
+</div>
+
+
+</div>
+            </div>
+        </div>
+    </div>
+      </div>
+            </div>
+</div>
+</div>
+    </div>    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827031"
+         href="#collapse1826936">
+        Finding and reusing existing data      </a>
+    </h3>
+  </div>
+  <div id="collapse1826936" class="panel-collapse collapse">
+    <div class="panel-body">
+          <div class="content">
+        
+<div class="paragraphs-items paragraphs-items-field-advanced-section-content paragraphs-items-field-advanced-section-content-full paragraphs-items-full">
+  
+<div class="field field-name-field-advanced-section-content field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area widget-width-12-columns widget-style-main paragraphs-item-1826931">
+      <div id="widget-id-1826931"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <p>It is good practice to check whether any pre-existing datasets relevant to your research are available to you. This should be done as early as possible: ideally while your project is still in the planning stages. Some research funders require you to state the steps taken to identify relevant datasets in your data management plan.</p>
+<p>You may discover that the data you need has already been collected by an earlier project, and that you are able to reuse it, thus reducing duplication of effort. Alternatively, you may be able to build on a pre-existing dataset, or combine one with your own data to expand the scope of your project. It can also be helpful to see the approach taken by other researchers: this may provide pointers on the most appropriate collection and processing methods, data structure, or metadata standards.</p>
+      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+                        <div class="field-item private-show odd">
+
+                    <div class="entity entity-paragraphs-item paragraphs-item-accordion-content margin-bottom widget-width-12-columns paragraphs-item-3434181">
+            <div class="content">
+                      <div id="widget-id-3434181"></div>
+                                <div id="views-bootstrap-accordion-3434181" class="views-bootstrap-accordion-plugin-style panel-group">
+                                <p><span class="showmore"><a id="expand-all-8-3434181" href="#expand-8" class="expand-all">Expand All</a></span></p>
+                            
+<div class="paragraphs-items paragraphs-items-field-wysiwyg-section paragraphs-items-field-wysiwyg-section-full paragraphs-items-full">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-3434181"
+         href="#collapse3434161">
+        Ways of finding existing data      </a>
+    </h3>
+  </div>
+  <div id="collapse3434161" class="panel-collapse collapse">
+    <div class="panel-body">
+      <ul><li>Visit the <a href="https://www.bodleian.ox.ac.uk/collections-and-resources/data" target="_blank">Bodleian Data Service</a> web pages for information about finding, accessing, and using datasets for research.</li>
+<li>Browse or search data archives and repositories: <a href="https://www.re3data.org/" target="_blank">Re3data</a> and <a href="https://fairsharing.org/" target="_blank">FAIRsharing</a> both offer extensive catalogues of repositories in a wide range of subject areas</li>
+<li>Search for datasets in the University of Oxford's institutional archive, <a href="https://ora.ox.ac.uk/?f%5Bf_type_of_work%5D%5B%5D=Dataset&amp;search_field=all_fields" target="_blank">ORA</a></li>
+<li>Check recent publications in your area: a number of major funders (including the UK Research Councils) now require published results to include information about how to access the underlying data</li>
+</ul>    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-3434181"
+         href="#collapse3434166">
+        Using shared data      </a>
+    </h3>
+  </div>
+  <div id="collapse3434166" class="panel-collapse collapse">
+    <div class="panel-body">
+      <h4>Acquaint yourself with any terms of use or restrictions</h4>
+<p>Before making use of a dataset, it is important to make sure you are aware of any conditions imposed by the data creators. If the data has been made available under a licence, this may specify what can and cannot be done with the data.</p>
+<p>As with data that you collect or generate yourself, there may also be ethical or legal restrictions that need to be respected - for example, personal data will need to be treated in accordance with GDPR. If data has been anonymised, it is not generally acceptable to attempt to reidentify the data subjects.</p>
+<h4>Make use of documentation</h4>
+<p>Datasets made available for reuse will normally be accompanied by documentation or other contextual information. It is worth taking some time to familiarise yourself with this: it will often include important details which will reduce the risk of misinterpreting the data.</p>
+<h4>Take care not to misrepresent</h4>
+<p>Having a thorough understanding of a dataset can also help you to avoid inadvertently misrepresenting its contents. For example, documentation accompanying survey data may provide information about how the survey sample was recruited, which in turn may help to flag up ways in which the sample may be unrepresentative, and thus to avoid drawing stronger conclusions than the data actually supports.</p>
+<p>When combining multiple datasets, be alert to any differences in the way the data is presented which have the potential to lead to misunderstandings. For example, suppose you are dealing with two datasets which both record distances: one which rounds to the nearest kilometre, and one which gives an exact number of metres. If you convert the first set of measurements to metres, and then combine the two datasets, there is a risk of giving the impression that the data from the first dataset is claiming a greater degree of precision than is in fact the case. Annotation or documentation can help avoid confusion in cases of this kind.</p>
+<p>Similarly, if you manipulate, cleanse, or otherwise process a dataset to make it suitable for your own purposes, it is important to keep careful records of what has been done, and to make it clear that your analysis is based on your processed version rather than the original.</p>
+<h4>Give credit where it's due</h4>
+<p>If you make use of someone else's dataset in the course of preparing a research output such as an article, a thesis, or a conference presentation, you should include proper citations, following whatever conventions are usual in your discipline. If a dataset is a significant source, it may also be appropriate to describe it and how you have used it in the body of the work, and/or to mention the data creators in your acknowledgements.</p>
+<p>Even if data is in the public domain, it is still good academic practice to ensure it is properly cited - just as you would still cite a book or an article that you use as a source even if it is now out of copyright.</p>
+<p>If you have questions about the reuse of third party material, you can contact the Bodleian's <a href="mailto:copyright@bodleian.ox.ac.uk">Copyright and Licensing Specialist</a>.</p>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-3434181"
+         href="#collapse3434171">
+        How to cite a dataset      </a>
+    </h3>
+  </div>
+  <div id="collapse3434171" class="panel-collapse collapse">
+    <div class="panel-body">
+      <p>Citing a dataset is similar in many ways to citing a textual source such as a journal article or book. If the citation style in use within your discipline does not provide specific guidelines for data citations, you can adapt the style normally used to cite books. A data citation will typically include the following elements:</p>
+<p><strong>Author:</strong> The data creator or creators.</p>
+<p><strong>Title:</strong> The name of the dataset. If the dataset does not have a separate title of its own, give the name of the study the dataset is associated with, or a brief description of it. Where it is helpful to aid clarity, the word '[Dataset]' may be added immediately after the title.</p>
+<p><strong>Edition and/or version number:</strong> May not be applicable in all cases, but where multiple versions of a dataset exist, it is important to indicate which one is being referenced.</p>
+<p><strong>Publication date:</strong> The date that the dataset was made available. If the data is not generally available for reuse (e.g. data which has been shared privately), give the date when the dataset was finalised.</p>
+<p><strong>Publisher:</strong> This may be an institution or individual responsible for making the dataset available, or the repository which hosts it.</p>
+<p><strong>Location or identifier:</strong> If the dataset (or a metadata record for it) is available online, provide a link via which it can be accessed. Ideally, this will be a persistent identifier such as a DOI (digital object identifier); if this is not available, a URL may be given.</p>
+<p>Sometimes you may wish to refer to a specific part of a dataset. There are fewer well-established conventions for doing this than for print media, but if a dataset is split into multiple files or sections, each with its own identifier, then these can be used to give a more precise citation. Where this is not the case, or is insufficient, it may be appropriate to include a note indicating how the relevant data can be located within the dataset. If you have created your own version of a dataset (e.g. by filtering or reorganising the data) and the reuse conditions permit it, you may wish to make a copy of this available (with the source of the data clearly indicated), to make your conclusions more easily reproducible.</p>
+<p><a href="https://www.dcc.ac.uk/guidance/how-guides/cite-datasets" target="_blank">How to cite datasets and link to publications</a> is a guide from the DCC which provides further information on this topic.</p>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-3434181"
+         href="#collapse3434176">
+        Copyright and intellectual property considerations for shared data      </a>
+    </h3>
+  </div>
+  <div id="collapse3434176" class="panel-collapse collapse">
+    <div class="panel-body">
+      <p>If you are working with data that you do not control the rights to, this may have an impact on whether you can make that data available at the end of your project. See the <a href="https://researchdata.ox.ac.uk/sharing-data#collapse1827266">Selecting and preparing data for sharing</a> section of the <a href="https://researchdata.ox.ac.uk/sharing-data">Sharing data</a> page for more on third party data.</p>
+    </div>
+  </div>
+</div>
+
+
+</div>
+            </div>
+        </div>
+    </div>
+      </div>
+            </div>
+</div>
+</div>
+    </div>    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827031"
+         href="#collapse1826956">
+        Preparing your data for analysis      </a>
+    </h3>
+  </div>
+  <div id="collapse1826956" class="panel-collapse collapse">
+    <div class="panel-body">
+          <div class="content">
+        
+<div class="paragraphs-items paragraphs-items-field-advanced-section-content paragraphs-items-field-advanced-section-content-full paragraphs-items-full">
+  
+<div class="field field-name-field-advanced-section-content field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area margin-bottom widget-width-12-columns widget-style-main paragraphs-item-1826951">
+      <div id="widget-id-1826951"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <h4>Cleansing and formatting</h4>
+<p>Before starting to analyse your data, you'll want to make sure it's in the best possible shape. Data may need cleansing or formatting to make it as straightforward as possible to work with, and to reduce the risk of erroneous conclusions being drawn. Depending on the type of data, this may involve:</p>
+<ul><li>Correcting errors and (where possible) filling in missing data</li>
+<li>Removing duplicates</li>
+<li>Resolving or removing outliers</li>
+<li>Ensuring null (missing) values are properly distinguished from zeros</li>
+<li>Standardising formatting, spelling, or abbreviations</li>
+<li>Ensuring data is consistently presented and labelled</li>
+</ul><p>Some types of data present special challenges. For example, in transcription of historical records, variant spellings may be an important aspect of the original data, but a standardised version may aid searching. In such cases, it may be appropriate to create a copy of the dataset containing both the original and the standardised versions.</p>
+<p>If multiple datasets need to be combined (for example, because multiple people were involved in data collection), check these for consistency before merging them.</p>
+<p>For a small dataset, it may be practical to cleanse and format data manually, but for larger ones, some degree of automation is likely to be necessary. Software packages used for data analysis often include tools to help cleanse data. Programming languages such as R and Python can also be used for this purpose.</p>
+<p>As far as is feasible, ensure any steps you take are reversible. Save copies of the raw data files before cleansing or reformatting, so it is always possible to go back and consult the original if needed, and keep a record of what has been done to the data.</p>
+<h4>Pseudonymisation</h4>
+<p>If your data includes personal identifiers, consider whether data should be pseudonymised. Pseudonymisation involves replacing personal identifiers (such as names or email addresses) with artificial identifiers (such as ID numbers). A version of the data containing the personal identifiers may be retained, allowing the data subjects to be reidentified if necessary, but day-to-day analysis is carried out using the pseudonymised version. This technique can be used to limit the number of people who have access to the full dataset, and also reduces the risk of accidental disclosure of personal information.</p>
+      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+            </div>
+</div>
+</div>
+    </div>    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827031"
+         href="#collapse1826966">
+        Organising your data      </a>
+    </h3>
+  </div>
+  <div id="collapse1826966" class="panel-collapse collapse">
+    <div class="panel-body">
+          <div class="content">
+        
+<div class="paragraphs-items paragraphs-items-field-advanced-section-content paragraphs-items-field-advanced-section-content-full paragraphs-items-full">
+  
+<div class="field field-name-field-advanced-section-content field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area widget-width-12-columns widget-style-main paragraphs-item-1826961">
+      <div id="widget-id-1826961"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <p>Methods of organising or structuring data should be considered at an early stage in the project. This is a complex area, and the appropriate solution will depend on the type of data you are working with, and what you want to do with it.</p>
+<p>It's worth taking some time to investigate the various tools and methods that are available, to ensure you're using what's best suited to your data. For example:</p>
+<ul><li>For straightforward, tabular data, a spreadsheet may provide all the functionality you need</li>
+<li>For data with a more complex structure (particularly if multiple types of entity are involved), a relational database may be a better option</li>
+<li>For semi-structured or unstructured data, a document-oriented database (using XML, for example) or a qualitative analysis package such as NVivo may be what's required</li>
+<li>For more specific types of data, a specialised software package may be the best alternative</li>
+</ul><p>If you're uncertain which approach is most appropriate, or would like to learn more about the options, it may help to talk through your plans for your project with a more experienced colleague or with a member of the Research Data Oxford team. If you would like to make an appointment with the latter, email <a href="mailto:researchdata@ox.ac.uk">researchdata@ox.ac.uk</a>.</p>
+<p>Additionally, the <a href="https://skills.it.ox.ac.uk/home" target="_blank">IT Learning Centre</a> offers a wide selection of courses which provide an introduction to a range of technologies and techniques. Members of the University of Oxford can also make use of <a href="https://skills.it.ox.ac.uk/molly">Self-service learning</a>, a vast collection of online courses and resources, which provides access to the University's subscription to the LinkedIn Learning video training library, and to the IT Learning Portfolio, which offers resources from ITLC courses.</p>
+      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+                        <div class="field-item private-show odd">
+
+                    <div class="entity entity-paragraphs-item paragraphs-item-accordion-content margin-bottom widget-width-12-columns paragraphs-item-3434196">
+            <div class="content">
+                      <div id="widget-id-3434196"></div>
+                                <div id="views-bootstrap-accordion-3434196" class="views-bootstrap-accordion-plugin-style panel-group">
+                                <p><span class="showmore"><a id="expand-all-13-3434196" href="#expand-13" class="expand-all">Expand All</a></span></p>
+                            
+<div class="paragraphs-items paragraphs-items-field-wysiwyg-section paragraphs-items-field-wysiwyg-section-full paragraphs-items-full">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-3434196"
+         href="#collapse3434186">
+        File structure      </a>
+    </h3>
+  </div>
+  <div id="collapse3434186" class="panel-collapse collapse">
+    <div class="panel-body">
+      <p>Much time can be saved by having a file structure which is intuitive to navigate and which makes it easy to find files. If multiple people are using the same set of files, it may be worth documenting the structure that has been agreed, so everyone knows where to save new files and find existing ones.</p>
+<p>When grouping files into hierarchical folders, it's usually best to aim for a balance between breadth and depth: so no one category gets too big, but so that you also don’t have to click through endless sub-folders to find a file</p>
+<p>It's good practice to review file structures regularly, to check whether they still meet the needs of the project. It may be helpful to periodically move older files that are no longer being worked on to a folder called 'Archive' (or whatever seems appropriate): this helps to keep the working environment uncluttered, while still allowing older files to be easily retrieved when needed.</p>
+<p>If files seem to belong in multiple places within a folder structure, shortcuts can be used to allow the same file to be accessed from more than one place. (Individual team members may also wish to use shortcuts to create a personal folder of files they are currently working on.)</p>
+<p>Both Windows and Mac now also permit tags to be added to files, which provides an alternative method of organisation, and allows related files from across the folder structure to be labelled and then quickly reidentified.</p>
+<p>If you need to share a collection of files, or are creating a copy for deposit in an archive, the file and folder structure can be preserved by creating a zipped folder.</p>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-3434196"
+         href="#collapse3434191">
+        File and folder names      </a>
+    </h3>
+  </div>
+  <div id="collapse3434191" class="panel-collapse collapse">
+    <div class="panel-body">
+      <p>When using modern file storage systems like OneDrive with a rapid searching facility, it is easier to forget to name files in a logical way. However, it's still worth doing: you may want to share files, or move them to a different platform. </p>
+<p>The ideal file or folder name is reasonably concise, but informative: it makes life easier if you can tell what’s in an item without having to open it.</p>
+<p>Being consistent in your naming practices will also make it easier to identify the item you want. Within a research group, you may want to agree on file and folder naming conventions early on in the project. Document your decisions, and store a copy of the document somewhere accessible to all members of the team.</p>
+<p>Operating systems usually default to sorting files alphabetically, so it can be helpful to think about which element comes at the start of the name – is it more useful to order the items by date, by author, or by subject, for example? If you're including a date, consider using international standard date notation (YYYY-MM-DD), to aid easy chronological sorting. To force a particular order on a set of files or folders, you can add a number at the start of the name.</p>
+<p>You may also want to consider having a standard set of keywords or labels which are included in file names. For example, does the file contain raw or processed data? Is it a draft or a final version? Would a version number be helpful for keeping track of the most recent copy? If a file has been worked on by one particular member of the team, would it be useful to indicate this by including their initials, so people know who to ask about it?</p>
+    </div>
+  </div>
+</div>
+
+
+</div>
+            </div>
+        </div>
+    </div>
+      </div>
+            </div>
+</div>
+</div>
+    </div>    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827031"
+         href="#collapse1826986">
+        File formats      </a>
+    </h3>
+  </div>
+  <div id="collapse1826986" class="panel-collapse collapse">
+    <div class="panel-body">
+          <div class="content">
+        
+<div class="paragraphs-items paragraphs-items-field-advanced-section-content paragraphs-items-field-advanced-section-content-full paragraphs-items-full">
+  
+<div class="field field-name-field-advanced-section-content field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area margin-bottom widget-width-12-columns widget-style-main paragraphs-item-1826981">
+      <div id="widget-id-1826981"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <p paraeid="{6715ca79-0dbb-48e5-87e9-1de3bf6b402d}{183}" paraid="2124159299">When planning your project or writing a data management plan you should consider the best format to store the working data. The choice may be limited by the software you are using: some features of software packages may not be available unless you are using the native format of the application. For example, Microsoft Word for the web only supports live collaborative editing when using the .docx format.  </p>
+<p paraeid="{6715ca79-0dbb-48e5-87e9-1de3bf6b402d}{217}" paraid="314746266">In contrast, file formats for sharing your data should be non-proprietary if possible, allowing the widest range of software to open and work with the data stored within the file. For example a comma-separated values (.csv) file can be opened with a much wider range of software than the proprietary Excel .xlsx format. If you are collaborating with other researchers, you should agree a common data format with them if possible. Using a non-proprietary format can also help ensure the data remains usable for as long as possible, as you aren't dependent on a particular piece of software (or even a particular version of the software) remaining available.</p>
+<p paraeid="{6715ca79-0dbb-48e5-87e9-1de3bf6b402d}{227}" paraid="1389519927">Where you have a choice in file format, here are some factors to bear in mind: </p>
+<p aria-level="2" paraeid="{6715ca79-0dbb-48e5-87e9-1de3bf6b402d}{231}" paraid="1383317136" role="heading">For traditional software installed on your device, consider: </p>
+<ul role="list"><li aria-setsize="-1" data-aria-level="1" data-aria-posinset="1" data-font="Symbol" data-leveltext="" data-listid="1" role="listitem">
+<p paraeid="{6715ca79-0dbb-48e5-87e9-1de3bf6b402d}{235}" paraid="204963003">Compatibility with the operating system your laptop uses (Windows, macOS)  </p>
+</li>
+<li aria-setsize="-1" data-aria-level="1" data-aria-posinset="2" data-font="Symbol" data-leveltext="" data-listid="1" role="listitem">
+<p paraeid="{6715ca79-0dbb-48e5-87e9-1de3bf6b402d}{250}" paraid="1652373290">Formats which are practical to share or integrate with an approved cloud service like Nexus365 </p>
+</li>
+</ul><p paraeid="{a2d7799a-34af-445c-831a-bce34eb37e7f}{9}" paraid="682159791">For cloud Software as a Service (SaaS):</p>
+<ul role="list"><li aria-setsize="-1" data-aria-level="1" data-aria-posinset="1" data-font="Symbol" data-leveltext="" data-listid="2" role="listitem">
+<p paraeid="{a2d7799a-34af-445c-831a-bce34eb37e7f}{13}" paraid="573698128">When planning to use free versions of ‘Freemium’ services, be aware that the terms could change during the lifetime of your project: the cloud provider could cease offering that service entirely or could start charging a fee. If possible, avoid relying on free third party services</p>
+</li>
+<li aria-setsize="-1" data-aria-level="1" data-aria-posinset="1" data-font="Symbol" data-leveltext="" data-listid="2" role="listitem">
+<p paraeid="{a2d7799a-34af-445c-831a-bce34eb37e7f}{13}" paraid="573698128">Check that the supplier running the service allows for an easy export of your data, ideally as a bulk download which preserves the structure of your data exactly</p>
+</li>
+</ul><p paraeid="{a2d7799a-34af-445c-831a-bce34eb37e7f}{22}" paraid="1794303380">For both SaaS and installed software, consider:</p>
+<ul role="list"><li aria-setsize="-1" data-aria-level="1" data-aria-posinset="2" data-font="Symbol" data-leveltext="" data-listid="1" role="listitem">
+<p paraeid="{a2d7799a-34af-445c-831a-bce34eb37e7f}{26}" paraid="252576950">Formats already used in your department or division or other projects similar to your research </p>
+</li>
+<li aria-setsize="-1" data-aria-level="1" data-aria-posinset="3" data-font="Symbol" data-leveltext="" data-listid="1" role="listitem">
+<p paraeid="{a2d7799a-34af-445c-831a-bce34eb37e7f}{33}" paraid="1586904925">Established discipline-specific standards </p>
+</li>
+<li aria-setsize="-1" data-aria-level="1" data-aria-posinset="4" data-font="Symbol" data-leveltext="" data-listid="1" role="listitem">
+<p paraeid="{a2d7799a-34af-445c-831a-bce34eb37e7f}{40}" paraid="660948873">Formats used by colleagues (both academic and support staff) and local expertise in working with that type of data </p>
+</li>
+<li aria-setsize="-1" data-aria-level="1" data-aria-posinset="1" data-font="Symbol" data-leveltext="" data-listid="1" role="listitem">
+<p paraeid="{a2d7799a-34af-445c-831a-bce34eb37e7f}{66}" paraid="1268328239">The way you will be analysing manipulating and storing your data </p>
+</li>
+<li aria-setsize="-1" data-aria-level="1" data-aria-posinset="2" data-font="Symbol" data-leveltext="" data-listid="1" role="listitem">
+<p paraeid="{a2d7799a-34af-445c-831a-bce34eb37e7f}{86}" paraid="1120881003">A format which can be annotated with metadata so that you and your colleagues/supervisor can understand exactly what the information is and how it was gathered </p>
+</li>
+</ul>      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+            </div>
+</div>
+</div>
+    </div>    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827031"
+         href="#collapse1826996">
+        Making research reproducible      </a>
+    </h3>
+  </div>
+  <div id="collapse1826996" class="panel-collapse collapse">
+    <div class="panel-body">
+          <div class="content">
+        
+<div class="paragraphs-items paragraphs-items-field-advanced-section-content paragraphs-items-field-advanced-section-content-full paragraphs-items-full">
+  
+<div class="field field-name-field-advanced-section-content field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area margin-bottom widget-width-12-columns widget-style-main paragraphs-item-1826991">
+      <div id="widget-id-1826991"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <p>Traditional research outputs, such as papers published in scholarly journals, will typically include details of the methods used. This allows for peer review and is established good practice.</p>
+<p>Reproducible research builds on this principle: in addition to the paper, enhanced methods information and the underlying datasets are also made available. This goal is to allow others to easily reproduce the results of the research, and (with suitable permission and acknowledgement) to facilitate new work from the data.</p>
+<p>Online repositories and code sharing sites make this easier to achieve. Researchers may choose to publish (for example) the R markup code or a Jupyter notebook used to achieve their results. This feeds into a fully reproducible method, from which consistent conclusions can be drawn.</p>
+<p>The documents from the Academy of Medical Sciences <a href="https://acmedsci.ac.uk/policy/policy-projects/reproducibility-and-reliability-of-biomedical-research" target="_blank">2015 Symposium</a> give a good introduction to the issues that reproducible research is trying to address.</p>
+<p>Oxford has a local network of the <a href="https://www.bristol.ac.uk/psychology/research/ukrn/" target="_blank">UK Reproducibility Network</a>, Reproducible Research Oxford <a href="https://ox.ukrn.org/" target="_blank">(RROx)</a>, which works to promote a coordinated approach to open scholarship and research reproducibility in all disciplines.</p>
+      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+            </div>
+</div>
+</div>
+    </div>    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827031"
+         href="#collapse1827016">
+        Documentation and metadata      </a>
+    </h3>
+  </div>
+  <div id="collapse1827016" class="panel-collapse collapse">
+    <div class="panel-body">
+          <div class="content">
+        
+<div class="paragraphs-items paragraphs-items-field-advanced-section-content paragraphs-items-field-advanced-section-content-full paragraphs-items-full">
+  
+<div class="field field-name-field-advanced-section-content field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area margin-bottom widget-width-12-columns widget-style-main paragraphs-item-1827011">
+      <div id="widget-id-1827011"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <p>Documentation is simply the contextual information needed to aid proper interpretation of data. It can be thought of as a user's guide to a dataset.</p>
+<p>Good documentation makes material understandable, verifiable, and reusable. While this is particularly important if data is going to be shared, it's also often valuable to the data creator, especially if some time has passed since the data was first gathered.</p>
+<p>Metadata is data about data. The term is sometimes used interchangeably with 'documentation', but is often used to refer to a more structured collection of details about a dataset, which conforms to set standards (a metadata schema), and which may be designed to be machine readable. Catalogue records for datasets held in an archive are examples of this sort of metadata.</p>
+<p>It is good practice to document data as it is collected and worked on. This is generally much easier (and in the long run, quicker) than trying to do it retrospectively, at the end of a project. Documentation procedures should be set out in a project's data management plan.</p>
+<p>Documentation may be provided for a whole dataset, or for specific aspects of it. It should generally include:</p>
+<ul><li>Information about when, where, and by whom the dataset was created, and for what purpose</li>
+<li>A description of the dataset</li>
+<li>Details of methods used</li>
+<li>Details of what has been done to the data - for example, has it been cleansed, edited, restructured, or otherwise manipulated, and if so, how?</li>
+<li>Explanations of any acronyms, coding, or jargon</li>
+<li>Any other notes which will help aid proper interpretation</li>
+</ul><p>The UK Data Service provides an excellent <a href="https://www.ukdataservice.ac.uk/manage-data/document.aspx" target="_blank">overview</a> of this topic.</p>
+<p>A wide range of metadata schemas exist for data from different disciplines: these aim to formalise the information needed to make a particular type of data as reusable as possible. The Digital Curation Centre has gathered information about this on their <a href="https://www.dcc.ac.uk/guidance/standards/metadata" target="_blank">Disciplinary metadata</a> page, and FAIRsharing also offers an extensive catalogue of <a href="https://fairsharing.org/standards" target="_blank">data and metadata standards</a>.</p>
+<p>Supplying appropriate metadata is an important part of making data FAIR - that is, <strong>F</strong>indable, <strong>A</strong>ccessible, <strong>I</strong>nteroperable, and <strong>R</strong>eusable. This topic is covered in more detail in the <a href="https://researchdata.ox.ac.uk/sharing-data">Sharing data</a> section.</p>
+      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+            </div>
+</div>
+</div>
+    </div>    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827031"
+         href="#collapse1827006">
+        Electronic lab notebooks      </a>
+    </h3>
+  </div>
+  <div id="collapse1827006" class="panel-collapse collapse">
+    <div class="panel-body">
+          <div class="content">
+        
+<div class="paragraphs-items paragraphs-items-field-advanced-section-content paragraphs-items-field-advanced-section-content-full paragraphs-items-full">
+  
+<div class="field field-name-field-advanced-section-content field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area margin-bottom widget-width-12-columns widget-style-main paragraphs-item-1827001">
+      <div id="widget-id-1827001"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <p>There is a long tradition of keeping records of lab-based research in paper notebooks. Electronic lab notebooks (ELNs) offer a digital alternative to these, with a number of potential benefits: they are more easily searchable, and if the system is web-based, can be accessed from any location with internet access.</p>
+<p>From a data management perspective, a key advantage of ELNs is that they allow research data to be stored alongside experimental records, and linked to it. They also make it easier to retrace the history of a dataset: details of when an item was created (and by whom), and of any edits subsequently made can be captured automatically. This helps to make the research process more transparent, and aids reproducibility.</p>
+<p>The University of Oxford has a subscription to the <a href="https://help.it.ox.ac.uk/labarchives-electronic-lab-notebook-service" target="_blank">LabArchives ELN system</a>. This is available free of charge to all researchers, including graduate students. LabArchives is a secure web-based system, and can be used to share material with collaborators within and outside the University.</p>
+<h4>Retention of research notebooks</h4>
+<p>Completed notebooks should be retained for a minimum of six years, and ideally longer if possible. This ensures details of the research are available if needed to support findings, or to assess compliance with regulations. If a laboratory notebook contains details of an invention which has been patented, <a href="https://innovation.ox.ac.uk/" target="_blank">Oxford University Innovation</a> (OUI) should be consulted before the notebook is disposed of, regardless of the time period which has lapsed.</p>
+<p>LabArchives is designed to provide a permanent record of research. If you are the owner of LabArchives notebooks and will be leaving the University, you should arrange for these to be transferred to your PI, supervisor, or another appropriate person. With agreement from your department, you will be able to export an electronic copy so that you can retain access to your notebooks after leaving Oxford.</p>
+      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+            </div>
+</div>
+</div>
+    </div>    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827031"
+         href="#collapse1827026">
+        Versioning      </a>
+    </h3>
+  </div>
+  <div id="collapse1827026" class="panel-collapse collapse">
+    <div class="panel-body">
+          <div class="content">
+        
+<div class="paragraphs-items paragraphs-items-field-advanced-section-content paragraphs-items-field-advanced-section-content-full paragraphs-items-full">
+  
+<div class="field field-name-field-advanced-section-content field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area margin-bottom widget-width-12-columns widget-style-main paragraphs-item-1827021">
+      <div id="widget-id-1827021"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <p>Versioning (also known as version control) is the process of keeping track of different versions of a file as it passes through the process of being revised. It serves two key purposes:</p>
+<ul><li>To ensure that it's always obvious which version is the most recent</li>
+<li>To allow easy identification and retrieval of earlier versions where needed</li>
+</ul><p>There are various ways of doing this, and the important thing is to select a method that’s appropriate for the type of data you’re working with.</p>
+<p>If your data is fairly straightforward, it may be sufficient simply to add a version number to the file name when a new version of the dataset is created. A common convention is to use whole numbers for major revisions, and decimals for minor ones: hence the initial version of a file might be called 'File v1', another copy saved after minor editing 'File v1.1', and a substantially revised version 'File v2'. Underscores or hyphens can be used in place of the decimal point if desired.</p>
+<p>For more complex projects – especially those with multiple collaborators – it may be advisable to use a system that has file management capability built into it. <a href="https://help.it.ox.ac.uk/onedrive-for-business" target="_blank">OneDrive for Business</a> offers basic versioning; <a href="https://help.it.ox.ac.uk/sharepoint" target="_blank">Sharepoint Online</a> has more sophisticated automated functionality, which can be combined with a check-out / check-in feature which ensures that edits are made in a managed way (without the risk of one user accidentally overwriting another's changes), following a formal workflow if required.</p>
+<p>The <a href="https://help.it.ox.ac.uk/labarchives-electronic-lab-notebook-service" target="_blank">LabArchives electronic lab notebook</a> service keeps detailed records of changes made, allowing the full history of files to be retraced. It is designed to be sufficiently robust to provide the evidence that may be needed to defend a patent or resolve a publishing dispute.</p>
+<p>For those managing their own storage space, a range of specialist file management or document workflow software is available.</p>
+      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+            </div>
+</div>
+</div>
+    </div>    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-1827031"
+         href="#collapse3961231">
+        Research software management      </a>
+    </h3>
+  </div>
+  <div id="collapse3961231" class="panel-collapse collapse">
+    <div class="panel-body">
+          <div class="content">
+        
+<div class="paragraphs-items paragraphs-items-field-advanced-section-content paragraphs-items-field-advanced-section-content-full paragraphs-items-full">
+  
+<div class="field field-name-field-advanced-section-content field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area widget-width-12-columns widget-style-main paragraphs-item-3961216">
+      <div id="widget-id-3961216"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <p>Software and code have become an integral part of research in many disciplines, from astronomy and computational sciences to humanities. Research software is developed to analyse, model and simulate data, and is often developed by researchers with a specific research function in mind.</p>
+<p>Research software is defined as any piece of code or script that enables researchers to process, manipulate, generate, and analyse data, or automatise or test these procedures. <br />
+Software and code created for research should be managed as a research output in its own right. It has taken time and resources to develop, and contributes to the overall reproducibility of your research. Software can and should be managed, and can contribute to greater impact and reach of your research.</p>
+<p>However, managing software and code can be complicated. There may be different versions, dependencies, and code libraries, so it is important to develop a software management plan to account for the development process of your software and mitigate against potential risks during the development process. In addition, ensuring that your software or code can be preserved for the long term once your project ends can be challenging. To some degree, software can be managed in a similar way to research data, as a digital object, however, the executability, composite nature, and continuous evolution and versioning mean that these additional aspects need to be considered when managing software.</p>
+<p>Like data, research software should be FAIR – Findable, Accessible, Interoperable, and Reusable. Some best practice guidance for software management can be found below, but you can contact the <a href="mailto:researchdata@ox.ac.uk">Research Data Oxford team</a> or <a href="https://ox.ukrn.org/" target="_blank">Reproducible Research Oxford</a> for more specific guidance and support.</p>
+      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+                        <div class="field-item private-show odd">
+
+                    <div class="entity entity-paragraphs-item paragraphs-item-accordion-content margin-bottom widget-width-12-columns paragraphs-item-3961226">
+            <div class="content">
+                      <div id="widget-id-3961226"></div>
+                                <div id="views-bootstrap-accordion-3961226" class="views-bootstrap-accordion-plugin-style panel-group">
+                                <p><span class="showmore"><a id="expand-all-26-3961226" href="#expand-26" class="expand-all">Expand All</a></span></p>
+                            
+<div class="paragraphs-items paragraphs-items-field-wysiwyg-section paragraphs-items-field-wysiwyg-section-full paragraphs-items-full">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <a class="accordion-toggle collapsed"
+         data-toggle="collapse"
+         data-parent="#views-bootstrap-accordion-3961226"
+         href="#collapse3961221">
+        Reproducible workflow best practices for research software      </a>
+    </h3>
+  </div>
+  <div id="collapse3961221" class="panel-collapse collapse">
+    <div class="panel-body">
+      <h4>Use a code versioning platform</h4>
+<p>A code versioning platform such as GitHub or GitLab should be used to keep the code and monitor changes and issues.</p>
+<h4>Provide clear documentation</h4>
+<p>A clear description of the software and steps to be followed to install and use it, including any dependencies, should be documented. In addition, the procedure to contribute to the code should also be stated along with the contact details of the owner of the code.</p>
+<h4>State requirements, environment managers, and containers</h4>
+<p>Requirements regarding the libraries, modules and versions and other dependencies should be clearly indicated. Environment managers such as Conda and Pipenv, or containers such as Docker, need to be specified and used.</p>
+<h4>Use clean code</h4>
+<p>Good coding practice should be used where possible, independent of the programming language. This ensures that others can understand your code and also easily find and fix bugs or other errors.</p>
+<h4>Test your code</h4>
+<p>Ensure that your code base is robust and free of errors. This can enable greater reproducibility of your research software.</p>
+<h4>Apply a license</h4>
+<p>Applying an appropriate software license ensures that others know the conditions of access and reuse for your research software.</p>
+<h4>Include a citation file</h4>
+<p>Including a citation file ensures that others know how to cite your research software, and can help make sure you receive credit for your research software.</p>
+    </div>
+  </div>
+</div>
+
+
+</div>
+            </div>
+        </div>
+    </div>
+      </div>
+            </div>
+</div>
+</div>
+    </div>    </div>
+  </div>
+</div>
+
+
+</div>
+    </div>
+  </div>
+</div>
+      </div>
+            </div>
+</div>
+</div>
+  </div>
+
+  
+  </div>
+</div>
+    </div>
+  
+  
+  </div>
+</div>
+
+</div>
+  </div>
+                </div>
+            </div>
+
+                                <!-- Optional feedback form -->
+                            <div id="oxdrupal_feedback_form_wrapper" role="form">
+                                      </div>
+                            <!-- End Optional feedback form -->
+        </div>
+
+        <!-- REGION POSTSCRIPT -->
+        <div id="postscript">
+                                                </div><!-- END REGION POSTSCRIPT -->
+
+    </div><!-- end content container -->
+</div>
+<footer class="region-fullwidth standard-content-width footer-no-img">
+    <!-- REGION PREFOOTER LOGOS -->
+    <div id="wrapper-prefooter-logos" class="wrapper">
+        <div class="container">
+            <div id="prefooter-logos" class="row">
+                          </div>
+        </div><!-- end prefooter-logos container -->
+    </div><!-- end prefooter-logos wrapper -->
+    <!-- END REGION PREFOOTER LOGOS -->
+
+    <!-- REGION FOOTER TOP -->
+    <div id="wrapper-footer" class="wrapper">
+              <div id="footer" class="container">
+            <div class="row">
+              <div class="panelizer-view-mode node node-full node-oxdrupal-site-footer node-121566"  >
+          <div class="bootstrap-twocol-stacked" >
+  
+      <div class="row">
+      <div class="panel-panel left col-xs-12 col-sm-9 col-md-9 col-lg-9"><div class="panel-pane pane-entity-field pane-node-field-region-1"  >
+  
+      
+  
+  <div class="pane-content">
+    
+<div class="paragraphs-items paragraphs-items-field-region-1 paragraphs-items-field-region-1-full paragraphs-items-full">
+  
+<div class="field field-name-field-region-1 field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area margin-bottom widget-width-12-columns widget-style-main paragraphs-item-3718481">
+      <div id="widget-id-3718481"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <p>Research Data Oxford is a cross-departmental group providing support for all aspects of research data management, and developing and delivering RDM infrastructure and services.</p>
+<p><a href="https://researchdata.ox.ac.uk/research-data-oxford-governance">Research Data Oxford governance</a></p>
+      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+            </div>
+</div>
+</div>
+  </div>
+
+  
+  </div>
+</div>
+      <div class="panel-panel right col-xs-12 col-sm-3 col-md-3 col-lg-3"><div class="panel-pane pane-entity-field pane-node-field-mandatory-content"  >
+  
+      
+  
+  <div class="pane-content">
+    
+<div class="paragraphs-items paragraphs-items-field-mandatory-content paragraphs-items-field-mandatory-content-full paragraphs-items-full">
+  
+<div class="field field-name-field-mandatory-content field-type-paragraphs field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <div class="entity entity-paragraphs-item paragraphs-item-wysiwyg-content-area margin-bottom widget-width-12-columns widget-style-main paragraphs-item-102511">
+      <div id="widget-id-102511"></div>
+    <div class="content">
+        
+<div class="field field-name-field-content field-type-text-with-summary field-label-hidden">
+    <div class="field-items">
+                  <div class="field-item private-show even">
+
+                <ul><li><a href="https://researchdata.ox.ac.uk/copyright">Copyright</a></li>
+<li><a href="https://researchdata.ox.ac.uk/picture_credits">Picture credits</a></li>
+<li><a href="https://researchdata.ox.ac.uk/accessibility">Accessibility statement</a></li>
+<li><a href="https://researchdata.ox.ac.uk/privacy">Privacy statement</a></li>
+</ul>      </div>
+            </div>
+</div>
+  </div>
+</div>
+      </div>
+            </div>
+</div>
+</div>
+  </div>
+
+  
+  </div>
+</div>
+    </div>
+  
+  </div>
+</div>
+            </div>
+        </div>
+      <!-- end container -->
+    </div> <!-- end wrapper -->
+    <div id="wrapper-footer-bottom" class="wrapper">
+        <div id="footer-bottom" class="container">
+            <div class="row">
+                          </div>
+        </div> <!-- end container -->
+    </div> <!-- end wrapper -->
+
+    <!-- REGION POSTFOOTER LOGOS -->
+    <div id="wrapper-postfooter-logos" class="wrapper">
+        <div class="container">
+            <div id="postfooter-logos" class="row">
+                                                        </div>
+        </div><!-- end postfooter-logos container -->
+    </div><!-- end postfooter-logos wrapper -->
+    <!-- END REGION POSTFOOTER LOGOS -->
+
+</footer>
+<div role="complementary" aria-label="Powered by Oxford Mosaic banner">
+  <div class="powered-by-wrapper wrapper region-fullwidth">
+    <div class="container">
+      <div class="powered-by">
+        <a href="http://oxfordmosaic.web.ox.ac.uk/" target="_blank">
+          <img class="om-logo" src ="/sites/all/themes/custom/oxtheme/images/logo/mosaic-logo.png" alt="Oxford Mosaic logo" />
+          <div class="pb-text">
+            <span class="pb">powered by</span>
+            <span class="om">oxford mosaic</span>
+          </div>
+          <img class="it-logo" src ="/sites/all/themes/custom/oxtheme/images/logo/it-services-logo.png" alt="IT Services logo" />
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+  <script>
+    jQuery(document).ready(function($) {
+    cookieControl({
+        domain: 'researchdata.ox.ac.uk',
+        introText: '<p>This site uses cookies to store information on your computer.</p>',
+        fullText: '<p>Some cookies on this site are essential, and the site won\'t work as expected without them. These cookies are set when you submit a form, login or interact with the site by doing something that goes beyond clicking on simple links.</p><p>We also use some non-essential cookies to anonymously track visitors or enhance your experience of the site. If you\'re not happy with this, we won\'t set these cookies but some nice features of the site may be unavailable.</p><p>By using our site you accept the terms of our <a href="/privacy">Privacy Policy</a>',
+        theme: 'dark',
+        html: '<div id="cccwr" role="contentinfo"><div id="ccc-state" class="ccc-pause"><div id="ccc-icon"><button><span>Cookie Control</span></button></div><div class="ccc-widget"><div class="ccc-outer"><div class="ccc-inner"><h2>Cookie Control</h2><div class="ccc-content"><p class="ccc-intro"></p><div class="ccc-expanded"></div><div id="ccc-cookies-switch" style="background-position-x: 0;"><a id="cctoggle" href="#" style="background-position-x: 0;" name="cctoggle"><span id="cctoggle-text">Cookies test</span></a></div><div id="ccc-implicit-warning">(One cookie will be set to store your preference)</div><div id="ccc-explicit-checkbox"><label><input id="cchide-popup" type="checkbox" name="ccc-hide-popup" value="Y" /> Do not ask me again<br /></label> (Ticking this sets a cookie to hide this popup if you then hit close. This will not store any personal information)</div><p class="ccc-about"><small><a href="http://www.civicuk.com/cookie-law" target="_blank">About this tool</a></small></p><a class="ccc-icon" href="http://www.civicuk.com/cookie-law" target="_blank"title="About Cookie Control">About Cookie Control</a><button class="ccc-close">Close</button></div></div></div><button class="ccc-expand">read more</button></div></div></div>',
+        position: 'left',
+        shape: 'triangle',
+        startOpen: true,
+        autoHide: 60000,
+        onAccept: function(cc){cookiecontrol_accepted(cc)},
+        onReady: function(){},
+        onCookiesAllowed: function(cc){cookiecontrol_cookiesallowed(cc)},
+        onCookiesNotAllowed: function(cc){cookiecontrol_cookiesnotallowed(cc)},
+        countries: '',
+        subdomains: true,
+        cookieName: 'https--researchdataoxacuk_cookiecontrol',
+        iconStatusCookieName: 'ccShowCookieIcon',
+        consentModel: 'information_only'
+        });
+      });
+    </script>
+<script>function cookiecontrol_accepted(cc) {
+cc.setCookie('ccShowCookieIcon', 'no');jQuery('#ccc-icon').hide();
+}</script>
+<script>function cookiecontrol_cookiesallowed(cc) {
+
+}</script>
+<script>function cookiecontrol_cookiesnotallowed(cc) {
+
+}</script>
+<script src="https://researchdata.ox.ac.uk/sites/default/files/js/js_MRdvkC2u4oGsp5wVxBG1pGV5NrCPW3mssHxIn6G9tGE.js"></script>
+
+  <a class="hide" href="/sitelist.html">List of site pages</a>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"74a7a5817d","applicationID":"51794328","transactionName":"MlUHbBNWCkJZW0JfDgsfJFsVXgtfF1dOUhMQQARUPlQLX0xdWEI+El8XUwdbC0ZnX1NCPgtfAV0=","queueTime":23,"applicationTime":1681,"atts":"HhIEGltMGUw=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>
+

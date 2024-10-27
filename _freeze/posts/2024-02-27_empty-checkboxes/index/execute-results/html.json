@@ -1,0 +1,15 @@
+{
+  "hash": "aa35feed42d9fb276730e2ce70d01890",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: 'Null checkboxes in Shiny'\ndate: '2024-09-20'\nexecute:\n  freeze: true\n  message: false\n  warning: false\ndraft: true\ncode-fold: false\nengine: knitr\n---\n\n\nThis was an idea I had\n\n\n::: {.cell}\n\n```{.r .cell-code}\nui <- fluidPage(\n  checkboxGroupInput(\n    \"checks\",\n    \"Check boxes\",\n    choices = month.name,\n    selected = month.name[1]\n  ),\n  actionButton(\"search\", \"Search\"),\n  uiOutput(\"ui_stuff\")\n)\n\nserver <- function(input, output, session) {\n  reactive_checkboxes <- reactiveValues(checks = c())\n\n  observeEvent(input$checks, {\n    print(\"change\")\n\n    reactive_checkboxes$checks <- input$checks\n  })\n\n  observeEvent(input$search, {\n    if (is.null(input$checks)) {\n      showModal(modalDialog(\n        title = \"Invalid search conditions!\",\n        div(p(\"You must select at least one theme to filter the data.\"),\n            p(\"Click dismiss and your previously selected set of themes will be re-selected.\")\n      )))\n      \n      updateCheckboxGroupInput(session,\n                               \"checks\",\n                               selected = reactive_checkboxes$checks)\n      \n    }\n  })\n\n\n  output$ui_stuff <- renderUI({\n    \"dummy element here\"\n  })\n}\n\n\nshinyApp(ui, server)\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

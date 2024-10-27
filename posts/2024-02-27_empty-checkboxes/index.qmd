@@ -1,0 +1,61 @@
+---
+title: 'Null checkboxes in Shiny'
+date: '2024-09-20'
+execute:
+  freeze: true
+  message: false
+  warning: false
+draft: true
+code-fold: false
+engine: knitr
+---
+
+This was an idea I had
+
+```{r}
+#| eval: false
+ui <- fluidPage(
+  checkboxGroupInput(
+    "checks",
+    "Check boxes",
+    choices = month.name,
+    selected = month.name[1]
+  ),
+  actionButton("search", "Search"),
+  uiOutput("ui_stuff")
+)
+
+server <- function(input, output, session) {
+  reactive_checkboxes <- reactiveValues(checks = c())
+
+  observeEvent(input$checks, {
+    print("change")
+
+    reactive_checkboxes$checks <- input$checks
+  })
+
+  observeEvent(input$search, {
+    if (is.null(input$checks)) {
+      showModal(modalDialog(
+        title = "Invalid search conditions!",
+        div(p("You must select at least one theme to filter the data."),
+            p("Click dismiss and your previously selected set of themes will be re-selected.")
+      )))
+      
+      updateCheckboxGroupInput(session,
+                               "checks",
+                               selected = reactive_checkboxes$checks)
+      
+    }
+  })
+
+
+  output$ui_stuff <- renderUI({
+    "dummy element here"
+  })
+}
+
+
+shinyApp(ui, server)
+```
+

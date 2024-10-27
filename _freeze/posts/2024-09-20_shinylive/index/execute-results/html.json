@@ -1,0 +1,15 @@
+{
+  "hash": "e8c1b8afb6b3cf8c773f5e3c01f1d603",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: 'Shinylive'\ndate: '2024-09-20'\nexecute:\n  freeze: true\n  message: false\n  warning: false\ndraft: true\ncode-fold: false\nengine: knitr\n---\n\n\nGotta remember how to use shiny live\n\nkd",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

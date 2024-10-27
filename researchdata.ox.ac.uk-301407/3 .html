@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>SSO Login Service - Loading Session Information</title>
+        <link rel="stylesheet" type="text/css" href="/idp/css/main.css">
+        <script>
+        <!--
+"use strict";
+function readLocalStorage(key) {
+    var success;
+    try {
+        var value = localStorage.getItem(key);
+        if (value != null) {
+            document.form1["shib_idp_ls_value." + key].value = value;
+        }
+        success = "true";
+    } catch (e) {
+        success = "false";
+        document.form1["shib_idp_ls_exception." + key].value = e;
+    }
+    document.form1["shib_idp_ls_success." + key].value = success;
+}
+
+function isLocalStorageSupported() {
+    try {
+        localStorage.setItem("shib_idp_ls_test", "shib_idp_ls_test");
+        localStorage.removeItem("shib_idp_ls_test");
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+        // -->
+        </script>
+    </head>
+    <body onload="doLoad()">
+        <div class="wrapper">
+            <div class="container">
+                <header>
+                    <h3>SSO Login Service - Loading Session Information</h3>
+                </header>
+                <div class="content">
+                Loading login session information from the browser...
+                </div>
+                <noscript>
+                    <div class="content">
+                    Since your browser does not support JavaScript, you must press the Continue button once to proceed.
+                    </div>
+                </noscript>
+<form name="form1" action="/idp/profile/SAML2/Redirect/SSO?execution=e1s1" method="post">
+    <input type="hidden" name="csrf_token" value="_e13c92bc2078320de1c80f07d99d421cb3026ede" />
+        <input name="shib_idp_ls_exception.shib_idp_session_ss" type="hidden" />
+        <input name="shib_idp_ls_success.shib_idp_session_ss" type="hidden" value="false" />
+        <input name="shib_idp_ls_value.shib_idp_session_ss" type="hidden" />
+        <input name="shib_idp_ls_exception.shib_idp_persistent_ss" type="hidden" />
+        <input name="shib_idp_ls_success.shib_idp_persistent_ss" type="hidden" value="false" />
+        <input name="shib_idp_ls_value.shib_idp_persistent_ss" type="hidden" />
+    <input name="shib_idp_ls_supported" type="hidden" />
+    <input name="_eventId_proceed" type="hidden" />
+    <noscript>
+        <input type="submit" value="Continue" />
+    </noscript>
+</form>
+
+<script>
+<!--
+function doLoad() {
+    var localStorageSupported = isLocalStorageSupported();
+    document.form1["shib_idp_ls_supported"].value = localStorageSupported;
+    if (localStorageSupported) {
+        readLocalStorage("shib_idp_session_ss");
+        readLocalStorage("shib_idp_persistent_ss");
+    }
+    document.form1.submit();
+}
+// -->
+</script>            </div>
+            <footer>
+                <div class="container container-footer">
+                    <p class="footer-text">University of Oxford</p>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>
+
