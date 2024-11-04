@@ -9,8 +9,1196 @@
 <link>https://visibledata.co.uk/blog.html</link>
 <atom:link href="https://visibledata.co.uk/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Data Science Consultancy &amp; Training</description>
-<generator>quarto-1.4.554</generator>
-<lastBuildDate>Wed, 23 Oct 2024 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.6.32</generator>
+<lastBuildDate>Mon, 04 Nov 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Bordering countries graph</title>
+  <dc:creator>Charlie Hadley</dc:creator>
+  <link>https://visibledata.co.uk/posts/2024-10-28_bordering-country-graph/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="left quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<p>In this post we’re going to build up this <strong>graph</strong> which shows all countries with at least one border and the connections that remain after removing countries with only a single border.</p>
+<p>To solve this smoothly I was very pleased to discover the <a href="[`geom_custom()` was added in late 2023](https://github.com/tidyverse/ggplot2/pull/5496)">newly [December 2023] added <code>guide_custom()</code> functionality</a> of <code>{ggplot2}</code>. Of course, this just works effortlessly with the <code>{ggraph}</code> extension for graph visualisation.</p>
+</div>
+<div class="right quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="https://visibledata.co.uk/posts/2024-10-28_bordering-country-graph/gg_graph_countries.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<section id="connected-countries-with-tidygraph-and-ggraph" class="level2">
+<h2 class="anchored" data-anchor-id="connected-countries-with-tidygraph-and-ggraph">Connected Countries with tidygraph and ggraph</h2>
+<p>I’ve been thinking about TidyTuesday datasets with country data and how it could be interesting to use country borders as a component of the chart making process. And what’s better than working on an actual TidyTuesday visualisation than getting distracted with something tangential to it?</p>
+<p>In <a href="https://github.com/charliejhadley/cjhRutils">my utility package {cjhRutils}</a> I have a <code>tidygraph</code> object containing the nodes and edges of the connected countries, the code can be found in <a href="https://github.com/charliejhadley/cjhRutils/blob/master/data-raw/graph_connected_countries.R">this script</a>. After loading the package (alongside <code>{tidygrapph}</code>) we can see our dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" data-source-line-numbers="nil" data-code-line-numbers="nil" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"tidyverse"</span>)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"tidygraph"</span>)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cjhRutils"</span>)</span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ggtext"</span>)</span>
+<span id="cb1-5"></span>
+<span id="cb1-6">ggraph_bordering_countries</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre data-code-line-numbers=""><code># A tbl_graph: 173 nodes and 608 edges
+#
+# A directed simple graph with 26 components
+#
+# A tibble: 173 × 8
+     id iso_a2 iso_a3 name                 name_long name_en region_wb continent
+  &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;                &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;    
+1     1 AE     ARE    United Arab Emirates United A… United… Middle E… Asia     
+2     2 AF     AFG    Afghanistan          Afghanis… Afghan… South As… Asia     
+3     3 AL     ALB    Albania              Albania   Albania Europe &amp;… Europe   
+4     4 AM     ARM    Armenia              Armenia   Armenia Europe &amp;… Asia     
+5     5 AO     AGO    Angola               Angola    Angola  Sub-Saha… Africa   
+6     6 AQ     ATA    Antarctica           Antarcti… Antarc… Antarcti… Antarcti…
+# ℹ 167 more rows
+#
+# A tibble: 608 × 3
+   from    to border_region             
+  &lt;int&gt; &lt;int&gt; &lt;chr&gt;                     
+1     1   120 Middle East &amp; North Africa
+2     1   136 Middle East &amp; North Africa
+3     2    34 Cross Region              
+# ℹ 605 more rows</code></pre>
+</div>
+</div>
+<p>The graph contains all countries with at least one connection, let’s filter the graph to only include countries with two border or more… and visualise that naively with <code>{ggraph}</code></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" data-source-line-numbers="nil" data-code-line-numbers="nil" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ggraph"</span>)</span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb3-4">ggraph_bordering_countries <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb3-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">activate</span>(nodes) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb3-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">node_degree =</span> tidygraph<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">centrality_degree</span>()) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb3-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(node_degree <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb3-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggraph</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">layout =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'nicely'</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_node_point</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> region_wb)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_edge_link</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> border_region))</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://visibledata.co.uk/posts/2024-10-28_bordering-country-graph/index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="custom-ggplot2-legends-with-guide_custom" class="level2">
+<h2 class="anchored" data-anchor-id="custom-ggplot2-legends-with-guide_custom">Custom ggplot2 legends with guide_custom()</h2>
+<p>The guide/legend for that chart is a little bit complicated. Let’s look at why:</p>
+<ol type="1">
+<li><p>Nodes are coloured by the continent the node belongs to.</p></li>
+<li><p>Edges are coloured by if the two nodes belong to the same continent.</p></li>
+<li><p>There is a single node from “North America” but no edges with the <code>border_region</code> of “North America”</p></li>
+<li><p>There are edges that need to be coloured “Cross Region” but no nodes with that colour.</p></li>
+</ol>
+<p>To solve this I thought of using my old trick of hijacking an unused aesthetic and manipulating its guide. However! That’s not really possible in this case, so I googled for alternatives and was extremeley <a href="https://github.com/tidyverse/ggplot2/pull/5496"><code>geom_custom()</code> was added in late 2023</a>. In the chart below I’ve used <code>guide_custom()</code> to add a red line that I can use to label cross regional borders.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" data-source-line-numbers="nil" data-code-line-numbers="nil" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb4-2">gg_graph_for_coords <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> ggraph_bordering_countries <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb4-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">activate</span>(nodes) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb4-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">node_degree =</span> tidygraph<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">centrality_degree</span>()) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb4-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(node_degree <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb4-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggraph</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">layout =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'nicely'</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_node_point</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> region_wb)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_node_label</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label =</span> iso_a2), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_edge_link</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">guides</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">custom =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">guide_custom</span>(</span>
+<span id="cb4-11">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cross regional borders"</span>,</span>
+<span id="cb4-12">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">grob =</span> grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">linesGrob</span>(</span>
+<span id="cb4-13">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5.4</span>), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cm"</span>),</span>
+<span id="cb4-14">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cm"</span>),</span>
+<span id="cb4-15">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">gp =</span> grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gpar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'#F44336'</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)</span>
+<span id="cb4-16">    )</span>
+<span id="cb4-17">  ))</span>
+<span id="cb4-18"></span>
+<span id="cb4-19">gg_graph_for_coords</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://visibledata.co.uk/posts/2024-10-28_bordering-country-graph/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" style="width:95.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the final chart I’d like to add a label to the US to explain why it’s included but Canada isn’t. So let’s grab the coordinates of the node so I can use them to help figure out where to place the label</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" data-source-line-numbers="nil" data-code-line-numbers="nil" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot_build</span>(gg_graph_for_coords)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>data[[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>]] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb5-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(label <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"US"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb5-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(x, y) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb5-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as_tibble</span>()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre data-code-line-numbers=""><code># A tibble: 0 × 2
+# ℹ 2 variables: x &lt;dbl&gt;, y &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Nice. Now we can think about beautification. I’ve chosen to use colours from the &lt;coolors.co&gt; service and have found a subjective balance of colours that I think looks good based on how many nodes are in each group. To ensure a little bit of sense to the colours, I’ll order them as a factor so that the group with the most nodes appears at the top of the legend.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7" data-source-line-numbers="nil" data-code-line-numbers="nil" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># https://coolors.co/448aff-1565c0-009688-8bc34a-ffc107-ff9800-f44336-ad1457</span></span>
+<span id="cb7-2">vec_colours <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb7-3">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cross Region"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#F44336"</span>,</span>
+<span id="cb7-4">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"East Asia &amp; Pacific"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#1565C0"</span>,</span>
+<span id="cb7-5">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Europe &amp; Central Asia"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#009688"</span>,</span>
+<span id="cb7-6">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Latin America &amp; Caribbean"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#8BC34A"</span>,</span>
+<span id="cb7-7">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Middle East &amp; North Africa"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#FFC107"</span>,</span>
+<span id="cb7-8">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"North America"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#FF9800"</span>,</span>
+<span id="cb7-9">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"South Asia"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#448AFF"</span>,</span>
+<span id="cb7-10">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sub-Saharan Africa"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#AD1457"</span></span>
+<span id="cb7-11">)</span>
+<span id="cb7-12"></span>
+<span id="cb7-13">vec_order_borders <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> ggraph_bordering_countries <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">activate</span>(edges) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as_tibble</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">count</span>(border_region, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sort =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-17">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pull</span>(border_region)</span>
+<span id="cb7-18"></span>
+<span id="cb7-19">vec_colours <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> vec_colours[vec_order_borders]</span>
+<span id="cb7-20"></span>
+<span id="cb7-21">ggraph_one_edge_plus <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> ggraph_bordering_countries <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">activate</span>(nodes) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-23">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">node_degree =</span> tidygraph<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">centrality_degree</span>()) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-24">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(node_degree <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)  <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-25">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">region_wb =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fct_relevel</span>(region_wb, vec_order_borders)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-26">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">activate</span>(edges) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-27">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(</span>
+<span id="cb7-28">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">border_region =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fct_expand</span>(border_region, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"North America"</span>),</span>
+<span id="cb7-29">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">border_region =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fct_relevel</span>(border_region)</span>
+<span id="cb7-30">  )</span>
+<span id="cb7-31"></span>
+<span id="cb7-32"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb7-33">gg_graph_before_label <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> ggraph_one_edge_plus <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-34">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggraph</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">layout =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'nicely'</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-35">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> region_wb) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-36">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_edge_link</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> border_region),</span>
+<span id="cb7-37">                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">show.legend =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,</span>
+<span id="cb7-38">                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">edge_width =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-39">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_node_point</span>(</span>
+<span id="cb7-40">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> region_wb),</span>
+<span id="cb7-41">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># show.legend = TRUE,</span></span>
+<span id="cb7-42">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>,</span>
+<span id="cb7-43">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>,</span>
+<span id="cb7-44">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pch =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">21</span></span>
+<span id="cb7-45">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-46">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_node_text</span>(</span>
+<span id="cb7-47">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(</span>
+<span id="cb7-48">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label =</span> iso_a2,</span>
+<span id="cb7-49">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ifelse</span>(</span>
+<span id="cb7-50">        region_wb <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Middle East &amp; North Africa"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"North America"</span>),</span>
+<span id="cb7-51">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>,</span>
+<span id="cb7-52">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"white"</span></span>
+<span id="cb7-53">      )</span>
+<span id="cb7-54">    ),</span>
+<span id="cb7-55">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.3</span>,</span>
+<span id="cb7-56">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">family =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source Code Pro"</span>,</span>
+<span id="cb7-57">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fontface =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span></span>
+<span id="cb7-58">  )  <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-59">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_colour_identity</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-60">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_edge_colour_manual</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">values =</span> vec_colours, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">drop =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-61">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_manual</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">values =</span> vec_colours, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">drop =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-62">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">guides</span>(</span>
+<span id="cb7-63">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">custom =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">guide_custom</span>(</span>
+<span id="cb7-64">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cross regional borders"</span>,</span>
+<span id="cb7-65">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">grob =</span> grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">linesGrob</span>(</span>
+<span id="cb7-66">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6.9</span>), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cm"</span>),</span>
+<span id="cb7-67">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cm"</span>),</span>
+<span id="cb7-68">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">gp =</span> grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gpar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'#F44336'</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lwd =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3.5</span>)</span>
+<span id="cb7-69">      )</span>
+<span id="cb7-70">    ),</span>
+<span id="cb7-71">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">guide_legend</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>)</span>
+<span id="cb7-72">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-73">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb7-74">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Who's connected to who?"</span>,</span>
+<span id="cb7-75">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Countries with at least one land border"</span>,</span>
+<span id="cb7-76">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,</span>
+<span id="cb7-77">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,</span>
+<span id="cb7-78">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"@charliejhadley | Source: geodatasource.com/addon/country-borders"</span></span>
+<span id="cb7-79">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-80">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">base_size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">base_family =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-81">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(</span>
+<span id="cb7-82">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.618</span>),</span>
+<span id="cb7-83">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.grid =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb7-84">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.caption =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(</span>
+<span id="cb7-85">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>,</span>
+<span id="cb7-86">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">family =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto"</span>,</span>
+<span id="cb7-87">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lineheight =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>,</span>
+<span id="cb7-88">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">margin =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">margin</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">t =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>)</span>
+<span id="cb7-89">    ),</span>
+<span id="cb7-90">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(</span>
+<span id="cb7-91">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">family =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto"</span>,</span>
+<span id="cb7-92">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.618</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,</span>
+<span id="cb7-93">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">margin =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">margin</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">t =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>)</span>
+<span id="cb7-94">    ),</span>
+<span id="cb7-95">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.subtitle =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.618</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">margin =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">margin</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">b =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>)),</span>
+<span id="cb7-96">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.grid.major.y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb7-97">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.line =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb7-98">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.ticks =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb7-99">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.text =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb7-100">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.text =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.618</span>),</span>
+<span id="cb7-101">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># legend.spacing.y = unit(2.0, "cm"),</span></span>
+<span id="cb7-102">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.key.size =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cm"</span>),</span>
+<span id="cb7-103">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.key =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_rect</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span>),</span>
+<span id="cb7-104">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.caption.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"plot"</span></span>
+<span id="cb7-105">  )</span>
+<span id="cb7-106"></span>
+<span id="cb7-107">gg_graph_before_label</span></code></pre></div>
+</details>
+</div>
+<p><img src="https://visibledata.co.uk/posts/2024-10-28_bordering-country-graph/gg_graph_before_label.png" class="img-fluid"></p>
+<p>Let’s add in my labels, which are manually placed but use the node position extracted earlier to help place them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" data-source-line-numbers="nil" data-code-line-numbers="nil" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">gg_graph_countries <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> gg_graph_before_label <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb8-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_curve</span>(</span>
+<span id="cb8-3">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tibble</span>(</span>
+<span id="cb8-4">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5.08</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8.5</span>,</span>
+<span id="cb8-5">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.96</span> ,</span>
+<span id="cb8-6">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xend =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5.08</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.3</span>,</span>
+<span id="cb8-7">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yend =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.96</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span></span>
+<span id="cb8-8">    ),</span>
+<span id="cb8-9">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(x, y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yend =</span> yend, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xend =</span> xend),</span>
+<span id="cb8-10">    </span>
+<span id="cb8-11">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">inherit.aes =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,</span>
+<span id="cb8-12">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">arrow =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrow</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">length =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"npc"</span>)),</span>
+<span id="cb8-13">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">curvature =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>,</span>
+<span id="cb8-14">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">angle =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span></span>
+<span id="cb8-15">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb8-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_label</span>(</span>
+<span id="cb8-17">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tibble</span>(</span>
+<span id="cb8-18">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5.08</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8.5</span>,</span>
+<span id="cb8-19">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.96</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>,</span>
+<span id="cb8-20">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_wrap</span>(</span>
+<span id="cb8-21">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Canada isn't here. It only has a single land border with the US - which is included as it has two borders"</span>,</span>
+<span id="cb8-22">        <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span></span>
+<span id="cb8-23">      )</span>
+<span id="cb8-24">    ),</span>
+<span id="cb8-25">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(x, y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label =</span> label),</span>
+<span id="cb8-26">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> colorspace<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">darken</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#D8E4EA"</span>),</span>
+<span id="cb8-27">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label.padding =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lines"</span>),</span>
+<span id="cb8-28">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hjust =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,</span>
+<span id="cb8-29">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>,</span>
+<span id="cb8-30">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">inherit.aes =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,</span>
+<span id="cb8-31">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span></span>
+<span id="cb8-32">  )</span>
+<span id="cb8-33"></span>
+<span id="cb8-34">gg_graph_countries <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb8-35">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggsave</span>(</span>
+<span id="cb8-36">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">quarto_here</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gg_graph_countries.png"</span>),</span>
+<span id="cb8-37">    .,</span>
+<span id="cb8-38">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.25</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,</span>
+<span id="cb8-39">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">height =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3.4</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,</span>
+<span id="cb8-40">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">bg =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#D8E4EA"</span></span>
+<span id="cb8-41">  )</span></code></pre></div>
+</div>
+<p><img src="https://visibledata.co.uk/posts/2024-10-28_bordering-country-graph/gg_graph_countries.png" class="img-fluid"></p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2024,
+  author = {Hadley, Charlie},
+  title = {Bordering Countries Graph},
+  date = {2024-11-04},
+  url = {https://visibledata.co.uk/posts/2024-10-28_bordering-country-graph/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2024" class="csl-entry quarto-appendix-citeas">
+Hadley, Charlie. 2024. <span>“Bordering Countries Graph.”</span>
+November 4, 2024. <a href="https://visibledata.co.uk/posts/2024-10-28_bordering-country-graph/">https://visibledata.co.uk/posts/2024-10-28_bordering-country-graph/</a>.
+</div></div></section></div> ]]></description>
+  <guid>https://visibledata.co.uk/posts/2024-10-28_bordering-country-graph/</guid>
+  <pubDate>Mon, 04 Nov 2024 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>{highcharts} doesn’t like empty factors (and the .by argument is quite nice, actually)</title>
   <dc:creator>Charlie Hadley</dc:creator>
@@ -817,6 +2005,7 @@ font-style: inherit;">emoji_symbol =</span> vec_emojis[sds_from_mean])</span></c
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(x){<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">dnorm</span>(x, <span class="at" style="color: #657422;
@@ -837,6 +2026,7 @@ font-style: inherit;">700</span>}</span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(xlim, fill_color, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">alpha =</span> <span class="dv" style="color: #AD0000;
@@ -2004,6 +3194,7 @@ font-style: inherit;">0</span>,</span>
 background-color: null;
 font-style: inherit;">fun =</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(x){<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ifelse</span>(<span class="fu" style="color: #4758AB;
@@ -2077,6 +3268,7 @@ font-style: inherit;">0</span>,</span>
 background-color: null;
 font-style: inherit;">fun =</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(x){<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ifelse</span>(<span class="fu" style="color: #4758AB;
@@ -3175,6 +4367,7 @@ background-color: null;
 font-style: inherit;">.quarto-light</span> {</span>
 <span id="cb1-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">background-color</span>: <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">#D8D8D3</span><span class="op" style="color: #5E5E5E;
@@ -3187,6 +4380,7 @@ background-color: null;
 font-style: inherit;">.slides</span> {</span>
 <span id="cb1-6">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">background-color</span>: <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">#fff</span><span class="op" style="color: #5E5E5E;
@@ -3194,6 +4388,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb1-7">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">border-width</span>: <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">20</span><span class="dt" style="color: #AD0000;
@@ -3215,6 +4410,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb1-8">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">border-style</span>: <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">solid</span><span class="op" style="color: #5E5E5E;
@@ -3222,6 +4418,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb1-9">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">border-color</span>: <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">#fff</span><span class="op" style="color: #5E5E5E;
@@ -3229,6 +4426,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb1-10">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">box-shadow</span>: <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rgb(</span><span class="dv" style="color: #AD0000;
@@ -3268,6 +4466,7 @@ font-style: inherit;">;</span></span>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;body</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">class</span><span class="ot" style="color: #003B4F;
@@ -3276,9 +4475,11 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"quarto-light"</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&gt;</span></span>
 <span id="cb2-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;div</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">class</span><span class="ot" style="color: #003B4F;
@@ -3287,9 +4488,11 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"slides"</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&gt;</span></span>
 <span id="cb2-3">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;section</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">id</span><span class="ot" style="color: #003B4F;
@@ -3298,11 +4501,14 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"title-slide"</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&gt;</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;/section&gt;</span></span>
 <span id="cb2-4">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;section</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">id</span><span class="ot" style="color: #003B4F;
@@ -3313,9 +4519,11 @@ font-style: inherit;">"hello-world"</span> <span class="er" style="color: #AD000
 background-color: null;
 font-style: inherit;">&lt;/section</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&gt;</span></span>
 <span id="cb2-5">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;section</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">id</span><span class="ot" style="color: #003B4F;
@@ -3326,9 +4534,11 @@ font-style: inherit;">"hello-ninja"</span> <span class="er" style="color: #AD000
 background-color: null;
 font-style: inherit;">&lt;/section</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&gt;</span></span>
 <span id="cb2-6">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;section</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">id</span><span class="ot" style="color: #003B4F;
@@ -3339,12 +4549,15 @@ font-style: inherit;">"remark.js"</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;/section</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&gt;</span></span>
 <span id="cb2-7">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;/div&gt;</span></span>
 <span id="cb2-8"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;/div&gt;</span></span></code></pre></div>
 </div>
 <p>The grey background behind the slides is applied to the entire body element - which is fine! But notice that all slides are contained within one <code>&lt;div&gt;</code> element. This means we can’t supply a different background to individual slides. That’s a problem for trying to replicate <code>{xaringan}</code> because one of the most obvious features is that some slides have a different background colour - implemented through the <code>inverse</code> class.</p>
@@ -3352,6 +4565,7 @@ font-style: inherit;">&lt;/div&gt;</span></span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb3-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;div</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">class</span><span class="ot" style="color: #003B4F;
@@ -3360,9 +4574,11 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"remark-slides-area"</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&gt;</span></span>
 <span id="cb3-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;div</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">class</span><span class="ot" style="color: #003B4F;
@@ -3371,9 +4587,11 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"remark-slide-container inverse"</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&gt;</span></span>
 <span id="cb3-3">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;div</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">class</span><span class="ot" style="color: #003B4F;
@@ -3382,12 +4600,15 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"remark-slide-scaler"</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&gt;&lt;/div&gt;</span></span>
 <span id="cb3-4">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;/div&gt;</span></span>
 <span id="cb3-5">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;div</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">class</span><span class="ot" style="color: #003B4F;
@@ -3396,9 +4617,11 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"remark-slide-container"</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&gt;</span></span>
 <span id="cb3-6">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;div</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">class</span><span class="ot" style="color: #003B4F;
@@ -3407,12 +4630,15 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"remark-slide-scaler"</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&gt;&lt;/div&gt;</span></span>
 <span id="cb3-7">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;/div&gt;</span></span>
 <span id="cb3-8"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&lt;/div&gt;</span></span></code></pre></div>
 </div>
 <p>I spent ages (and ages) experimenting with different CSS and SASS variables before I figured this out. I wish I’d have taken a step back and looked at how the HTML was constructed before spending so much time on this. But I did end up learning lots of things while trying and failing. I’ll document those findings in the next blogpost where I will completely ignore the letterboxing.</p>
@@ -3566,6 +4792,7 @@ font-style: inherit;">/*-- scss:rules --*/</span></span>
 <span id="cb13-3">p {</span>
 <span id="cb13-4">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">color</span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
@@ -3800,6 +5027,7 @@ Format.”</span> June 20, 2022. <a href="https://visibledata.co.uk/posts/2022-0
 
 
 
+
 <p>I’ve just moved this entire blog from <code>{blogdown}</code> to <code>{quarto}</code>. It was mostly simple but for one of the blogposts I really wanted a way to override individual code chunk options. Let’s make a toy .Rmd document to demonstrate this:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1">---</span>
 <span id="cb1-2">output: html_document</span>
@@ -3840,15 +5068,15 @@ Format.”</span> June 20, 2022. <a href="https://visibledata.co.uk/posts/2022-0
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2022,
-  author = {Charlie Hadley},
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2022,
+  author = {Hadley, Charlie},
   title = {Overriding Individual Code Chunk Options},
   date = {2022-06-20},
   url = {https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2022" class="csl-entry quarto-appendix-citeas">
-Charlie Hadley. 2022. <span>“Overriding Individual Code Chunk
+Hadley, Charlie. 2022. <span>“Overriding Individual Code Chunk
 Options.”</span> June 20, 2022. <a href="https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options">https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options</a>.
 </div></div></section></div> ]]></description>
   <guid>https://visibledata.co.uk/posts/2022-06-20_overriding-individual-code-chunk-options/</guid>
@@ -4128,6 +5356,7 @@ Charlie Hadley. 2022. <span>“Writing Verbatim SQL in Pipe Chains Using
 
 
 
+
 <p>Shiny apps are awesome, with a bit of training you can build fairly impressive interactive web apps. But at some point, the subject of “shiny modules” will rear its head.</p>
 <p>When I started learning modules, I found most of the existing <a href="http://shiny.rstudio.com/articles/modules.html">articles</a> focus on the technical-side of things and don’t focus on the <strong>benefits of using modules</strong> - they can significantly simplify and improve your apps.</p>
 <p>I’m going to put together a few different tutorials on real-world Shiny apps and how modules can be used to improve them. As these tutorials develop I’ll link to them below.</p>
@@ -4231,6 +5460,7 @@ font-style: inherit;">choices =</span> countries_list),</span>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(input, output, session){</span>
 <span id="cb3-2">  </span>
 <span id="cb3-3">  output<span class="sc" style="color: #5E5E5E;
@@ -4442,15 +5672,15 @@ font-style: inherit;">datatable</span>(...)</span>
 </section>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2019,
-  author = {Charlie Hadley},
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2019,
+  author = {Hadley, Charlie},
   title = {Shiny Modules to Reduce Duplication in Apps},
   date = {2019-07-09},
   url = {https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2019" class="csl-entry quarto-appendix-citeas">
-Charlie Hadley. 2019. <span>“Shiny Modules to Reduce Duplication in
+Hadley, Charlie. 2019. <span>“Shiny Modules to Reduce Duplication in
 Apps.”</span> July 9, 2019. <a href="https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps">https://visibledata.co.uk/posts/2019-07-09-shiny-modules-to-reduce-duplication-in-apps</a>.
 </div></div></section></div> ]]></description>
   <category>shiny</category>
@@ -4463,6 +5693,7 @@ Apps.”</span> July 9, 2019. <a href="https://visibledata.co.uk/posts/2019-07-0
   <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -4669,6 +5900,7 @@ font-style: inherit;">TRUE</span>)</span>
 <span id="cb2-10"></span>
 <span id="cb2-11"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(input, output, session){</span>
 <span id="cb2-12">  </span>
 <span id="cb2-13">  </span>
@@ -4694,6 +5926,7 @@ font-style: italic;">## this is how your gg_ma_timeseries.R file should look</sp
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(.data, date, value, category) {</span>
 <span id="cb3-3">  date <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -4839,6 +6072,7 @@ font-style: inherit;">"DOI:10.6084/m9.figshare.376156"</span>)</span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(.data, date, value, category, window_width){</span>
 <span id="cb3-34">  </span>
 <span id="cb3-35">  date <span class="ot" style="color: #003B4F;
@@ -4988,6 +6222,7 @@ font-style: inherit;">TRUE</span>)</span>
 <span id="cb4-12"></span>
 <span id="cb4-13"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(input, output, session){</span>
 <span id="cb4-14">  </span>
 <span id="cb4-15">  </span>
@@ -5012,7 +6247,11 @@ font-style: inherit;">%&gt;%</span></span>
 background-color: null;
 font-style: inherit;">gg_ma_timeseries</span>(date, jobs, occupation)</span></code></pre></div>
 <div class="cell-output-display">
-<p><img src="https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Notice how the column names <code>jobs</code>, <code>occupation</code> and <code>date</code> have been given to <code>gg_ma_timeseries</code> without quotation marks? This is exactly the same as how we use functions from <code>dplyr</code>, e.g.&nbsp;<code>iris %&gt;% mutate(species = toupper(species))</code>. These are what we call <strong>naked column names</strong>.</p>
@@ -5317,6 +6556,7 @@ font-style: inherit;">TRUE</span>)</span>
 <span id="cb8-13"></span>
 <span id="cb8-14"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(input, output, session) {</span>
 <span id="cb8-15">  output<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -5400,6 +6640,7 @@ font-style: inherit;">gg_ma_timeseries</span>(date, jobs, country_group)</span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(input, output, session){</span>
 <span id="cb9-2">  </span>
 <span id="cb9-3">}</span></code></pre></div>
@@ -5413,6 +6654,7 @@ font-style: italic;">## This is how your /modules/client-side_gg-ma-timeseries.R
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(id) {</span>
 <span id="cb10-3">  ns <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -5504,6 +6746,7 @@ font-style: inherit;">"shinycustomloader"</span>)</span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(id) {</span>
 <span id="cb11-5">  ns <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -5578,6 +6821,7 @@ font-style: inherit;">12</span></span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(id) {</span>
 <span id="cb11-25">  ns <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -5697,21 +6941,21 @@ font-style: inherit;">"by_country_chart"</span>)</span>
 </section>
 
 
-<div id="quarto-appendix" class="default"><section class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1"><p>I was interested in how important file size warnings are in tutorials, my <a href="https://twitter.com/charliejhadley/status/1110203236177334278">Twitter poll revealed that most folks wanted a warning for files bigger than 10Mb</a>↩︎</p></li>
 </ol>
-</section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2019,
-  author = {Charlotte Hadley},
+</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2019,
+  author = {Hadley, Charlie},
   title = {Shiny Modules for Useful Controls},
   date = {2019-03-25},
   url = {https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2019" class="csl-entry quarto-appendix-citeas">
-Charlotte Hadley. 2019. <span>“Shiny Modules for Useful
-Controls.”</span> March 25, 2019. <a href="https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls">https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls</a>.
+Hadley, Charlie. 2019. <span>“Shiny Modules for Useful Controls.”</span>
+March 25, 2019. <a href="https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls">https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls</a>.
 </div></div></section></div> ]]></description>
   <category>shiny</category>
   <guid>https://visibledata.co.uk/posts/2019-03-25-shiny-modules-for-useful-controls/</guid>
@@ -5723,6 +6967,7 @@ Controls.”</span> March 25, 2019. <a href="https://visibledata.co.uk/posts/201
   <dc:creator>Charlie Hadley</dc:creator>
   <link>https://visibledata.co.uk/posts/2019-03-13_extracting-doi-from-text/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -5802,6 +7047,7 @@ font-style: inherit;">str_extract</span>(text_citation, doi_regex))</span></code
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(.data, citation_column, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">name =</span> <span class="st" style="color: #20794D;
@@ -5815,6 +7061,7 @@ font-style: inherit;">enquo</span>(citation_column)</span>
 <span id="cb5-3"></span>
 <span id="cb5-4">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (name <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!=</span> <span class="st" style="color: #20794D;
@@ -5881,15 +7128,15 @@ font-style: inherit;">add_doi</span>(text_citation)</span></code></pre></div>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2019,
-  author = {Charlotte Hadley},
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2019,
+  author = {Hadley, Charlie},
   title = {One Weird Regex Matches 97\% of {DOI...}},
   date = {2019-03-13},
   url = {https://visibledata.co.uk/posts/2019-03-13_extracting-doi-from-text},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2019" class="csl-entry quarto-appendix-citeas">
-Charlotte Hadley. 2019. <span>“One Weird Regex Matches 97% of
+Hadley, Charlie. 2019. <span>“One Weird Regex Matches 97% of
 DOI...”</span> March 13, 2019. <a href="https://visibledata.co.uk/posts/2019-03-13_extracting-doi-from-text">https://visibledata.co.uk/posts/2019-03-13_extracting-doi-from-text</a>.
 </div></div></section></div> ]]></description>
   <category>reproducible research</category>
@@ -5993,6 +7240,7 @@ font-style: inherit;">$</span>pois</span></code></pre></div>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(oxpoints_data,</span>
 <span id="cb3-2">                             college_index) {</span>
 <span id="cb3-3">  college_properties <span class="ot" style="color: #003B4F;
@@ -6096,6 +7344,7 @@ font-style: inherit;">%&gt;%</span></span>
 background-color: null;
 font-style: inherit;">pwalk</span>(<span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(x){college_oxpoints_data <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;&lt;-</span> college_oxpoints_data <span class="sc" style="color: #5E5E5E;
@@ -6832,6 +8081,7 @@ font-style: inherit;">ggmap</span>()</span></code></pre></div>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(styles){</span>
 <span id="cb34-2">  styles <span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -7069,6 +8319,7 @@ font-style: inherit;">"shapefiles_oxford_colleges.json"</span>))</span></code></
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(styles){</span>
 <span id="cb40-2">  styles <span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -7173,6 +8424,7 @@ font-style: inherit;">ggmap</span>(base_map)</span></code></pre></div>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(x, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">lower =</span> <span class="dv" style="color: #AD0000;
@@ -7503,6 +8755,7 @@ font-style: inherit;">scale_color_viridis_d</span>()</span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(shapes, lower, upper){</span>
 <span id="cb44-2">  <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -7618,6 +8871,7 @@ font-style: inherit;">pmap</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">list</span>(lower, upper), <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(lower, upper) {</span>
 <span id="cb46-8">  <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -9069,12 +10323,14 @@ font-style: inherit;">%&gt;%</span></span>
 background-color: null;
 font-style: inherit;">pwalk</span>(<span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(x, y, retailer, ...){</span>
 <span id="cb12-5">    </span>
 <span id="cb12-6">    logo <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">switch</span> (retailer,</span>
 <span id="cb12-7">      <span class="st" style="color: #20794D;
 background-color: null;
@@ -9358,6 +10614,7 @@ font-style: inherit;">coord_fixed</span>()</span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(gg_advent,</span>
 <span id="cb15-2">                              advent_treats,</span>
 <span id="cb15-3">                              open_doors) {</span>
@@ -9379,11 +10636,13 @@ font-style: inherit;">%&gt;%</span></span>
 background-color: null;
 font-style: inherit;">pwalk</span>(<span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(x, y, retailer, drink.name, ...) {</span>
 <span id="cb15-9">      logo <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">switch</span>(retailer,</span>
 <span id="cb15-10">        <span class="st" style="color: #20794D;
 background-color: null;
@@ -9597,6 +10856,7 @@ font-style: inherit;">%&gt;%</span></span>
 background-color: null;
 font-style: inherit;">pwalk</span>(<span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(doors, ...) {</span>
 <span id="cb17-5">    opened_door <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -9709,6 +10969,7 @@ font-style: inherit;">%&gt;%</span></span>
 background-color: null;
 font-style: inherit;">map</span>(<span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(img){<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">image_read</span>(img)}) <span class="sc" style="color: #5E5E5E;
@@ -9957,6 +11218,7 @@ font-style: inherit;">1</span>]]</span></code></pre></div>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(issue_url) {</span>
 <span id="cb9-2">  </span>
 <span id="cb9-3">  issue_page <span class="ot" style="color: #003B4F;
@@ -9973,6 +11235,7 @@ font-style: inherit;">read_html</span>(),</span>
 background-color: null;
 font-style: inherit;">error =</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(c) <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">NA</span></span>
@@ -9980,6 +11243,7 @@ font-style: inherit;">NA</span></span>
 <span id="cb9-7"></span>
 <span id="cb9-8">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">is.na</span>(issue_page)) {</span>
@@ -10066,6 +11330,7 @@ font-style: inherit;">doi =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(issue_url, <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(x)<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">get_article_dois_from_issue</span>(x)))</span></code></pre></div>
@@ -10427,6 +11692,7 @@ font-style: inherit;">"Harbin to Riyadh"</span></span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(journeys_data,</span>
 <span id="cb2-2">                           <span class="at" style="color: #657422;
 background-color: null;
@@ -12708,6 +13974,7 @@ font-style: inherit;">%&gt;%</span></span>
 background-color: null;
 font-style: inherit;">pmap</span>(<span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(package, ...) {</span>
 <span id="cb1-15">    <span class="fu" style="color: #4758AB;
 background-color: null;
