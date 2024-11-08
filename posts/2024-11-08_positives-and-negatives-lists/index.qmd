@@ -1,0 +1,97 @@
+---
+title: "Pros, Cons and Neutrals lists?"
+date: '2024-11-08'
+execute:
+  freeze: true
+  message: false
+  warning: false
+  echo: false
+code-fold: false
+engine: knitr
+filters:
+  - line-highlight
+---
+
+```{r}
+library("tidyverse")
+library("shiny")
+library("bslib")
+```
+
+
+I thought it would be interesting for me to keep better track of the Pros, Cons and Neutrals that I discover/decide on and to find a way to visualise these nicely. The idea came to me when I was wanting to create a new Quarto blogpost and googled for a quick solution to find [this issue](https://github.com/quarto-dev/quarto-cli/issues/3917) where it's noted
+
+> But a current limitation is that all are R focused rather than general quarto CLI tooling.
+
+That gets to the heart of something that could put off some R users migrating from RMarkdown to Quarto... but also that's the whole point of Quarto to be cross-platform.
+
+Right! So what would a Pros / Cons / Neutrals list look like? Well, `{bslib}` has nice cards available. So it could be something like this:
+
+::: {.column-page .grid}
+
+::: {.g-col-4}
+```{r}
+card(
+  full_screen = TRUE,
+  card_header(
+    emo::ji("white_check_mark"),
+    "Quarto installs with few permissions"
+  ),
+  card_body(
+    p("Makes it really easy to use in training.")
+  )
+)
+```
+
+:::
+
+::: {.g-col-4}
+
+```{r}
+card(
+  card_header(
+    emo::ji("neutral_face"),
+    "Quarto quick tools are difficult to make as it's a CLI!"
+  ),
+  card_body(
+    p("RMarkdown has lovely features like `blogdown::new_post()` that can't really be added to Quarto as it's a CLI! Usability tools would need to be added to the CLI instead of the wrapping package.")
+  ),
+  card_footer(
+    emo::ji("gear"), "This doesn't need to change",
+    p("That's the nature of the beast")
+  )
+)
+```
+
+:::
+
+::: {.g-col-4}
+```{r}
+card(
+  card_header(
+    emo::ji("x"),
+    "Quarto occassionally summons demons"
+  ),
+  card_body(
+    p("It doesn't, that's a lie.")
+  ),
+  card_footer(
+    emo::ji("gear"), "Needs to change. Raised issue on GitHub."
+  )
+)
+```
+
+:::
+
+:::
+
+## Feature creep
+
+Ever heard of feature creep? She's a beast.
+
+I decided the fastest way to record these would be in a Google Sheet that I can then read easily into a Shiny app. But then I thought - I'd love to [MoSCoW this](https://en.wikipedia.org/wiki/MoSCoW_method). Which then led to me building up a bunch of data validation rules:
+
+![](change-desire-screenshot.png)
+... and gosh, I'd discovered I was procrastinating. I'm really aiming to up my data blogging output and feel part of the tech community again. So, let's settle with something that's workable... an iOS note that I can also modify on my laptop.
+
+![](IMG_3420.PNG)
