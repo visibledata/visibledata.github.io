@@ -1,0 +1,305 @@
+---
+title: "Curves and stones"
+date: '2024-11-08'
+execute:
+  freeze: true
+  message: false
+  warning: false
+  echo: true
+code-fold: true
+engine: knitr
+filters:
+  - line-highlight
+---
+
+```{r setup}
+#| include: false
+set.seed(as.integer(Sys.Date()))
+sample(1:5, 1)
+sample(1:52, 1)
+
+quarto_here <- function(rest_of_path){
+  here::here(ifelse(
+  rstudioapi::isAvailable(), 
+  rstudioapi::getActiveDocumentContext()$path,
+  knitr::current_input(dir = TRUE)
+) |> dirname(),
+rest_of_path)
+}
+```
+
+:::{layout-ncol=2}
+
+:::{.left}
+
+I've got a project I'm working on where I've been inspired by the [elemental stones in the Fifth Element movie](https://fifth-element.fandom.com/wiki/Elemental_Stones) you can see to the right.
+
+In this post I'll produce this chart:
+
+<img src='ggptch_all_directions.png' width='200px'/>
+
+
+:::
+
+:::{.right}
+
+
+![](The_Four_Stones.webp)
+
+:::
+
+:::
+
+Have you ever seen [Megan Harris' incredible generative art built with R](https://thetidytrekker.com/rtistry)? If not - please take a look! While I was researching ways to make wavy lines with `{ggplot2}` I came across [Megan's blogpost where she makes this beautiful chart](https://thetidytrekker.com/post/making-waves/making-waves.html).
+
+<img src='tidytrekker-chart.png' width='200px'/>
+
+Borrowing pretty much directly from Megan's code, here's a nice sine curve that looks a little like the lines on the stones:
+
+```{r}
+library("tidyverse")
+
+theta <- seq(from = 0,
+             to = 2*pi, 
+             length.out = 100)
+
+sine <- tibble(x = theta,
+               y = sin(theta),
+               label = 1:length(theta))
+
+wave_theta <- seq(from = 0,
+                  to = 2 * pi, 
+                  by = .1) 
+
+curve_top <- tibble(x = wave_theta,
+                    y = sin(x)) %>%
+  arrange(x)
+
+curve_top %>%
+  ggplot(aes(x=x, y=y))+
+  geom_path(arrow = arrow(type="closed"), linewidth = 3) +
+  coord_fixed(xlim = c(0, 2 * pi),
+              ratio = 1 / 2) +
+  theme_void()
+```
+
+Nice! Okay. So let's stack 6 of these on top of one another:
+
+```{r}
+wave_theta <- seq(from = 0,
+                  to = 2 * pi, 
+                  by = .1) 
+
+tibble(x = rep(seq(from = 0,
+                  to = 2 * pi, 
+                  by = .1) , 6),
+       line = rep(1:6, each = length(wave_theta))) %>% 
+  mutate(y = line + sin(x),
+         line = as.character(line)) %>% 
+  ggplot(aes(x=x, y=y, group = line))+
+  geom_path(arrow = arrow(type="closed"), linewidth = 5, show.legend = FALSE) +
+  scale_x_continuous(expand = expansion(mult = 0, add = c(-0.1, 0.1))) +
+  coord_fixed(ratio = 1 / 2) +
+  theme_void() +
+  theme(panel.background = element_rect(fill = "#9A7D66", colour = "transparent"),
+        panel.border = element_blank())
+```
+
+I then played around with reflecting these and also making vertical lines... it didn't quite look right:
+
+```{r}
+library("patchwork")
+
+gg_L2R_sin_arrowed <- tibble(x = rep(seq(from = 0,
+                  to = 2 * pi, 
+                  by = .1) , 6),
+       line = rep(1:6, each = length(wave_theta))) %>% 
+  mutate(y = line + sin(x),
+         line = as.character(line)) %>% 
+  ggplot(aes(x=x, y=y, group = line))+
+  geom_path(arrow = arrow(type="closed", ends = "last"), linewidth = 5, show.legend = FALSE) +
+  scale_x_continuous(expand = expansion(mult = 0, add = c(-0.1, 0.1))) +
+  scale_y_continuous(expand = expansion(0, c(0.3, 0.3))) +
+  coord_fixed(ratio = 1 / 2,
+              ylim = c(0, 7)) +
+  theme_void() +
+  theme(panel.background = element_rect(fill = "#9A7D66", colour = "transparent"),
+        panel.border = element_blank()) 
+
+gg_R2L_cos_arrowed <- tibble(x = rep(seq(from = 0,
+                  to = 2 * pi, 
+                  by = .1) , 6),
+       line = rep(-1:4, each = length(wave_theta))) %>% 
+  mutate(y = line + cos(x),
+         line = as.character(line)) %>% 
+  ggplot(aes(x=x, y=y, group = line))+
+  geom_path(arrow = arrow(type="closed", ends = "first"), linewidth = 5, show.legend = FALSE) +
+  scale_x_continuous(expand = expansion(mult = 0, add = c(0.1, -0.1))) +
+  scale_y_continuous(expand = expansion(0, c(0.3, 0.3))) +
+  coord_fixed(ratio = 1 / 2,
+              ylim = c(-2, 5.2)) +
+  theme_void() +
+  theme(panel.background = element_rect(fill = "#9A7D66", colour = "transparent"),
+        panel.border = element_blank())
+
+ggptch_both_horiz <- gg_L2R_sin_arrowed + theme(plot.margin = margin(r = 10)) | gg_R2L_cos_arrowed
+
+ggptch_both_horiz %>% 
+  ggsave(quarto_here("ggptch_both_horiz.png"),
+         .,
+         width = 5.22 * 2,
+         height = 4 )
+```
+
+![](ggptch_both_horiz.png)
+
+## Arrows in the middle?
+
+With the arrows at the end of the lines it means that the images need to be padded asymmetrically - or at least it's not a simple swap between the charts. Let's see move the arrows to the middle of the lines and swap to using sin for both left and right
+
+```{r}
+seq_x <- seq(from = 0,
+                  to = 2 * pi, 
+                  by = pi / 100)
+n_lines <- 11
+
+data_left_and_right <- tibble(x = rep(seq_x, 9),
+       line = rep(seq(-1, 7), each = length(seq_x))) %>% 
+  mutate(y = line + sin(x)) 
+
+data_arrows_left_and_right <- data_left_and_right %>% 
+  filter(x %in% c(seq_x[c(100, 102)]),
+         between(line, 1, 6)) %>% 
+  group_by(line) %>%
+  summarise(xmin = min(x),
+        xmax = max(x),
+        ymax = max(y),
+        ymin = min(y))
+
+gg_left_to_right <- data_left_and_right %>%
+  ggplot(aes(x = x, y = y, group = line)) +
+    geom_segment(data = data_arrows_left_and_right,
+               aes(x = xmin, y = ymax, xend = xmax, yend = ymin, group = line),
+               arrow = arrow(type="closed", ends = "last"), linewidth = 5, show.legend = FALSE) + 
+  geom_path(linewidth = 5,
+            show.legend = FALSE,
+            aes(colour = ifelse(between(line, 1, 6), "main", "background"))) +
+  scale_x_continuous(expand = expansion(0, -0.1)) +
+  scale_y_continuous(expand = expansion(0, 0)) +
+  scale_colour_manual(values = c("main" = "black",
+                                 "background" = "grey80")) +
+  coord_fixed(ratio = 1 / 2, ylim = c(0, 7), xlim = c(0, 2*pi)) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(fill = "#9A7D66", colour = "transparent"),
+    panel.border = element_blank()
+  ) 
+
+gg_right_to_left <- data_left_and_right %>%
+  ggplot(aes(x = x, y = y, group = line)) +
+    geom_segment(data = data_arrows_left_and_right,
+               aes(x = xmin, y = ymax, xend = xmax, yend = ymin, group = line),
+               arrow = arrow(type="closed", ends = "first"), linewidth = 5, show.legend = FALSE) + 
+  geom_path(linewidth = 5,
+            show.legend = FALSE,
+            aes(colour = ifelse(between(line, 1, 6), "main", "background"))) +
+  scale_x_continuous(expand = expansion(0, -0.1)) +
+  scale_y_continuous(expand = expansion(0, 0)) +
+  scale_colour_manual(values = c("main" = "black",
+                                 "background" = "grey80")) +
+  coord_fixed(ratio = 1 / 2, ylim = c(0, 7), xlim = c(0, 2*pi)) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(fill = "#9A7D66", colour = "transparent"),
+    panel.border = element_blank()
+  ) 
+
+ggptch_left_and_right <- gg_left_to_right + theme(plot.margin = margin(r = 20)) | gg_right_to_left
+
+ggptch_left_and_right %>% 
+  ggsave(quarto_here("ggptch_left_and_right.png"),
+         .,
+         width = 5 * 2 + 0.5,
+         height = 2.5 * 2 + 1.5)
+```
+
+![](ggptch_left_and_right.png)
+
+Cool! I like those. Now let's make the vertical versions by swapping the x and y coordinates and combine them altogether with `{patchwork}`
+
+```{r}
+
+seq_x_tb <- seq(from = -0.5,
+                  to = 2.5 * pi, 
+                  by = pi / 100)
+n_lines <- 11
+
+data_top_and_bottom <- tibble(x = rep(seq_x_tb, 9),
+       line = rep(seq(-1, 7), each = length(seq_x_tb))) %>% 
+  mutate(y = line + sin(x)) 
+
+data_arrows_bottom_and_top <- data_top_and_bottom %>% 
+  filter(x %in% c(seq_x_tb[c(length(seq_x_tb) / 2 -1 , length(seq_x_tb) / 2 + 1)]),
+         between(line, 1, 6)) %>% 
+  group_by(line) %>%
+  summarise(xmin = min(x),
+        xmax = max(x),
+        ymax = max(y),
+        ymin = min(y))
+
+gg_top_to_bottom <- data_top_and_bottom %>%
+  ggplot(aes(y = x, x = y, group = line)) +
+    geom_segment(data = data_arrows_bottom_and_top,
+               aes(y = xmin, x = ymax, yend = xmax, xend = ymin, group = line),
+               arrow = arrow(type="closed", ends = "first"), linewidth = 5, show.legend = FALSE) +
+  geom_path(linewidth = 5,
+            show.legend = FALSE,
+            aes(colour = ifelse(between(line, 1, 6), "main", "background"))) +
+  scale_x_continuous(expand = expansion(0, -0.1)) +
+  scale_y_continuous(expand = expansion(0, 0)) +
+  scale_colour_manual(values = c("main" = "black",
+                                 "background" = "grey80")) +
+  coord_fixed(ratio = 1 / 2, ylim = c(0, 7), xlim = c(0, 2 * pi)) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(fill = "#9A7D66", colour = "transparent"),
+    panel.border = element_blank()
+  ) 
+
+gg_bottom_to_top <- data_top_and_bottom %>%
+  ggplot(aes(y = x, x = y, group = line)) +
+    geom_segment(data = data_arrows_bottom_and_top,
+               aes(y = xmin, x = ymax, yend = xmax, xend = ymin, group = line),
+               arrow = arrow(type="closed", ends = "last"), linewidth = 5, show.legend = FALSE) +
+  geom_path(linewidth = 5,
+            show.legend = FALSE,
+            aes(colour = ifelse(between(line, 1, 6), "main", "background"))) +
+  scale_x_continuous(expand = expansion(0, -0.1)) +
+  scale_y_continuous(expand = expansion(0, 0)) +
+  scale_colour_manual(values = c("main" = "black",
+                                 "background" = "grey80")) +
+  coord_fixed(ratio = 1 / 2, ylim = c(0, 7), xlim = c(0, 2 * pi)) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(fill = "#9A7D66", colour = "transparent"),
+    panel.border = element_blank()
+  ) 
+
+
+(gg_top_to_bottom + theme(plot.margin = margin(r = 20)) | gg_bottom_to_top)
+```
+
+
+```{r}
+ggptch_all_directions <- (gg_left_to_right + theme(plot.margin = margin(r = 20)) | gg_right_to_left) / 
+(gg_top_to_bottom + theme(plot.margin = margin(r = 20)) | gg_bottom_to_top)
+
+ggptch_all_directions %>% 
+  ggsave(quarto_here("ggptch_all_directions.png"),
+         .,
+         width = 5 * 2 + 0.5,
+         height = 2.5 * 2 + 1.5)
+```
+
+![](ggptch_all_directions.png)
+In an ideal world I'd play around with the vertical images to make them align better, but I can't quite figure out how to do that today. Hopefully you'll be seeing these charts again in a project soon. But even if not, I'm quite happy with how they look 😀
