@@ -18,14 +18,7 @@ set.seed(as.integer(Sys.Date()))
 sample(1:5, 1)
 sample(1:52, 1)
 
-quarto_here <- function(rest_of_path){
-  here::here(ifelse(
-  rstudioapi::isAvailable(), 
-  rstudioapi::getActiveDocumentContext()$path,
-  knitr::current_input(dir = TRUE)
-) |> dirname(),
-rest_of_path)
-}
+library("cjhRutils")
 ```
 
 :::{layout-ncol=2}
