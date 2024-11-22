@@ -1,0 +1,123 @@
+---
+title: "How far can you live from?"
+date: '2024-11-08'
+draft: true
+execute:
+  freeze: true
+  message: false
+  warning: false
+  echo: false
+  eval: false
+code-fold: false
+engine: knitr
+filters:
+  - line-highlight
+---
+
+```{r}
+#| include: false
+library("cjhRutils")
+```
+
+While working on the motorway services dataset I realised that I had an organic opportunity to look at edit distance
+
+```{r}
+library("tidyverse")
+library("cjhRutils")
+library("ggwordcloud")
+
+data_for_edit_distance <- read_csv(quarto_here("data-for-edit-distance.csv"))
+
+data_for_edit_distance %>% 
+  add_count(cut = cut_width(n, 5), name = "n_in_cut") %>% 
+  ggplot(aes(label = value,
+             size = n,
+             colour = cut)) +
+  geom_text_wordcloud() +
+  scale_size_area(max_size = 25) +
+  # scale_colour_brewer(palette  = "Dark2") +
+  scale_colour_viridis_d() +
+  theme_minimal()
+```
+
+
+
+
+## How far can you live from a service station?
+
+For this section we're only interested in how the crow flies distances - not driving distances. So, let's find the further point in the UK mainlaind from a service station... which is the further point on the border! There's a [lovely answer on StackOverflow](https://stackoverflow.com/a/76754196/1659890) that allowed me to build up this function:
+
+```{r}
+border_mainland_points <- data_sf_gb_mainland %>%
+  st_cast("POINT")
+```
+
+
+```{r}
+data_sf_service_locs
+
+make_further_linestring_to_border <- function(data){
+  
+  point_service_station <- data %>% 
+  st_as_sfc() %>% 
+  st_as_sf() %>% 
+  st_transform(crs = st_crs(data_sf_gb_mainland))
+  
+  distances <- border_mainland_points |>
+    st_distance(point_service_station)
+  
+  max_dist_linestring <- border_mainland_points |>
+    filter(as.logical(distances == max(distances))) |>
+    bind_rows(point_service_station) |>
+    summarise() |>
+    st_cast("LINESTRING")
+  
+  max_dist_linestring %>% 
+    mutate(name = data$name, length = st_length(x), .before = 0)
+  
+}
+
+data_distances_services_to_border <- data_sf_service_locs %>% 
+  mutate(id = row_number()) %>% 
+  # filter(is_ireland == FALSE) %>% 
+  slice(1) %>% 
+  pull(id) %>% 
+  map_dfr(~ make_further_linestring_to_border(slice(data_sf_service_locs, .x)))
+```
+
+```{r}
+ggplot() +
+  geom_sf(data = data_sf_simpler_mainland) +
+  geom_sf(data = data_distances_services_to_border)
+```
+
+
+# !! THINGS TO DO !!
+
+1. NOIN FOOD
+
+```{r}
+vec_not_food_shop <- c("BP", "Phone Bitz", "FoneBitz", "Tourist Information",
+                       "Children's Play Area", "Game Arcade", "Regus Business Lounge", 
+                       "Showers", "Lucky Coin", "Barber Shop", "Retail Shop",
+                       "Westmorland shop")
+
+```
+
+
+# Dragons
+
+Rules to clean
+
+```{r}
+data_raw_services %>% 
+  mutate(value = case_when(
+    property == "Picnic Area" ~ if_else(value == "yes", "TRUE", NA),
+    .default = value
+  )) %>% 
+  filter(property == "Picnic Area")
+```
+
+
+
+

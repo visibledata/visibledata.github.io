@@ -1,12 +1,11 @@
 ---
-title: "Star Trekking in Trek"
+title: "Data Quest: Motorway Services UK"
 date: '2024-11-08'
 execute:
   freeze: true
   message: false
   warning: false
-  echo: false
-code-fold: false
+code-fold: true
 engine: knitr
 filters:
   - line-highlight
@@ -17,7 +16,18 @@ filters:
 library("cjhRutils")
 ```
 
-I'm working on a few ideas about Motorway Service Stations in the UK, or more specifically the mainland of Great Britain (England, Scotland and Wales). However, I was surprised to discover there weren't any well structured datasets. There is an **incredible** *website* available at <www.motorwayservices.info> - I thoroughly recommend a visit.
+:::{layout-ncol=2}
+
+:::{.left}
+I'm working on a few ideas about Motorway Service Stations in the UK, or more specifically the mainland of Great Britain (England, Scotland and Wales). However, I was surprised to discover there weren't any well structured datasets. There is an **incredible** *website* available at [www.motorwayservices.info](www.motorwayservices.info) - I thoroughly recommend a visit.
+:::
+
+:::{.right}
+![](gg_services_roadless_simple.png)
+:::
+
+:::
+
 
 For very sensible reasons they don't allow data to be scraped (we can't use `{rvest}`), so I've manually downloaded all 107 web pages for the motorway service stations and have them in this folder:
 
@@ -74,7 +84,7 @@ data_raw_services <- list.files(quarto_here("service-stations/"), "[.]html", ful
 Some service stations come in pairs (*dual-site service areas or twin sites*) that are split by the motorway and yet **still have the same name**. For instance, Rownhams Services has a McDonalds when accessed westbound but not eastbound. If you looked at a map of the services it appears that they're not connected (that's an overhead sign not a footbridge!).
 
 ![](rownsham-services.png)
-But they are! There's a subway connecting them, which is [apparently difficult to discover](https://www.sabre-roads.org.uk/forum/viewtopic.php?t=44620). Thankfully, our data source <www.motorwayservices.info> knows they're connected but does suggest it's a footbridge.
+But they are! There's a subway connecting them, which is [apparently difficult to discover](https://www.sabre-roads.org.uk/forum/viewtopic.php?t=44620). Thankfully, our data source [www.motorwayservices.info](www.motorwayservices.info) knows they're connected but does suggest it's a footbridge.
 
 ```{r}
 data_raw_services %>% 
@@ -95,7 +105,7 @@ vec_eat_in_pairs
 
 ## Where can we eat
 
-The Eat-In variable is the most complicarted, interesting and ripe for visualisation. So let's treat it separately. First we'll identify our twin-site restaurants:
+The Eat-In variable is the most complicated, interesting and ripe for visualisation. So let's treat it separately. First we'll identify our twin-site restaurants:
 
 ```{r}
 data_raw_eat_in <- data_raw_services %>% 
@@ -260,7 +270,7 @@ data_long_retailers %>%
   write_csv(quarto_here("retailer_types.csv"))
 ```
 
-Let's import those categorisations
+Let's impose these categorisations:
 
 - is_food_retailer:
   - Do we KNOW we it sells some food items?
@@ -307,10 +317,12 @@ data_wide_services <- data_raw_services %>%
                          "LPG available",
                          "Electric Charge Point")) %>% 
   mutate(property = case_when(
-  property == "LPG available" ~ "has_lpg",
-  property == "Electric Charge Point" ~ "has_electric_charge",
-  TRUE ~ property
+    property == "LPG available" ~ "has_lpg",
+    property == "Electric Charge Point" ~ "has_electric_charge",
+    TRUE ~ property
   )) %>% 
+  mutate(value = str_replace_all(value, "ï��[0-9]{1,}", "£"),
+         value = str_remove_all(value, "Â")) %>% 
   pivot_wider(names_from = property,
               values_from = value) %>% 
   janitor::clean_names() %>% 
@@ -357,21 +369,17 @@ data_paired_services <- data_wide_services %>%
   reframe(name = paste(name, "Services", direction, motorway),
           pair_name = paste(name, motorway))
 
+
 data_services_info <- data_wide_services %>% 
   left_join(data_paired_services) %>% 
   mutate(is_pair = ifelse(is.na(pair_name), FALSE, TRUE))
+
+data_services_info
 ```
 
 ## Getting the locations of the services...
 
-I've gone and got the coords from Google Maps
-
-```{r}
-data_services_info %>% 
-  select(name, is_twin) %>% 
-  arrange(name) %>% 
-  write_csv(quarto_here("services-locations.csv"))
-```
+I've gone and got the coords from Google Maps and stored them in an Excel file (because I'm not perfect). Here's a very quick interactive `{leaflet}` map showing where they are:
 
 ```{r}
 library("sf")
@@ -457,27 +465,27 @@ data_operators <- data_process_ops_simple_all %>%
          n_named_sites_mainland,
          n_named_sites_ireland,
          everything())
+
+data_operators
 ```
 
 ## Exporting all that good data
 
-I'm going to re-use this data a lot - and potentially try to get it added to the TidyTuesday project! So let's get a reprex script together.
-
+I'd really love this dataset to become a Tidy Tuesday dataset! So while writing this post [I've created a fork of the repo](https://github.com/charliejhadley/tidytuesday/tree/Motorway-Services-UK/data/curated/motorway-services-uk). If my eventual pull request gets accepted we'd be able to pull the data from the official TidyTuesday repo, but until then it's available as follows
 
 ```{r}
-list.files(quarto_here("service-stations/"), full.names = TRUE) %>% 
-  tibble(
-    file_path = .
-  ) %>% 
-  mutate(is_html = str_ends(file_path, ".html")) %>% 
-  View()
+head(read_csv("https://raw.githubusercontent.com/charliejhadley/tidytuesday/refs/heads/Motorway-Services-UK/data/curated/motorway-services-uk/data_service_locations.csv"))
 ```
 
 
 
 ## Let's make a map
 
-Because there aren't any service stations in Northern Irelane I want to work with shapefiles for just the mainland of Great Britain. The ONS provides high quality data from here https://geoportal.statistics.gov.uk/datasets/ons::countries-december-2023-boundaries-uk-bfc-2/about. I'm going to extract the mainland by st_cast("POLYGON") and discount polygons with an area smaller than 2e10 m^2.
+I've obtained some [high quality shapefiles for the UK from the ONS](https://geoportal.statistics.gov.uk/datasets/ons::countries-december-2023-boundaries-uk-bfc-2/about) which I'm going to immediately start throwing information away from.
+
+- There aren't any true service stations in Northern Ireland, so we'll include only England, Scotland and Wales
+
+- There are only service stations on the mainland! So let's discount any polygon with an area smaller than 1E10m^2
 
 ```{r}
 data_sf_uk <- read_sf(quarto_here("Countries_December_2023_Boundaries_UK_BFC_-5189344684762562119/"))
@@ -489,6 +497,8 @@ data_sf_gb_mainland <- data_sf_uk %>%
   filter(area >= 1E10) %>%
   # st_union() %>%
   st_as_sf()
+
+data_sf_gb_mainland
 ```
 
 It takes a fair amount of time to plot, so I can use `{rmapshaper} to simplify the borders, which look okay:
@@ -530,15 +540,17 @@ gg_services_roadless <- ggplot() +
           colour = "white") +
   geom_richtext(aes(x = -9,
                     y = 54,
-                    label = "Tiredness can kill<br>Take a break"), 
-                size = 8,
+                    label = "Tiredness can kill<br>Take a break"),
                 family = "Transport",,
                 fill = "transparent",
                 label.color = NA,
                 colour = "white"
-                ) +
+  ) +
   scale_fill_brewer(palette = "Dark2") +
-  guides(fill = guide_legend(override.aes = list(size = 8), title = "", reverse = TRUE)) +
+  guides(fill = guide_legend(
+    # override.aes = list(size = 8), 
+                             title = "", reverse = TRUE)
+         ) +
   scale_x_continuous(labels = scales::label_number(accuracy = 0.01)) +
   scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
   coord_sf(crs = 4326,
@@ -546,14 +558,12 @@ gg_services_roadless <- ggplot() +
            xlim = c(-12, 1.76)) + 
   # theme_classic(base_family = "Transport") +
   theme_void(base_family = "Transport") +
-  theme(legend.position=c(.85,.8),
-        legend.text = element_text(colour = "white"),
-    # legend.spacing.y = unit(2.0, "cm"),
-    legend.background = element_rect(fill = colour_motorway_blue, colour = "transparent"),
-    plot.background = element_rect(fill = colour_motorway_blue),
-        panel.background = element_blank(),
-        plot.margin = margin(20, 20, 20, 20)
-    )
+  theme(legend.text = element_text(colour = "white"),
+        # legend.spacing.y = unit(2.0, "cm"),
+        legend.background = element_rect(fill = colour_motorway_blue, colour = "transparent"),
+        plot.background = element_rect(fill = colour_motorway_blue),
+        panel.background = element_blank()
+  )
 
 gg_services_roadless
 ```
@@ -579,18 +589,18 @@ gg_services_roadless +
              r = unit(0.1, 'npc'))
 ```
 
-Now let's rebuild the chart with this in it:
+Now let's rebuild the chart and set the sizing to work well on export :)
 
 ```{r}
 
-lims_x <- list(min = -12.8, max = 1.76 + 0.2)
-lims_y <- list(min = 50 - 0.3, max = 59)
+lims_x <- list(min = -12.9, max = 1.86)
+lims_y <- list(min = 50.2, max = 58.5)
 
 gg_services_roadless <- ggplot() +
-  geom_rrect(aes(xmin = lims_x$min - 0.4, 
-                 xmax = lims_x$max + 0.4, 
-                 ymin = lims_y$min - 0.15, 
-                 ymax = lims_y$max + 0),
+  geom_rrect(aes(xmin = lims_x$min - 0.8, 
+                 xmax = lims_x$max + 0.8, 
+                 ymin = lims_y$min - 0.65, 
+                 ymax = lims_y$max + 0.65),
              fill = colour_motorway_blue,
              colour = "white",
              size = 15,
@@ -615,8 +625,8 @@ gg_services_roadless <- ggplot() +
                 ) +
   scale_fill_brewer(palette = "Dark2") +
   guides(fill = guide_legend(override.aes = list(size = 8), title = "", reverse = TRUE)) +
-  scale_x_continuous(labels = scales::label_number(accuracy = 0.01)) +
-  scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
+  scale_x_continuous(labels = scales::label_number(accuracy = 0.01), expand = expansion(add = 1)) +
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01), expand = expansion(add = c(1, 1))) +
   coord_sf(crs = 4326,
            ylim = as.numeric(lims_y),
            xlim = as.numeric(lims_x)) + 
@@ -636,160 +646,10 @@ gg_services_roadless
 
 ggsave(quarto_here("gg_services_roadless_simple.png"),
        gg_services_roadless,
-       width = 2 * 7.5,
-       height = 2 * {1 * 8},
+       width = 2 * 7.2,
+       height = 2 * 7.5,
        bg = "grey90")
 
 ```
 
-
-
-## OL
-
-
-```{r}
-library("patchwork")
-library(elementalist) # devtools::install_github("teunbrand/elementalist")
-library(grid)
-
-colour_motorway_blue <- "#3070B5"
-
-gg_services <- ggplot() +
-  geom_sf(data = data_sf_simpler_mainland,
-          fill = colour_motorway_blue,
-          colour = "white",
-          linewidth = 0.8) +
-  geom_sf(data = data_plot_services,
-          aes(fill = operator),
-          pch = 21,
-          size = 3.5,
-          colour = "white") +
-  coord_sf(crs = 4326,
-           ylim = c(50, 59)) + 
-  guides(fill = guide_legend(override.aes = list(size = 10), title = "", reverse = TRUE)) +
-  scale_fill_brewer(palette = "Dark2") +
-  theme_void(base_family = "Transport") +
-  theme(legend.position=c(.8,.8),
-        legend.text = element_text(size = 4 * 6,
-                                   colour = "white"),
-    # legend.spacing.y = unit(2.0, "cm"),
-    legend.key.size = unit(1.7, "cm")
-    )
-
-gg_title <- ggplot() +
-  annotate("text", x = 0.4, y = 0.5, label = "Tiredness can kill\nTake a break", size = 3 * 6, hjust = 0.5, colour = "white", family = "Transport") +
-  coord_cartesian(xlim = c(0, 0.75)) +
-  theme_void() +
-  theme()
-
-gg_combined <- gg_title + gg_services +
-  plot_layout(nrow = 1, widths = c(1.5, 2)) &
-  # theme(plot.margin = unit(c(.2, .2, .2, .2), "cm")) &
-  plot_annotation(theme = theme(
-    plot.background = element_rect_round(
-      color  = 'white',
-      linewidth = 10,
-      linetype = 'solid',
-      fill = colour_motorway_blue,
-      radius = unit(0.1, "snpc")
-    )
-  ))
-
-# 
-# # switch out background grob
-# g <- ggplotGrob(gg_combined)
-# bg <- g$grobs[[1]]
-# round_bg <- roundrectGrob(x=bg$x, y=bg$y, width=bg$width, height=bg$height,
-#                           r=unit(0.1, "snpc"),
-#                           just=bg$just, name=bg$name, gp=bg$gp, vp=bg$vp)
-# g$grobs[[1]] <- round_bg
-# 
-# plot(g)
-
-ggsave(quarto_here("gg_tiredness_can_kill.png"),
-       gg_combined,
-       width = 2 * 8,
-       height = 2 * {1 * 8})
-```
-
-
-
-
-## How far can you live from a service station?
-
-For this section we're only interested in how the crow flies distances - not driving distances. So, let's find the further point in the UK mainlaind from a service station... which is the further point on the border! There's a [lovely answer on StackOverflow](https://stackoverflow.com/a/76754196/1659890) that allowed me to build up this function:
-
-```{r}
-border_mainland_points <- data_sf_gb_mainland %>%
-  st_cast("POINT")
-```
-
-
-```{r}
-data_sf_service_locs
-
-make_further_linestring_to_border <- function(data){
-  
-  point_service_station <- data %>% 
-  st_as_sfc() %>% 
-  st_as_sf() %>% 
-  st_transform(crs = st_crs(data_sf_gb_mainland))
-  
-  distances <- border_mainland_points |>
-    st_distance(point_service_station)
-  
-  max_dist_linestring <- border_mainland_points |>
-    filter(as.logical(distances == max(distances))) |>
-    bind_rows(point_service_station) |>
-    summarise() |>
-    st_cast("LINESTRING")
-  
-  max_dist_linestring %>% 
-    mutate(name = data$name, length = st_length(x), .before = 0)
-  
-}
-
-data_distances_services_to_border <- data_sf_service_locs %>% 
-  mutate(id = row_number()) %>% 
-  # filter(is_ireland == FALSE) %>% 
-  slice(1) %>% 
-  pull(id) %>% 
-  map_dfr(~ make_further_linestring_to_border(slice(data_sf_service_locs, .x)))
-```
-
-```{r}
-ggplot() +
-  geom_sf(data = data_sf_simpler_mainland) +
-  geom_sf(data = data_distances_services_to_border)
-```
-
-
-# !! THINGS TO DO !!
-
-1. NOIN FOOD
-
-```{r}
-vec_not_food_shop <- c("BP", "Phone Bitz", "FoneBitz", "Tourist Information",
-                       "Children's Play Area", "Game Arcade", "Regus Business Lounge", 
-                       "Showers", "Lucky Coin", "Barber Shop", "Retail Shop",
-                       "Westmorland shop")
-
-```
-
-
-# Dragons
-
-Rules to clean
-
-```{r}
-data_raw_services %>% 
-  mutate(value = case_when(
-    property == "Picnic Area" ~ if_else(value == "yes", "TRUE", NA),
-    .default = value
-  )) %>% 
-  filter(property == "Picnic Area")
-```
-
-
-
-
+![](gg_services_roadless_simple.png)

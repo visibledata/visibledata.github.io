@@ -1,0 +1,15 @@
+{
+  "hash": "9826021777e6db5b9cf7e94aafe58b83",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"How far can you live from?\"\ndate: '2024-11-08'\ndraft: true\nexecute:\n  freeze: true\n  message: false\n  warning: false\n  echo: false\n  eval: false\ncode-fold: false\nengine: knitr\nfilters:\n  - line-highlight\n---\n\n\n\n\n\n\nWhile working on the motorway services dataset I realised that I had an organic opportunity to look at edit distance\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\n\n\n\n## How far can you live from a service station?\n\nFor this section we're only interested in how the crow flies distances - not driving distances. So, let's find the further point in the UK mainlaind from a service station... which is the further point on the border! There's a [lovely answer on StackOverflow](https://stackoverflow.com/a/76754196/1659890) that allowed me to build up this function:\n\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n\n\n\n\n# !! THINGS TO DO !!\n\n1. NOIN FOOD\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\n\n# Dragons\n\nRules to clean\n\n\n\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
