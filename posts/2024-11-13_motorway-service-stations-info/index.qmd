@@ -1,0 +1,795 @@
+---
+title: "Star Trekking in Trek"
+date: '2024-11-08'
+execute:
+  freeze: true
+  message: false
+  warning: false
+  echo: false
+code-fold: false
+engine: knitr
+filters:
+  - line-highlight
+---
+
+```{r}
+#| include: false
+library("cjhRutils")
+```
+
+I'm working on a few ideas about Motorway Service Stations in the UK, or more specifically the mainland of Great Britain (England, Scotland and Wales). However, I was surprised to discover there weren't any well structured datasets. There is an **incredible** *website* available at <www.motorwayservices.info> - I thoroughly recommend a visit.
+
+For very sensible reasons they don't allow data to be scraped (we can't use `{rvest}`), so I've manually downloaded all 107 web pages for the motorway service stations and have them in this folder:
+
+```{r}
+library("cjhRutils")
+library("tidyverse")
+list.files(quarto_here("service-stations/"), ".html") %>% head()
+```
+
+Now we can use `{rvest}` to read these HTML files - let's target the info I want
+
+```{r}
+library("tidyverse")
+library("rvest")
+example_abingdon <- read_html(quarto_here("service-stations/Abington Services M74 - Motorway Services Information.html")) %>% 
+  html_nodes(".infotext") %>% 
+  html_text() %>% 
+  tibble(
+    info = .
+  ) %>% 
+  separate_wider_delim(info, ":", names = c("property", "value")) %>% 
+  mutate(value = str_trim(value))
+
+example_abingdon
+```
+
+Okay! That's enough processing to a function I can use to read in all of the data:
+
+```{r}
+read_motorway_services_info <- function(file_path){
+  name_service_station <- str_remove(basename(file_path), " - Motorway Services Information.html")
+  
+  read_html(file_path) %>% 
+  html_nodes(".infotext") %>% 
+  html_text() %>% 
+  tibble(
+    info = .
+  ) %>%
+  separate_wider_delim(info, ":", names = c("property", "value"), too_many = "merge") %>%
+  mutate(value = str_trim(value)) %>%
+  mutate(service_station = name_service_station) %>% 
+  identity()
+}
+
+quarto_here("service-stations/Baldock Services A1(M) - Motorway Services Information.html") %>% 
+  read_motorway_services_info()
+
+data_raw_services <- list.files(quarto_here("service-stations/"), "[.]html", full.names = TRUE) %>% 
+  map_dfr(~read_motorway_services_info(.x))
+```
+
+## Northbound / Southbound and Eastbound / Westbound
+
+Some service stations come in pairs (*dual-site service areas or twin sites*) that are split by the motorway and yet **still have the same name**. For instance, Rownhams Services has a McDonalds when accessed westbound but not eastbound. If you looked at a map of the services it appears that they're not connected (that's an overhead sign not a footbridge!).
+
+![](rownsham-services.png)
+But they are! There's a subway connecting them, which is [apparently difficult to discover](https://www.sabre-roads.org.uk/forum/viewtopic.php?t=44620). Thankfully, our data source <www.motorwayservices.info> knows they're connected but does suggest it's a footbridge.
+
+```{r}
+data_raw_services %>% 
+  filter(service_station == "Rownhams Services M27") %>% 
+  filter(property == "Type") %>% 
+  pull(value)
+```
+
+We need a way to identify these stations. It turns out the "Eat-In Food" property is our friend and identifies the 6 twin-site stations:
+
+```{r}
+vec_eat_in_pairs <- data_raw_services %>% 
+  filter(property == "Eat-In Food",
+         str_detect(value, "Northbound|Eastbound")) %>% 
+  pull(service_station)
+vec_eat_in_pairs
+```
+
+## Where can we eat
+
+The Eat-In variable is the most complicarted, interesting and ripe for visualisation. So let's treat it separately. First we'll identify our twin-site restaurants:
+
+```{r}
+data_raw_eat_in <- data_raw_services %>% 
+  filter(property == "Eat-In Food") %>% 
+  mutate(directional = str_detect(value,
+                                "Northbound|Eastbound"))
+
+data_raw_directional_eat <- data_raw_eat_in %>% 
+  filter(directional == TRUE) %>% 
+  mutate(direction = case_when(
+    str_detect(value, "Northbound") ~ "Northbound|Southbound",
+    str_detect(value, "Eastbound") ~ "Eastbound|Westbound"
+  )) %>% 
+  separate_longer_delim(direction,
+                        delim = "|") %>% 
+  mutate(value = case_when(
+    direction == "Northbound" ~ str_extract(value,
+                                  "(?<=Northbound: ).*(?=Southbound)"),
+    direction == "Southbound" ~ str_extract(value, "(?<=Southbound).*"),
+    direction == "Eastbound" ~ str_extract(value,
+                                  "(?<=Eastbound: ).*(?=Westbound)"),
+    direction == "Westbound" ~ str_extract(value,
+                                  "(?<=Westbound: ).*")
+  )) 
+
+data_raw_directional_eat
+```
+
+Frustratingly, Strensham Services has an extra little bit of data about Subway being in the Northbound Forecourt. That'll need manual removal. But other than that I think we end up with fairly well structured data for the eat-in component that we can begin to clean up.
+
+```{r}
+
+data_raw_directional_eat <- data_raw_directional_eat %>% 
+  mutate(value = str_remove(value, ":"),
+         value = str_remove(value, " Northbound.*"),
+         value = str_trim(value))
+
+data_raw_directionless_eat <- data_raw_eat_in %>% 
+  filter(directional == FALSE) %>% 
+  mutate(value = str_remove(value, ":|;"),
+         value = str_remove(value, "(Westbound)"),
+         value = str_trim(value),
+         direction = "Directionless")
+
+data_clean_eat_in <- data_raw_directionless_eat %>% 
+  bind_rows(data_raw_directional_eat) %>% 
+  select(-directional)
+```
+
+There are lots of alternative spellings in the data, here's a case_when to grab them all. At some point in the future it would be interesting to see if edit distances could help, but for now let's concentrate on getting a useful dataset.
+
+```{r}
+fn_fix_value_columns <- function(data){
+  data %>% 
+    mutate(value = case_when(
+      str_detect(tolower(value), "arlo") ~ "Arlo's", 
+      str_detect(tolower(value), "^bk$") ~ "Burger King",
+      str_detect(tolower(value), "cotton") ~ "Cotton Traders", 
+      str_detect(tolower(value), "chozen") ~ "Chozen Noodles", 
+      str_detect(tolower(value), "cornwall") ~ "West Cornwall Pasty Company", 
+      str_detect(tolower(value), "costa") ~ "Costa", 
+      str_detect(tolower(value), "eat & drink co") ~ "Eat & Drink Co", 
+      str_detect(tolower(value), "edc") ~ "Eat & Drink Co", 
+      str_detect(tolower(value), "fone") ~ "FoneBiz", 
+      str_detect(tolower(value), "full house") ~ "Full House", 
+      str_detect(tolower(value), "greg") ~ "Greggs", 
+      str_detect(tolower(value), "harry") ~ "Harry Ramsden's", 
+      str_detect(tolower(value), "hot food co") ~ "Hot Food Co",
+      str_detect(tolower(value), "krispy") ~ "Krispy Kreme", 
+      str_detect(tolower(value), "le petit") ~ "Le Petit Four", 
+      str_detect(tolower(value), "lucky coin") ~ "Lucky Coin", 
+      str_detect(tolower(value), "m&s") ~ "M&S", 
+      str_detect(tolower(value), "marks") ~ "M&S", 
+      str_detect(tolower(value), "mcdona") ~ "McDonald's", 
+      str_detect(tolower(value), "papa john") ~ "Papa John's", 
+      str_detect(tolower(value), "pizza hut") ~ "Pizza Hut", 
+      str_detect(tolower(value), "quicksilver") ~ "Quicksilver", 
+      str_detect(tolower(value), "regus") ~ "Regus Business Lounge", 
+      str_detect(tolower(value), "restbite") ~ "Restbite", 
+      str_detect(tolower(value), "soho") ~ "SOHO Coffee Co", 
+      str_detect(tolower(value), "spar") ~ "SPAR", 
+      str_detect(tolower(value), "starbucks") ~ "Starbucks", 
+      str_detect(tolower(value), "the burger") ~ "The Burger Company", 
+      str_detect(tolower(value), "top gift") ~ "Top Gift", 
+      str_detect(tolower(value), "tourist information") ~ "Tourist Information", 
+      str_detect(tolower(value), "upper") ~ "Upper Crust", 
+      str_detect(tolower(value), "whs") ~ "WHSmiths", 
+      str_detect(tolower(value), "wild") ~ "Wild Bean Cafe", 
+      tolower(value) %in% tolower(c("WH Smith", "WHSMiths", "Whsmith","W H Smiths", "W.H.Smiths", "W H Smith", "WH Smiths", "Wh Smith", "WH smith")) ~ "WHSmiths", 
+      value == "Buger King" ~ "Burger King", 
+      value == "M & S Simply food" ~ "M&S",
+      TRUE ~ value
+    ))
+}
+
+data_long_eat_in <- data_clean_eat_in %>% 
+  separate_longer_delim(value,
+                        delim = ",") %>% 
+  mutate(value = str_trim(value)) %>% 
+  filter(value != "") %>% 
+  fn_fix_value_columns() %>% 
+  select(retailer = value,
+          service_station,
+         direction)
+```
+
+Now... I'm a little unsure about what to do with the "Takeaway Food / General" property as it also contains information about where we can get food but for the 6 twin stations the direction isn't provided. Let's deal with the directionless other retailers now:
+
+```{r}
+data_long_other_shops_directionless <- data_raw_services %>% 
+  filter(!service_station %in% vec_eat_in_pairs) %>% 
+  filter(property %in% c("Takeaway Food / General", "Other Non-Food Shops")) %>% 
+  select(value, service_station) %>% 
+  filter(value != "01823680370") %>% 
+  separate_longer_delim(value,
+                        delim = ",") %>% 
+  mutate(value = str_trim(value, side = "both")) %>% 
+  fn_fix_value_columns() %>% 
+  mutate(value = str_remove(value, "[(].*y[)]"),
+         value = str_trim(value)) %>% 
+  reframe(retailer = value,
+          service_station = service_station,
+         direction = "Directionless")
+
+## There's one bad record
+data_long_other_shops_directionless <- tibble(
+  retailer = c("Gamezone", "WHSmiths", "Waitrose"),
+  service_station = "Newport Pagnell Services M1",
+  direction = "Directionless"
+) %>%
+  bind_rows(filter(
+    data_long_other_shops_directionless,!str_detect(retailer, "24hr Gamezone WHSmith & Waitrose")
+  ))
+```
+
+And now I'll expand out the twin stations:
+
+```{r}
+## Expand out the twins
+data_long_other_shops_w_direction <- data_raw_services %>% 
+  filter(service_station %in% vec_eat_in_pairs) %>% 
+  filter(property %in% c("Other Non-Food Shops", "Takeaway Food / General")) %>% 
+  select(value, service_station) %>% 
+  mutate(direction = case_when(
+    service_station == "Rownhams Services M27" ~ "Eastbound;Westbound",
+    TRUE ~ "Northbound;Southbound"
+  )) %>% 
+  separate_longer_delim(direction,
+                        delim = ";") %>% 
+  fn_fix_value_columns() %>% 
+  rename(retailer = value)
+```
+
+It's time to combine everything together into a list of retailers which I'll export into Excel and quickly categorise.
+
+```{r}
+data_long_retailers <- bind_rows(data_long_eat_in, data_long_other_shops_w_direction, data_long_other_shops_directionless)
+
+data_long_retailers %>% 
+  distinct(retailer) %>% 
+  arrange(retailer) %>% 
+  write_csv(quarto_here("retailer_types.csv"))
+```
+
+Let's import those categorisations
+
+- is_food_retailer:
+  - Do we KNOW we it sells some food items?
+  
+- is_retaurant:
+  - Do we KNOW we can order food to eat in?
+  
+- is_takeaway:
+  - Do we KNOW we can order food to takeaway
+  
+- is_prepared_food_only
+  - Do we KNOW that there is no hot/fresh food, Tesco
+
+- is_coffee_shop
+  - Do we KNOW you'd nip there for a coffee and it'll be good? Controversially, McDonald's isn't included.
+
+```{r}
+library("readxl")
+data_type_of_retailer <- read_excel(quarto_here("retailer_types.xlsx"))
+
+data_services_retailers <- data_long_retailers %>% 
+  left_join(data_type_of_retailer) %>% 
+  mutate(across(starts_with("is"), ~ case_when(
+    .x == "Y" ~ TRUE,
+    .x == "N" ~ FALSE,
+    TRUE ~ NA
+    )))
+
+data_services_retailers
+```
+
+## Non-food information
+
+The non-food information is so much easier to deal with. Because I want to create an `{sf}` object and potentially support exporting as ESRI shapefiles let's make sure our colnanes have a maximum of 10 characters.
+
+```{r}
+data_wide_services <- data_raw_services %>% 
+  filter(property %in% c("Motorway",
+                         "Where",
+                         "Postcode",
+                         "Type",
+                         "Operator",
+                         "Parking Charges",
+                         "LPG available",
+                         "Electric Charge Point")) %>% 
+  mutate(property = case_when(
+  property == "LPG available" ~ "has_lpg",
+  property == "Electric Charge Point" ~ "has_electric_charge",
+  TRUE ~ property
+  )) %>% 
+  pivot_wider(names_from = property,
+              values_from = value) %>% 
+  janitor::clean_names() %>% 
+  mutate(is_single_site = str_detect(type, "Single site"),
+         is_twin_station = str_detect(type, "Separate facilities"),
+         has_walkway_between_twins = case_when(
+           is_twin_station == TRUE & str_detect(type, "linked") ~ TRUE,
+           is_twin_station == TRUE & str_detect(type, "no link") ~ FALSE,
+           TRUE ~ NA),
+         is_ireland = str_detect(service_station, "Ireland")) %>% 
+  reframe(
+    name = service_station,
+    motorway,
+    where,
+    postcode,
+    type,
+    operator,
+    is_ireland,
+    p_charges = parking_charges,
+    has_charge = has_electric_charge,
+    is_single = is_single_site,
+    is_twin = is_twin_station,
+    has_walk = has_walkway_between_twins
+  )
+```
+
+There are some services like Gloucester Services M5 that appear as two distinct rows but they still pass `is_single == FALSE`. Let's identify these services and mark them in the dataset as `pair_name`.
+
+```{r}
+data_paired_services <- data_wide_services %>% 
+  filter(is_single == FALSE) %>% 
+  filter(str_detect(name, "North|South|East|West")) %>% 
+  select(name) %>% 
+  separate_wider_delim(name, delim = "Services",
+                       names = c("name", "direction")) %>% 
+  mutate(across(everything(), ~str_trim(.))) %>% 
+  separate_wider_delim(direction,
+                       delim = " ",
+                       names = c("direction",
+                                 "motorway"),
+                       too_few = "align_end") %>% 
+  add_count(name, motorway) %>% 
+  filter(n > 1) %>% 
+  reframe(name = paste(name, "Services", direction, motorway),
+          pair_name = paste(name, motorway))
+
+data_services_info <- data_wide_services %>% 
+  left_join(data_paired_services) %>% 
+  mutate(is_pair = ifelse(is.na(pair_name), FALSE, TRUE))
+```
+
+## Getting the locations of the services...
+
+I've gone and got the coords from Google Maps
+
+```{r}
+data_services_info %>% 
+  select(name, is_twin) %>% 
+  arrange(name) %>% 
+  write_csv(quarto_here("services-locations.csv"))
+```
+
+```{r}
+library("sf")
+library("leaflet")
+data_raw_service_locations <- read_excel(quarto_here("services-locations.xlsx"))
+
+data_clean_long_lat <- data_raw_service_locations %>% 
+  separate_wider_delim(google_pin,
+                       delim = ",", 
+                       names = c("lat", "long")) %>% 
+  mutate(long = as.numeric(long),
+         lat = as.numeric(lat)) %>% 
+  select(name, long, lat)
+
+
+data_sf_service_locs <- data_clean_long_lat %>% 
+  full_join(data_services_info) %>% 
+  st_as_sf(coords = c("long", "lat"),
+           crs = 4326)
+  
+data_sf_service_locs %>% 
+  filter(is_ireland == FALSE) %>% 
+  leaflet() %>% 
+  addProviderTiles(providers$OpenStreetMap) %>% 
+  addCircleMarkers()
+```
+
+## Operators
+
+I want to make sure we're not over counting operators due to pair sites! So let's make some explicit counts.
+
+- n_named_sites_all: How many uniquely named sites are there across Great Britian? `Gloucester Northbound Services M5` and `Gloucester Southbound Services M5` are distinctly named, but the `Birch Services M62` is listed once despite being a twinned site.
+
+- n_named_sites_mainland: same as above but discounting services in Ireland
+
+- n_named_sites_ireland: only counts uniquely named services in Ireland
+
+- n_single_sites: How many sites are accessible by traffic in both directions
+
+- n_twins: How many sites are twinned, two locations on each side of the motorway with or without a walkway between them
+
+- n_pairs: How many sites have paired names, eg `Gloucester Northbound Services M5` and `Gloucester Southbound Services M5`
+
+```{r}
+data_process_ops_single <- data_services_info %>% 
+  select(name, operator, is_single) %>% 
+  count(operator, is_single) %>% 
+  filter(is_single == TRUE) %>% 
+  reframe(operator,
+          n_single_sites = n)
+
+data_process_ops_twins <- data_services_info %>% 
+  count(operator, is_twin) %>% 
+  filter(is_twin == TRUE) %>% 
+  reframe(operator,
+          n_twins = n)
+
+data_process_ops_pair <- data_services_info %>% 
+  select(name, operator, is_pair) %>% 
+  count(operator, is_pair) %>% 
+  filter(is_pair == TRUE) %>% 
+  reframe(operator,
+          n_pairs = n)
+
+data_process_ops_simple_all <- data_services_info %>% 
+  count(operator, name = "n_named_sites_all") 
+
+data_process_ops_simple_ireland <- data_services_info %>% 
+  filter(str_detect(name, "Ireland")) %>% 
+  count(operator, name = "n_named_sites_ireland") 
+
+
+data_operators <- data_process_ops_simple_all %>% 
+  left_join(data_process_ops_simple_ireland) %>% 
+  left_join(data_process_ops_single) %>% 
+  left_join(data_process_ops_twins) %>% 
+  left_join(data_process_ops_pair) %>% 
+  mutate(across(everything(), ~replace_na(.x, 0))) %>% 
+  mutate(n_named_sites_mainland = n_named_sites_all - n_named_sites_ireland) %>% 
+  select(
+    operator,
+    n_named_sites_all,
+         n_named_sites_mainland,
+         n_named_sites_ireland,
+         everything())
+```
+
+## Exporting all that good data
+
+I'm going to re-use this data a lot - and potentially try to get it added to the TidyTuesday project! So let's get a reprex script together.
+
+
+```{r}
+list.files(quarto_here("service-stations/"), full.names = TRUE) %>% 
+  tibble(
+    file_path = .
+  ) %>% 
+  mutate(is_html = str_ends(file_path, ".html")) %>% 
+  View()
+```
+
+
+
+## Let's make a map
+
+Because there aren't any service stations in Northern Irelane I want to work with shapefiles for just the mainland of Great Britain. The ONS provides high quality data from here https://geoportal.statistics.gov.uk/datasets/ons::countries-december-2023-boundaries-uk-bfc-2/about. I'm going to extract the mainland by st_cast("POLYGON") and discount polygons with an area smaller than 2e10 m^2.
+
+```{r}
+data_sf_uk <- read_sf(quarto_here("Countries_December_2023_Boundaries_UK_BFC_-5189344684762562119/"))
+
+data_sf_gb_mainland <- data_sf_uk %>% 
+  filter(CTRY23NM != "Northern Ireland") %>% 
+  st_cast("POLYGON") %>% 
+  mutate(area = as.numeric(st_area(geometry))) %>% 
+  filter(area >= 1E10) %>%
+  # st_union() %>%
+  st_as_sf()
+```
+
+It takes a fair amount of time to plot, so I can use `{rmapshaper} to simplify the borders, which look okay:
+
+```{r}
+library("rmapshaper")
+
+data_sf_simpler_mainland <- ms_simplify(data_sf_gb_mainland, keep = 0.0005)
+
+ggplot() +
+  geom_sf(data = data_sf_simpler_mainland) +
+  geom_sf(data = filter(data_sf_service_locs, is_ireland == FALSE )) +
+  coord_sf(crs = 4326,
+           ylim = c(50, 59))
+```
+
+Let's build towards an okay looking chart:
+
+```{r}
+library("patchwork")
+library("ggtext")
+
+data_plot_services <- data_sf_service_locs %>% 
+  filter(is_ireland == FALSE) %>% 
+  left_join(select(data_operators, operator, n_named_sites_all)) %>% 
+  mutate(operator = fct_reorder(operator, n_named_sites_all))
+
+colour_motorway_blue <- "#3070B5"
+
+gg_services_roadless <- ggplot() +
+  geom_sf(data = st_transform(data_sf_simpler_mainland, crs = 4326),
+          fill = colour_motorway_blue,
+          colour = "white",
+          linewidth = 0.8) +
+  geom_sf(data = st_transform(data_plot_services, crs = 4326),
+          aes(fill = operator),
+          pch = 21,
+          size = 3.5,
+          colour = "white") +
+  geom_richtext(aes(x = -9,
+                    y = 54,
+                    label = "Tiredness can kill<br>Take a break"), 
+                size = 8,
+                family = "Transport",,
+                fill = "transparent",
+                label.color = NA,
+                colour = "white"
+                ) +
+  scale_fill_brewer(palette = "Dark2") +
+  guides(fill = guide_legend(override.aes = list(size = 8), title = "", reverse = TRUE)) +
+  scale_x_continuous(labels = scales::label_number(accuracy = 0.01)) +
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
+  coord_sf(crs = 4326,
+           ylim = c(50, 59),
+           xlim = c(-12, 1.76)) + 
+  # theme_classic(base_family = "Transport") +
+  theme_void(base_family = "Transport") +
+  theme(legend.position=c(.85,.8),
+        legend.text = element_text(colour = "white"),
+    # legend.spacing.y = unit(2.0, "cm"),
+    legend.background = element_rect(fill = colour_motorway_blue, colour = "transparent"),
+    plot.background = element_rect(fill = colour_motorway_blue),
+        panel.background = element_blank(),
+        plot.margin = margin(20, 20, 20, 20)
+    )
+
+gg_services_roadless
+```
+
+### Making it look like a motorway sign
+
+There is a simply beautiful [design guide for UK traffic signs](https://assets.publishing.service.gov.uk/media/5c78f8c7e5274a0ebfec719c/traffic-signs-manual-chapter-07.pdf) that goes into **all** of the detail, for instance:
+
+![](motorway-sign-design.png)
+
+At some point it could be fun to take all of this and convert it into a `{ggplot2}` theme - but that's a lot of work. I want to focus on getting that nice round white border on my chart. That's more difficult than I originally thought, there are two pathways:
+
+- Fiddle around with grobs thanks to [Claus Wilke's great StackOverflow Answer](https://stackoverflow.com/a/48220347/1659890) on adding round corners to the panel border.
+
+- Shove a rounded rectangle onto the chart through the `geom_rrect()` function from `{ggchicklet}`... which is much easier:
+
+```{r}
+library("ggchicklet") # remotes::install_github("hrbrmstr/ggchicklet")
+gg_services_roadless +
+  geom_rrect(aes(xmin = -12, xmax = 1.76, ymin = 50, ymax = 59),
+             fill = "transparent",
+             colour = "white",
+             r = unit(0.1, 'npc'))
+```
+
+Now let's rebuild the chart with this in it:
+
+```{r}
+
+lims_x <- list(min = -12.8, max = 1.76 + 0.2)
+lims_y <- list(min = 50 - 0.3, max = 59)
+
+gg_services_roadless <- ggplot() +
+  geom_rrect(aes(xmin = lims_x$min - 0.4, 
+                 xmax = lims_x$max + 0.4, 
+                 ymin = lims_y$min - 0.15, 
+                 ymax = lims_y$max + 0),
+             fill = colour_motorway_blue,
+             colour = "white",
+             size = 15,
+             r = unit(0.1, 'npc')) +
+  geom_sf(data = st_transform(data_sf_simpler_mainland, crs = 4326),
+          fill = colour_motorway_blue,
+          colour = "white",
+          linewidth = 0.8) +
+  geom_sf(data = st_transform(data_plot_services, crs = 4326),
+          aes(fill = operator),
+          pch = 21,
+          size = 3.5,
+          colour = "white") +
+  geom_richtext(aes(x = -8.5,
+                    y = 53.7,
+                    label = "Tiredness can kill<br>Take a break"), 
+                size = 20,
+                family = "Transport",,
+                fill = "transparent",
+                label.color = NA,
+                colour = "white"
+                ) +
+  scale_fill_brewer(palette = "Dark2") +
+  guides(fill = guide_legend(override.aes = list(size = 8), title = "", reverse = TRUE)) +
+  scale_x_continuous(labels = scales::label_number(accuracy = 0.01)) +
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
+  coord_sf(crs = 4326,
+           ylim = as.numeric(lims_y),
+           xlim = as.numeric(lims_x)) + 
+  # theme_classic(base_family = "Transport") +
+  theme_void(base_family = "Transport") +
+  theme(legend.position=c(.85,.75),
+        legend.text = element_text(colour = "white", size = 20),
+        legend.spacing.y = unit(2.0, "cm"),
+    legend.key.size = unit(1.7, "cm"),
+    legend.background = element_rect(fill = "transparent", colour = "transparent"),
+    plot.background = element_rect(fill = "grey90", colour = "transparent"),
+        panel.background = element_blank(),
+        plot.margin = margin(t = 1, r = 0, b = 1, l = 0)
+    )
+
+gg_services_roadless
+
+ggsave(quarto_here("gg_services_roadless_simple.png"),
+       gg_services_roadless,
+       width = 2 * 7.5,
+       height = 2 * {1 * 8},
+       bg = "grey90")
+
+```
+
+
+
+## OL
+
+
+```{r}
+library("patchwork")
+library(elementalist) # devtools::install_github("teunbrand/elementalist")
+library(grid)
+
+colour_motorway_blue <- "#3070B5"
+
+gg_services <- ggplot() +
+  geom_sf(data = data_sf_simpler_mainland,
+          fill = colour_motorway_blue,
+          colour = "white",
+          linewidth = 0.8) +
+  geom_sf(data = data_plot_services,
+          aes(fill = operator),
+          pch = 21,
+          size = 3.5,
+          colour = "white") +
+  coord_sf(crs = 4326,
+           ylim = c(50, 59)) + 
+  guides(fill = guide_legend(override.aes = list(size = 10), title = "", reverse = TRUE)) +
+  scale_fill_brewer(palette = "Dark2") +
+  theme_void(base_family = "Transport") +
+  theme(legend.position=c(.8,.8),
+        legend.text = element_text(size = 4 * 6,
+                                   colour = "white"),
+    # legend.spacing.y = unit(2.0, "cm"),
+    legend.key.size = unit(1.7, "cm")
+    )
+
+gg_title <- ggplot() +
+  annotate("text", x = 0.4, y = 0.5, label = "Tiredness can kill\nTake a break", size = 3 * 6, hjust = 0.5, colour = "white", family = "Transport") +
+  coord_cartesian(xlim = c(0, 0.75)) +
+  theme_void() +
+  theme()
+
+gg_combined <- gg_title + gg_services +
+  plot_layout(nrow = 1, widths = c(1.5, 2)) &
+  # theme(plot.margin = unit(c(.2, .2, .2, .2), "cm")) &
+  plot_annotation(theme = theme(
+    plot.background = element_rect_round(
+      color  = 'white',
+      linewidth = 10,
+      linetype = 'solid',
+      fill = colour_motorway_blue,
+      radius = unit(0.1, "snpc")
+    )
+  ))
+
+# 
+# # switch out background grob
+# g <- ggplotGrob(gg_combined)
+# bg <- g$grobs[[1]]
+# round_bg <- roundrectGrob(x=bg$x, y=bg$y, width=bg$width, height=bg$height,
+#                           r=unit(0.1, "snpc"),
+#                           just=bg$just, name=bg$name, gp=bg$gp, vp=bg$vp)
+# g$grobs[[1]] <- round_bg
+# 
+# plot(g)
+
+ggsave(quarto_here("gg_tiredness_can_kill.png"),
+       gg_combined,
+       width = 2 * 8,
+       height = 2 * {1 * 8})
+```
+
+
+
+
+## How far can you live from a service station?
+
+For this section we're only interested in how the crow flies distances - not driving distances. So, let's find the further point in the UK mainlaind from a service station... which is the further point on the border! There's a [lovely answer on StackOverflow](https://stackoverflow.com/a/76754196/1659890) that allowed me to build up this function:
+
+```{r}
+border_mainland_points <- data_sf_gb_mainland %>%
+  st_cast("POINT")
+```
+
+
+```{r}
+data_sf_service_locs
+
+make_further_linestring_to_border <- function(data){
+  
+  point_service_station <- data %>% 
+  st_as_sfc() %>% 
+  st_as_sf() %>% 
+  st_transform(crs = st_crs(data_sf_gb_mainland))
+  
+  distances <- border_mainland_points |>
+    st_distance(point_service_station)
+  
+  max_dist_linestring <- border_mainland_points |>
+    filter(as.logical(distances == max(distances))) |>
+    bind_rows(point_service_station) |>
+    summarise() |>
+    st_cast("LINESTRING")
+  
+  max_dist_linestring %>% 
+    mutate(name = data$name, length = st_length(x), .before = 0)
+  
+}
+
+data_distances_services_to_border <- data_sf_service_locs %>% 
+  mutate(id = row_number()) %>% 
+  # filter(is_ireland == FALSE) %>% 
+  slice(1) %>% 
+  pull(id) %>% 
+  map_dfr(~ make_further_linestring_to_border(slice(data_sf_service_locs, .x)))
+```
+
+```{r}
+ggplot() +
+  geom_sf(data = data_sf_simpler_mainland) +
+  geom_sf(data = data_distances_services_to_border)
+```
+
+
+# !! THINGS TO DO !!
+
+1. NOIN FOOD
+
+```{r}
+vec_not_food_shop <- c("BP", "Phone Bitz", "FoneBitz", "Tourist Information",
+                       "Children's Play Area", "Game Arcade", "Regus Business Lounge", 
+                       "Showers", "Lucky Coin", "Barber Shop", "Retail Shop",
+                       "Westmorland shop")
+
+```
+
+
+# Dragons
+
+Rules to clean
+
+```{r}
+data_raw_services %>% 
+  mutate(value = case_when(
+    property == "Picnic Area" ~ if_else(value == "yes", "TRUE", NA),
+    .default = value
+  )) %>% 
+  filter(property == "Picnic Area")
+```
+
+
+
+
