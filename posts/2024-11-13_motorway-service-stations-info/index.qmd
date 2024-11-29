@@ -1,14 +1,12 @@
 ---
 title: "Data Quest: Motorway Services UK"
-date: '2024-11-08'
+date: '2024-11-22'
 execute:
   freeze: true
   message: false
   warning: false
 code-fold: true
 engine: knitr
-filters:
-  - line-highlight
 ---
 
 ```{r}
@@ -77,6 +75,37 @@ quarto_here("service-stations/Baldock Services A1(M) - Motorway Services Informa
 
 data_raw_services <- list.files(quarto_here("service-stations/"), "[.]html", full.names = TRUE) %>% 
   map_dfr(~read_motorway_services_info(.x))
+
+# For confusing reasons, Westmorland data is inconsistently collected. 
+# Happendon, Tebay, and Gloucester all have the same food retailers but only
+# Gloucester has the data recorded. So let's add ot in manually.
+
+data_manual_westermorland <- data_raw_services %>% 
+  filter(service_station == "Gloucester Services Northbound M5",
+         property %in% c("Eat-In Food", "Takeaway Food / General")) %>% 
+  mutate(service_station = c("Happendon Services M74|Tebay Services Northbound M6|Tebay Services Southbound M6")) %>% 
+  separate_longer_delim(service_station,
+                       delim= "|")
+
+data_raw_services <- data_raw_services %>% 
+  bind_rows(data_manual_westermorland)
+
+data_raw_services %>% 
+  filter(str_detect(service_station, "Tebay"))
+
+# J38 Truckstop isn't really a service station!
+data_raw_services <- data_raw_services %>% 
+  filter(service_station != "J38 Truckstop M6")
+
+# The Costas at Thurrock Services M25 and Trowell Services M1 have been accidentally ommitted.
+
+data_raw_services <- data_raw_services %>% 
+  bind_rows(tibble(
+  property = "Takeaway Food / General",
+  value = "Costa",
+  service_station = c("Thurrock Services M25", "Trowell Services M1")
+))
+
 ```
 
 ## Northbound / Southbound and Eastbound / Westbound
@@ -170,12 +199,14 @@ fn_fix_value_columns <- function(data){
       str_detect(tolower(value), "eat & drink co") ~ "Eat & Drink Co", 
       str_detect(tolower(value), "edc") ~ "Eat & Drink Co", 
       str_detect(tolower(value), "fone") ~ "FoneBiz", 
-      str_detect(tolower(value), "full house") ~ "Full House", 
+      str_detect(tolower(value), "food to go") ~ "Food to Go - Farm Cafe",
+      str_detect(tolower(value), "full house") ~ "Full House",
       str_detect(tolower(value), "greg") ~ "Greggs", 
       str_detect(tolower(value), "harry") ~ "Harry Ramsden's", 
       str_detect(tolower(value), "hot food co") ~ "Hot Food Co",
       str_detect(tolower(value), "krispy") ~ "Krispy Kreme", 
       str_detect(tolower(value), "le petit") ~ "Le Petit Four", 
+      str_detect(tolower(value), "lp4") ~ "Le Petit Four", 
       str_detect(tolower(value), "lucky coin") ~ "Lucky Coin", 
       str_detect(tolower(value), "m&s") ~ "M&S", 
       str_detect(tolower(value), "marks") ~ "M&S", 
@@ -453,17 +484,13 @@ data_process_ops_simple_ireland <- data_services_info %>%
 
 
 data_operators <- data_process_ops_simple_all %>% 
-  left_join(data_process_ops_simple_ireland) %>% 
   left_join(data_process_ops_single) %>% 
   left_join(data_process_ops_twins) %>% 
   left_join(data_process_ops_pair) %>% 
   mutate(across(everything(), ~replace_na(.x, 0))) %>% 
-  mutate(n_named_sites_mainland = n_named_sites_all - n_named_sites_ireland) %>% 
   select(
     operator,
     n_named_sites_all,
-         n_named_sites_mainland,
-         n_named_sites_ireland,
          everything())
 
 data_operators

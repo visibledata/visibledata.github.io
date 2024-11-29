@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Charlie Hadley">
-<meta name="dcterms.date" content="2024-11-08">
+<meta name="dcterms.date" content="2024-11-22">
 
 <title>Data Quest: Motorway Services UK – Visible Data</title>
 <style>
@@ -76,7 +76,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-1ca76a0c8c231cab28b1b4f7de767243.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -191,7 +190,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">November 8, 2024</p>
+        <p class="date">November 22, 2024</p>
       </div>
     </div>
     
@@ -244,12 +243,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"cjhRutils"</span>)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"cjhRutils"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyverse"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="fu">quarto_here</span>(<span class="st">"service-stations/"</span>), <span class="st">".html"</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code>[1] "Abington Services M74 - Motorway Services Information.html"          
+<pre><code>[1] "Abington Services M74 - Motorway Services Information.html"          
 [2] "Annandale Water Services A74(M) - Motorway Services Information.html"
 [3] "Baldock Services A1(M) - Motorway Services Information.html"         
 [4] "Beaconsfield Services M40 - Motorway Services Information.html"      
@@ -261,7 +260,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyverse"</span>)</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyverse"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"rvest"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>example_abingdon <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="fu">quarto_here</span>(<span class="st">"service-stations/Abington Services M74 - Motorway Services Information.html"</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">".infotext"</span>) <span class="sc">%&gt;%</span> </span>
@@ -275,7 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>example_abingdon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code># A tibble: 18 × 2
+<pre><code># A tibble: 18 × 2
    property                       value                                         
    &lt;chr&gt;                          &lt;chr&gt;                                         
  1 Motorway                       "M74"                                         
@@ -302,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>read_motorway_services_info <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path){</span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>read_motorway_services_info <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path){</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  name_service_station <span class="ot">&lt;-</span> <span class="fu">str_remove</span>(<span class="fu">basename</span>(file_path), <span class="st">" - Motorway Services Information.html"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_html</span>(file_path) <span class="sc">%&gt;%</span> </span>
@@ -321,7 +320,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_motorway_services_info</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code># A tibble: 19 × 3
+<pre><code># A tibble: 19 × 3
    property                       value                          service_station
    &lt;chr&gt;                          &lt;chr&gt;                          &lt;chr&gt;          
  1 Motorway                       A1(M)                          Baldock Servic…
@@ -346,7 +345,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data_raw_services <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="fu">quarto_here</span>(<span class="st">"service-stations/"</span>), <span class="st">"[.]html"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data_raw_services <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="fu">quarto_here</span>(<span class="st">"service-stations/"</span>), <span class="st">"[.]html"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(<span class="sc">~</span><span class="fu">read_motorway_services_info</span>(.x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -357,27 +356,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data_raw_services <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data_raw_services <span class="sc">%&gt;%</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(service_station <span class="sc">==</span> <span class="st">"Rownhams Services M27"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(property <span class="sc">==</span> <span class="st">"Type"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code>[1] "Separate facilities for each carriageway, but linked by a pedestrian footbridge"</code></pre>
+<pre><code>[1] "Separate facilities for each carriageway, but linked by a pedestrian footbridge"</code></pre>
 </div>
 </div>
 <p>We need a way to identify these stations. It turns out the “Eat-In Food” property is our friend and identifies the 6 twin-site stations:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vec_eat_in_pairs <span class="ot">&lt;-</span> data_raw_services <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vec_eat_in_pairs <span class="ot">&lt;-</span> data_raw_services <span class="sc">%&gt;%</span> </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(property <span class="sc">==</span> <span class="st">"Eat-In Food"</span>,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>         <span class="fu">str_detect</span>(value, <span class="st">"Northbound|Eastbound"</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(service_station)</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>vec_eat_in_pairs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code>[1] "Northampton Services M1" "Rownhams Services M27"  
+<pre><code>[1] "Northampton Services M1" "Rownhams Services M27"  
 [3] "Sandbach Services M6"    "Strensham Services M5"  
 [5] "Tibshelf Services M1"    "Watford Gap Services M1"</code></pre>
 </div>
@@ -389,7 +388,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_raw_eat_in <span class="ot">&lt;-</span> data_raw_services <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_raw_eat_in <span class="ot">&lt;-</span> data_raw_services <span class="sc">%&gt;%</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(property <span class="sc">==</span> <span class="st">"Eat-In Food"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">directional =</span> <span class="fu">str_detect</span>(value,</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Northbound|Eastbound"</span>))</span>
@@ -415,7 +414,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>data_raw_directional_eat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code># A tibble: 12 × 5
+<pre><code># A tibble: 12 × 5
    property    value                       service_station directional direction
    &lt;chr&gt;       &lt;chr&gt;                       &lt;chr&gt;           &lt;lgl&gt;       &lt;chr&gt;    
  1 Eat-In Food "Costa, Restbite, The Burg… Northampton Se… TRUE        Northbou…
@@ -436,7 +435,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data_raw_directional_eat <span class="ot">&lt;-</span> data_raw_directional_eat <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data_raw_directional_eat <span class="ot">&lt;-</span> data_raw_directional_eat <span class="sc">%&gt;%</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">value =</span> <span class="fu">str_remove</span>(value, <span class="st">":"</span>),</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">value =</span> <span class="fu">str_remove</span>(value, <span class="st">" Northbound.*"</span>),</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">value =</span> <span class="fu">str_trim</span>(value))</span>
@@ -457,7 +456,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fn_fix_value_columns <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fn_fix_value_columns <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">%&gt;%</span> </span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">value =</span> <span class="fu">case_when</span>(</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(<span class="fu">tolower</span>(value), <span class="st">"arlo"</span>) <span class="sc">~</span> <span class="st">"Arlo's"</span>, </span>
@@ -515,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>data_long_other_shops_directionless <span class="ot">&lt;-</span> data_raw_services <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>data_long_other_shops_directionless <span class="ot">&lt;-</span> data_raw_services <span class="sc">%&gt;%</span> </span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>service_station <span class="sc">%in%</span> vec_eat_in_pairs) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(property <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Takeaway Food / General"</span>, <span class="st">"Other Non-Food Shops"</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(value, service_station) <span class="sc">%&gt;%</span> </span>
@@ -545,7 +544,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Expand out the twins</span></span>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Expand out the twins</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>data_long_other_shops_w_direction <span class="ot">&lt;-</span> data_raw_services <span class="sc">%&gt;%</span> </span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(service_station <span class="sc">%in%</span> vec_eat_in_pairs) <span class="sc">%&gt;%</span> </span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(property <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Other Non-Food Shops"</span>, <span class="st">"Takeaway Food / General"</span>)) <span class="sc">%&gt;%</span> </span>
@@ -564,7 +563,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>data_long_retailers <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(data_long_eat_in, data_long_other_shops_w_direction, data_long_other_shops_directionless)</span>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>data_long_retailers <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(data_long_eat_in, data_long_other_shops_w_direction, data_long_other_shops_directionless)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>data_long_retailers <span class="sc">%&gt;%</span> </span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(retailer) <span class="sc">%&gt;%</span> </span>
@@ -598,7 +597,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"readxl"</span>)</span>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"readxl"</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>data_type_of_retailer <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="fu">quarto_here</span>(<span class="st">"retailer_types.xlsx"</span>))</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>data_services_retailers <span class="ot">&lt;-</span> data_long_retailers <span class="sc">%&gt;%</span> </span>
@@ -612,7 +611,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>data_services_retailers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code># A tibble: 650 × 8
+<pre><code># A tibble: 650 × 8
    retailer service_station direction is_food_retailer is_restaurant is_takeaway
    &lt;chr&gt;    &lt;chr&gt;           &lt;chr&gt;     &lt;lgl&gt;            &lt;lgl&gt;         &lt;lgl&gt;      
  1 Starbuc… Abington Servi… Directio… TRUE             NA            TRUE       
@@ -636,7 +635,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>data_wide_services <span class="ot">&lt;-</span> data_raw_services <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>data_wide_services <span class="ot">&lt;-</span> data_raw_services <span class="sc">%&gt;%</span> </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(property <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Motorway"</span>,</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Where"</span>,</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"Postcode"</span>,</span>
@@ -682,7 +681,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>data_paired_services <span class="ot">&lt;-</span> data_wide_services <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>data_paired_services <span class="ot">&lt;-</span> data_wide_services <span class="sc">%&gt;%</span> </span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_single <span class="sc">==</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(name, <span class="st">"North|South|East|West"</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name) <span class="sc">%&gt;%</span> </span>
@@ -707,7 +706,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>data_services_info</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code># A tibble: 106 × 14
+<pre><code># A tibble: 106 × 14
    name   motorway where postcode type  operator is_ireland p_charges has_charge
    &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;    &lt;lgl&gt;      &lt;chr&gt;     &lt;chr&gt;     
  1 Abing… M74      at J… ML12 6RG Sing… Welcome… FALSE      "Cars fr… &lt;NA&gt;      
@@ -732,7 +731,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"sf"</span>)</span>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"sf"</span>)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"leaflet"</span>)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>data_raw_service_locations <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="fu">quarto_here</span>(<span class="st">"services-locations.xlsx"</span>))</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -757,8 +756,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-2fa15a303a36a4bfa7c9" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-2fa15a303a36a4bfa7c9">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["OpenStreetMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[55.5074835,55.2198924,52.014611,51.5879345,53.5678243,51.8719626,53.7132113,53.3874722,55.8134195,51.1047788,54.1790888,53.4179418,52.2698506,51.5389948,51.5086283,53.630861,51.950015,53.2682334,51.4490357,51.2723919,51.3042205,52.4717224,50.8632186,52.8679425,52.8679425,53.5922164,52.8216948,54.728792,50.7166648,53.697522,51.2955966,52.4290205,51.8192639,51.8182682,51.4775676,52.9480418,55.0079577,55.7871368,55.5829964,53.7131327,55.863811,51.4884861,52.6431567,52.3635603,54.4385194,52.9939241,54.3141921,56.2097442,53.3007134,53.9617929,52.696453,52.6193447,51.5097528,51.6311605,53.3588856,51.5883225,51.2671058,51.3415404,51.4824011,51.65677,52.0833896,52.2092968,52.6649138,51.7381619,51.0833157,52.5315878,51.7469245,51.4250061,53.6004693,50.9574755,53.1394497,51.5349379,54.4433037,51.2699864,51.2699864,51.6034985,51.6874524,54.7985568,52.8861198,52.8730257,56.0760998,51.0949477,52.0613874,51.512645,52.607525,50.9766283,54.4511621,54.4511621,52.6772126,51.4923655,53.1378409,50.9167416,51.947106,54.8748213,52.9614206,52.2164894,52.2178318,54.8895435,52.3055489,53.9469521,51.1178861,53.3153382,53.6219498],[-3.6984713,-3.4128154,-0.2051029,-0.6301183,-2.2341856,0.1917148,-2.479898,-1.0635325,-4.0649819,-2.9985461,-2.7362851,-2.6384365,-0.0115099,-3.1321032,-3.3096233,-2.6918882,-1.201172,-2.8050832,-1.3135076,0.0381587,-0.4082989,-1.5478013,-3.3869863,-1.3702639,-1.3702639,-0.9948338,-1.3106673,-1.5253505,-3.4661263,-1.2693176,-0.8586517,-2.0205212,-2.2272466,-2.2248559,-2.7101807,-0.6810522,-3.085129,-4.037042,-3.8247528,-1.7490003,-3.7608489,-0.3947451,-2.0590448,-1.9485568,-2.5967487,-2.293177,-2.6376176,-3.4421378,-2.4041875,-2.7629336,-1.2975539,-1.207531,-2.1620076,-0.2665066,-2.5076485,-2.8389324,0.6114595,0.6055594,-1.5596909,-2.4297848,-0.750573,-0.9459884,-1.9698975,-1.0992414,-0.2025141,-0.323001,-4.0682952,-1.0358717,-2.5755411,-1.4510085,-2.3391362,-3.5790382,-1.6694666,-2.9258045,-2.9258045,-2.6231769,-0.2242572,-2.8735537,-2.1761901,-2.1638335,-3.924159,1.0415873,-2.1543635,-2.1462654,-1.6434032,-3.1500562,-2.6101655,-2.6101655,-2.4037876,0.2695656,-1.3334762,-3.3574801,-0.5057912,-3.0081874,-1.2709822,-1.5080404,-1.5052217,-1.5615357,-1.1247226,-1.3713072,-1.2573425,-1.2856237,-1.5492314],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[50.7166648,56.2097442],"lng":[-4.0682952,1.0415873]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-6c896a48ba8bb82e758c" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-6c896a48ba8bb82e758c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["OpenStreetMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[55.5074835,55.2198924,52.014611,51.5879345,53.5678243,51.8719626,53.7132113,53.3874722,55.8134195,51.1047788,54.1790888,53.4179418,52.2698506,51.5389948,51.5086283,53.630861,51.950015,53.2682334,51.4490357,51.2723919,51.3042205,52.4717224,50.8632186,52.8679425,52.8679425,53.5922164,52.8216948,54.728792,50.7166648,53.697522,51.2955966,52.4290205,51.8192639,51.8182682,51.4775676,52.9480418,55.0079577,55.7871368,55.5829964,53.7131327,55.863811,51.4884861,52.6431567,52.3635603,54.4385194,52.9939241,54.3141921,56.2097442,53.3007134,53.9617929,52.696453,52.6193447,51.5097528,51.6311605,53.3588856,51.5883225,51.2671058,51.3415404,51.4824011,51.65677,52.0833896,52.2092968,52.6649138,51.7381619,51.0833157,52.5315878,51.7469245,51.4250061,53.6004693,50.9574755,53.1394497,51.5349379,54.4433037,51.2699864,51.2699864,51.6034985,51.6874524,54.7985568,52.8861198,52.8730257,56.0760998,51.0949477,52.0613874,51.512645,52.607525,50.9766283,54.4511621,54.4511621,52.6772126,51.4923655,53.1378409,50.9167416,51.947106,54.8748213,52.9614206,52.2164894,52.2178318,54.8895435,52.3055489,53.9469521,51.1178861,53.3153382,53.6219498],[-3.6984713,-3.4128154,-0.2051029,-0.6301183,-2.2341856,0.1917148,-2.479898,-1.0635325,-4.0649819,-2.9985461,-2.7362851,-2.6384365,-0.0115099,-3.1321032,-3.3096233,-2.6918882,-1.201172,-2.8050832,-1.3135076,0.0381587,-0.4082989,-1.5478013,-3.3869863,-1.3702639,-1.3702639,-0.9948338,-1.3106673,-1.5253505,-3.4661263,-1.2693176,-0.8586517,-2.0205212,-2.2272466,-2.2248559,-2.7101807,-0.6810522,-3.085129,-4.037042,-3.8247528,-1.7490003,-3.7608489,-0.3947451,-2.0590448,-1.9485568,-2.5967487,-2.293177,-2.6376176,-3.4421378,-2.4041875,-2.7629336,-1.2975539,-1.207531,-2.1620076,-0.2665066,-2.5076485,-2.8389324,0.6114595,0.6055594,-1.5596909,-2.4297848,-0.750573,-0.9459884,-1.9698975,-1.0992414,-0.2025141,-0.323001,-4.0682952,-1.0358717,-2.5755411,-1.4510085,-2.3391362,-3.5790382,-1.6694666,-2.9258045,-2.9258045,-2.6231769,-0.2242572,-2.8735537,-2.1761901,-2.1638335,-3.924159,1.0415873,-2.1543635,-2.1462654,-1.6434032,-3.1500562,-2.6101655,-2.6101655,-2.4037876,0.2695656,-1.3334762,-3.3574801,-0.5057912,-3.0081874,-1.2709822,-1.5080404,-1.5052217,-1.5615357,-1.1247226,-1.3713072,-1.2573425,-1.2856237,-1.5492314],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[50.7166648,56.2097442],"lng":[-4.0682952,1.0415873]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -776,7 +775,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>data_process_ops_single <span class="ot">&lt;-</span> data_services_info <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>data_process_ops_single <span class="ot">&lt;-</span> data_services_info <span class="sc">%&gt;%</span> </span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name, operator, is_single) <span class="sc">%&gt;%</span> </span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(operator, is_single) <span class="sc">%&gt;%</span> </span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_single <span class="sc">==</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
@@ -821,7 +820,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>data_operators</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code># A tibble: 9 × 7
+<pre><code># A tibble: 9 × 7
   operator      n_named_sites_all n_named_sites_mainland n_named_sites_ireland
   &lt;chr&gt;                     &lt;int&gt;                  &lt;int&gt;                 &lt;int&gt;
 1 Applegreen                    3                      0                     3
@@ -843,10 +842,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/charliejhadley/tidytuesday/refs/heads/Motorway-Services-UK/data/curated/motorway-services-uk/data_service_locations.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/charliejhadley/tidytuesday/refs/heads/Motorway-Services-UK/data/curated/motorway-services-uk/data_service_locations.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code># A tibble: 6 × 15
+<pre><code># A tibble: 6 × 15
   name    long   lat motorway where postcode type  operator p_charges has_charge
   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;     
 1 Abin… -3.70   55.5 M74      at J… ML12 6RG Sing… Welcome… "Cars fr… &lt;NA&gt;      
@@ -870,7 +869,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>data_sf_uk <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">quarto_here</span>(<span class="st">"Countries_December_2023_Boundaries_UK_BFC_-5189344684762562119/"</span>))</span>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>data_sf_uk <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">quarto_here</span>(<span class="st">"Countries_December_2023_Boundaries_UK_BFC_-5189344684762562119/"</span>))</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>data_sf_gb_mainland <span class="ot">&lt;-</span> data_sf_uk <span class="sc">%&gt;%</span> </span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(CTRY23NM <span class="sc">!=</span> <span class="st">"Northern Ireland"</span>) <span class="sc">%&gt;%</span> </span>
@@ -883,7 +882,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>data_sf_gb_mainland</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre data-code-line-numbers=""><code>Simple feature collection with 3 features and 9 fields
+<pre><code>Simple feature collection with 3 features and 9 fields
 Geometry type: POLYGON
 Dimension:     XY
 Bounding box:  xmin: 134112.4 ymin: 11429.67 xmax: 655653.8 ymax: 976859.9
@@ -901,7 +900,7 @@ Projected CRS: OSGB36 / British National Grid
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"rmapshaper"</span>)</span>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"rmapshaper"</span>)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>data_sf_simpler_mainland <span class="ot">&lt;-</span> <span class="fu">ms_simplify</span>(data_sf_gb_mainland, <span class="at">keep =</span> <span class="fl">0.0005</span>)</span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -923,7 +922,7 @@ Projected CRS: OSGB36 / British National Grid
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb32" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"patchwork"</span>)</span>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"patchwork"</span>)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggtext"</span>)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>data_plot_services <span class="ot">&lt;-</span> data_sf_service_locs <span class="sc">%&gt;%</span> </span>
@@ -992,7 +991,7 @@ Projected CRS: OSGB36 / British National Grid
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggchicklet"</span>) <span class="co"># remotes::install_github("hrbrmstr/ggchicklet")</span></span>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggchicklet"</span>) <span class="co"># remotes::install_github("hrbrmstr/ggchicklet")</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>gg_services_roadless <span class="sc">+</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rrect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">12</span>, <span class="at">xmax =</span> <span class="fl">1.76</span>, <span class="at">ymin =</span> <span class="dv">50</span>, <span class="at">ymax =</span> <span class="dv">59</span>),</span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"transparent"</span>,</span>
@@ -1011,7 +1010,7 @@ Projected CRS: OSGB36 / British National Grid
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb34" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>lims_x <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">min =</span> <span class="sc">-</span><span class="fl">12.9</span>, <span class="at">max =</span> <span class="fl">1.86</span>)</span>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>lims_x <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">min =</span> <span class="sc">-</span><span class="fl">12.9</span>, <span class="at">max =</span> <span class="fl">1.86</span>)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>lims_y <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">min =</span> <span class="fl">50.2</span>, <span class="at">max =</span> <span class="fl">58.5</span>)</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>gg_services_roadless <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
@@ -1071,7 +1070,7 @@ Projected CRS: OSGB36 / British National Grid
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb35" data-source-line-numbers="nil" data-code-line-numbers="nil"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">quarto_here</span>(<span class="st">"gg_services_roadless_simple.png"</span>),</span>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">quarto_here</span>(<span class="st">"gg_services_roadless_simple.png"</span>),</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>       gg_services_roadless,</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fl">7.2</span>,</span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fl">7.5</span>,</span>
@@ -1087,13 +1086,13 @@ Projected CRS: OSGB36 / British National Grid
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2024,
   author = {Hadley, Charlie},
   title = {Data {Quest:} {Motorway} {Services} {UK}},
-  date = {2024-11-08},
+  date = {2024-11-22},
   url = {https://visibledata.co.uk/posts/2024-11-13_motorway-service-stations-info/},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2024" class="csl-entry quarto-appendix-citeas" role="listitem">
 Hadley, Charlie. 2024. <span>“Data Quest: Motorway Services UK.”</span>
-November 8, 2024. <a href="https://visibledata.co.uk/posts/2024-11-13_motorway-service-stations-info/">https://visibledata.co.uk/posts/2024-11-13_motorway-service-stations-info/</a>.
+November 22, 2024. <a href="https://visibledata.co.uk/posts/2024-11-13_motorway-service-stations-info/">https://visibledata.co.uk/posts/2024-11-13_motorway-service-stations-info/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1521,5 +1520,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 <script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
-<script src="../../site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.js" defer="true"></script>
 </body></html>
