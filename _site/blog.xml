@@ -10,7 +10,460 @@
 <atom:link href="https://visibledata.co.uk/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Data Science Consultancy &amp; Training</description>
 <generator>quarto-1.6.32</generator>
-<lastBuildDate>Fri, 22 Nov 2024 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 30 Nov 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Capital Circles</title>
+  <dc:creator>Charlie Hadley</dc:creator>
+  <link>https://visibledata.co.uk/posts/2024-11-30_capital-circles/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I really enjoyed seeing other’s #30DayMapChallenge posts, and particularly those of Ansgar Wolsing. I spent a while thinking about this glorious post</p>
+<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7264973254291869696" height="834" width="504" frameborder="0" allowfullscreen="" title="Embedded post">
+</iframe>
+<p>And had the idea of creating a map of circles centered around cities with the radius being the shortest distance to another city above a certain population threshold. So let’s throw something together.</p>
+<p>First I’ll load my packages, and Ansgar introduced me to <code>{giscoR}</code> for obtaining shapefiles. Previously, I’ve used <code>{rnaturalearthdata}</code> but think I might change the default going forwards.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" data-source-line-numbers="nil" data-code-line-numbers="nil" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"tidyverse"</span>)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"maps"</span>)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sf"</span>)</span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"giscoR"</span>)</span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"countrycode"</span>)</span>
+<span id="cb1-6"></span>
+<span id="cb1-7">countries_sf <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gisco_get_countries</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb1-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as_tibble</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb1-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_as_sf</span>()</span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Manually remove duplicate San Jose and Nicosia</span></span>
+<span id="cb1-12">cities_clean <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> world.cities <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb1-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as_tibble</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb1-14">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># filter(capital == 1) %&gt;% </span></span>
+<span id="cb1-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>(name <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"San Jose"</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span> lat <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10.97</span>),</span>
+<span id="cb1-16">         <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>(name <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Nicosia"</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span> long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">33.37</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb1-17">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">iso_3c =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">countrycode</span>(country.etc, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"country.name"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"iso3c"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb1-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">drop_na</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb1-19">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_as_sf</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">coords =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"long"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lat"</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">crs =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4326</span>)</span></code></pre></div>
+</div>
+<p>Let’s only look at cities with a population of at least 1 million</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" data-source-line-numbers="nil" data-code-line-numbers="nil" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">cities_of_interest <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> cities_clean <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb2-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(pop <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000000</span>)</span></code></pre></div>
+</div>
+<p>Here’s a neat little function that finds the max and min distance to each row in the data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" data-source-line-numbers="nil" data-code-line-numbers="nil" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">add_max_min_point_to_row <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(data, row_n){</span>
+<span id="cb3-2">  target_row <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">slice</span>(data, row_n)</span>
+<span id="cb3-3">  </span>
+<span id="cb3-4">  all_others <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">slice</span>(data, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setdiff</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(data), row_n))</span>
+<span id="cb3-5">  </span>
+<span id="cb3-6">  all_distances <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_distance</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_as_sfc</span>(target_row), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_as_sfc</span>(all_others))</span>
+<span id="cb3-7">  </span>
+<span id="cb3-8">  min_iso_3c <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">slice</span>(all_others, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">which.min</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(all_distances))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb3-9">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pull</span>(iso_3c)</span>
+<span id="cb3-10">  </span>
+<span id="cb3-11">  max_iso_3c <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">slice</span>(all_others, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">which.max</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(all_distances))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb3-12">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pull</span>(iso_3c)</span>
+<span id="cb3-13">  </span>
+<span id="cb3-14">  target_row <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb3-15">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">min_iso_3c =</span> min_iso_3c,</span>
+<span id="cb3-16">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">min_distance =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(all_distances),</span>
+<span id="cb3-17">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">max_iso_3c =</span> max_iso_3c,</span>
+<span id="cb3-18">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">max_distance =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(all_distances))</span>
+<span id="cb3-19">}</span></code></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" data-source-line-numbers="nil" data-code-line-numbers="nil" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">cities_of_interest_distances <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(cities_of_interest) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb4-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map_dfr</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_max_min_point_to_row</span>(cities_of_interest, .x))</span></code></pre></div>
+</div>
+<p>And map!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" data-source-line-numbers="nil" data-code-line-numbers="nil" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">gg_city_circles <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_sf</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> cities_of_interest_distances <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb5-3">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">geometry =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_buffer</span>(geometry, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">dist =</span> min_distance, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nQuadSegs =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb5-4">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_wrap_dateline</span>() ,</span>
+<span id="cb5-5">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#663399"</span>,</span>
+<span id="cb5-6">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb5-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_sf</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> countries_sf <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb5-8">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>NAME_ENGL <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Antarctica"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb5-9">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">area =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_area</span>(geometry))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb5-10">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(area <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1E11</span>),</span>
+<span id="cb5-11">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"transparent"</span>,</span>
+<span id="cb5-12">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> colorspace<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lighten</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lightblue"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">amount =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb5-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Closest cities with populations of least 1 million"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_sf</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">crs =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"+proj=robin"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_void</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.background =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_rect</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lightblue"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-17">  <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span></span>
+<span id="cb5-18"></span>
+<span id="cb5-19"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggsave</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">quarto_here</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gg_city_circles.png"</span>),</span>
+<span id="cb5-20">       gg_city_circles,</span>
+<span id="cb5-21">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,</span>
+<span id="cb5-22">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">height =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.37</span>)</span></code></pre></div>
+</div>
+<p><img src="https://visibledata.co.uk/posts/2024-11-30_capital-circles/gg_city_circles.png" class="img-fluid"></p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2024,
+  author = {Hadley, Charlie},
+  title = {Capital {Circles}},
+  date = {2024-11-30},
+  url = {https://visibledata.co.uk/posts/2024-11-30_capital-circles/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2024" class="csl-entry quarto-appendix-citeas">
+Hadley, Charlie. 2024. <span>“Capital Circles.”</span> November 30,
+2024. <a href="https://visibledata.co.uk/posts/2024-11-30_capital-circles/">https://visibledata.co.uk/posts/2024-11-30_capital-circles/</a>.
+</div></div></section></div> ]]></description>
+  <guid>https://visibledata.co.uk/posts/2024-11-30_capital-circles/</guid>
+  <pubDate>Sat, 30 Nov 2024 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Data Quest: Motorway Services UK</title>
   <dc:creator>Charlie Hadley</dc:creator>
@@ -17016,981 +17469,6 @@ November 12, 2018. <a href="https://visibledata.co.uk/posts/2018-11-12-crawling-
   <guid>https://visibledata.co.uk/posts/2018-11-12-crawling-doi-from-a-sage/</guid>
   <pubDate>Mon, 12 Nov 2018 00:00:00 GMT</pubDate>
   <media:content url="https://visibledata.co.uk/posts/2018-11-12-crawling-doi-from-a-sage/2018-11-12_futured-dois.png" medium="image" type="image/png" height="58" width="144"/>
-</item>
-<item>
-  <title>Great circles with sf and leaflet</title>
-  <dc:creator>Charlie Hadley</dc:creator>
-  <link>https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="row">
-<div class="col-sm-6">
-<p>Surprisingly often I’m asked to help folks build maps which visualise the journeys between geographic locations, in the bad old days of early 2017 I would have used the <code>geospheres</code> package and <code>sp</code>.</p>
-<p>That’s because the shortest distance between two points on a map is a <strong>great circle</strong>, and <code>geospheres</code> is capable of computing such things. Note that it’s these great circles that you see on flight information screens, their exact curvature depends on the projection of the map.</p>
-</div>
-<div class="col-sm-6">
-<center>
-<img src="https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet/great-circles-with-sf.png" style="max-width:350px">
-</center>
-</div>
-</div>
-<p><br> However, I’m now an <code>sf</code> convert and try to do everything within that package. In my original version of this blogpost I introduced my painfully inefficient way to compute these great circles with <code>sf</code> and asked folks in the <a href="https://medium.com/@kierisi/r4ds-the-next-iteration-d51e0a1b0b82">R4DS Slack group</a> run by <a href="https://www.jessemaegan.com/">Jesse Maegan</a> if they had any suggested improvements, which I’ve now baked in below.</p>
-<p>Typically my datasets are collections of journeys, here’s an example of what the data looks like (these are some of the journeys I took during the 3 years I worked for Wolfram Research):</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"tidyverse"</span>)</span>
-<span id="cb1-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sf"</span>)</span>
-<span id="cb1-3">raw_journey_data <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">tribble</span>(</span>
-<span id="cb1-4">  <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>start.long, <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>start.lat, <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>end.long, <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>end.lat, <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>name,</span>
-<span id="cb1-5">  <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.118092</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">51.509865</span>, <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">119.698189</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">34.420830</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"London to Santa Barbara"</span>,</span>
-<span id="cb1-6">  <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">31.496773</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">30.026300</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">24.753574</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">59.436962</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"New Cairo to Tallinn"</span>,</span>
-<span id="cb1-7">  <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">126.633333</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">45.75</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">46.738586</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">24.774265</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Harbin to Riyadh"</span></span>
-<span id="cb1-8">)</span>
-<span id="cb1-9">raw_journey_data</span></code></pre></div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div id="htmlwidget-ae0002f075987d86ef3e" style="width:100%;height:100%;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ae0002f075987d86ef3e">{"x":{"url":"index_files/figure-html//widgets/widget_hidden-dt.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
-<p>I’ve split this post into two sections below:</p>
-<ul>
-<li>journeys_to_sf: A function for reliably converting journey data to an <code>sf</code> object that can be plotted with <code>leaflet</code> and <code>ggplot2</code></li>
-<li>Creating <code>sf</code> features from <code>data.frames</code></li>
-</ul>
-<section id="journeys_to_sf" class="level1">
-<h1>journeys_to_sf</h1>
-<p>Here’s my function for converting a <code>data.frame</code> containing journeys to a usable <code>"sf" "data.frame"</code> through the use of <a href="http://dplyr.tidyverse.org/articles/programming.html">tidyeval</a>:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">journeys_to_sf <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">function</span>(journeys_data,</span>
-<span id="cb2-2">                           <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">start_long =</span> start.long,</span>
-<span id="cb2-3">                           <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">start_lat =</span> start.lat,</span>
-<span id="cb2-4">                           <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">end_long =</span> end.long,</span>
-<span id="cb2-5">                           <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">end_lat =</span> end.lat) {</span>
-<span id="cb2-6">  quo_start_long <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">enquo</span>(start_long)</span>
-<span id="cb2-7">  quo_start_lat <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">enquo</span>(start_lat)</span>
-<span id="cb2-8">  quo_end_long <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">enquo</span>(end_long)</span>
-<span id="cb2-9">  quo_end_lat <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">enquo</span>(end_lat)</span>
-<span id="cb2-10"></span>
-<span id="cb2-11">  journeys_data <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb2-12">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">select</span>(</span>
-<span id="cb2-13">      <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">!!</span> quo_start_long,</span>
-<span id="cb2-14">      <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">!!</span> quo_start_lat,</span>
-<span id="cb2-15">      <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">!!</span> quo_end_long,</span>
-<span id="cb2-16">      <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">!!</span> quo_end_lat</span>
-<span id="cb2-17">    ) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb2-18">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">transpose</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb2-19">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">map</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">matrix</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">flatten_dbl</span>(.), <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">nrow =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">byrow =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">TRUE</span>)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb2-20">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">map</span>(st_linestring) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb2-21">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_sfc</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">crs =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">4326</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb2-22">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_sf</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">geometry =</span> .) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb2-23">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">bind_cols</span>(journeys_data) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb2-24">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">select</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">everything</span>(), geometry)</span>
-<span id="cb2-25">}</span></code></pre></div>
-</div>
-<p>This can very easily be inserted into a pipe chain for visualising with <code>leaflet</code>:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"leaflet"</span>)</span>
-<span id="cb3-2">raw_journey_data <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb3-3">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">journeys_to_sf</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb3-4">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_segmentize</span>(units<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">set_units</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100</span>, km)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb3-5">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">leaflet</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb3-6">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addTiles</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb3-7">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addPolylines</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb3-8">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addCircleMarkers</span>(</span>
-<span id="cb3-9">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">lng =</span> <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>start.long,</span>
-<span id="cb3-10">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">lat =</span> <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>start.lat,</span>
-<span id="cb3-11">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"green"</span>,</span>
-<span id="cb3-12">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">opacity =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>,</span>
-<span id="cb3-13">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">radius =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span></span>
-<span id="cb3-14">  ) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb3-15">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addCircleMarkers</span>(</span>
-<span id="cb3-16">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">lng =</span> <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>end.long,</span>
-<span id="cb3-17">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">lat =</span> <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>end.lat,</span>
-<span id="cb3-18">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"red"</span>,</span>
-<span id="cb3-19">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">opacity =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>,</span>
-<span id="cb3-20">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">radius =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span></span>
-<span id="cb3-21">  ) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb3-22">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addLegend</span>(</span>
-<span id="cb3-23">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">colors =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(</span>
-<span id="cb3-24">      <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"green"</span>,</span>
-<span id="cb3-25">      <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"red"</span></span>
-<span id="cb3-26">    ),</span>
-<span id="cb3-27">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">labels =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(</span>
-<span id="cb3-28">      <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Journey start"</span>,</span>
-<span id="cb3-29">      <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Journey end"</span></span>
-<span id="cb3-30">    )</span>
-<span id="cb3-31">  )</span></code></pre></div>
-<div class="cell-output-display">
-<div id="htmlwidget-b4e16e47b27d1129bdab" style="width:100%;height:464px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b4e16e47b27d1129bdab">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addPolylines","args":[[[[{"lng":[-0.11809199999999,-0.85029598333125,-1.59624883328451,-2.35625986133584,-3.13063701672721,-3.91968581109558,-4.72370813113187,-5.54300093333813,-6.37785481535872,-7.2285524589372,-8.09536694031667,-8.97855990488171,-9.87837960406412,-10.7950587940193,-11.7288124973553,-12.6798356312748,-13.6483005078896,-14.6343542151976,-15.6381158902653,-16.6596738995363,-17.6990829448527,-18.7563611176993,-19.8314869283075,-20.9243963405027,-22.0349798474616,-23.1630796277401,-24.3084868249091,-25.4709389977315,-26.6501177908629,-27.8456468783725,-29.0570902337761,-30.2839507805505,-31.5256694760961,-32.7816248796677,-34.0511332507865,-35.3334492190017,-36.6277670585791,-37.9332225927889,-39.248895742089,-40.5738137188286,-41.9069548584341,-43.2472530637008,-44.5936028252349,-45.9448647677054,-47.2998716588547,-48.6574348066618,-50.0163507601011,-51.3754082209988,-52.733395068885,-54.0891053977182,-55.441346463036,-56.7889454404898,-58.1307559017378,-59.4656639210931,-60.7925937358396,-62.1105128943479,-63.4184368386074,-64.7154328810589,-66.0006235491931,-67.2731892848049,-68.532370497656,-69.7774689852221,-71.0078487409035,-72.2229361823384,-73.4222198391335,-74.6052495453552,-75.7716351865109,-76.921045053548,-78.0532038577297,-79.1678904602486,-80.2649353692906,-81.3442180551427,-82.4056641310481,-83.449242444021,-84.4749621159384,-85.4828695710632,-86.473045581886,-87.4456023609021,-88.4006807217832,-89.3384473294252,-90.2590920546203,-91.1628254456606,-92.0498763260429,-92.9204895246437,-93.7749237422556,-94.6134495562222,-95.4363475630692,-96.2439066574726,-97.0364224446272,-97.8141957820417,-98.577531445972,-99.3267369170879,-100.062121279522,-100.783994227156,-101.492665170827,-102.18844244008,-102.871632573117,-103.542539688699,-104.2014649339,-104.848706001846,-105.484556713777,-106.109306660061,-106.723240895035,-107.326639680894,-107.919778276067,-108.502926763881,-109.076349917565,-109.640307097931,-110.195052180362,-110.740833507974,-111.277893868087,-111.806470489362,-112.326795057203,-112.839093745214,-113.343587260706,-113.840490902437,-114.330014628927,-114.812363135854,-115.287735941186,-115.756327476827,-116.218327185688,-116.673919623211,-117.123284562452,-117.566597101968,-118.004027775785,-118.435742664858,-118.86190350946,-119.282667822019,-119.698189],"lat":[51.509865,51.9296079553924,52.3447230956783,52.7550523363062,53.1604324652917,53.5606950715464,53.9556664867205,54.3451677426681,54.7290145468182,55.1070172779006,55.4789810046412,55.8447055302011,56.203985465272,56.5566103328732,56.9023647079908,57.2410283952714,57.5723766480168,57.8961804317026,58.2122067351788,58.5202189325662,58.8199771986541,59.1112389803057,59.3937595259922,59.6672924750859,59.9315905079532,60.186406057182,60.4314920794714,60.6666028867882,60.8914950343764,61.1059282620957,61.3096664843819,61.5024788228828,61.6841406745643,61.8544348068205,62.0131524699088,62.1600945158951,62.2950725122828,62.4179098376589,62.5284427460491,62.6265213862926,62.7120107626343,62.7847916229388,62.8447612614485,62.8918342238699,62.925942903742,62.9470380205274,62.9550889716127,62.9500840523888,62.9320305407266,62.9009546444309,62.8569013125539,62.7999339137309,62.7301337868818,62.6475996716455,62.5524470277235,62.4448072538567,62.3248268184081,62.1926663144565,62.0484994529057,61.8925120073914,61.7249007247277,61.5458722143137,61.3556418293374,61.1544325518146,60.9424738925269,60.7200008158122,60.4872526979609,60.2444723267203,59.9919049481446,59.7297973657845,59.4583970960092,59.1779515821281,58.888707468933,58.5909099383433,58.2848021059945,57.9706244778871,57.6486144655899,57.3190059579864,56.9820289471353,56.6379092055047,56.2868680116053,55.9291219208944,55.5648825787346,55.1943565721654,54.8177453172598,54.4352449789087,54.0470464199605,53.6533351767726,53.254291458366,52.8500901665299,52.4409009343887,52.0268881811092,51.6082111805982,51.1850241422093,50.7574763016424,50.3257120203811,49.889870892165,49.4500878551435,49.0064933084898,48.5592132323895,48.1083693104342,47.6540790535613,47.1964559247895,46.7356094640852,46.2716454127896,45.8046658371065,45.3347692502292,44.8620507327416,44.3866020509911,43.9085117731805,43.4278653829707,42.9447453904286,42.4592314401905,41.9714004167405,41.4813265467359,40.9890814983307,40.4947344774746,39.9983523211789,39.4999995877603,38.9997386440828,38.4976297498358,37.9937311388879,37.488099097772,36.980788041358,36.4718505857784,35.9613376186742,35.4492983668334,34.935780461296,34.42083]}]],[[{"lng":[31.496773,31.4318654586138,31.366339139092,31.3001765648788,31.2333597558085,31.1658702073136,31.0976888686596,31.0287961201524,30.9591717492598,30.888794925585,30.8176441746258,30.7456973502485,30.6729316058025,30.5993233637948,30.5248482840381,30.4494812301826,30.3731962345335,30.2959664610485,30.2177641664066,30.1385606590262,30.058326255906,29.9770302371527,29.8946407980471,29.8111249984923,29.7264487096759,29.6405765577641,29.5534718644331,29.4650965840291,29.3754112371321,29.28437484028,29.1919448315934,29.0980769920199,29.0027253618929,28.9058421524802,28.8073776521668,28.7072801268912,28.6054957144214,28.5019683120234,28.3966394570387,28.2894481998451,28.1803309686319,28.0692214253707,27.9560503123113,27.8407452882722,27.7232307539306,27.6034276652471,27.4812533340832,27.3566212149799,27.229440676977,27.099616759244,26.9670499091793,26.8316357015095,26.6932645367758,26.5518213174418,26.4071850996821,26.2592287187203,26.1078183853702,25.9528132511988,25.7940649394626,25.631417038678,25.4647045553546,25.2937533220543,25.1183793565305,24.9383881672391,24.753574],"lat":[30.0263,30.4879716720984,30.9496108895816,31.4112167334331,31.8727882580182,32.3343244899793,32.79582442708,33.2572870369929,33.7187112560307,34.1800959878144,34.6414401018782,35.1027424322036,35.5640017756818,36.0252168904989,36.4863864944385,36.9475092630978,37.4085838280119,37.86960877468,38.3305826404876,38.7915039125191,39.2523710252521,39.7131823581283,40.1739362329909,40.6346309113807,41.0952645916824,41.5558354061104,42.0163414175233,42.4767806160563,42.9371509155595,43.3974501498271,43.8576760686054,44.3178263333627,44.7778985128051,45.2378900781194,45.6977983979254,46.1576207329142,46.6173542301512,47.0769959170198,47.5365426947762,47.9959913316894,48.4553384557331,48.9145805467953,49.3737139283686,49.8327347586801,50.2916390212173,50.7504225146012,51.2090808417526,51.6676093982969,52.1260033601409,52.5842576701547,53.0423670238822,53.5003258541969,53.9581283148123,54.4157682625457,54.8732392382263,55.3305344461246,55.7876467317695,56.2445685580056,56.7012919791251,57.1578086128964,57.6141096102841,58.0701856226425,58.5260267661313,58.9816225830809,59.436962]}]],[[{"lng":[126.633333,125.910550532187,125.185272708105,124.457603143361,123.7276484529,122.995518152613,122.261324552533,121.525182641772,120.787209965413,120.047526493586,119.306254483024,118.563518331438,117.819444425062,117.074160979804,116.32779787642,115.580486490233,114.832359515884,114.083550787674,113.334195096077,112.58442800102,111.834385642541,111.084204549483,110.33402144684,109.583973062453,108.83419593368,108.084826214722,107.335999485266,106.587850561079,105.840513307196,105.094120454332,104.348803419106,103.604692128655,102.861914850189,102.120598026012,101.380866114482,100.642841437365,99.9066440339997,99.1723915226434,98.440198969321,97.7101787644809,96.9824405076943,96.2570909006059,95.5342336482936,94.8139693691564,94.0963955134048,93.3816062901882,92.6696926033521,91.9607419957832,91.2548386022584,90.552063110683,89.8524927315712,89.1562011755857,88.4632586389335,87.7737317963827,87.087683801645,86.4051742948482,85.7262594168034,85.0509918297578,84.379420744311,83.7115919521607,83.0475478643374,82.3873275545817,81.7309668075133,81.0784981712401,80.4299510140564,79.7853515848814,79.1447230770921,78.5080856954128,77.8754567255273,77.2468506060899,76.6222790028216,76.0017508843848,75.3852725997439,74.7728479567304,74.164478301543,73.5601625989256,72.9598975127802,72.3636774869857,71.7714948262041,71.1833397764741,70.5992006054006,70.0190636817653,69.442913554396,68.8707330301448,68.3025032508385,67.7382037690759,67.1778126227617,66.6213064082732,66.068660352172,65.5198483813805,64.9748431917546,64.4336163149928,63.8961381838309,63.3623781954823,62.8323047732879,62.3058854265516,61.7830868085416,61.263874772645,60.7482144266706,60.2360701852984,59.7274058206808,59.2221845112056,58.7203688884338,58.2219210822309,57.7268027641126,57.2349751888294,56.7463992342182,56.2610354393501,55.7788440410077,55.2997850085245,54.8238180770237,54.3509027790928,53.8809984749326,53.4140643810194,52.9500595973214,52.4889431331085,52.0306739313981,51.5752108920763,51.1225128937371,50.6725388142794,50.2252475503043,49.7805980353519,49.3385492570189,48.8990602729954,48.4620902260622,48.027598358085,47.5955440230444,47.1658866991396,46.738586],"lat":[45.75,45.848142593033,45.9417123977833,46.0306789637099,46.1150131014222,46.1946869260352,46.2696738991673,46.3399488694355,46.4054881113115,46.4662693622007,46.5222718576126,46.5734763642944,46.6198652112063,46.6614223182239,46.6981332224581,46.7299851020925,46.7569667976478,46.7790688305882,46.7962834191999,46.8086044916762,46.8160276963599,46.8185504091009,46.8161717376992,46.8088925234175,46.7967153395554,46.7796444870915,46.7576859874113,46.7308475721497,46.6991386701876,46.6625703918559,46.6211555104073,46.5749084408295,46.523845216082,46.4679834608471,46.4073423628974,46.3419426421844,46.2718065177673,46.1969576727004,46.1174212170083,46.0332236488806,45.9443928142219,45.8509578646971,45.7529492144138,45.6503984953842,45.5433385119122,45.4318031940493,45.315827550262,45.1954476194542,45.0707004224841,44.9416239133118,44.8082569299134,44.67063914509,44.5288110172988,44.382813741626,44.2326892010182,44.0784799178818,43.9202290061566,43.7579801239596,43.5917774268935,43.4216655221055,43.2476894231747,43.0698945059033,42.8883264650772,42.7030312722561,42.5140551346485,42.3214444551176,42.1252457933617,41.9255058283038,41.7222713217205,41.5155890831362,41.3055059359997,41.0920686851597,40.8753240856472,40.6553188127709,40.4320994335253,40.2057123793085,39.9762039199439,39.7436201389931,39.5080069103482,39.2694098760867,39.0278744255689,38.7834456757574,38.5361684527337,38.286087274388,38.0332463342527,37.7776894864535,37.5194602317452,37.2586017046036,36.9951566613406,36.7291674692091,36.4606760964671,36.1897241033642,35.9163526340198,35.640602409158,35.3625137196648,35.0821264209359,34.7994799279803,34.514613211247,34.2275647931435,33.9383727452121,33.6470746859346,33.3537077791332,33.0583087329383,32.7609137992929,32.4615587739667,32.1602789970502,31.8571093539023,31.5520842765262,31.2452377453473,30.9366032913687,30.6262139986809,30.3141025073028,30.0003010163329,29.684841287388,29.3677546483111,29.0490719971278,28.7288238062338,28.4070401267946,28.0837505933419,27.7589844285494,27.4327704481735,27.1051370661443,26.7761122997926,26.4457237751995,26.1139987326581,25.7809640322328,25.4466461594069,25.111071230808,24.774265]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":false,"fillColor":"#03F","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[51.509865,30.0263,45.75],[-0.118092,31.496773,126.633333],2,null,null,{"interactive":true,"className":"","stroke":true,"color":"green","weight":5,"opacity":1,"fill":true,"fillColor":"green","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[34.42083,59.436962,24.774265],[-119.698189,24.753574,46.738586],2,null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":1,"fill":true,"fillColor":"red","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["green","red"],"labels":["Journey start","Journey end"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"unknown","title":null,"extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[24.774265,62.9550889716127],"lng":[-119.698189,126.633333]}},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
-<p><br></p>
-<p>A quick note to say, <code>leaflet</code> is an awesome <code>htmlwidget</code> for building interactive maps. If you’ve never heard of <code>htmlwidgets</code> before, check out my blogpost; <a href="http://www.visibledata.co.uk/blog/2018/02/07/2018-02-07_where-s-the-love-for-htmlwidgets/">where’s the love for htmlwidgets?</a></p>
-</section>
-<section id="creating-sf-features-from-data.frame" class="level1">
-<h1>Creating <code>sf</code> features from <code>data.frame</code></h1>
-<p>The <code>sf</code> library allows R folks to work with GIS data using the very widely used <a href="https://en.wikipedia.org/wiki/Simple_Features">Simple Features</a> standard for working with 2D geometries. All <code>sf</code> objects are constructed from a combination of 17 unique “simple features”, which are usefully <a href="https://r-spatial.github.io/sf/articles/sf1.html#simple-feature-geometry-types">summarised here</a>.</p>
-<p>Originally my blogpost used a quite inefficient method for converting <code>data.frame</code> to <code>sf</code>. Thankfully I’m a member of the excellent <a href="https://www.jessemaegan.com/post/r4ds-the-next-iteration/">R4DS Slack group</a> and I got great advice from <a href="https://twitter.com/vivalosburros">Jesse Sadler</a> and <a href="http://kentsjohnson.com/">Kent Johnson</a>. Here’s my old horrible method of doing things:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">start_locs <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> raw_journey_data <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-2">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">select</span>(</span>
-<span id="cb4-3">    start.long,</span>
-<span id="cb4-4">    start.lat</span>
-<span id="cb4-5">  ) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-6">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">setNames</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"long"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"lat"</span>)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-7">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">journey_id =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">row_number</span>())</span>
-<span id="cb4-8"></span>
-<span id="cb4-9">end_locs <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> raw_journey_data <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-10">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">select</span>(</span>
-<span id="cb4-11">    end.long,</span>
-<span id="cb4-12">    end.lat</span>
-<span id="cb4-13">  ) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-14">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">setNames</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"long"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"lat"</span>)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-15">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">journey_id =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">row_number</span>())</span>
-<span id="cb4-16"></span>
-<span id="cb4-17">journey_data_linestrings <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> start_locs <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-18">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">bind_rows</span>(end_locs) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-19">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_as_sf</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">coords =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"long"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"lat"</span>)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-20">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">group_by</span>(journey_id) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-21">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">arrange</span>(journey_id) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-22">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">summarise</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb4-23">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_cast</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"LINESTRING"</span>)</span>
-<span id="cb4-24"></span>
-<span id="cb4-25">journey_data_linestrings <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_set_crs</span>(journey_data_linestrings, <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_crs</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">4326</span>))</span>
-<span id="cb4-26"></span>
-<span id="cb4-27">journey_data <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> raw_journey_data</span>
-<span id="cb4-28"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_geometry</span>(journey_data) <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_geometry</span>(journey_data_linestrings)</span>
-<span id="cb4-29">journey_data</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Simple feature collection with 3 features and 5 fields
-Geometry type: LINESTRING
-Dimension:     XY
-Bounding box:  xmin: -119.6982 ymin: 24.77426 xmax: 126.6333 ymax: 59.43696
-Geodetic CRS:  WGS 84
-# A tibble: 3 × 6
-  start.long start.lat end.long end.lat name                            geometry
-       &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                   &lt;LINESTRING [°]&gt;
-1     -0.118      51.5   -120.     34.4 London to San… (-119.6982 34.42083, -0.…
-2     31.5        30.0     24.8    59.4 New Cairo to … (24.75357 59.43696, 31.4…
-3    127.         45.8     46.7    24.8 Harbin to Riy… (46.73859 24.77426, 126.…</code></pre>
-</div>
-</div>
-<p>Let’s go through the stages required and re-write my method to be more <code>purrr</code> dependent:</p>
-<ol type="1">
-<li>Create a list of <code>LINESTRING</code>s</li>
-<li>Combine the list <code>LINESTRING</code>s into a collection of <code>sf</code> features</li>
-<li>Join this collection of <code>sf</code> features with the original dataset</li>
-</ol>
-<section id="linestrings" class="level2">
-<h2 class="anchored" data-anchor-id="linestrings">LINESTRINGs</h2>
-<p>We need <code>LINESTRING</code>s for our great circles as these represent a <em>“sequence of points connected by straight, non-self intersecting line pieces; one-dimensional geometry”</em>. As with all simple features, <code>LINESTRING</code>s are constructed from matrices:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_linestring</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">matrix</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span>))</span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>LINESTRING (1 4, 2 5, 3 6)</code></pre>
-</div>
-</div>
-<p>Let’s extract the start and end coordinates from our <code>raw_journeys_data</code> and convert them to a <code>list</code> with <code>purrr::transpose</code>:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">raw_journey_data <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span> </span>
-<span id="cb8-2">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">select</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span>name) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span> </span>
-<span id="cb8-3">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">transpose</span>()</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-[[1]]$start.long
-[1] -0.118092
-
-[[1]]$start.lat
-[1] 51.50986
-
-[[1]]$end.long
-[1] -119.6982
-
-[[1]]$end.lat
-[1] 34.42083
-
-
-[[2]]
-[[2]]$start.long
-[1] 31.49677
-
-[[2]]$start.lat
-[1] 30.0263
-
-[[2]]$end.long
-[1] 24.75357
-
-[[2]]$end.lat
-[1] 59.43696
-
-
-[[3]]
-[[3]]$start.long
-[1] 126.6333
-
-[[3]]$start.lat
-[1] 45.75
-
-[[3]]$end.long
-[1] 46.73859
-
-[[3]]$end.lat
-[1] 24.77426</code></pre>
-</div>
-</div>
-<p>These lists can easily be converted to matrices using <code>map</code>:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">raw_journey_data <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span> </span>
-<span id="cb10-2">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">select</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span>name) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span> </span>
-<span id="cb10-3">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">transpose</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span> </span>
-<span id="cb10-4">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">map</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">matrix</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">flatten_dbl</span>(.), <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">nrow =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">byrow =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">TRUE</span>)) </span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-            [,1]     [,2]
-[1,]   -0.118092 51.50986
-[2,] -119.698189 34.42083
-
-[[2]]
-         [,1]     [,2]
-[1,] 31.49677 30.02630
-[2,] 24.75357 59.43696
-
-[[3]]
-          [,1]     [,2]
-[1,] 126.63333 45.75000
-[2,]  46.73859 24.77426</code></pre>
-</div>
-</div>
-<p>… and finally we can convert these to</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">list_of_linestrings <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> raw_journey_data <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb12-2">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">select</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span>name) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb12-3">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">transpose</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb12-4">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">map</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">matrix</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">flatten_dbl</span>(.), <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">nrow =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">byrow =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">TRUE</span>)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb12-5">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">map</span>(st_linestring)</span>
-<span id="cb12-6">list_of_linestrings</span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>LINESTRING (-0.118092 51.50986, -119.6982 34.42083)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>LINESTRING (31.49677 30.0263, 24.75357 59.43696)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>LINESTRING (126.6333 45.75, 46.73859 24.77426)</code></pre>
-</div>
-</div>
-</section>
-<section id="collecting-features" class="level2">
-<h2 class="anchored" data-anchor-id="collecting-features">Collecting features</h2>
-<p>Eventually we will create an <code>"sf" "data.frame"</code> which contains our <code>LINESTRING</code>s in the <code>geometry</code> column. We create a set of features for this column from our list of <code>LINESTRING</code>s with the <code>st_sfc</code> function. Note that we need to specify a coordinate system, the most obvious choice is the WGS84 coordinate reference system, that’s why we specify <code>crs = 4326</code>:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1">list_of_linestrings <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb16-2">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_sfc</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">crs =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">4326</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Geometry set for 3 features 
-Geometry type: LINESTRING
-Dimension:     XY
-Bounding box:  xmin: -119.6982 ymin: 24.77426 xmax: 126.6333 ymax: 59.43696
-Geodetic CRS:  WGS 84</code></pre>
-</div>
-</div>
-<p>Now we have this set of features we create a collection of them in a <code>"sf" "data.frame"</code> with <code>st_sf</code>:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1">collection_sf <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> list_of_linestrings <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb18-2">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_sfc</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">crs =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">4326</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb18-3">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_sf</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">geometry =</span> .)</span>
-<span id="cb18-4">collection_sf</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Simple feature collection with 3 features and 0 fields
-Geometry type: LINESTRING
-Dimension:     XY
-Bounding box:  xmin: -119.6982 ymin: 24.77426 xmax: 126.6333 ymax: 59.43696
-Geodetic CRS:  WGS 84
-                        geometry
-1 LINESTRING (-0.118092 51.50...
-2 LINESTRING (31.49677 30.026...
-3 LINESTRING (126.6333 45.75,...</code></pre>
-</div>
-</div>
-</section>
-<section id="joining-feature-collections-with-data" class="level2">
-<h2 class="anchored" data-anchor-id="joining-feature-collections-with-data">Joining feature collections with data</h2>
-<p>As <code>sf</code> collections store all of the GIS data in a column it’s very easy to combine this object with our original data - we use <code>dplyr::bind_columns</code></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1">collection_sf <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb20-2">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">bind_cols</span>(raw_journey_data)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Simple feature collection with 3 features and 5 fields
-Geometry type: LINESTRING
-Dimension:     XY
-Bounding box:  xmin: -119.6982 ymin: 24.77426 xmax: 126.6333 ymax: 59.43696
-Geodetic CRS:  WGS 84
-  start.long start.lat   end.long  end.lat                    name
-1  -0.118092  51.50986 -119.69819 34.42083 London to Santa Barbara
-2  31.496773  30.02630   24.75357 59.43696    New Cairo to Tallinn
-3 126.633333  45.75000   46.73859 24.77426        Harbin to Riyadh
-                        geometry
-1 LINESTRING (-0.118092 51.50...
-2 LINESTRING (31.49677 30.026...
-3 LINESTRING (126.6333 45.75,...</code></pre>
-</div>
-</div>
-<p>We can now perform calculations on our dataset, for instance compute great circles with a resolution of 100km:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1">collection_sf <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb22-2">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">bind_cols</span>(raw_journey_data) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb22-3">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_segmentize</span>(units<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">set_units</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100</span>, km)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb22-4">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">leaflet</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb22-5">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addTiles</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb22-6">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addPolylines</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">label =</span> <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>name)</span></code></pre></div>
-<div class="cell-output-display">
-<div id="htmlwidget-901459b8dbf95f31114d" style="width:100%;height:464px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-901459b8dbf95f31114d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addPolylines","args":[[[[{"lng":[-0.11809199999999,-0.85029598333125,-1.59624883328451,-2.35625986133584,-3.13063701672721,-3.91968581109558,-4.72370813113187,-5.54300093333813,-6.37785481535872,-7.2285524589372,-8.09536694031667,-8.97855990488171,-9.87837960406412,-10.7950587940193,-11.7288124973553,-12.6798356312748,-13.6483005078896,-14.6343542151976,-15.6381158902653,-16.6596738995363,-17.6990829448527,-18.7563611176993,-19.8314869283075,-20.9243963405027,-22.0349798474616,-23.1630796277401,-24.3084868249091,-25.4709389977315,-26.6501177908629,-27.8456468783725,-29.0570902337761,-30.2839507805505,-31.5256694760961,-32.7816248796677,-34.0511332507865,-35.3334492190017,-36.6277670585791,-37.9332225927889,-39.248895742089,-40.5738137188286,-41.9069548584341,-43.2472530637008,-44.5936028252349,-45.9448647677054,-47.2998716588547,-48.6574348066618,-50.0163507601011,-51.3754082209988,-52.733395068885,-54.0891053977182,-55.441346463036,-56.7889454404898,-58.1307559017378,-59.4656639210931,-60.7925937358396,-62.1105128943479,-63.4184368386074,-64.7154328810589,-66.0006235491931,-67.2731892848049,-68.532370497656,-69.7774689852221,-71.0078487409035,-72.2229361823384,-73.4222198391335,-74.6052495453552,-75.7716351865109,-76.921045053548,-78.0532038577297,-79.1678904602486,-80.2649353692906,-81.3442180551427,-82.4056641310481,-83.449242444021,-84.4749621159384,-85.4828695710632,-86.473045581886,-87.4456023609021,-88.4006807217832,-89.3384473294252,-90.2590920546203,-91.1628254456606,-92.0498763260429,-92.9204895246437,-93.7749237422556,-94.6134495562222,-95.4363475630692,-96.2439066574726,-97.0364224446272,-97.8141957820417,-98.577531445972,-99.3267369170879,-100.062121279522,-100.783994227156,-101.492665170827,-102.18844244008,-102.871632573117,-103.542539688699,-104.2014649339,-104.848706001846,-105.484556713777,-106.109306660061,-106.723240895035,-107.326639680894,-107.919778276067,-108.502926763881,-109.076349917565,-109.640307097931,-110.195052180362,-110.740833507974,-111.277893868087,-111.806470489362,-112.326795057203,-112.839093745214,-113.343587260706,-113.840490902437,-114.330014628927,-114.812363135854,-115.287735941186,-115.756327476827,-116.218327185688,-116.673919623211,-117.123284562452,-117.566597101968,-118.004027775785,-118.435742664858,-118.86190350946,-119.282667822019,-119.698189],"lat":[51.509865,51.9296079553924,52.3447230956783,52.7550523363062,53.1604324652917,53.5606950715464,53.9556664867205,54.3451677426681,54.7290145468182,55.1070172779006,55.4789810046412,55.8447055302011,56.203985465272,56.5566103328732,56.9023647079908,57.2410283952714,57.5723766480168,57.8961804317026,58.2122067351788,58.5202189325662,58.8199771986541,59.1112389803057,59.3937595259922,59.6672924750859,59.9315905079532,60.186406057182,60.4314920794714,60.6666028867882,60.8914950343764,61.1059282620957,61.3096664843819,61.5024788228828,61.6841406745643,61.8544348068205,62.0131524699088,62.1600945158951,62.2950725122828,62.4179098376589,62.5284427460491,62.6265213862926,62.7120107626343,62.7847916229388,62.8447612614485,62.8918342238699,62.925942903742,62.9470380205274,62.9550889716127,62.9500840523888,62.9320305407266,62.9009546444309,62.8569013125539,62.7999339137309,62.7301337868818,62.6475996716455,62.5524470277235,62.4448072538567,62.3248268184081,62.1926663144565,62.0484994529057,61.8925120073914,61.7249007247277,61.5458722143137,61.3556418293374,61.1544325518146,60.9424738925269,60.7200008158122,60.4872526979609,60.2444723267203,59.9919049481446,59.7297973657845,59.4583970960092,59.1779515821281,58.888707468933,58.5909099383433,58.2848021059945,57.9706244778871,57.6486144655899,57.3190059579864,56.9820289471353,56.6379092055047,56.2868680116053,55.9291219208944,55.5648825787346,55.1943565721654,54.8177453172598,54.4352449789087,54.0470464199605,53.6533351767726,53.254291458366,52.8500901665299,52.4409009343887,52.0268881811092,51.6082111805982,51.1850241422093,50.7574763016424,50.3257120203811,49.889870892165,49.4500878551435,49.0064933084898,48.5592132323895,48.1083693104342,47.6540790535613,47.1964559247895,46.7356094640852,46.2716454127896,45.8046658371065,45.3347692502292,44.8620507327416,44.3866020509911,43.9085117731805,43.4278653829707,42.9447453904286,42.4592314401905,41.9714004167405,41.4813265467359,40.9890814983307,40.4947344774746,39.9983523211789,39.4999995877603,38.9997386440828,38.4976297498358,37.9937311388879,37.488099097772,36.980788041358,36.4718505857784,35.9613376186742,35.4492983668334,34.935780461296,34.42083]}]],[[{"lng":[31.496773,31.4318654586138,31.366339139092,31.3001765648788,31.2333597558085,31.1658702073136,31.0976888686596,31.0287961201524,30.9591717492598,30.888794925585,30.8176441746258,30.7456973502485,30.6729316058025,30.5993233637948,30.5248482840381,30.4494812301826,30.3731962345335,30.2959664610485,30.2177641664066,30.1385606590262,30.058326255906,29.9770302371527,29.8946407980471,29.8111249984923,29.7264487096759,29.6405765577641,29.5534718644331,29.4650965840291,29.3754112371321,29.28437484028,29.1919448315934,29.0980769920199,29.0027253618929,28.9058421524802,28.8073776521668,28.7072801268912,28.6054957144214,28.5019683120234,28.3966394570387,28.2894481998451,28.1803309686319,28.0692214253707,27.9560503123113,27.8407452882722,27.7232307539306,27.6034276652471,27.4812533340832,27.3566212149799,27.229440676977,27.099616759244,26.9670499091793,26.8316357015095,26.6932645367758,26.5518213174418,26.4071850996821,26.2592287187203,26.1078183853702,25.9528132511988,25.7940649394626,25.631417038678,25.4647045553546,25.2937533220543,25.1183793565305,24.9383881672391,24.753574],"lat":[30.0263,30.4879716720984,30.9496108895816,31.4112167334331,31.8727882580182,32.3343244899793,32.79582442708,33.2572870369929,33.7187112560307,34.1800959878144,34.6414401018782,35.1027424322036,35.5640017756818,36.0252168904989,36.4863864944385,36.9475092630978,37.4085838280119,37.86960877468,38.3305826404876,38.7915039125191,39.2523710252521,39.7131823581283,40.1739362329909,40.6346309113807,41.0952645916824,41.5558354061104,42.0163414175233,42.4767806160563,42.9371509155595,43.3974501498271,43.8576760686054,44.3178263333627,44.7778985128051,45.2378900781194,45.6977983979254,46.1576207329142,46.6173542301512,47.0769959170198,47.5365426947762,47.9959913316894,48.4553384557331,48.9145805467953,49.3737139283686,49.8327347586801,50.2916390212173,50.7504225146012,51.2090808417526,51.6676093982969,52.1260033601409,52.5842576701547,53.0423670238822,53.5003258541969,53.9581283148123,54.4157682625457,54.8732392382263,55.3305344461246,55.7876467317695,56.2445685580056,56.7012919791251,57.1578086128964,57.6141096102841,58.0701856226425,58.5260267661313,58.9816225830809,59.436962]}]],[[{"lng":[126.633333,125.910550532187,125.185272708105,124.457603143361,123.7276484529,122.995518152613,122.261324552533,121.525182641772,120.787209965413,120.047526493586,119.306254483024,118.563518331438,117.819444425062,117.074160979804,116.32779787642,115.580486490233,114.832359515884,114.083550787674,113.334195096077,112.58442800102,111.834385642541,111.084204549483,110.33402144684,109.583973062453,108.83419593368,108.084826214722,107.335999485266,106.587850561079,105.840513307196,105.094120454332,104.348803419106,103.604692128655,102.861914850189,102.120598026012,101.380866114482,100.642841437365,99.9066440339997,99.1723915226434,98.440198969321,97.7101787644809,96.9824405076943,96.2570909006059,95.5342336482936,94.8139693691564,94.0963955134048,93.3816062901882,92.6696926033521,91.9607419957832,91.2548386022584,90.552063110683,89.8524927315712,89.1562011755857,88.4632586389335,87.7737317963827,87.087683801645,86.4051742948482,85.7262594168034,85.0509918297578,84.379420744311,83.7115919521607,83.0475478643374,82.3873275545817,81.7309668075133,81.0784981712401,80.4299510140564,79.7853515848814,79.1447230770921,78.5080856954128,77.8754567255273,77.2468506060899,76.6222790028216,76.0017508843848,75.3852725997439,74.7728479567304,74.164478301543,73.5601625989256,72.9598975127802,72.3636774869857,71.7714948262041,71.1833397764741,70.5992006054006,70.0190636817653,69.442913554396,68.8707330301448,68.3025032508385,67.7382037690759,67.1778126227617,66.6213064082732,66.068660352172,65.5198483813805,64.9748431917546,64.4336163149928,63.8961381838309,63.3623781954823,62.8323047732879,62.3058854265516,61.7830868085416,61.263874772645,60.7482144266706,60.2360701852984,59.7274058206808,59.2221845112056,58.7203688884338,58.2219210822309,57.7268027641126,57.2349751888294,56.7463992342182,56.2610354393501,55.7788440410077,55.2997850085245,54.8238180770237,54.3509027790928,53.8809984749326,53.4140643810194,52.9500595973214,52.4889431331085,52.0306739313981,51.5752108920763,51.1225128937371,50.6725388142794,50.2252475503043,49.7805980353519,49.3385492570189,48.8990602729954,48.4620902260622,48.027598358085,47.5955440230444,47.1658866991396,46.738586],"lat":[45.75,45.848142593033,45.9417123977833,46.0306789637099,46.1150131014222,46.1946869260352,46.2696738991673,46.3399488694355,46.4054881113115,46.4662693622007,46.5222718576126,46.5734763642944,46.6198652112063,46.6614223182239,46.6981332224581,46.7299851020925,46.7569667976478,46.7790688305882,46.7962834191999,46.8086044916762,46.8160276963599,46.8185504091009,46.8161717376992,46.8088925234175,46.7967153395554,46.7796444870915,46.7576859874113,46.7308475721497,46.6991386701876,46.6625703918559,46.6211555104073,46.5749084408295,46.523845216082,46.4679834608471,46.4073423628974,46.3419426421844,46.2718065177673,46.1969576727004,46.1174212170083,46.0332236488806,45.9443928142219,45.8509578646971,45.7529492144138,45.6503984953842,45.5433385119122,45.4318031940493,45.315827550262,45.1954476194542,45.0707004224841,44.9416239133118,44.8082569299134,44.67063914509,44.5288110172988,44.382813741626,44.2326892010182,44.0784799178818,43.9202290061566,43.7579801239596,43.5917774268935,43.4216655221055,43.2476894231747,43.0698945059033,42.8883264650772,42.7030312722561,42.5140551346485,42.3214444551176,42.1252457933617,41.9255058283038,41.7222713217205,41.5155890831362,41.3055059359997,41.0920686851597,40.8753240856472,40.6553188127709,40.4320994335253,40.2057123793085,39.9762039199439,39.7436201389931,39.5080069103482,39.2694098760867,39.0278744255689,38.7834456757574,38.5361684527337,38.286087274388,38.0332463342527,37.7776894864535,37.5194602317452,37.2586017046036,36.9951566613406,36.7291674692091,36.4606760964671,36.1897241033642,35.9163526340198,35.640602409158,35.3625137196648,35.0821264209359,34.7994799279803,34.514613211247,34.2275647931435,33.9383727452121,33.6470746859346,33.3537077791332,33.0583087329383,32.7609137992929,32.4615587739667,32.1602789970502,31.8571093539023,31.5520842765262,31.2452377453473,30.9366032913687,30.6262139986809,30.3141025073028,30.0003010163329,29.684841287388,29.3677546483111,29.0490719971278,28.7288238062338,28.4070401267946,28.0837505933419,27.7589844285494,27.4327704481735,27.1051370661443,26.7761122997926,26.4457237751995,26.1139987326581,25.7809640322328,25.4466461594069,25.111071230808,24.774265]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":false,"fillColor":"#03F","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,["London to Santa Barbara","New Cairo to Tallinn","Harbin to Riyadh"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[24.774265,62.9550889716127],"lng":[-119.698189,126.633333]}},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
-<p>Sadly, there’s no good solution for adding arrow heads to these great circles - they would be heavily distorted by the map projection and would look ugly. An alternative solution to showing where journeys start and end is to use different coloured circle markers:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1">collection_sf <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb23-2">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">bind_cols</span>(raw_journey_data) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb23-3">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">st_segmentize</span>(units<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">set_units</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100</span>, km)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb23-4">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">leaflet</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb23-5">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addTiles</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb23-6">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addPolylines</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb23-7">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addCircleMarkers</span>(</span>
-<span id="cb23-8">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">lng =</span> <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>start.long,</span>
-<span id="cb23-9">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">lat =</span> <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>start.lat,</span>
-<span id="cb23-10">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"green"</span>,</span>
-<span id="cb23-11">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">opacity =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>,</span>
-<span id="cb23-12">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">radius =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span></span>
-<span id="cb23-13">  ) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb23-14">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addCircleMarkers</span>(</span>
-<span id="cb23-15">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">lng =</span> <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>end.long,</span>
-<span id="cb23-16">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">lat =</span> <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span>end.lat,</span>
-<span id="cb23-17">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"red"</span>,</span>
-<span id="cb23-18">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">opacity =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>,</span>
-<span id="cb23-19">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">radius =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span></span>
-<span id="cb23-20">  ) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb23-21">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">addLegend</span>(</span>
-<span id="cb23-22">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">colors =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(</span>
-<span id="cb23-23">      <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"green"</span>,</span>
-<span id="cb23-24">      <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"red"</span></span>
-<span id="cb23-25">    ),</span>
-<span id="cb23-26">    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">labels =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(</span>
-<span id="cb23-27">      <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Journey start"</span>,</span>
-<span id="cb23-28">      <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Journey end"</span></span>
-<span id="cb23-29">    )</span>
-<span id="cb23-30">  )</span></code></pre></div>
-<div class="cell-output-display">
-<div id="htmlwidget-2c56901410c1f6cc723d" style="width:100%;height:464px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2c56901410c1f6cc723d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addPolylines","args":[[[[{"lng":[-0.11809199999999,-0.85029598333125,-1.59624883328451,-2.35625986133584,-3.13063701672721,-3.91968581109558,-4.72370813113187,-5.54300093333813,-6.37785481535872,-7.2285524589372,-8.09536694031667,-8.97855990488171,-9.87837960406412,-10.7950587940193,-11.7288124973553,-12.6798356312748,-13.6483005078896,-14.6343542151976,-15.6381158902653,-16.6596738995363,-17.6990829448527,-18.7563611176993,-19.8314869283075,-20.9243963405027,-22.0349798474616,-23.1630796277401,-24.3084868249091,-25.4709389977315,-26.6501177908629,-27.8456468783725,-29.0570902337761,-30.2839507805505,-31.5256694760961,-32.7816248796677,-34.0511332507865,-35.3334492190017,-36.6277670585791,-37.9332225927889,-39.248895742089,-40.5738137188286,-41.9069548584341,-43.2472530637008,-44.5936028252349,-45.9448647677054,-47.2998716588547,-48.6574348066618,-50.0163507601011,-51.3754082209988,-52.733395068885,-54.0891053977182,-55.441346463036,-56.7889454404898,-58.1307559017378,-59.4656639210931,-60.7925937358396,-62.1105128943479,-63.4184368386074,-64.7154328810589,-66.0006235491931,-67.2731892848049,-68.532370497656,-69.7774689852221,-71.0078487409035,-72.2229361823384,-73.4222198391335,-74.6052495453552,-75.7716351865109,-76.921045053548,-78.0532038577297,-79.1678904602486,-80.2649353692906,-81.3442180551427,-82.4056641310481,-83.449242444021,-84.4749621159384,-85.4828695710632,-86.473045581886,-87.4456023609021,-88.4006807217832,-89.3384473294252,-90.2590920546203,-91.1628254456606,-92.0498763260429,-92.9204895246437,-93.7749237422556,-94.6134495562222,-95.4363475630692,-96.2439066574726,-97.0364224446272,-97.8141957820417,-98.577531445972,-99.3267369170879,-100.062121279522,-100.783994227156,-101.492665170827,-102.18844244008,-102.871632573117,-103.542539688699,-104.2014649339,-104.848706001846,-105.484556713777,-106.109306660061,-106.723240895035,-107.326639680894,-107.919778276067,-108.502926763881,-109.076349917565,-109.640307097931,-110.195052180362,-110.740833507974,-111.277893868087,-111.806470489362,-112.326795057203,-112.839093745214,-113.343587260706,-113.840490902437,-114.330014628927,-114.812363135854,-115.287735941186,-115.756327476827,-116.218327185688,-116.673919623211,-117.123284562452,-117.566597101968,-118.004027775785,-118.435742664858,-118.86190350946,-119.282667822019,-119.698189],"lat":[51.509865,51.9296079553924,52.3447230956783,52.7550523363062,53.1604324652917,53.5606950715464,53.9556664867205,54.3451677426681,54.7290145468182,55.1070172779006,55.4789810046412,55.8447055302011,56.203985465272,56.5566103328732,56.9023647079908,57.2410283952714,57.5723766480168,57.8961804317026,58.2122067351788,58.5202189325662,58.8199771986541,59.1112389803057,59.3937595259922,59.6672924750859,59.9315905079532,60.186406057182,60.4314920794714,60.6666028867882,60.8914950343764,61.1059282620957,61.3096664843819,61.5024788228828,61.6841406745643,61.8544348068205,62.0131524699088,62.1600945158951,62.2950725122828,62.4179098376589,62.5284427460491,62.6265213862926,62.7120107626343,62.7847916229388,62.8447612614485,62.8918342238699,62.925942903742,62.9470380205274,62.9550889716127,62.9500840523888,62.9320305407266,62.9009546444309,62.8569013125539,62.7999339137309,62.7301337868818,62.6475996716455,62.5524470277235,62.4448072538567,62.3248268184081,62.1926663144565,62.0484994529057,61.8925120073914,61.7249007247277,61.5458722143137,61.3556418293374,61.1544325518146,60.9424738925269,60.7200008158122,60.4872526979609,60.2444723267203,59.9919049481446,59.7297973657845,59.4583970960092,59.1779515821281,58.888707468933,58.5909099383433,58.2848021059945,57.9706244778871,57.6486144655899,57.3190059579864,56.9820289471353,56.6379092055047,56.2868680116053,55.9291219208944,55.5648825787346,55.1943565721654,54.8177453172598,54.4352449789087,54.0470464199605,53.6533351767726,53.254291458366,52.8500901665299,52.4409009343887,52.0268881811092,51.6082111805982,51.1850241422093,50.7574763016424,50.3257120203811,49.889870892165,49.4500878551435,49.0064933084898,48.5592132323895,48.1083693104342,47.6540790535613,47.1964559247895,46.7356094640852,46.2716454127896,45.8046658371065,45.3347692502292,44.8620507327416,44.3866020509911,43.9085117731805,43.4278653829707,42.9447453904286,42.4592314401905,41.9714004167405,41.4813265467359,40.9890814983307,40.4947344774746,39.9983523211789,39.4999995877603,38.9997386440828,38.4976297498358,37.9937311388879,37.488099097772,36.980788041358,36.4718505857784,35.9613376186742,35.4492983668334,34.935780461296,34.42083]}]],[[{"lng":[31.496773,31.4318654586138,31.366339139092,31.3001765648788,31.2333597558085,31.1658702073136,31.0976888686596,31.0287961201524,30.9591717492598,30.888794925585,30.8176441746258,30.7456973502485,30.6729316058025,30.5993233637948,30.5248482840381,30.4494812301826,30.3731962345335,30.2959664610485,30.2177641664066,30.1385606590262,30.058326255906,29.9770302371527,29.8946407980471,29.8111249984923,29.7264487096759,29.6405765577641,29.5534718644331,29.4650965840291,29.3754112371321,29.28437484028,29.1919448315934,29.0980769920199,29.0027253618929,28.9058421524802,28.8073776521668,28.7072801268912,28.6054957144214,28.5019683120234,28.3966394570387,28.2894481998451,28.1803309686319,28.0692214253707,27.9560503123113,27.8407452882722,27.7232307539306,27.6034276652471,27.4812533340832,27.3566212149799,27.229440676977,27.099616759244,26.9670499091793,26.8316357015095,26.6932645367758,26.5518213174418,26.4071850996821,26.2592287187203,26.1078183853702,25.9528132511988,25.7940649394626,25.631417038678,25.4647045553546,25.2937533220543,25.1183793565305,24.9383881672391,24.753574],"lat":[30.0263,30.4879716720984,30.9496108895816,31.4112167334331,31.8727882580182,32.3343244899793,32.79582442708,33.2572870369929,33.7187112560307,34.1800959878144,34.6414401018782,35.1027424322036,35.5640017756818,36.0252168904989,36.4863864944385,36.9475092630978,37.4085838280119,37.86960877468,38.3305826404876,38.7915039125191,39.2523710252521,39.7131823581283,40.1739362329909,40.6346309113807,41.0952645916824,41.5558354061104,42.0163414175233,42.4767806160563,42.9371509155595,43.3974501498271,43.8576760686054,44.3178263333627,44.7778985128051,45.2378900781194,45.6977983979254,46.1576207329142,46.6173542301512,47.0769959170198,47.5365426947762,47.9959913316894,48.4553384557331,48.9145805467953,49.3737139283686,49.8327347586801,50.2916390212173,50.7504225146012,51.2090808417526,51.6676093982969,52.1260033601409,52.5842576701547,53.0423670238822,53.5003258541969,53.9581283148123,54.4157682625457,54.8732392382263,55.3305344461246,55.7876467317695,56.2445685580056,56.7012919791251,57.1578086128964,57.6141096102841,58.0701856226425,58.5260267661313,58.9816225830809,59.436962]}]],[[{"lng":[126.633333,125.910550532187,125.185272708105,124.457603143361,123.7276484529,122.995518152613,122.261324552533,121.525182641772,120.787209965413,120.047526493586,119.306254483024,118.563518331438,117.819444425062,117.074160979804,116.32779787642,115.580486490233,114.832359515884,114.083550787674,113.334195096077,112.58442800102,111.834385642541,111.084204549483,110.33402144684,109.583973062453,108.83419593368,108.084826214722,107.335999485266,106.587850561079,105.840513307196,105.094120454332,104.348803419106,103.604692128655,102.861914850189,102.120598026012,101.380866114482,100.642841437365,99.9066440339997,99.1723915226434,98.440198969321,97.7101787644809,96.9824405076943,96.2570909006059,95.5342336482936,94.8139693691564,94.0963955134048,93.3816062901882,92.6696926033521,91.9607419957832,91.2548386022584,90.552063110683,89.8524927315712,89.1562011755857,88.4632586389335,87.7737317963827,87.087683801645,86.4051742948482,85.7262594168034,85.0509918297578,84.379420744311,83.7115919521607,83.0475478643374,82.3873275545817,81.7309668075133,81.0784981712401,80.4299510140564,79.7853515848814,79.1447230770921,78.5080856954128,77.8754567255273,77.2468506060899,76.6222790028216,76.0017508843848,75.3852725997439,74.7728479567304,74.164478301543,73.5601625989256,72.9598975127802,72.3636774869857,71.7714948262041,71.1833397764741,70.5992006054006,70.0190636817653,69.442913554396,68.8707330301448,68.3025032508385,67.7382037690759,67.1778126227617,66.6213064082732,66.068660352172,65.5198483813805,64.9748431917546,64.4336163149928,63.8961381838309,63.3623781954823,62.8323047732879,62.3058854265516,61.7830868085416,61.263874772645,60.7482144266706,60.2360701852984,59.7274058206808,59.2221845112056,58.7203688884338,58.2219210822309,57.7268027641126,57.2349751888294,56.7463992342182,56.2610354393501,55.7788440410077,55.2997850085245,54.8238180770237,54.3509027790928,53.8809984749326,53.4140643810194,52.9500595973214,52.4889431331085,52.0306739313981,51.5752108920763,51.1225128937371,50.6725388142794,50.2252475503043,49.7805980353519,49.3385492570189,48.8990602729954,48.4620902260622,48.027598358085,47.5955440230444,47.1658866991396,46.738586],"lat":[45.75,45.848142593033,45.9417123977833,46.0306789637099,46.1150131014222,46.1946869260352,46.2696738991673,46.3399488694355,46.4054881113115,46.4662693622007,46.5222718576126,46.5734763642944,46.6198652112063,46.6614223182239,46.6981332224581,46.7299851020925,46.7569667976478,46.7790688305882,46.7962834191999,46.8086044916762,46.8160276963599,46.8185504091009,46.8161717376992,46.8088925234175,46.7967153395554,46.7796444870915,46.7576859874113,46.7308475721497,46.6991386701876,46.6625703918559,46.6211555104073,46.5749084408295,46.523845216082,46.4679834608471,46.4073423628974,46.3419426421844,46.2718065177673,46.1969576727004,46.1174212170083,46.0332236488806,45.9443928142219,45.8509578646971,45.7529492144138,45.6503984953842,45.5433385119122,45.4318031940493,45.315827550262,45.1954476194542,45.0707004224841,44.9416239133118,44.8082569299134,44.67063914509,44.5288110172988,44.382813741626,44.2326892010182,44.0784799178818,43.9202290061566,43.7579801239596,43.5917774268935,43.4216655221055,43.2476894231747,43.0698945059033,42.8883264650772,42.7030312722561,42.5140551346485,42.3214444551176,42.1252457933617,41.9255058283038,41.7222713217205,41.5155890831362,41.3055059359997,41.0920686851597,40.8753240856472,40.6553188127709,40.4320994335253,40.2057123793085,39.9762039199439,39.7436201389931,39.5080069103482,39.2694098760867,39.0278744255689,38.7834456757574,38.5361684527337,38.286087274388,38.0332463342527,37.7776894864535,37.5194602317452,37.2586017046036,36.9951566613406,36.7291674692091,36.4606760964671,36.1897241033642,35.9163526340198,35.640602409158,35.3625137196648,35.0821264209359,34.7994799279803,34.514613211247,34.2275647931435,33.9383727452121,33.6470746859346,33.3537077791332,33.0583087329383,32.7609137992929,32.4615587739667,32.1602789970502,31.8571093539023,31.5520842765262,31.2452377453473,30.9366032913687,30.6262139986809,30.3141025073028,30.0003010163329,29.684841287388,29.3677546483111,29.0490719971278,28.7288238062338,28.4070401267946,28.0837505933419,27.7589844285494,27.4327704481735,27.1051370661443,26.7761122997926,26.4457237751995,26.1139987326581,25.7809640322328,25.4466461594069,25.111071230808,24.774265]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":false,"fillColor":"#03F","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[51.509865,30.0263,45.75],[-0.118092,31.496773,126.633333],2,null,null,{"interactive":true,"className":"","stroke":true,"color":"green","weight":5,"opacity":1,"fill":true,"fillColor":"green","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[34.42083,59.436962,24.774265],[-119.698189,24.753574,46.738586],2,null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":1,"fill":true,"fillColor":"red","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["green","red"],"labels":["Journey start","Journey end"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"unknown","title":null,"extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[24.774265,62.9550889716127],"lng":[-119.698189,126.633333]}},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
-
-
-</section>
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{hadley2018,
-  author = {Charlie Hadley},
-  title = {Great Circles with Sf and Leaflet},
-  date = {2018-02-28},
-  url = {https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-hadley2018" class="csl-entry quarto-appendix-citeas">
-Charlie Hadley. 2018. <span>“Great Circles with Sf and Leaflet.”</span>
-February 28, 2018. <a href="https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet">https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet</a>.
-</div></div></section></div> ]]></description>
-  <category>GIS</category>
-  <guid>https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet/</guid>
-  <pubDate>Wed, 28 Feb 2018 00:00:00 GMT</pubDate>
-  <media:content url="https://visibledata.co.uk/posts/2018-02-28_great-circles-with-sf-and-leaflet/great-circles-with-sf.png" medium="image" type="image/png" height="96" width="144"/>
 </item>
 </channel>
 </rss>
