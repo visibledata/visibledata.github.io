@@ -1,0 +1,80 @@
+---
+title: "Advent of Code 2024 - Day 5"
+date: '2024-12-14'
+execute:
+  freeze: true
+  message: false
+  warning: false
+  echo: true
+engine: knitr
+draft: true
+filters:
+  - line-highlight
+---
+
+```{r}
+#| include: false
+library("cjhRutils")
+```
+
+::: {.callout-note appearance="simple"}
+
+# You really shouldn't be reading this before you've had a go yourself!
+
+:::
+
+# R
+
+Let's try with test data:
+
+```{r}
+library("tidyverse")
+
+data_test <- "47|53
+97|13
+97|61
+97|47
+75|29
+61|13
+75|53
+29|13
+97|29
+53|29
+61|53
+97|53
+61|29
+47|13
+75|47
+97|75
+47|61
+75|61
+47|29
+75|13
+53|13
+
+75,47,61,53,29
+97,61,53,29,13
+75,29,13
+75,97,47,61,53
+61,13,29
+97,13,75,29,47"
+
+ordering_rules_raw <- str_split_1(data_test, "\n\n")[1]
+
+updates_raw <- str_split_1(data_test, "\n\n")[2]
+
+updates_list <- str_split(updates_raw, "\n")[[1]] %>% 
+  map(~as.numeric(str_split(., ",")[[1]])) %>% 
+  as.vector() 
+
+
+ordering_rules_raw %>% 
+  str_split_1("\n")
+```
+
+
+```{r}
+"75,47,61,53,29"
+```
+
+

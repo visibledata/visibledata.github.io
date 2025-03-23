@@ -1,0 +1,15 @@
+{
+  "hash": "fe26eb78845e1802f91c8c420042403d",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Advent of Code 2024 - Day 1\"\ndate: '2024-12-02'\nexecute:\n  freeze: true\n  message: false\n  warning: false\n  echo: true\nengine: knitr\nfilters:\n  - line-highlight\n---\n\n\n\n\n\n::: {.callout-note appearance=\"simple\"}\n\n# You really shouldn't be reading this before you've had a go yourself!\n\n:::\n\n# R\n\nRightyo! Let's solve with the toy example:\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nvec_1 <- c(3, 4, 2, 1, 3, 3)\nvec_2 <- c(4, 3, 5, 3, 9, 3)\n\nsum(abs(sort(vec_1) - sort(vec_2)))\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 11\n```\n\n\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(\"tidyverse\")\n\ninput_data <- read_table(quarto_here(\"input.txt\"), col_names = c(\"list_1\", \"list_2\"))\n\nsum(abs(sort(input_data$list_1) - sort(input_data$list_2)))\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2176849\n```\n\n\n:::\n:::\n\n\n\n# SQL\n\nLet me solve this for the simple dataset:\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(\"dbplyr\")\nsimple_table <- tibble(\n  list_1 = vec_1,\n  list_2 = vec_2\n)\n\ninput_tbl <- memdb_frame(simple_table, .name = \"simple_table\")\n\ninput_tbl %>% \n  remote_con() %>% \n  tbl(sql(\n  \"\n  WITH indexed_list_1 AS (\n  SELECT\n  ROW_NUMBER() OVER(ORDER BY `list_1`) AS `index`,\n  `list_1`\n  FROM\n  `simple_table`\n  ),\n  \n  indexed_list_2 AS (\n  SELECT \n  ROW_NUMBER() OVER(ORDER BY `list_2`) AS `index`,\n  `list_2`\n  FROM `simple_table`\n  ORDER BY list_1)\n  \n  SELECT\n  SUM(ABS(`list_1` - `list_2`)) AS `distance`\n  FROM\n  indexed_list_1 LEFT JOIN indexed_list_2\n  USING(`index`)\n  \n  \"))\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# Source:   SQL [1 x 1]\n# Database: sqlite 3.46.0 [:memory:]\n  distance\n     <dbl>\n1       11\n```\n\n\n:::\n:::\n\n\n\nGreat! Let's scale up to this proper one\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nreal_input_tbl <- memdb_frame(input_data, .name = \"advent_data\", overwrite=TRUE)\n\nreal_input_tbl %>% \n  remote_con() %>% \n  tbl(sql(\n  \"\n  WITH indexed_list_1 AS (\n  SELECT\n  ROW_NUMBER() OVER(ORDER BY `list_1`) AS `index`,\n  `list_1`\n  FROM\n  `advent_data`\n  ),\n  \n  indexed_list_2 AS (\n  SELECT \n  ROW_NUMBER() OVER(ORDER BY `list_2`) AS `index`,\n  `list_2`\n  FROM `advent_data`\n  ORDER BY list_1)\n  \n  SELECT\n  SUM(ABS(`list_1` - `list_2`)) AS `distance`\n  FROM\n  indexed_list_1 LEFT JOIN indexed_list_2\n  USING(`index`)\n  \n  \"))\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# Source:   SQL [1 x 1]\n# Database: sqlite 3.46.0 [:memory:]\n  distance\n     <dbl>\n1  2176849\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,117 @@
+---
+title: "Advent of Code 2024 - Day 1"
+date: '2024-12-02'
+execute:
+  freeze: true
+  message: false
+  warning: false
+  echo: true
+engine: knitr
+filters:
+  - line-highlight
+---
+
+```{r}
+#| include: false
+library("cjhRutils")
+```
+
+::: {.callout-note appearance="simple"}
+
+# You really shouldn't be reading this before you've had a go yourself!
+
+:::
+
+# R
+
+Rightyo! Let's solve with the toy example:
+
+```{r}
+vec_1 <- c(3, 4, 2, 1, 3, 3)
+vec_2 <- c(4, 3, 5, 3, 9, 3)
+
+sum(abs(sort(vec_1) - sort(vec_2)))
+```
+
+```{r}
+library("tidyverse")
+
+input_data <- read_table(quarto_here("input.txt"), col_names = c("list_1", "list_2"))
+
+sum(abs(sort(input_data$list_1) - sort(input_data$list_2)))
+```
+
+# SQL
+
+Let me solve this for the simple dataset:
+
+```{r}
+library("dbplyr")
+simple_table <- tibble(
+  list_1 = vec_1,
+  list_2 = vec_2
+)
+
+input_tbl <- memdb_frame(simple_table, .name = "simple_table")
+
+input_tbl %>% 
+  remote_con() %>% 
+  tbl(sql(
+  "
+  WITH indexed_list_1 AS (
+  SELECT
+  ROW_NUMBER() OVER(ORDER BY `list_1`) AS `index`,
+  `list_1`
+  FROM
+  `simple_table`
+  ),
+  
+  indexed_list_2 AS (
+  SELECT 
+  ROW_NUMBER() OVER(ORDER BY `list_2`) AS `index`,
+  `list_2`
+  FROM `simple_table`
+  ORDER BY list_1)
+  
+  SELECT
+  SUM(ABS(`list_1` - `list_2`)) AS `distance`
+  FROM
+  indexed_list_1 LEFT JOIN indexed_list_2
+  USING(`index`)
+  
+  "))
+```
+
+Great! Let's scale up to this proper one
+
+```{r}
+real_input_tbl <- memdb_frame(input_data, .name = "advent_data", overwrite=TRUE)
+
+real_input_tbl %>% 
+  remote_con() %>% 
+  tbl(sql(
+  "
+  WITH indexed_list_1 AS (
+  SELECT
+  ROW_NUMBER() OVER(ORDER BY `list_1`) AS `index`,
+  `list_1`
+  FROM
+  `advent_data`
+  ),
+  
+  indexed_list_2 AS (
+  SELECT 
+  ROW_NUMBER() OVER(ORDER BY `list_2`) AS `index`,
+  `list_2`
+  FROM `advent_data`
+  ORDER BY list_1)
+  
+  SELECT
+  SUM(ABS(`list_1` - `list_2`)) AS `distance`
+  FROM
+  indexed_list_1 LEFT JOIN indexed_list_2
+  USING(`index`)
+  
+  "))
+```
+

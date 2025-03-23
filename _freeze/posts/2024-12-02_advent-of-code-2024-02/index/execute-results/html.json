@@ -1,0 +1,15 @@
+{
+  "hash": "d08e6a0ee1601522bd30cb36db5fb960",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Advent of Code 2024 - Day 2\"\ndate: '2024-12-02'\nexecute:\n  freeze: true\n  message: false\n  warning: false\n  echo: true\n  eval: false\nengine: knitr\ndraft: true\nfilters:\n  - line-highlight\n---\n\n\n\n\n\n\n::: {.callout-note appearance=\"simple\"}\n\n# You really shouldn't be reading this before you've had a go yourself!\n\n:::\n\n# R\n\nLet's try with test data:\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(\"tidyverse\")\n\ntest_data <- read_table(quarto_here(\"test-data.txt\"), col_names = FALSE)\n\n\nreport_safe_test_data <- test_data %>% \n  mutate(report = paste0(\"report_\", 1:nrow(test_data))) %>% \n  rowwise() %>% \n  mutate(diffs = list(diff(c_across(contains(\"X\"))))) %>% \n  mutate(same_sign = length(unique(sign(diffs))) == 1) %>% \n  mutate(safe_fluctuation = {sum(abs(diffs) > 3) + sum(abs(diffs) == 0)} == 0) %>% \n  mutate(overall_safe = same_sign * safe_fluctuation)\n\nsum(report_safe_test_data$overall_safe)\n```\n:::\n\n\n\n\nAnd now the real data\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nadvent_input <- read_table(quarto_here(\"input.txt\"), col_names = FALSE)\n\nreport_safe_advent_data <- advent_input %>% \n  mutate(report = paste0(\"report_\", 1:nrow(advent_input))) %>% \n  rowwise() %>% \n  mutate(diffs = list(diff(c_across(contains(\"X\"))))) %>% \n  mutate(same_sign = length(unique(sign(diffs))) == 1) %>% \n  mutate(safe_fluctuation = {sum(abs(diffs) > 3, na.rm = TRUE) + sum(abs(diffs) == 0, na.rm = TRUE)} == 0) %>% \n  mutate(overall_safe = same_sign * safe_fluctuation)\n\nsum(report_safe_advent_data$overall_safe, na.rm = TRUE)\n```\n:::\n\n\n\n\nWell! The NAs trip me up don't they, but we can omit them when generating diffs!\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nadvent_input %>% \n  # slice(1:5) %>% \n  mutate(report = paste0(\"report_\", 1:nrow(.))) %>% \n  rowwise() %>% \n  mutate(diffs = list(diff(as.numeric(na.omit(c_across(contains(\"X\")))))))  %>% \n  mutate(same_sign = length(unique(sign(diffs))) == 1) %>% \n  mutate(safe_fluctuation = {sum(abs(diffs) > 3, na.rm = TRUE) + sum(abs(diffs) == 0, na.rm = TRUE)} == 0) %>% \n  mutate(overall_safe = same_sign * safe_fluctuation) %>% \n  pull(overall_safe) %>% sum()\n```\n:::\n\n\n\n\n# SQL\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(\"dbplyr\")\nsimple_table <- tibble(\n  list_1 = vec_1,\n  list_2 = vec_2\n)\n\ntest_data %>% \n  bind_rows(tibble(X1 = 8, X2 = 4))\n\nadvent_2_test <- memdb_frame(test_data %>% \n  bind_rows(tibble(X1 = 8, X2 = 4)), .name = \"test_data_2\")\n\ninput_tbl %>% \n  remote_con() %>% \n  tbl(sql(\n  \"\n  SELECT\n  X1 - X2 AS a,\n  X2 - \n  FROM\n  `test_data_2`\n  \n  \"\n  ))\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

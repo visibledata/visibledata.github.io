@@ -1,0 +1,344 @@
+---
+title: "Beacons of restrooms"
+date: '2024-11-08'
+draft: true
+execute:
+  freeze: true
+  message: false
+  warning: false
+  echo: false
+code-fold: false
+engine: knitr
+filters:
+  - line-highlight
+---
+
+```{r}
+#| include: false
+library("cjhRutils")
+library("sf")
+library("tidyverse")
+```
+
+I'm really interested in 
+
+## UK Road Network
+
+The Ordance Survey makes available a [huge dataset containing UK roads](https://www.ordnancesurvey.co.uk/products/os-open-roads). Let's download, unzip and read in the road links. Please note this generates an `{sf}` object that's >4Gb in size.
+
+```{r}
+#| eval: false
+library("sf")
+library("tidyverse")
+download.file("https://api.os.uk/downloads/v1/products/OpenRoads/downloads?area=GB&format=ESRI%C2%AE+Shapefile&redirect",
+              destfile = quarto_here("uk_road_network.zip"))
+
+unzip(quarto_here("uk_road_network.zip"),
+      exdir = quarto_here("uk_road_network"))
+
+files_road_links <- list.files(quarto_here("uk_road_network/data"),
+           "RoadLink.shp", full.names = TRUE)
+
+uk_road_links <- files_road_links %>% 
+  map_df(~read_sf(.))
+```
+
+Most of the roads are unclassified and small. 
+
+```{r}
+uk_road_links %>% 
+  st_drop_geometry() %>% 
+  count(class) %>% 
+  mutate(class = fct_reorder(class, n)) %>% 
+  ggplot() +
+  aes(y = class,
+      x = n) +
+  geom_col()
+```
+
+To keep this folder small, let's do several things at once:
+
+- Extract just the A + B Roads and motorways, and export as a single shapefile
+
+- Delete all the unused files.
+
+```{r}
+uk_big_roads <- uk_road_links %>% 
+  filter(class %in% c("A Road", "B Road", "Motorway"))
+
+uk_big_roads %>% 
+  write_sf(quarto_here("uk-big-road-links.geojson"))
+
+unlink(c(quarto_here("uk_road_network"), quarto_here("oproad_essh_gb.zip"), quarto_here("uk_road_network.zip")), recursive = TRUE)
+```
+
+
+What kinds of road do we have?
+
+
+
+Let's extract out the motorways and see if we can visualise them.
+
+```{r}
+uk_big_roads <- read_sf(quarto_here("uk-big-road-links.geojson"))
+library("rnaturalearthdata")
+
+uk_shp_rnat <- countries50 %>% 
+  filter(name == "United Kingdom")
+
+uk_big_roads %>% 
+  filter(class == "Motorway") %>%
+  st_drop_geometry() %>% 
+  count(roadNumber)
+
+
+uk_big_roads %>% 
+  filter(class == "Motorway") %>% 
+  filter(roadNumber == "A1(M)") %>% 
+  ggplot() +
+  geom_sf(data = uk_shp_rnat) +
+  geom_sf()
+```
+
+```{r}
+library("leaflet")
+
+uk_big_roads %>% 
+  st_transform(crs = 4326) %>% 
+  filter(class == "Motorway") %>% 
+  leaflet() %>% 
+  addProviderTiles(providers$OpenStreetMap) 
+
+```
+
+
+### Great Britain mainland
+
+```{r}
+data_sf_uk <- read_sf(quarto_here("Countries_December_2023_Boundaries_UK_BFC_-5189344684762562119/"))
+
+data_sf_gb_mainland <- data_sf_uk %>% 
+  filter(CTRY23NM != "Northern Ireland") %>% 
+  st_cast("POLYGON") %>% 
+  mutate(area = as.numeric(st_area(geometry))) %>% 
+  filter(area >= 1E10) %>%
+  # st_union() %>%
+  st_as_sf()
+
+library("rmapshaper")
+
+data_sf_simpler_mainland <- ms_simplify(data_sf_gb_mainland, keep = 0.0005) %>% 
+  st_transform(crs = 4326)
+
+data_sf_simpler_mainland_unioned <- data_sf_simpler_mainland %>% 
+  st_union()
+```
+
+```{r}
+data_service_locations <- read_csv("https://raw.githubusercontent.com/charliejhadley/tidytuesday/refs/heads/Motorway-Services-UK/data/curated/motorway-services-uk/data_service_locations.csv") %>% 
+  st_as_sf(coords = c("long", "lat"),
+           crs = 4326)
+```
+
+```{r}
+colour_motorway_blue <- "#3070B5"
+library("ggshadow")
+library("ggfx")
+
+gg_glowy <- ggplot() +
+  geom_sf(data = data_sf_simpler_mainland,
+          fill = colour_motorway_blue) +
+  # geom_sf(data = filter(data_service_locations, name != "Grantham North Services A1")) +
+  
+  with_outer_glow(geom_sf(data = filter(data_service_locations, name != "Grantham North Services A1"),
+                             colour = "white",
+                             pch = 21,
+                             fill = "grey80"),
+                  expand = 10,
+                  colour = "white",
+                  sigma = 10) +
+  
+  geom_sf(data = filter(uk_big_roads, class == "Motorway"),
+          color = colour_motorway_blue)
+
+ggsave(quarto_here("gg_glowy.png"),
+       gg_glowy,
+       width = 1 * 7.2,
+       height = 1 * 7.5,
+       bg = "grey90")
+
+```
+
+## By Coffee
+
+Costa is absolutely the leading coffee chain!
+
+
+
+```{r}
+data_service_retailers <- read_csv("https://raw.githubusercontent.com/charliejhadley/tidytuesday/refs/heads/Motorway-Services-UK/data/curated/motorway-services-uk/data_services_retailers.csv")
+
+data_service_retailers %>% 
+  filter(is_coffee_shop == TRUE) %>% 
+  count(retailer, sort = TRUE)
+```
+
+But, amongst service stations without Costa. What are the most common?
+
+```{r}
+services_without_costa <- data_service_retailers %>% 
+  filter(is_coffee_shop == TRUE) %>% 
+  select(service_station, retailer) %>% 
+  group_by(service_station) %>% 
+  mutate(has_costa = str_detect(retailer, "Costa")) %>% 
+  filter(max(has_costa) == 0) %>% 
+  ungroup() %>% 
+  
+
+services_without_costa %>% 
+  count(retailer, sort = TRUE)
+```
+
+```{r}
+services_with_starbucks_no_costa <- services_without_costa %>% 
+  filter(retailer == "Starbucks") %>% 
+  distinct(service_station)
+
+services_with_other_coffee <- services_without_costa %>% 
+  filter(retailer != "Starbucks") %>% 
+  distinct(service_station)
+
+services_locations_with_costa <- data_service_locations %>% 
+  filter(!name %in% services_without_costa$service_station)
+
+services_locations_with_starbucks_no_costa <- data_service_locations %>% 
+  filter(name %in% services_with_starbucks_no_costa$service_station)
+
+services_locations_with_other_coffee <- data_service_locations %>% 
+  filter(name %in% services_with_other_coffee$service_station)
+```
+
+
+
+```{r}
+
+ggplot() +
+  geom_sf(data = data_sf_simpler_mainland,
+          fill = colour_motorway_blue) +
+  geom_sf(data = filter(uk_big_roads, class == "Motorway"),
+          color = "white") +
+  geom_sf(data = services_locations_with_costa,
+          colour = "brown") +
+  geom_sf(data = services_locations_with_starbucks_no_costa,
+          colour = "green") +
+  geom_sf(data = services_locations_with_other_coffee,
+          colour = "yellow")
+
+```
+
+```{r}
+library("ggchicklet")
+library("ggtext")
+lims_x <- list(min = -12.9, max = 1.86)
+lims_y <- list(min = 50.2, max = 58.5)
+
+size_service <- 3
+
+name <- "Strikethrough"
+name_strk <- str_replace_all(name, "(?<=.)", "\u0336")
+
+gg_services_coffee <- ggplot() +
+  geom_rrect(aes(xmin = lims_x$min - 0.8, 
+                 xmax = lims_x$max + 0.8, 
+                 ymin = lims_y$min - 0.65, 
+                 ymax = lims_y$max + 0.65),
+             fill = colour_motorway_blue,
+             colour = "white",
+             size = 15,
+             r = unit(0.1, 'npc')) +
+  geom_sf(data = st_transform(data_sf_simpler_mainland_unioned, crs = 4326),
+          fill = "grey80",
+          colour = "white",
+          linewidth = 0.2) +
+  geom_sf(data = filter(uk_big_roads, class == "Motorway"),
+          color = "white",
+          linewidth = 1) +
+  geom_sf(data = services_locations_with_costa,
+          colour = "#6A1E35",
+          size = size_service) +
+  geom_sf(data = services_locations_with_starbucks_no_costa,
+          colour = "#29623F",
+          size = size_service) +
+  geom_sf(data = services_locations_with_other_coffee,
+          colour = "#F8D748",
+          size = size_service) +
+  geom_richtext(aes(x = -8.5,
+                    y = 54.0,
+                    label = paste("Grab a <span style='color:#6A1E35'>Costa</span> for the road")), 
+                size = 15,
+                family = "Transport",,
+                fill = "transparent",
+                label.color = NA,
+                colour = "white"
+                ) +
+  geom_textbox(aes(x = -8.5,
+                    y = 52.0,
+                    label = "There are 102 motorway services in the UK.<br>
+                   60 of them have"), 
+                size = 15,
+                family = "Transport",,
+                fill = "transparent",
+                label.color = NA,
+                colour = "white",
+               width = unit(0.5, "npc")
+                ) +
+  scale_fill_brewer(palette = "Dark2") +
+  guides(fill = guide_legend(override.aes = list(size = 8), title = "", reverse = TRUE)) +
+  scale_x_continuous(labels = scales::label_number(accuracy = 0.01), expand = expansion(add = 1)) +
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01), expand = expansion(add = c(1, 1))) +
+  coord_sf(crs = 4326,
+           ylim = as.numeric(lims_y),
+           xlim = as.numeric(lims_x)) + 
+  # theme_classic(base_family = "Transport") +
+  theme_void(base_family = "Transport") +
+  theme(legend.position=c(.85,.75),
+        legend.text = element_text(colour = "white", size = 20),
+        legend.spacing.y = unit(2.0, "cm"),
+    legend.key.size = unit(1.7, "cm"),
+    legend.background = element_rect(fill = "transparent", colour = "transparent"),
+    plot.background = element_rect(fill = "grey90", colour = "transparent"),
+        panel.background = element_blank(),
+        plot.margin = margin(t = 1, r = 0, b = 1, l = 0)
+    )
+
+gg_services_coffee
+
+ggsave(quarto_here("gg_services_coffee.png"),
+       gg_services_coffee,
+       width = 2 * 7.2,
+       height = 2 * 7.5,
+       bg = "grey90")
+```
+
+
+### If exclusive isn't interesting
+
+```{r}
+services_by_coffee <- data_service_retailers %>% 
+  filter(is_coffee_shop == TRUE) %>% 
+  select(service_station, retailer) %>% 
+  reframe(has_costa = retailer == "Costa",
+         has_starbucks = retailer == "Starbucks",
+         has_greggs = retailer == "Greggs",
+         has_coffee_other = case_when(if_any(starts_with("has"), ~ .x == 1) ~ 0, TRUE ~ 1),
+         .by = service_station) %>% 
+  reframe(across(starts_with("has"), ~max(.)),
+          .by = service_station) %>% 
+  left_join(data_service_locations, .,
+            by = c("name" = "service_station"))
+
+```
+
+
+
+

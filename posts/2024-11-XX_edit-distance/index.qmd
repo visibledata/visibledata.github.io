@@ -1,0 +1,42 @@
+---
+title: "EDIT DISTANCE FOR CLEANING"
+date: '2024-11-08'
+draft: true
+execute:
+  freeze: true
+  message: false
+  warning: false
+  echo: false
+  eval: false
+code-fold: false
+engine: knitr
+filters:
+  - line-highlight
+---
+
+```{r}
+#| include: false
+library("cjhRutils")
+```
+
+While working on the motorway services dataset I realised that I had an organic opportunity to look at edit distance
+
+```{r}
+library("tidyverse")
+library("cjhRutils")
+library("ggwordcloud")
+
+data_for_edit_distance <- read_csv(quarto_here("data-for-edit-distance.csv"))
+
+data_for_edit_distance %>% 
+  add_count(cut = cut_width(n, 5), name = "n_in_cut") %>% 
+  ggplot(aes(label = value,
+             size = n,
+             colour = cut)) +
+  geom_text_wordcloud() +
+  scale_size_area(max_size = 25) +
+  # scale_colour_brewer(palette  = "Dark2") +
+  scale_colour_viridis_d() +
+  theme_minimal()
+```
+

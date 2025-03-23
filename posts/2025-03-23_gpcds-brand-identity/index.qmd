@@ -1,0 +1,545 @@
+---
+title: "Graph | Plot | Chart | Data Story Branding"
+date: '2024-11-08'
+draft: true
+execute:
+  freeze: true
+  message: false
+  warning: false
+  echo: false
+  eval: false
+code-fold: false
+engine: knitr
+---
+
+```{r}
+#| include: false
+library("cjhRutils")
+```
+
+Back in 2023 I had the idea for a project called "Graph | Plot | Chart | Data Story" with the goal of exploring { opinions and things } via articles and a podcast. I'm reviving the project to give it a proper go in 2025 and want to get the branding *right* because it embodies the goals of the project. I originally experimented in Canva with the brandng design, here are some elements from that original document.
+
+![](gpcds-original-sketches.png)
+
+Core to the brand are the data visualisation categories:
+
+- Graphs are about connections. There are elements within them that have connections to other elements, in a limited sense these might be nodes and edges. Remember, in graphs quantitative measures aren’t a pre-requisite.
+
+- Plots are graphical representations where all communication channels are quantitatively measurable and values within a single quantitative scale could be quantitatively compared by the naked eye and without user interaction (eg tooltip or sonification). 
+
+- Charts are graphical representations that include additional graphical (or other) elements to communicate variables otherwise encoded and/or have scales that cannot be quantitatively compared by the naked eye or without user interaction.
+
+- Data stories. Ahhh. We’d say stories are indefinable. This isn’t business intelligence - it’s storytelling and stories don’t mean the same thing to everyone.
+
+# Brand colours
+
+I designed a palette for these four categories with a fifth "other" category that's designed to work harmoniously with any of the other four. The primary colours of each category were chosen through the excellent interactive tool <https://coolors.co/generate> and then the other colours were generated through experimenting with [https://color.adobe.com/create/color-wheel](color.adobe.com/create/color-wheel). While iterating on the palette I continuously simulated the colours under the most common form of colour blindness. The chart below shows these 25 colours:
+
+```{r}
+library("tidyverse")
+library("GPCDStools")
+library("patchwork")
+
+cols_gpcds <- as.list(deframe(select(colours_gpcds, name, hex_code)))
+
+colours_gpcds %>% 
+  filter(category %in% c("graph", "plot", "chart", "story", "other")) %>% 
+  mutate(type = fct_relevel(str_to_title(str_replace(type, "_", " ")),
+                                   str_to_title(c("primary", "secondary", "tertiary", "tertiary darker", "tertiary darkest"))),
+         
+         category = fct_relevel(str_to_title(category),
+                                c("Graph", "Plot", "Chart", "Story", "Other")))
+
+make_palette_grid <- function(data_palette){
+  ggplot(data_palette,
+         aes(x = "",
+             y = category,
+             fill = hex_code)) +
+  geom_point(size = 30,
+             shape = 22) +
+  geom_text(aes(label = hex_code,
+            colour = ifelse(type %in% c("Primary", "Secondary"), "black", "white")),
+            show.legend = FALSE,
+            family = "Roboto",
+            fontface = "bold") +
+  scale_fill_identity() +
+  scale_colour_identity() +
+  scale_y_discrete(limits = rev, expand = expansion(mult = c(0.09, 0.1))) +
+  scale_x_discrete(expand = expansion(add = c(0, 0))) +
+  labs(x = "",
+       y = "") +
+  facet_grid(~ type) +
+  theme_minimal(base_size = 16, base_family = "Futura") +
+  theme(panel.grid = element_blank(),
+        axis.title.x = element_blank())
+}
+
+colours_gpcds %>% 
+  filter(category %in% c("graph", "plot", "chart", "story", "other")) %>% 
+  mutate(type = fct_relevel(str_to_title(str_replace(type, "_", " ")),
+                                   str_to_title(c("primary", "secondary", "tertiary", "tertiary darker", "tertiary darkest"))),
+         
+         category = fct_relevel(str_to_title(category),
+                                c("Graph", "Plot", "Chart", "Story", "Other"))) %>% 
+  make_palette_grid()
+```
+
+There are 6 additional colours, primarily designed for web elements but could also be used alongside the visualisation category palettes.
+
+```{r}
+gg_palette_ux <- colours_gpcds %>% 
+  filter(category == "ux") %>% 
+  make_palette_grid()
+
+gg_palette_greys <- colours_gpcds %>% 
+  filter(category == "grey") %>% 
+  make_palette_grid()
+
+gg_palette_ux / gg_palette_greys
+```
+
+# Category Idents
+
+Each visualisation category has an "ident" designed to incorporate the following elements:
+
+- Filled square: Each ident is a 1:1 rectangle filled in the primary colour for the category.
+
+- Four Disks: Each ident contains four disks of the same size, with an equal number filled with the secondary and tertiary colour from each category.
+
+- Lines: Each ident contains one or more lines using the tertiary darkest colour from each category
+
+- Text: Each ident contains its own name
+
+```{r}
+ident_linewidth <- 5
+ident_disk_size <- 25
+ident_textsize <- 40
+ident_minor_disk_factor <- sqrt(5)
+```
+
+
+## Plot
+
+The major plot ident is intended to invoke a scatter plot.
+
+```{r}
+gg_plot_ident_major <- tibble(
+  x = c(12.5, 37.5, 62.5, 87.5),
+  y = rev(c(12.5, 37.5, 62.5, 87.5)),
+  colour = c("tertiary", "tertiary", "secondary", "secondary")
+) %>% 
+ggplot() +
+  geom_point(aes(x, y, colour = colour),
+             size = ident_disk_size,
+             show.legend = FALSE) +
+  geom_text(x = 75,
+            y = 62.5,
+            label = "PLOT",
+            size = ident_textsize,
+            colour = "white",
+            family = "Futura") +
+  geom_vline(xintercept = 50,
+             colour = cols_gpcds$plot_tertiary_darkest,
+             linewidth = ident_linewidth) +
+  geom_hline(yintercept = 50,
+             colour = cols_gpcds$plot_tertiary_darkest,
+             linewidth = ident_linewidth) +
+  scale_colour_manual(values = c("secondary" = cols_gpcds$plot_secondary,
+                               "tertiary" = cols_gpcds$plot_tertiary)) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_fixed(xlim = c(0, 100),
+              ylim = c(0, 100)) +
+  theme_void() +
+  theme(panel.background = element_rect(fill = cols_gpcds$plot_primary,
+                                        colour = cols_gpcds$plot_primary))
+
+ggsave(quarto_here("gg_plot_ident_major.png"),
+       gg_plot_ident_major,
+       width = 8,
+       height = 8)
+```
+
+![](gg_plot_ident_major.png)
+
+The minor ident is a simplified scatter plot 
+
+```{r}
+gg_plot_ident_minor <- tibble(
+  x = c(30, 70),
+  y = rev(c(30, 70)),
+  colour = c("secondary", "secondary")
+) %>% 
+ggplot() +
+  geom_point(aes(x, y, colour = colour),
+             size = ident_disk_size * ident_minor_disk_factor,
+             show.legend = FALSE) +
+  scale_colour_manual(values = c("secondary" = cols_gpcds$plot_secondary,
+                               "tertiary" = cols_gpcds$plot_tertiary)) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_fixed(xlim = c(0, 100),
+              ylim = c(0, 100)) +
+  theme_void() +
+  theme(panel.background = element_rect(fill = cols_gpcds$plot_primary,
+                                        colour = cols_gpcds$plot_primary))
+
+ggsave(quarto_here("gg_plot_ident_minor.png"),
+       gg_plot_ident_minor,
+       width = 8,
+       height = 8)
+```
+
+## Chart
+
+The major chart ident is designed to invoke a bubble chart, but could also be interpeted as something more complex.
+
+```{r}
+library("ggforce")
+chart_center_circle_coords <- list(x = 50, y = 50)
+chart_center_circle_radius <- 37.5
+
+# Solve (x - 50)² + (y - 50)² = 37.5² and y = x
+chart_equ_solution <- 50 - 75 / {2 * sqrt(2)}
+
+gg_chart_ident_major <- tibble(
+  x = c(chart_equ_solution, 100-chart_equ_solution, 100 - 12.5, chart_equ_solution),
+  y = c(100-chart_equ_solution, chart_equ_solution, 100 - 12.5, chart_equ_solution),
+  colour = c("tertiary", "tertiary", "secondary", "secondary")
+) %>%
+  ggplot() +
+  geom_circle(data = tibble(),
+              aes(x0 = 50, y0 = 50, r = chart_center_circle_radius),
+                linewidth = ident_linewidth,
+                colour = cols_gpcds$chart_tertiary_darkest) +
+    geom_point(aes(x, y, colour = colour),
+             size = ident_disk_size,
+             show.legend = FALSE) +
+  geom_text(
+    x = 50,
+    y = 50,
+    label = "CHART",
+    size = ident_textsize,
+    colour = "white",
+    family = "Futura"
+  ) +
+  scale_colour_manual(
+    values = c(
+      "secondary" = cols_gpcds$chart_secondary,
+      "tertiary" = cols_gpcds$chart_tertiary
+    )
+  ) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_fixed(xlim = c(0, 100), ylim = c(0, 100)) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(
+      fill = cols_gpcds$chart_primary,
+      colour = cols_gpcds$chart_primary
+    )
+  )
+
+ggsave(quarto_here("gg_chart_ident_major.png"),
+       gg_chart_ident_major,
+       width = 8,
+       height = 8)
+```
+
+The minor ident is designed to appear as a bubble chart.
+
+```{r}
+library("ggforce")
+chart_center_circle_radius <- 37.5
+
+gg_chart_ident_minor <- tibble(
+  x = 100 - chart_equ_solution,
+  y = 100 - chart_equ_solution,
+  colour = "secondary"
+) %>%
+  ggplot() +
+    geom_circle(aes(x0 = 50, y0 = 50, r = chart_center_circle_radius),
+                linewidth = ident_linewidth,
+                colour = cols_gpcds$chart_tertiary_darkest,
+                fill = cols_gpcds$chart_tertiary_darkest) +
+
+    geom_point(aes(x, y, colour = colour),
+             size = ident_disk_size * ident_minor_disk_factor,
+             show.legend = FALSE) +
+  scale_colour_manual(
+    values = c(
+      "secondary" = cols_gpcds$chart_secondary,
+      "tertiary" = cols_gpcds$chart_tertiary
+    )
+  ) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_fixed(xlim = c(0, 100), ylim = c(0, 100)) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(
+      fill = cols_gpcds$chart_primary,
+      colour = cols_gpcds$chart_primary
+    )
+  )
+
+ggsave(quarto_here("gg_chart_ident_minor.png"),
+       gg_chart_ident_minor,
+       width = 8,
+       height = 8)
+```
+
+## Data Story
+
+```{r}
+story_x_coords <- list(min = 15, max = 15 *3)
+story_y_coords <- 20
+story_arrow_y_adjustment <- 7.5
+story_arrow_x_adjustment <- 2.5
+
+gg_story_ident_major <- tibble(
+  x = c(story_x_coords$min, story_x_coords$max, 100 - story_x_coords$min, 100 - story_x_coords$max),
+  y = c(100 - story_y_coords, 100 - story_y_coords, story_y_coords, story_y_coords),
+  colour = c("secondary", "tertiary", "secondary", "tertiary")
+) %>%
+  ggplot() +
+    geom_point(aes(x, y, colour = colour),
+             size = ident_disk_size,
+             show.legend = FALSE) +
+  annotate("curve",
+           x = story_x_coords$min + story_arrow_x_adjustment,
+           y = 100 - story_y_coords + story_arrow_y_adjustment,
+           xend = story_x_coords$max - story_arrow_x_adjustment,
+           yend = 100 - story_y_coords + story_arrow_y_adjustment,
+           linewidth = ident_linewidth - 2,
+           colour = cols_gpcds$story_tertiary_darkest,
+           arrow = arrow(length = unit(0.6, "cm"), type = "closed"),
+           curvature = -0.5) +
+  annotate("curve",
+           x = 100 - story_x_coords$min - story_arrow_x_adjustment,
+           y = story_y_coords - story_arrow_y_adjustment,
+           xend = 100 - story_x_coords$max + story_arrow_x_adjustment,
+           yend = story_y_coords - story_arrow_y_adjustment,
+           linewidth = ident_linewidth - 2,
+           colour = cols_gpcds$story_tertiary_darkest,
+           arrow = arrow(length = unit(0.6, "cm"), type = "closed"),
+           curvature = -0.5) +
+  geom_text(
+    x = 50,
+    y = 50,
+    label = "DATA\nSTORY",
+    size = ident_textsize,
+    colour = "white",
+    family = "Futura",
+    lineheight = 0.9
+  ) +
+  scale_colour_manual(
+    values = c(
+      "secondary" = cols_gpcds$story_secondary,
+      "tertiary" = cols_gpcds$story_tertiary
+    )
+  ) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_fixed(xlim = c(0, 100), ylim = c(0, 100)) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(
+      fill = cols_gpcds$story_primary,
+      colour = cols_gpcds$story_primary
+    )
+  )
+
+ggsave(quarto_here("gg_story_ident_major.png"),
+       gg_story_ident_major,
+       width = 8,
+       height = 8)
+```
+
+Minor ident
+
+```{r}
+story_minor_x_coords <- list(min = 25, max = 75)
+story_minor_y_coords <- 20
+story_arrow_y_adjustment <- 15
+story_arrow_x_adjustment <- 2.5
+
+gg_story_ident_minor <- tibble(
+  x = as.numeric(story_minor_x_coords),
+  y = c(50, 50),
+  colour = c("secondary", "tertiary")
+) %>%
+  ggplot() +
+    geom_point(aes(x, y, colour = colour),
+             size = ident_disk_size * ident_minor_disk_factor,
+             show.legend = FALSE) +
+  annotate("curve",
+           x = story_minor_x_coords$min + story_arrow_x_adjustment,
+           y = 50 + story_arrow_y_adjustment,
+           xend = story_minor_x_coords$max - story_arrow_x_adjustment,
+           yend = 50 + story_arrow_y_adjustment,
+           linewidth = ident_linewidth,
+           colour = cols_gpcds$story_tertiary_darkest,
+           arrow = arrow(length = unit(0.6, "cm"), type = "closed"),
+           curvature = -0.5) +
+  annotate("curve",
+           x = 100 - story_minor_x_coords$min - story_arrow_x_adjustment,
+           y = 50 - story_arrow_y_adjustment,
+           xend = 100 - story_minor_x_coords$max + story_arrow_x_adjustment,
+           yend = 50 - story_arrow_y_adjustment,
+           linewidth = ident_linewidth,
+           colour = cols_gpcds$story_tertiary_darkest,
+           arrow = arrow(length = unit(0.6, "cm"), type = "closed"),
+           curvature = -0.5) +
+  scale_colour_manual(
+    values = c(
+      "secondary" = cols_gpcds$story_secondary,
+      "tertiary" = cols_gpcds$story_tertiary
+    )
+  ) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_fixed(xlim = c(0, 100), ylim = c(0, 100)) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(
+      fill = cols_gpcds$story_primary,
+      colour = cols_gpcds$story_primary
+    )
+  )
+
+ggsave(quarto_here("gg_story_ident_minor.png"),
+       gg_story_ident_minor,
+       width = 8,
+       height = 8)
+```
+
+## Graph
+
+```{r}
+graph_x_first <- 12.5
+graph_y_first <- 50
+graph_y_height <- 30
+
+graph_line_1_slope <- tan(60 * pi / 180)
+graph_line_2_slope <- tan(-60 * pi / 180)
+
+graph_line_1_intercept <- - {50 + graph_line_1_slope * 50}
+graph_line_2_intercept <- - {50 + graph_line_2_slope * {100-graph_x_first}}
+
+graph_bottom_disk_x = {graph_line_2_intercept - graph_line_1_intercept} / {graph_line_1_slope - graph_line_2_slope}
+
+graph_bottom_disk_y = - {graph_line_1_slope * graph_bottom_disk_x + graph_line_1_intercept}
+
+gg_graph_ident_major <- tibble(
+  x = c(graph_x_first, 100 - graph_x_first, 50, graph_bottom_disk_x),
+  y = c(graph_y_first, graph_y_first, graph_y_first, graph_bottom_disk_y),
+  # colour = "secondary"
+  colour = c("secondary", "tertiary", "tertiary", "secondary")
+) %>%
+  ggplot() +
+  annotate(
+    "segment",
+    x = graph_x_first, 
+    xend = 100 - graph_x_first,
+    y = graph_y_first, 
+    yend = graph_y_first,
+    linewidth = ident_linewidth,
+    colour = cols_gpcds$graph_tertiary_darkest) +
+  annotate(
+    "segment",
+    x = c(50, 100 - graph_x_first), 
+    xend = c(graph_bottom_disk_x, graph_bottom_disk_x),
+    y = c(graph_y_first, graph_y_first), 
+    yend = c(graph_bottom_disk_y, graph_bottom_disk_y),
+    linewidth = ident_linewidth,
+    colour = cols_gpcds$graph_tertiary_darkest) +
+  geom_point(aes(x, y, colour = colour),
+           size = ident_disk_size,
+           show.legend = FALSE) +
+  geom_text(
+    x = 50,
+    y = 70,
+    label = "GRAPH",
+    size = ident_textsize,
+    colour = "white",
+    family = "Futura",
+    lineheight = 0.9
+  ) +
+  scale_colour_manual(
+    values = c(
+      "secondary" = cols_gpcds$graph_secondary,
+      "tertiary" = cols_gpcds$graph_tertiary
+    )
+  ) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_fixed(xlim = c(0, 100), ylim = c(0, 100)) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(
+      fill = cols_gpcds$graph_primary,
+      colour = cols_gpcds$graph_primary
+    )
+  )
+
+ggsave(quarto_here("gg_graph_ident_major.png"),
+       gg_graph_ident_major,
+       width = 8,
+       height = 8)
+```
+
+The minor ident
+
+
+```{r}
+graph_minor_x_first <- 20
+graph_y_first <- 50
+graph_y_height <- 30
+
+
+gg_graph_ident_minor <- tibble(
+  x = c(graph_minor_x_first, 100 - graph_minor_x_first),
+  y = c(graph_y_first, graph_y_first),
+  # colour = "secondary"
+  colour = c("secondary", "tertiary")
+) %>%
+  ggplot() +
+  annotate(
+    "segment",
+    x = graph_minor_x_first, 
+    xend = 100 - graph_minor_x_first,
+    y = graph_y_first, 
+    yend = graph_y_first,
+    linewidth = ident_linewidth + 2,
+    colour = cols_gpcds$graph_tertiary_darkest) +
+  geom_point(aes(x, y, colour = colour),
+           size = ident_disk_size * ident_minor_disk_factor,
+           show.legend = FALSE) +
+  scale_colour_manual(
+    values = c(
+      "secondary" = cols_gpcds$graph_secondary,
+      "tertiary" = cols_gpcds$graph_tertiary
+    )
+  ) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_fixed(xlim = c(0, 100), ylim = c(0, 100)) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(
+      fill = cols_gpcds$graph_primary,
+      colour = cols_gpcds$graph_primary
+    )
+  )
+
+ggsave(quarto_here("gg_graph_ident_minor.png"),
+       gg_graph_ident_minor,
+       width = 8,
+       height = 8)
+```
+
+
+
+
+

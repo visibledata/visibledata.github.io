@@ -1,0 +1,111 @@
+---
+title: "Advent of Code 2024 - Day 2"
+date: '2024-12-02'
+execute:
+  freeze: true
+  message: false
+  warning: false
+  echo: true
+  eval: false
+engine: knitr
+draft: true
+filters:
+  - line-highlight
+---
+
+```{r}
+#| include: false
+library("cjhRutils")
+```
+
+::: {.callout-note appearance="simple"}
+
+# You really shouldn't be reading this before you've had a go yourself!
+
+:::
+
+# R
+
+Let's try with test data:
+
+```{r}
+library("tidyverse")
+
+test_data <- read_table(quarto_here("test-data.txt"), col_names = FALSE)
+
+
+report_safe_test_data <- test_data %>% 
+  mutate(report = paste0("report_", 1:nrow(test_data))) %>% 
+  rowwise() %>% 
+  mutate(diffs = list(diff(c_across(contains("X"))))) %>% 
+  mutate(same_sign = length(unique(sign(diffs))) == 1) %>% 
+  mutate(safe_fluctuation = {sum(abs(diffs) > 3) + sum(abs(diffs) == 0)} == 0) %>% 
+  mutate(overall_safe = same_sign * safe_fluctuation)
+
+sum(report_safe_test_data$overall_safe)
+
+```
+
+And now the real data
+
+```{r}
+advent_input <- read_table(quarto_here("input.txt"), col_names = FALSE)
+
+report_safe_advent_data <- advent_input %>% 
+  mutate(report = paste0("report_", 1:nrow(advent_input))) %>% 
+  rowwise() %>% 
+  mutate(diffs = list(diff(c_across(contains("X"))))) %>% 
+  mutate(same_sign = length(unique(sign(diffs))) == 1) %>% 
+  mutate(safe_fluctuation = {sum(abs(diffs) > 3, na.rm = TRUE) + sum(abs(diffs) == 0, na.rm = TRUE)} == 0) %>% 
+  mutate(overall_safe = same_sign * safe_fluctuation)
+
+sum(report_safe_advent_data$overall_safe, na.rm = TRUE)
+```
+
+Well! The NAs trip me up don't they, but we can omit them when generating diffs!
+
+```{r}
+advent_input %>% 
+  # slice(1:5) %>% 
+  mutate(report = paste0("report_", 1:nrow(.))) %>% 
+  rowwise() %>% 
+  mutate(diffs = list(diff(as.numeric(na.omit(c_across(contains("X")))))))  %>% 
+  mutate(same_sign = length(unique(sign(diffs))) == 1) %>% 
+  mutate(safe_fluctuation = {sum(abs(diffs) > 3, na.rm = TRUE) + sum(abs(diffs) == 0, na.rm = TRUE)} == 0) %>% 
+  mutate(overall_safe = same_sign * safe_fluctuation) %>% 
+  pull(overall_safe) %>% sum()
+```
+
+# SQL
+
+```{r}
+library("dbplyr")
+simple_table <- tibble(
+  list_1 = vec_1,
+  list_2 = vec_2
+)
+
+test_data %>% 
+  bind_rows(tibble(X1 = 8, X2 = 4))
+
+advent_2_test <- memdb_frame(test_data %>% 
+  bind_rows(tibble(X1 = 8, X2 = 4)), .name = "test_data_2")
+
+input_tbl %>% 
+  remote_con() %>% 
+  tbl(sql(
+  "
+  SELECT
+  X1 - X2 AS a,
+  X2 - 
+  FROM
+  `test_data_2`
+  
+  "
+  ))
+```
+
+
+
+
+

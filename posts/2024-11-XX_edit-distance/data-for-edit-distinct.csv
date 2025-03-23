@@ -1,0 +1,112 @@
+property,value,service_station,directional,direction
+Eat-In Food,"Starbucks, Papa John's, Burger King, Dunkin' Donuts, Harry Ramsdens",Abington Services M74,FALSE,Directionless
+Eat-In Food,"Costa, Restbite, The Burger Company",Annandale Water Services A74(M),FALSE,Directionless
+Eat-In Food,"KFC, Le Petit Four, McDonalds, Starbucks",Baldock Services A1(M),FALSE,Directionless
+Eat-In Food,"Mcdonalds, Starbucks, Carvery Express, Wetherspoon's, KFC, Domino's Pizza, Gregg's, El Mexicana, Chozen Noodles, LP4",Beaconsfield Services M40,FALSE,Directionless
+Eat-In Food,"Burger King, Greggs, Costa, EDC",Birch Services M62,FALSE,Directionless
+Eat-In Food,"Burger King, KFC, Eat In",Birchanger Green Services M11,FALSE,Directionless
+Eat-In Food,"McDonalds, Costa, Greggs.",Blackburn with Darwen Services M65,FALSE,Directionless
+Eat-In Food,"Cafe Ritazza, Burger King, Fresh Express",Blyth Services A1(M),FALSE,Directionless
+Eat-In Food,"Costa, Restbite",Bothwell Services M74,FALSE,Directionless
+Eat-In Food,"Burger King, Costa Coffee, West Cornwall Pasty, Krispy Kreme Doughnuts, Ginsters Sandwiches",Bridgwater Services M5,FALSE,Directionless
+Eat-In Food,"Burger King, Costa, EDC Restaurant",Burton-in-Kendal Services M6,FALSE,Directionless
+Eat-In Food,"Starbucks, KFC, Eat In",Burtonwood Services M62,FALSE,Directionless
+Eat-In Food,"McDonald's, El Mexicana, Costa, BakeHouse, Patiserie Valerie, M&S, KFC",Cambridge Services A14,FALSE,Directionless
+Eat-In Food,"Starbucks, Burger King",Cardiff Gate Services M4,FALSE,Directionless
+Eat-In Food,"Burger King, Greggs, Costa, Krispy Kreme, Subway",Cardiff West Services M4,FALSE,Directionless
+Eat-In Food,"Restaurant, Burger King, Costa Coffee",Castlebellingham Services M1 Ireland,FALSE,Directionless
+Eat-In Food,"Burger King, KFC,",Charnock Richard Services M6,FALSE,Directionless
+Eat-In Food,"Costa, EDC, Burger King, UpperCrust",Cherwell Valley Services M40,FALSE,Directionless
+Eat-In Food,"McDonalds, Costa, Chozen Noodle, Fresh Food Cafe, Krispy Creme",Chester Services M56,FALSE,Directionless
+Eat-In Food,"Arlo's, Burger King, Costa Coffee, West Cornwall Pasty, Greggs",Chieveley Services M4,FALSE,Directionless
+Eat-In Food,"McDonald's, Hot Food Co, Costa, Wild Bean Cafe",Clacket Lane Services M25,FALSE,Directionless
+Eat-In Food,"KFC, McDonald's, Starbucks, Eat In, Greggs, Papa John's Pizza, El Mexicana, Moodog, Chozen Noodle, Dessert Station, Costa Express Krispy Kreme, M&S Simply Food",Cobham Services M25,FALSE,Directionless
+Eat-In Food,"Starbucks, Coffee Primo, Eat In, Burger King, KFC",Corley Services M6,FALSE,Directionless
+Eat-In Food,"McDonald's, Costa Coffee",Cullompton Services M5,FALSE,Directionless
+Eat-In Food,"Coffee Primo, Eat In",Derby South Services Eastbound A50,FALSE,Directionless
+Eat-In Food,"LP4, KFC",Derby South Services Westbound A50,FALSE,Directionless
+Eat-In Food,"Costa Coffee, Burger King, EDC, Greggs",Doncaster North Services M18,FALSE,Directionless
+Eat-In Food,"Burger King, Harvester, Costa Coffee",Donington Park Services M1,FALSE,Directionless
+Eat-In Food,"Costa, McDonalds",Durham Services A1(M),FALSE,Directionless
+Eat-In Food,"Restaurant, Burger King, Costa Coffee",Enfield Services M4 Ireland,FALSE,Directionless
+Eat-In Food,"Burger King, M&S Simply Food, Costa, EDC (The Eat Drink Co.), WHSmith, Greggs, Ladbrokes, Costa Express, Krispy Kreme, West Cornwall Pasty Co.",Exeter Services M5,FALSE,Directionless
+Eat-In Food,"Costa, Ernies, Burger King, Greggs",Ferrybridge Services M62,FALSE,Directionless
+Eat-In Food,"KFC, Burger King, McDonalds, Eat In, Starbucks",Fleet Services M3,FALSE,Directionless
+Eat-In Food,"Greggs, Costa, Burger King, EDC",Frankley Services M5,FALSE,Directionless
+Eat-In Food,"Food to Go
+Farm Cafe",Gloucester Services Northbound M5,FALSE,Directionless
+Eat-In Food,"Food to Go
+Farm Cafe",Gloucester Services Southbound M5,FALSE,Directionless
+Eat-In Food,"Starbucks, Eat In, Burger King, KFC",Gordano Services M5,FALSE,Directionless
+Eat-In Food,"Costa Coffee, Burger King, Fresh Express",Grantham North Services A1,FALSE,Directionless
+Eat-In Food,"Starbucks, KFC, Burger King,",Gretna Green Services M74,FALSE,Directionless
+Eat-In Food,"Costa, Restbite",Hamilton Services M74,FALSE,Directionless
+Eat-In Food,"Coffee Primo, Eat In, Burger King, KFC",Hartshead Moor Services M62,FALSE,Directionless
+Eat-In Food,"Wimpy, Wild Bean cafe",Heart of Scotland M8,FALSE,Directionless
+Eat-In Food,"Costa Coffee, Burger King, Greggs (Westbound)",Heston Services M4,FALSE,Directionless
+Eat-In Food,"Burger King,Greggs,EDC",Hilton Park Services M6,FALSE,Directionless
+Eat-In Food,"Starbucks, Eat In, Burger King, KFC",Hopwood Park Services M42,FALSE,Directionless
+Eat-In Food,Westmorland restaurant and bar,J38 Truckstop M6,FALSE,Directionless
+Eat-In Food,"Starbucks, Eat In, Burger King, KFC",Keele Services M6,FALSE,Directionless
+Eat-In Food,"McDonalds, Costa, WHSmiths",Killington Lake Services M6,FALSE,Directionless
+Eat-In Food,"Costa, Burger King",Kinross Services M90,FALSE,Directionless
+Eat-In Food,"Cafe Ritazza, Burger King, Fresh Express",Knutsford Services M6,FALSE,Directionless
+Eat-In Food,"Costa Coffee, Burger King, Fresh Express, Greggs, Arlo",Lancaster (Forton) Services M6,FALSE,Directionless
+Eat-In Food,Starbucks,Leicester (Markfield) Services M1,FALSE,Directionless
+Eat-In Food,"Coffee Primo, Eat In, Burger King, KFC",Leicester Forest East Services M1,FALSE,Directionless
+Eat-In Food,"Eat & Drink Co, Burger King, Costa Coffee, West Cornwall Pasty Company, Domino's Pizza, Costa Express",Leigh Delamere Services M4,FALSE,Directionless
+Eat-In Food,"Burger King, Subway, Waitrose, Starbucks",London Gateway Services M1,FALSE,Directionless
+Eat-In Food,"Restaurant, Burger King, Costa Coffee",Lusk Services M1 Ireland,FALSE,Directionless
+Eat-In Food,"Fifth Wheel Bar and Grill,Greggs,Costa, McDonalds",Lymm Services M6,FALSE,Directionless
+Eat-In Food,"McDonald's, Costa Coffee, Restbite",Magor Services M4,FALSE,Directionless
+Eat-In Food,"Costa, Restbite, McDonald's, Harry Ramsden",Maidstone Services M20,FALSE,Directionless
+Eat-In Food,"Burger King, Costa Coffee, Greggs",Medway Services M2,FALSE,Directionless
+Eat-In Food,"Starbucks (inc Drive Thru), Burger King, KFC, Eat In",Membury Services M4,FALSE,Directionless
+Eat-In Food,"Starbucks, Eat In, Burger King, KFC",Michaelwood Services M5,FALSE,Directionless
+Eat-In Food,"Burger King, Harry Ramsdens, Starbucks, Subway, WHSmith",Newport Pagnell Services M1,FALSE,Directionless
+Eat-In Food,"Costa, Restbite, The Burger Company, Chozen Noodles",Norton Canes Services M6 Toll,FALSE,Directionless
+Eat-In Food,"Harry Ramsden, Subway, Starbucks, Burger King, KFC",Oxford Services M40,FALSE,Directionless
+Eat-In Food,"Greggs, Burger King, Costa Coffee",Pease Pottage Services M23,FALSE,Directionless
+Eat-In Food,"McDonalds, KFC, Pizza Hut Express, Le Petit Four Francais",Peterborough Services A1(M),FALSE,Directionless
+Eat-In Food,"Costa, Restbite",Pont Abraham Services M4,FALSE,Directionless
+Eat-In Food,"Burger King, EDC, Costa Coffee",Reading Services M4,FALSE,Directionless
+Eat-In Food,"Burger King, Subway, Starbucks",Rivington Services M61,FALSE,Directionless
+Eat-In Food,"Coffee Primo, Eat In, Burger King",Sarn Park Services M4,FALSE,Directionless
+Eat-In Food,"Costa, BK, West Cornwall Pasty",Scotch Corner Services A1(M),FALSE,Directionless
+Eat-In Food,"Starbucks, Eat In, Burger King",Sedgemoor Services Northbound M5,FALSE,Directionless
+Eat-In Food,"McDonalds, Fresh Food Cafe, Chozen Noodle, Costa Coffee",Sedgemoor Services Southbound M5,FALSE,Directionless
+Eat-In Food,"Buger King, Costa",Severn View Services M48,FALSE,Directionless
+Eat-In Food,"Coffee Primo, Eat In, Burger King, KFC",South Mimms Services M25,FALSE,Directionless
+Eat-In Food,"Cafe Ritazza, Burger King, Fresh Express",Southwaite Services M6,FALSE,Directionless
+Eat-In Food,"Burger King, Greggs, Costa, Eat and Drink Company,",Stafford Services Northbound M6,FALSE,Directionless
+Eat-In Food,"McDonalds, Costa, Restbite",Stafford Services Southbound M6,FALSE,Directionless
+Eat-In Food,"Burger King, WHSmith, Costa Coffee, Marks and Spencer",Stirling Services M9,FALSE,Directionless
+Eat-In Food,"Coffee Republic, KFC, Wimpy, Subway",Stop24 Services (Folkestone) M20,FALSE,Directionless
+Eat-In Food,"Costa Coffee, Burger King",Swansea West M4,FALSE,Directionless
+Eat-In Food,"Costa,, Greggs, Burger King, Eat & Drink Co.",Tamworth Services M42,FALSE,Directionless
+Eat-In Food,"Costa, Restbite, McDonalds",Taunton Deane Services M5,FALSE,Directionless
+Eat-In Food,"Coffee Primo, Eat In, Burger King",Telford Services M54,FALSE,Directionless
+Eat-In Food,Burger King,Thurrock Services M25,FALSE,Directionless
+Eat-In Food,"Costa Coffee, Burger King",Tiverton Services M5,FALSE,Directionless
+Eat-In Food,"EDC, Costa, Burger King, Upper Crust, West Cornwall Pasty, Greggs",Toddington Services M1,FALSE,Directionless
+Eat-In Food,Costa,Todhills Rest Area M6,FALSE,Directionless
+Eat-In Food,"EDC, Burger King",Trowell Services M1,FALSE,Directionless
+Eat-In Food,"Starbucks, Eat In, Burger King, KFC",Warwick Services Northbound M40,FALSE,Directionless
+Eat-In Food,"Starbucks, Eat In, Burger King, KFC",Warwick Services Southbound M40,FALSE,Directionless
+Eat-In Food,"Burger King, Eat,Costa",Washington Services A1(M),FALSE,Directionless
+Eat-In Food,"Burger King, Eat & Drink Co., Costa Coffee",Wetherby Services A1(M),FALSE,Directionless
+Eat-In Food,"M&S, Costa, Burger King, West Cornwall Pasty, WHSmiths.",Winchester Services M3,FALSE,Directionless
+Eat-In Food,"Burger King, KFC, Starbucks, McDonalds, Subway, Harry Ramsdens",Woodall Services M1,FALSE,Directionless
+Eat-In Food,"Burger King, EDC, Costa Coffee",Woolley Edge Services M1,FALSE,Directionless
+Eat-In Food,"Costa, Restbite, The Burger Company;",Northampton Services M1,TRUE,Northbound
+Eat-In Food,"Costa, Hot Food Co., McDonalds",Northampton Services M1,TRUE,Southbound
+Eat-In Food,"Costa, Restbite.",Rownhams Services M27,TRUE,Eastbound
+Eat-In Food,"Costa, Restbite, McDonalds",Rownhams Services M27,TRUE,Westbound
+Eat-In Food,"Costa and Restbite,",Sandbach Services M6,TRUE,Northbound
+Eat-In Food,"Costa, McDonald's, Hot Food Co.",Sandbach Services M6,TRUE,Southbound
+Eat-In Food,"Soho Coffee Company, Hot Food Co., McDonald's, Pizza Hut Express.",Strensham Services M5,TRUE,Northbound
+Eat-In Food,"Costa, Hot Food Co., McDonald's, Soho Coffee Co.",Strensham Services M5,TRUE,Southbound
+Eat-In Food,"Costa, Restbite, McDonalds.",Tibshelf Services M1,TRUE,Northbound
+Eat-In Food,"Costa, Restbite, McDonald's",Tibshelf Services M1,TRUE,Southbound
+Eat-In Food,"Costa, Fresh Food Cafe, McDonald's.",Watford Gap Services M1,TRUE,Northbound
+Eat-In Food,"Costa, Restbite, The Burger Company",Watford Gap Services M1,TRUE,Southbound

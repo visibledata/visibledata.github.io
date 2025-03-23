@@ -1,0 +1,50 @@
+---
+title: "How far can you live from?"
+date: '2024-11-08'
+draft: true
+execute:
+  freeze: true
+  message: false
+  warning: false
+  echo: false
+  eval: false
+code-fold: false
+engine: knitr
+filters:
+  - line-highlight
+---
+
+```{r}
+#| include: false
+library("cjhRutils")
+```
+
+While working on the motorway services dataset I realised that I had an organic opportunity to look at edit distance
+
+```{r}
+library("tidyverse")
+library(grid)
+library(systemfonts)
+
+tibble(
+  value = c(80, 20),
+  region = c("80", "20")
+) %>% 
+  ggplot(aes(x = value,
+             y = "",
+             fill = region)) +
+  geom_col() +
+  scale_fill_manual(values = list(
+    "80" = linearGradient(
+      c("yellow", "red"),
+      x1 = 0.5, y1 = 0, x2 = 0.5, y2 = 1,
+      group = FALSE),
+    "20" = linearGradient(
+      c("blue", "lightblue"),
+      x1 = 0.5, y1 = 0, x2 = 0.5, y2 = 1,
+      group = FALSE)
+  )) +
+  guides(fill = guide_none()) +
+  theme_void()
+```
+

@@ -1,0 +1,15 @@
+{
+  "hash": "1331027fc4b2386b87909f7286fcc9f0",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Advent of Code 2024 - Day 5\"\ndate: '2024-12-14'\nexecute:\n  freeze: true\n  message: false\n  warning: false\n  echo: true\nengine: knitr\ndraft: true\nfilters:\n  - line-highlight\n---\n\n\n\n\n\n\n::: {.callout-note appearance=\"simple\"}\n\n# You really shouldn't be reading this before you've had a go yourself!\n\n:::\n\n# R\n\nLet's try with test data:\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(\"tidyverse\")\n\ndata_test <- \"47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53\n97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13\n\n75,47,61,53,29\n97,61,53,29,13\n75,29,13\n75,97,47,61,53\n61,13,29\n97,13,75,29,47\"\n\nordering_rules_raw <- str_split_1(data_test, \"\\n\\n\")[1]\n\nupdates_raw <- str_split_1(data_test, \"\\n\\n\")[2]\n\nupdates_list <- str_split(updates_raw, \"\\n\")[[1]] %>% \n  map(~as.numeric(str_split(., \",\")[[1]])) %>% \n  as.vector() \n\n\nordering_rules_raw %>% \n  str_split_1(\"\\n\")\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n [1] \"47|53\" \"97|13\" \"97|61\" \"97|47\" \"75|29\" \"61|13\" \"75|53\" \"29|13\" \"97|29\"\n[10] \"53|29\" \"61|53\" \"97|53\" \"61|29\" \"47|13\" \"75|47\" \"97|75\" \"47|61\" \"75|61\"\n[19] \"47|29\" \"75|13\" \"53|13\"\n```\n\n\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\n\"75,47,61,53,29\"\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] \"75,47,61,53,29\"\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
