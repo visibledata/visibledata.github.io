@@ -250,7 +250,10 @@ The minor ident is designed to appear as a bubble chart.
 
 ```{r}
 library("ggforce")
-chart_center_circle_radius <- 37.5
+chart_minor_center_circle_radius <- 35
+
+# Solve (x - 50)² + (y - 50)² = 37.5² and y = x
+chart_equ_solution <- 50 - 75 / {2 * sqrt(2)}
 
 gg_chart_ident_minor <- tibble(
   x = 100 - chart_equ_solution,
@@ -258,7 +261,7 @@ gg_chart_ident_minor <- tibble(
   colour = "secondary"
 ) %>%
   ggplot() +
-    geom_circle(aes(x0 = 50, y0 = 50, r = chart_center_circle_radius),
+    geom_circle(aes(x0 = 50, y0 = 50, r = chart_minor_center_circle_radius),
                 linewidth = ident_linewidth,
                 colour = cols_gpcds$chart_tertiary_darkest,
                 fill = cols_gpcds$chart_tertiary_darkest) +
